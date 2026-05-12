@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import Navigatio from "../../molecules/Navigatio";
 import { useState } from "react";
 import ProgressBar from "../../atoms/ProgressBar";
 import ArrowButton from "../../atoms/ArrowButton";

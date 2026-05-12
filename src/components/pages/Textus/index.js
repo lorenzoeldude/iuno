@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import Navigatio from "../../molecules/Navigatio";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ProgressBar from "../../atoms/ProgressBar";
