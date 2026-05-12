@@ -5,20 +5,7 @@ import { useNavigate } from "react-router-dom";
 import ProgressBar from "../../atoms/ProgressBar";
 import ArrowButton from "../../atoms/ArrowButton";
 import AnswerButton from "../../atoms/Answerbutton";
-
-const Wrapper = styled.div`
-    display: flex;
-    width: 90%;
-    justify-content: space-between;
-`;
-
-const ContentDiv = styled.div`
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    margin: 0 100px;
-    width: 100%;
-`;
+import LessonLayout from "../../layout/LessonLayout";
 
 const TextDiv = styled.div`
     width: 100%;
@@ -175,9 +162,7 @@ function Grammatica() {
     }
 
     return (
-        <Wrapper>
-
-            <ContentDiv>
+        <LessonLayout active={"grammatica"}>
                 <ProgressBar progress={progress} />
 
                 {current.type === "explanation" && (
@@ -252,11 +237,7 @@ function Grammatica() {
                     </>
                 )}
 
-            </ContentDiv>
-
-            <Navigatio active={"grammatica"}/>
-
-        </Wrapper>
+        </LessonLayout>
     );
 }
 

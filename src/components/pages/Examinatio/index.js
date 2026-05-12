@@ -4,20 +4,7 @@ import { useState } from "react";
 import ProgressBar from "../../atoms/ProgressBar";
 import ArrowButton from "../../atoms/ArrowButton";
 import AnswerButton from "../../atoms/Answerbutton";
-
-const Wrapper = styled.div`
-    display: flex;
-    width: 90%;
-    justify-content: space-between;
-`;
-
-const ContentDiv = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 0 100px;
-    width: 100%;
-`;
+import LessonLayout from "../../layout/LessonLayout";
 
 const Title = styled.h1`
     font-family: "Cormorant Garamond", serif;
@@ -242,9 +229,7 @@ function Examinatio() {
     if(step >= questions.length) {
 
         return (
-            <Wrapper>
-
-                <ContentDiv>
+            <LessonLayout active={"examinatio"}>
 
                     <Title>Exāminātiō Perfecta</Title>
 
@@ -256,18 +241,12 @@ function Examinatio() {
                         Gradus: {getRank()}
                     </ResultText>
 
-                </ContentDiv>
-
-                <Navigatio />
-
-            </Wrapper>
+            </LessonLayout>
         );
     }
 
     return (
-        <Wrapper>
-
-            <ContentDiv>
+        <LessonLayout active={"examinatio"}>
 
                 <ProgressBar progress={progress} />
                 <Title>Exāminātiō</Title>
@@ -313,12 +292,7 @@ function Examinatio() {
                             : ">"}
                     </ArrowButton>
                 )}
-
-            </ContentDiv>
-
-            <Navigatio active={"examinatio"}/>
-
-        </Wrapper>
+        </LessonLayout>
     );
 }
 

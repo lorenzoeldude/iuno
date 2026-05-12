@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ProgressBar from "../../atoms/ProgressBar";
 import ArrowButton from "../../atoms/ArrowButton";
+import LessonLayout from "../../layout/LessonLayout";
 
 const Wrapper = styled.div`
     display: flex;
@@ -133,8 +134,7 @@ function Textus () {
     const progress = (index / (sentences.length - 1)) * 100;
 
     return (
-        <Wrapper>
-            <ContentDiv>
+        <LessonLayout active={"textus"}>
             <UnderWrapper>
                 <Title>CAPITVLVM VNVM</Title>
 
@@ -168,18 +168,14 @@ function Textus () {
                     )
                 }
                 </TextDiv>
-                </UnderWrapper>
+            </UnderWrapper>
 
-                <ArrowDiv>
-                    <ArrowButton onClick={previousSentence}>{"<"}</ArrowButton>
-                    <ArrowButton onClick={nextSentence}>{">"}</ArrowButton>
-                </ArrowDiv>
+            <ArrowDiv>
+                <ArrowButton onClick={previousSentence}>{"<"}</ArrowButton>
+                <ArrowButton onClick={nextSentence}>{">"}</ArrowButton>
+            </ArrowDiv>
 
-            </ContentDiv>
-
-        <Navigatio active={"textus"}/>
-           
-        </Wrapper>
+        </LessonLayout>
     );
 }
 
