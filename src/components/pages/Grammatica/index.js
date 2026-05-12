@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import ProgressBar from "../../atoms/ProgressBar";
 import ArrowButton from "../../atoms/ArrowButton";
 import AnswerButton from "../../atoms/Answerbutton";
@@ -13,6 +14,7 @@ const TextDiv = styled.div`
 const ArrowDiv = styled.div`
     display: flex;
     justify-content: center;
+    gap: 20px;
 `;
 
 const Title = styled.h1`
@@ -40,7 +42,7 @@ function Grammatica() {
             text: [
                 "Nīlus fluvius magnus est.",
                 "Nīlus et Rhēnus fluviī magnī sunt.",
-                "Fluvius singularis est. Fluviī pluralis est.",
+                "Fluvius singularis est. Fluviī pluralis sunt.",
                 "Singulāris: -us. Plūrālis: -ī."
             ]
         },
@@ -68,7 +70,7 @@ function Grammatica() {
             text: [
                 "Via longa est.",
                 "Viae longae sunt.",
-                "Via singularis est. Viae pluralis est.",
+                "Via singularis est. Viae pluralis sunt.",
                 "Singulāris: -a. Plūrālis: -ae."
             ]
         },
@@ -96,7 +98,7 @@ function Grammatica() {
             text: [
                 "Oppidum magnum est.",
                 "Oppida magna sunt.",
-                "Oppidum singularis est. Oppida pluralis est.",
+                "Oppidum singularis est. Oppida pluralis sunt.",
                 "Singulāris: -um. Plūrālis: -a."
             ]
         },
@@ -136,105 +138,111 @@ function Grammatica() {
     }
 
     function Back() {
+
         if (step > 0) {
             setStep(step - 1);
             setSelected(null);
         }
     }
 
-    function selectAnswer(answer) {
-
-        if (selected !== null) return;
-
-        setSelected(answer);
-    }
-
-    function getButtonState(option) {
-
-        if (selected === null) return 0;
-
-        if (option === current.correct) return 1;
-
-        if (option === selected) return 2;
-
-        return 0;
-    }
-
     return (
         <LessonLayout active={"grammatica"}>
-                <ProgressBar progress={progress} />
 
-                {current.type === "explanation" && (
-                    <TextDiv>
+            <ProgressBar progress={progress} />
 
-                        <Title>{current.title}</Title>
+            {current.type === "explanation" && (
 
-                        {current.text.map((line, index) => (
-                            <Text key={index}>
-                                {line}
-                            </Text>
+                <TextDiv>
+
+                    <Title>
+                        {current.title}
+                    </Title>
+
+                    {current.text.map((line, index) => (
+                        <Text key={index}>
+                            {line}
+                        </Text>
+                    ))}
+
+                    <ArrowDiv>
+
+                        {step > 0 && (
+                            <ArrowButton onClick={Back}>
+                                {"<"}
+                            </ArrowButton>
+                        )}
+
+                        <ArrowButton onClick={Next}>
+                            {">"}
+                        </ArrowButton>
+
+                    </ArrowDiv>
+
+                </TextDiv>
+            )}
+
+            {current.type === "quiz" && (
+                <>
+
+                    <Text>
+
+                        {current.sentenceBefore}
+
+                        <span
+                            style={{
+                                textDecoration: "underline"
+                            }}
+                        >
+                            {selected === null
+                                ? "_"
+                                : current.correct}
+                        </span>
+
+                        {" "}
+
+                        {current.ending}.
+
+                    </Text>
+
+                    <ArrowDiv
+                        style={{
+                            margin: "30px 0"
+                        }}
+                    >
+
+                        {current.options.map((option, index) => (
+
+                            <AnswerButton
+                                key={index}
+                                index={option}
+                                correct={current.correct}
+                                selected={selected}
+                                setSelected={setSelected}
+                            >
+                                -{option}
+                            </AnswerButton>
+
                         ))}
 
+                    </ArrowDiv>
+
+                    {selected !== null && (
+
                         <ArrowDiv>
+
+                            <ArrowButton onClick={Back}>
+                                {"<"}
+                            </ArrowButton>
+
                             <ArrowButton onClick={Next}>
                                 {">"}
                             </ArrowButton>
+
                         </ArrowDiv>
+                    )}
 
-                    </TextDiv>
-                )}
-
-                {current.type === "quiz" && (
-                    <>
-                        <Text>
-                            {current.sentenceBefore}
-
-                            <span
-                                style={{
-                                    textDecoration: "underline"
-                                }}
-                            >
-                                {selected === null
-                                    ? "_"
-                                    : current.correct}
-                            </span>
-
-                            {" "}{current.ending}.
-                        </Text>
-
-                        <ArrowDiv
-                            style={{
-                                display: "flex",
-                                gap: "20px",
-                                margin: "30px 0"
-                            }}
-                        >
-                            {current.options.map((option, index) => (
-                                <AnswerButton
-                                    key={index}
-                                    onClick={() =>
-                                        selectAnswer(option)
-                                    }
-                                    state={getButtonState(option)}
-                                >
-                                    -{option}
-                                </AnswerButton>
-                            ))}
-                        </ArrowDiv>
-
-                        {selected !== null && (
-                            <ArrowDiv>
-                                <ArrowButton onClick={Back}>
-                                    {"<"}
-                                </ArrowButton>
-
-                                <ArrowButton onClick={Next}>
-                                    {">"}
-                                </ArrowButton>
-                            </ArrowDiv>
-                        )}
-                    </>
-                )}
+                </>
+            )}
 
         </LessonLayout>
     );

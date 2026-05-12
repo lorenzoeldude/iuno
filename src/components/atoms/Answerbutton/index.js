@@ -1,6 +1,9 @@
 import styled from "styled-components";
 
-const AnswerButton = styled.div`
+const correctSound = new Audio("/sounds/correct.mp3");
+const wrongSound = new Audio("/sounds/wrong.mp3");
+
+const Button = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -24,5 +27,49 @@ const AnswerButton = styled.div`
         border: 2px solid #d9d9d9;
     }
 `;
+
+function AnswerButton({
+    children,
+    index,
+    correct,
+    selected,
+    setSelected
+}) {
+
+    function handleClick() {
+
+        if(selected !== null) return;
+
+        setSelected(index);
+
+        if(index === correct) {
+            correctSound.currentTime = 0;
+            correctSound.play();
+        } else {
+            wrongSound.currentTime = 0;
+            wrongSound.play();
+        }
+    }
+
+    function getState() {
+
+        if(selected === null) return 0;
+
+        if(index === correct) return 1;
+
+        if(index === selected) return 2;
+
+        return 0;
+    }
+
+    return (
+        <Button
+            onClick={handleClick}
+            state={getState()}
+        >
+            {children}
+        </Button>
+    );
+}
 
 export default AnswerButton;

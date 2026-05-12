@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import ProgressBar from "../../atoms/ProgressBar";
 import ArrowButton from "../../atoms/ArrowButton";
 import AnswerButton from "../../atoms/Answerbutton";
@@ -23,8 +24,7 @@ const ArrowDiv = styled.div`
     justify-content: center;
 `;
 
-
-function Vocabula () {
+function Vocabula() {
 
     const vocabulas = [
         "Fluvius",
@@ -51,43 +51,19 @@ function Vocabula () {
     const correctAnswer = [1, 2, 1, 0, 1, 0, 2, 0];
 
     const [selected, setSelected] = useState(null);
+
     const [step, setStep] = useState(0);
 
     const navigate = useNavigate();
 
-    // const [index, setIndex] = useState(0);
-
     function Next() {
 
-    if(step < vocabulas.length - 1) {
-        setStep(step + 1);
-        setSelected(null);
-    } else {
-        navigate("/lectiones/1/grammatica");
-    }
-}
-
-    function Check(identity) {
-
-        // prevents second click
-        if(selected !== null) return;
-
-        setSelected(identity);
-    }
-
-    function getButtonState(index) {
-
-        // nothing selected yet
-        if(selected === null) return 0;
-
-        // correct answer = green
-        if(correctAnswer[step] === index) return 1;
-
-        // clicked wrong answer = red
-        if(selected === index) return 2;
-
-        // everything else grey
-        return 0;
+        if(step < vocabulas.length - 1) {
+            setStep(step + 1);
+            setSelected(null);
+        } else {
+            navigate("/lectiones/1/grammatica");
+        }
     }
 
     const progress = (step / (vocabulas.length - 1)) * 100;
@@ -95,51 +71,46 @@ function Vocabula () {
     return (
         <LessonLayout active={"vocabula"}>
 
-                <ProgressBar progress={progress} />
+            <ProgressBar progress={progress} />
 
-                <Verbum state={
-                                selected !== null
-                                    ? selected === correctAnswer[step]
-                                        ? 1
-                                        : 2
-                                    : 0
-                            }
-                        >
-                    {vocabulas[step]}
-                </Verbum>
+            <Verbum
+                state={
+                    selected !== null
+                        ? selected === correctAnswer[step]
+                            ? 1
+                            : 2
+                        : 0
+                }
+            >
+                {vocabulas[step]}
+            </Verbum>
 
+            {answers[step].map((answer, index) => (
                 <AnswerButton
-                    onClick={() => Check(0)}
-                    state={getButtonState(0)}
+                    key={index}
+                    index={index}
+                    correct={correctAnswer[step]}
+                    selected={selected}
+                    setSelected={setSelected}
                 >
-                    {answers[step][0]}
+                    {answer}
                 </AnswerButton>
+            ))}
 
-                <AnswerButton
-                    onClick={() => Check(1)}
-                    state={getButtonState(1)}
-                >
-                    {answers[step][1]}
-                </AnswerButton>
-
-                <AnswerButton
-                    onClick={() => Check(2)}
-                    state={getButtonState(2)}
-                >
-                    {answers[step][2]}
-                </AnswerButton>
-
-                {selected !== null && (
-                    <ArrowDiv>
-                        <ArrowButton onClick={Next} state={
-                                selected !== null
-                                    ? selected === correctAnswer[step]
-                                        ? 1
-                                        : 2
-                                    : 0
-                            }>{">"}</ArrowButton>
-                    </ArrowDiv>
-                )}
+            {selected !== null && (
+                <ArrowDiv>
+                    <ArrowButton
+                        onClick={Next}
+                        state={
+                            selected === correctAnswer[step]
+                                ? 1
+                                : 2
+                        }
+                    >
+                        {">"}
+                    </ArrowButton>
+                </ArrowDiv>
+            )}
 
         </LessonLayout>
     );

@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useState } from "react";
+
 import ProgressBar from "../../atoms/ProgressBar";
 import ArrowButton from "../../atoms/ArrowButton";
 import AnswerButton from "../../atoms/Answerbutton";
@@ -7,15 +8,15 @@ import LessonLayout from "../../layout/LessonLayout";
 
 const Title = styled.h1`
     font-family: "Cormorant Garamond", serif;
-    font-size: 40px;
+    font-size: 20px;
     text-decoration: underline;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
 `;
 
 const Question = styled.p`
     font-size: 35px;
     text-align: center;
-    margin: 40px 0;
+    margin-bottom: 20px;
 `;
 
 const ResultText = styled.p`
@@ -187,32 +188,14 @@ function Examinatio() {
 
     const progress = (step / questions.length) * 100;
 
-    function selectAnswer(option) {
+    function nextQuestion() {
 
-        if(selected !== null) return;
-
-        setSelected(option);
-
-        if(option === current.correct) {
+        if(selected === current.correct) {
             setScore(score + 1);
         }
-    }
-
-    function nextQuestion() {
 
         setStep(step + 1);
         setSelected(null);
-    }
-
-    function getButtonState(option) {
-
-        if(selected === null) return 0;
-
-        if(option === current.correct) return 1;
-
-        if(option === selected) return 2;
-
-        return 0;
     }
 
     function getRank() {
@@ -230,15 +213,17 @@ function Examinatio() {
         return (
             <LessonLayout active={"examinatio"}>
 
-                    <Title>Exāminātiō Perfecta</Title>
+                <Title>
+                    Exāminātiō Perfecta
+                </Title>
 
-                    <ResultText>
-                        Puncta: {score} / {questions.length}
-                    </ResultText>
+                <ResultText>
+                    Puncta: {score} / {questions.length}
+                </ResultText>
 
-                    <ResultText>
-                        Gradus: {getRank()}
-                    </ResultText>
+                <ResultText>
+                    Gradus: {getRank()}
+                </ResultText>
 
             </LessonLayout>
         );
@@ -247,50 +232,64 @@ function Examinatio() {
     return (
         <LessonLayout active={"examinatio"}>
 
-                <ProgressBar progress={progress} />
-                <Title>Exāminātiō</Title>
-            
-                <Question>
+            <ProgressBar progress={progress} />
 
-                    {current.type === "grammar" ? (
-                        <>
-                            {current.before}
+            <Title>
+                Exāminātiō
+            </Title>
 
-                            <span
-                                style={{
-                                    textDecoration: "underline"
-                                }}
-                            >
-                                {selected !== null
-                                    ? current.correct
-                                    : "_"}
-                            </span>
+            <Question>
 
-                            {current.after}
-                        </>
-                    ) : (
-                        current.question
-                    )}
+                {current.type === "grammar" ? (
+                    <>
 
-                </Question>
+                        {current.before}
 
-                {current.options.map((option, index) => (
-                    <AnswerButton
-                        key={index}
-                        onClick={() => selectAnswer(option)}
-                        state={getButtonState(option)}
-                    >
-                        {option}
-                    </AnswerButton>
-                ))}
+                        <span
+                            style={{
+                                textDecoration: "underline"
+                            }}
+                        >
+                            {selected !== null
+                                ? current.correct
+                                : "_"}
+                        </span>
 
-                {selected !== null && (
-                    <ArrowButton onClick={nextQuestion}>
-                        {step === questions.length - 1
-                            ? "Perfice"
-                            : ">"}
-                    </ArrowButton>
+                        {current.after}
+
+                    </>
+                ) : (
+                    current.question
                 )}
+
+            </Question>
+
+            {current.options.map((option, index) => (
+
+                <AnswerButton
+                    key={index}
+                    index={option}
+                    correct={current.correct}
+                    selected={selected}
+                    setSelected={setSelected}
+                >
+                    {option}
+                </AnswerButton>
+
+            ))}
+
+            {selected !== null && (
+
+                <ArrowButton onClick={nextQuestion}>
+
+                    {step === questions.length - 1
+                        ? "Perfice"
+                        : ">"}
+
+                </ArrowButton>
+
+            )}
+
         </LessonLayout>
     );
 }

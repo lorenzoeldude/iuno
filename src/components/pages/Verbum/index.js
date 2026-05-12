@@ -1,13 +1,10 @@
 import styled from "styled-components";
 
-const Wrapper = styled.div`
-`;
+const Wrapper = styled.div``;
 
 const Word = styled.h1`
     font-family: "Montserrat", sans-serif;
-    font-optical-sizing: auto;
     font-weight: 700;
-    font-style: normal;
     font-size: 40px;
 `;
 
@@ -15,94 +12,98 @@ const Translation = styled.p`
     font-size: 20px;
 `;
 
-const Definition = styled.p`
-    font-size: 30px;
-    margin: 0px;
-`;
-
-const Table = styled.table`
-    margin-top: 30px;
-    border: 0.5px solid black;
-    border-spacing: 30px 0;
-`;
-
-const Title = styled.h2`
+const SectionTitle = styled.h2`
     font-family: "Montserrat", sans-serif;
-    font-optical-sizing: auto;
     font-weight: 600;
-    font-style: normal;
     font-size: 20px;
-    margin: 0px;
+    margin: 0;
+`;
+
+const Text = styled.p`
+    font-size: 30px;
+    margin: 0;
 `;
 
 const Line = styled.hr`
     border: none;
     height: 0.5px;
     background-color: black;
-    opacity: 30%;
+    opacity: 0.3;
     margin: 30px 0;
 `;
+
+const Table = styled.table`
+    margin-top: 30px;
+    border: 0.5px solid black;
+    border-spacing: 30px 12px;
+    padding: 10px;
+`;
+
+const wordData = {
+    latin: "Lūna",
+    translation: "Moon",
+    definition:
+        "Corpus caeleste quod nocte in caelo apparet et noctem lūmine suo illuminat.",
+
+    examples: [
+        "Lūna clara super silvam lucet nocte tranquilla.",
+        "Puer et puella lūnam albam in caelō spectant.",
+        "Nautae sub lūnā magnā per mare lentē navigant.",
+    ],
+
+    declension: [
+        { case: "Nom.", singular: "luna", plural: "lunae" },
+        { case: "Gen.", singular: "lunae", plural: "lunarum" },
+        { case: "Dat.", singular: "lunae", plural: "lunis" },
+        { case: "Acc.", singular: "lunam", plural: "lunas" },
+        { case: "Voc.", singular: "luna", plural: "lunae" },
+        { case: "Abl.", singular: "luna", plural: "lunis" },
+    ],
+};
 
 function Verbum() {
     return (
         <Wrapper>
-            <Word>Lūna</Word>
-            <Translation>(Moon)</Translation>
-            <Line/>
-            <Title>Dēfīnītiō</Title>
-            <Definition>Corpus caeleste quod nocte in caelo apparet et noctem lūmine suo illuminat.</Definition>
+            <Word>{wordData.latin}</Word>
+            <Translation>({wordData.translation})</Translation>
 
-            <Line/>
-            <Title>Exempla</Title>
+            <Line />
 
-            <Definition>1. Lūna clara super silvam lucet nocte tranquilla.</Definition>
-            <Definition>2. Puer et puella lūnam albam in caelō spectant.</Definition>
-            <Definition>3. Nautae sub lūnā magnā per mare lentē navigant.</Definition>
-            <Line/>
+            <SectionTitle>Dēfīnītiō</SectionTitle>
+            <Text>{wordData.definition}</Text>
 
-            <Title>Dēclīnātiō</Title>
+            <Line />
+
+            <SectionTitle>Exempla</SectionTitle>
+
+            {wordData.examples.map((example, index) => (
+                <Text key={index}>
+                    {index + 1}. {example}
+                </Text>
+            ))}
+
+            <Line />
+
+            <SectionTitle>Dēclīnātiō</SectionTitle>
+
             <Table>
-                <tr>    
-                    <th></th>
-                    <th>Singularis</th>
-                    <th>Pluralis</th>
-                </tr>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Singularis</th>
+                        <th>Pluralis</th>
+                    </tr>
+                </thead>
 
-                <tr>
-                    <td>Nom.</td>
-                    <td>luna</td>
-                    <td>lunae</td>
-                </tr>
-
-                <tr>
-                    <td>Gen.</td>
-                    <td>lunae</td>
-                    <td>lunarum</td>
-                </tr>
-
-                <tr>
-                    <td>Dat.</td>
-                    <td>lunae</td>
-                    <td>lunis</td>
-                </tr>
-
-                <tr>
-                    <td>Acc.</td>
-                    <td>lunam</td>
-                    <td>lunas</td>
-                </tr>
-
-                <tr>
-                    <td>Voc.</td>
-                    <td>lunae</td>
-                    <td>lunae</td>
-                </tr>
-
-                <tr>
-                    <td>Abl.</td>
-                    <td>luna</td>
-                    <td>lunis</td>
-                </tr>
+                <tbody>
+                    {wordData.declension.map((row) => (
+                        <tr key={row.case}>
+                            <td>{row.case}</td>
+                            <td>{row.singular}</td>
+                            <td>{row.plural}</td>
+                        </tr>
+                    ))}
+                </tbody>
             </Table>
         </Wrapper>
     );
