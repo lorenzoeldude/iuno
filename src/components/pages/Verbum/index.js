@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 const Wrapper = styled.div``;
 
@@ -39,29 +41,50 @@ const Table = styled.table`
     padding: 10px;
 `;
 
-const wordData = {
-    latin: "Lūna",
-    translation: "Moon",
-    definition:
-        "Corpus caeleste quod nocte in caelo apparet et noctem lūmine suo illuminat.",
-
-    examples: [
-        "Lūna clara super silvam lucet nocte tranquilla.",
-        "Puer et puella lūnam albam in caelō spectant.",
-        "Nautae sub lūnā magnā per mare lentē navigant.",
-    ],
-
-    declension: [
-        { case: "Nom.", singular: "luna", plural: "lunae" },
-        { case: "Gen.", singular: "lunae", plural: "lunarum" },
-        { case: "Dat.", singular: "lunae", plural: "lunis" },
-        { case: "Acc.", singular: "lunam", plural: "lunas" },
-        { case: "Voc.", singular: "luna", plural: "lunae" },
-        { case: "Abl.", singular: "luna", plural: "lunis" },
-    ],
-};
-
 function Verbum() {
+    const { word } = useParams();
+
+    const [wordData, setWordData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        setLoading(true);
+        setError(null);
+
+        fetch(`http://localhost:8080/api/word/${word}`)
+            .then((res) => {
+                if (!res.ok) {
+                    throw new Error("Word not found");
+                }
+                return res.json();
+            })
+            .then((data) => {
+                setWordData(data);
+                setLoading(false);
+            })
+            .catch((err) => {
+                setError(err.message);
+                setLoading(false);
+            });
+    }, [word]);
+
+    if (loading) {
+        return (
+            <Wrapper>
+                <Text>Loading...</Text>
+            </Wrapper>
+        );
+    }
+
+    if (error) {
+        return (
+            <Wrapper>
+                <Text>Error: {error}</Text>
+            </Wrapper>
+        );
+    }
+
     return (
         <Wrapper>
             <Word>{wordData.latin}</Word>
@@ -76,11 +99,15 @@ function Verbum() {
 
             <SectionTitle>Exempla</SectionTitle>
 
-            {wordData.examples.map((example, index) => (
-                <Text key={index}>
-                    {index + 1}. {example}
-                </Text>
-            ))}
+            {wordData?.examples?.length > 0 ? (
+                wordData.examples.map((example, index) => (
+                    <Text key={index}>
+                        {index + 1}. {example}
+                    </Text>
+                ))
+            ) : (
+                <Text>No examples available</Text>
+            )}
 
             <Line />
 

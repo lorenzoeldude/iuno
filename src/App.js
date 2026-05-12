@@ -40,7 +40,7 @@ function App() {
           <Sidebar />
           <Content>
             <Routes>
-              <Route path="/verbum" element={<Verbum />} />
+              <Route path="/dictionary/:word" element={<Verbum />} />
               <Route path="/lectiones" element={<Lectiones />} />
               <Route path="/lectiones/1/textus" element={<Textus />} />
               <Route path="/quiz" element={<Quiz />} />
