@@ -32,7 +32,7 @@ const Item = styled.div`
     }
 `;
 
-function Searchbar() {
+function Searchbar({ className }) {
     const [query, setQuery] = useState("");
     const [results, setResults] = useState([]);
     const [open, setOpen] = useState(false);
@@ -74,6 +74,7 @@ function Searchbar() {
     return (
         <Wrapper>
             <Input
+                className={className}
                 type="text"
                 placeholder="quaerere verba"
                 value={query}

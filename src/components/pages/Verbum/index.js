@@ -2,7 +2,9 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+    width: 60%;
+`;
 
 const Word = styled.h1`
     font-family: "Montserrat", sans-serif;

@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 const Wrapper = styled.div`
-    // width: 180px;
     margin: 0px 40px;
 `;
 
@@ -49,9 +48,8 @@ function Sidebar () {
             <Line />
             <List>
                 <ListItem><Link href="/lectiones">LECTIONES</Link></ListItem>
-                <ListItem><Link href="/verbum">VERBVM</Link></ListItem>
-                {/* <ListItem><Link href="/quiz">GRAMMATICA</Link></ListItem> */}
-                <ListItem><Link href="/litterae">LITTERAE</Link></ListItem>
+                <ListItem><Link href="/dictionary/luna">VERBVM</Link></ListItem>
+                {/* <ListItem><Link href="/litterae">LITTERAE</Link></ListItem> */}
             </List>
         </Wrapper>
     );

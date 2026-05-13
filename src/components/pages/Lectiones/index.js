@@ -23,6 +23,7 @@ const Capitula = styled.div`
     border: 0.5px solid black;
     text-decoration: none;
     color: black;
+    transition: all 0.2s ease;
 
     &:visited {
         color: black;
