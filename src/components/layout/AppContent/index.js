@@ -13,14 +13,17 @@ import Grammatica from './../../../components/pages/Grammatica';
 import Vocabula from './../../../components/pages/Vocabula';
 import Examinatio from './../../../components/pages/Examinatio';
 import StartPage from './../../../components/pages/StartPage';
+import Trainer from "../../pages/Trainer";
 
 const Body = styled.div`
   display: flex;
+  height: 100%;
 `;
 
 const Content = styled.div`
   display: flex;
   width:100%;
+  height: 100%;
   font-family: "Cormorant Garamond", serif;
   font-optical-sizing: auto;
   font-weight: 400;
@@ -45,6 +48,7 @@ function AppContent() {
         <Content>
           <Routes>
             <Route path="/" element={<StartPage />} />
+            <Route path="/verbum" element={<Trainer />} />
             <Route path="/dictionary/:word" element={<Verbum />} />
             <Route path="/lectiones" element={<Lectiones />} />
             <Route path="/lectiones/1/textus" element={<Textus />} />

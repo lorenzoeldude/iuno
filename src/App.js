@@ -2,8 +2,6 @@ import './App.css';
 import { BrowserRouter as Router } from "react-router-dom";
 import AppContent from './components/layout/AppContent';
 
-
-
 function App() {
   return (
     <Router>

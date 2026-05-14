@@ -45,7 +45,7 @@ const Title = styled.h1`
     font-optical-sizing: auto;
     font-weight: 500;
     font-style: normal;
-    font-size: 60px;
+    font-size: 40px;
 `;
 
 const Link = styled.a`
@@ -58,11 +58,11 @@ function Lectiones () {
             <Grid>
                 <Link href="/lectiones/1/textus">
                     <Capitula>
-                        <Title>I</Title>
+                        <Title>CAPITVLVM I</Title>
                     </Capitula>
                 </Link>
 
-                <Link href="/lectiones/1/textus">
+                {/* <Link href="/lectiones/1/textus">
                     <Capitula>
                         <Title>II</Title>
                     </Capitula>
@@ -84,7 +84,7 @@ function Lectiones () {
                     <Capitula>
                         <Title>V</Title>
                     </Capitula>
-                </Link>
+                </Link> */}
             </Grid>
         </Wrapper>
     );

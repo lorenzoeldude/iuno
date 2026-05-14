@@ -13,7 +13,8 @@ const fadeIn = keyframes`
 `;
 
 const Wrapper = styled.div`
-    height: 80vh;
+    height: 100vh;
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -69,13 +70,8 @@ function StartPage() {
         <Wrapper>
             <Title>IUNO</Title>
 
-            {/* <Subtitle>
-                Learn Latin through reading, grammar, and interactive vocabulary.
-                Double-click any word to explore its meaning instantly.
-            </Subtitle> */}
-
             <Subtitle>
-                Learn Latin step by step through reading lessons, and look up words with our built in dictionary. Practice vocabulary and learn new words everyday.<br/>
+                Learn Latin step by step through reading lessons, and look up words with our built in dictionary. Practice vocabulary and learn new words everyday. This app is currently in beta version.<br/>
             </Subtitle>
 
             <StyledSearch />
@@ -89,7 +85,7 @@ function StartPage() {
                     Verbum Diēī
                 </Button>
 
-                <Button href="/dictionary/luna">
+                <Button href="/verbum">
                     Verbum
                 </Button>
             </BlockDiv>

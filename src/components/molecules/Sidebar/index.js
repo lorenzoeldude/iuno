@@ -48,7 +48,7 @@ function Sidebar () {
             <Line />
             <List>
                 <ListItem><Link href="/lectiones">LECTIONES</Link></ListItem>
-                <ListItem><Link href="/dictionary/luna">VERBVM</Link></ListItem>
+                <ListItem><Link href="/verbum">VERBVM</Link></ListItem>
                 {/* <ListItem><Link href="/litterae">LITTERAE</Link></ListItem> */}
             </List>
         </Wrapper>

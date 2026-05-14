@@ -28,6 +28,27 @@ const Button = styled.div`
     }
 `;
 
+// const Button = styled.a`
+//     margin: 30px 10px;
+//     padding: 12px 24px;
+//     border: 1px solid black;
+//     text-decoration: none;
+//     color: black;
+//     font-size: 20px;
+//     letter-spacing: 2px;
+//     transition: all 0.2s ease;
+
+//     background-color: ${(props) => {
+//         if (props.state === 1) return "green";
+//         if (props.state === 2) return "red";
+//         return "#ffffff";
+//     }};
+
+//     &:hover {
+//         color: white;
+//     }
+// `;
+
 function AnswerButton({
     children,
     index,
