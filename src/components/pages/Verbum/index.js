@@ -189,7 +189,12 @@ function Verbum() {
                 </Word>
 
                 <Meaning>
-                    {wordInfo.meaning}
+                    {wordData.meanings?.map((m, index) => (
+                        <span key={m.id}>
+                            {m.english}
+                            {index < wordData.meanings.length - 1 ? " · " : ""}
+                        </span>
+                    ))}
                 </Meaning>
 
                 <Meta>
