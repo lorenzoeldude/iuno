@@ -40,24 +40,16 @@ const CASE_LABELS = {
 
 function NominalTable({ forms }) {
 
-    // only nominal forms
-    const nominalForms = forms.filter(
-        (form) => form.case
-    );
+    const nominalForms = forms.filter((form) => form.case);
 
     function getForm(caseName, number, gender = null) {
 
         const found = nominalForms.find((form) => {
 
-            // must match case + number
-            if (
-                form.case !== caseName ||
-                form.number !== number
-            ) {
+            if (form.case !== caseName || form.number !== number) {
                 return false;
             }
 
-            // if gender specified, must match gender
             if (gender && form.gender !== gender) {
                 return false;
             }
@@ -68,138 +60,82 @@ function NominalTable({ forms }) {
         return found?.form || "—";
     }
 
-    // determine whether genders exist
-    const hasMasculine = nominalForms.some(
-        (f) => f.gender === "masculine"
-    );
-
-    const hasFeminine = nominalForms.some(
-        (f) => f.gender === "feminine"
-    );
-
-    const hasNeuter = nominalForms.some(
-        (f) => f.gender === "neuter"
-    );
-
-    // =====================================================
-    // SIMPLE NOMINAL TABLE
-    // nouns / pronouns without gender variants
-    // =====================================================
-
-    if (
-        !hasMasculine &&
-        !hasFeminine &&
-        !hasNeuter
-    ) {
-
-        return (
-
-            <Table>
-
-                <thead>
-                    <tr>
-                        <TH></TH>
-                        <TH>Singular</TH>
-                        <TH>Plural</TH>
-                    </tr>
-                </thead>
-
-                <tbody>
-
-                    {CASE_ORDER.map((caseName) => (
-
-                        <tr key={caseName}>
-
-                            <TD>
-                                {CASE_LABELS[caseName]}
-                            </TD>
-
-                            <TD>
-                                {getForm(caseName, "singular")}
-                            </TD>
-
-                            <TD>
-                                {getForm(caseName, "plural")}
-                            </TD>
-
-                        </tr>
-                    ))}
-
-                </tbody>
-
-            </Table>
-        );
-    }
-
-    // =====================================================
-    // GENDERED TABLE
-    // adjectives / gendered pronouns
-    // =====================================================
+    const hasMasculine = nominalForms.some(f => f.gender === "masculine");
+    const hasFeminine = nominalForms.some(f => f.gender === "feminine");
+    const hasNeuter = nominalForms.some(f => f.gender === "neuter");
 
     return (
-
         <Table>
 
+            {/* =====================================================
+                HEADER
+            ===================================================== */}
             <thead>
 
                 <tr>
+                    {/* <TH></TH> */}
 
+                    {/* {hasMasculine && <TH colSpan={2}>Masculine</TH>}
+                    {hasFeminine && <TH colSpan={2}>Feminine</TH>}
+                    {hasNeuter && <TH colSpan={2}>Neuter</TH>} */}
+                </tr>
+
+                <tr>
                     <TH></TH>
 
                     {hasMasculine && (
-                        <TH>Masculine</TH>
+                        <>
+                            <TH>Sing.</TH>
+                            <TH>Plur.</TH>
+                        </>
                     )}
 
                     {hasFeminine && (
-                        <TH>Feminine</TH>
+                        <>
+                            <TH>Sing.</TH>
+                            <TH>Plur.</TH>
+                        </>
                     )}
 
                     {hasNeuter && (
-                        <TH>Neuter</TH>
+                        <>
+                            <TH>Sing.</TH>
+                            <TH>Plur.</TH>
+                        </>
                     )}
-
                 </tr>
 
             </thead>
 
+            {/* =====================================================
+                BODY
+            ===================================================== */}
             <tbody>
 
                 {CASE_ORDER.map((caseName) => (
-
                     <tr key={caseName}>
 
-                        <TD>
-                            {CASE_LABELS[caseName]}
-                        </TD>
+                        <TD>{CASE_LABELS[caseName]}</TD>
 
                         {hasMasculine && (
-                            <TD>
-                                {getForm(
-                                    caseName,
-                                    "singular",
-                                    "masculine"
-                                )}
-                            </TD>
+                            <>
+                                <TD>{getForm(caseName, "singular", "masculine")}</TD>
+                                <TD>{getForm(caseName, "plural", "masculine")}</TD>
+                            </>
                         )}
 
                         {hasFeminine && (
-                            <TD>
-                                {getForm(
-                                    caseName,
-                                    "singular",
-                                    "feminine"
-                                )}
-                            </TD>
+                            <>
+                                <TD>{getForm(caseName, "singular", "feminine")}</TD>
+                                <TD>{getForm(caseName, "plural", "feminine")}</TD>
+                            </>
                         )}
 
                         {hasNeuter && (
-                            <TD>
-                                {getForm(
-                                    caseName,
-                                    "singular",
-                                    "neuter"
-                                )}
-                            </TD>
+                            <>
+                                <TD>{getForm(caseName, "singular", "neuter")}</TD>
+                                <TD>{getForm(caseName, "plural", "neuter")}</TD>
+                            </>
                         )}
 
                     </tr>

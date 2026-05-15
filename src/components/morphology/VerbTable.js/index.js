@@ -56,12 +56,31 @@ const FormRow = styled.div`
     font-size: 20px;
 `;
 
+const TENSES = [
+    "present",
+    "imperfect",
+    "future",
+    "perfect",
+    "pluperfect",
+    "future perfect",
+];
+
+const PERSON_ORDER = [
+    { number: "singular", person: 1 },
+    { number: "singular", person: 2 },
+    { number: "singular", person: 3 },
+    { number: "plural", person: 1 },
+    { number: "plural", person: 2 },
+    { number: "plural", person: 3 },
+];
+
 function VerbTable({ forms }) {
+
     const [voice, setVoice] = useState("active");
     const [mood, setMood] = useState("indicative");
 
     // =====================================================
-    // FINITE FORMS (UNCHANGED LOGIC — IMPORTANT)
+    // FINITE FORMS
     // =====================================================
     const finiteForms = useMemo(() => {
         return forms.filter((form) => {
@@ -73,15 +92,6 @@ function VerbTable({ forms }) {
             );
         });
     }, [forms, mood, voice]);
-
-    const TENSES = [
-        "present",
-        "imperfect",
-        "future",
-        "perfect",
-        "pluperfect",
-        "future perfect",
-    ];
 
     function getFormsForTense(tense) {
         return finiteForms.filter((form) => form.tense === tense);
@@ -99,17 +109,24 @@ function VerbTable({ forms }) {
                 </SectionTitle>
 
                 <FormList>
-                    {formsForTense.map((form, i) => (
-                        <FormRow key={i}>
-                            {form.form}
-                        </FormRow>
-                    ))}
+                    {PERSON_ORDER.map((p) => {
+                        const form = formsForTense.find(
+                            (f) =>
+                                f.person === p.person &&
+                                f.number === p.number
+                        );
+
+                        return (
+                            <FormRow key={`${p.person}-${p.number}`}>
+                                {form?.form || "—"}
+                            </FormRow>
+                        );
+                    })}
                 </FormList>
             </TenseBlock>
         );
     }
 
-    // split into groups of 3 tenses per row
     const tenseRows = [];
     for (let i = 0; i < TENSES.length; i += 3) {
         tenseRows.push(TENSES.slice(i, i + 3));
@@ -163,9 +180,7 @@ function VerbTable({ forms }) {
             <Grid>
                 {tenseRows.map((row, idx) => (
                     <GridRow key={idx}>
-                        {row.map((tense) =>
-                            renderTenseBlock(tense)
-                        )}
+                        {row.map((tense) => renderTenseBlock(tense))}
                     </GridRow>
                 ))}
             </Grid>
