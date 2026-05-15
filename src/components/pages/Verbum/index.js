@@ -185,7 +185,7 @@ function Verbum() {
             <Header>
 
                 <Word>
-                    {wordInfo.lemma}
+                    {wordInfo.lemma_display || wordInfo.lemma}
                 </Word>
 
                 <Meaning>
