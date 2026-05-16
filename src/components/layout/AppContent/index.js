@@ -51,7 +51,7 @@ function AppContent() {
           <Routes>
             <Route path="/" element={<StartPage />} />
             <Route path="/admin" element={<AdminLemmaEditor />} />
-            <Route path="/verbum" element={<Trainer />} />
+            <Route path="/trainer" element={<Trainer />} />
             <Route path="/dictionary/:word" element={<Verbum />} />
             {/* <Route path="/search" element={<SearchPage />} /> */}
             <Route path="/lectiones" element={<Lectiones />} />
