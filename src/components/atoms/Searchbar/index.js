@@ -15,7 +15,7 @@ const Input = styled.input`
 
 const Dropdown = styled.div`
     position: absolute;
-    top: 35px;
+    top: calc(100% + 6px);
     left: 0;
     right: 0;
     background: white;
@@ -98,11 +98,11 @@ function Searchbar({ className }) {
                 onBlur={() => {
                     setTimeout(() => setOpen(false), 150);
                 }}
-                onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                        goToSearchPage(query);
-                    }
-                }}
+                // onKeyDown={(e) => {
+                //     if (e.key === "Enter") {
+                //         goToSearchPage(query);
+                //     }
+                // }}
             />
 
             {open && results.length > 0 && (
