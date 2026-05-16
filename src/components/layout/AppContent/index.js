@@ -14,6 +14,7 @@ import Vocabula from './../../../components/pages/Vocabula';
 import Examinatio from './../../../components/pages/Examinatio';
 import StartPage from './../../../components/pages/StartPage';
 import Trainer from "../../pages/Trainer";
+import AdminLemmaEditor from "../../pages/AdminLemmaEditor";
 
 const Body = styled.div`
   display: flex;
@@ -48,6 +49,7 @@ function AppContent() {
         <Content>
           <Routes>
             <Route path="/" element={<StartPage />} />
+            <Route path="/admin" element={<AdminLemmaEditor />} />
             <Route path="/verbum" element={<Trainer />} />
             <Route path="/dictionary/:word" element={<Verbum />} />
             <Route path="/lectiones" element={<Lectiones />} />
