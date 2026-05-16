@@ -87,7 +87,7 @@ function Trainer() {
 
         return (
             <Wrapper>
-                <Loading>Loading...</Loading>
+                {/* <Loading>Loading...</Loading> */}
             </Wrapper>
         );
     }

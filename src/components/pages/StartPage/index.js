@@ -70,11 +70,11 @@ function StartPage() {
         <Wrapper>
             <Title>IUNO</Title>
 
-            <Subtitle>
-                Learn Latin step by step through reading lessons, and look up words with our built in dictionary. Practice vocabulary and learn new words everyday. This app is currently in beta version.<br/>
-            </Subtitle>
-
             <StyledSearch />
+
+            <Subtitle>
+                Learn Latin step by step through reading lessons, and look up words instantaneously with IUNO's built in dictionary. Practice vocabulary and learn new words everyday. This app is currently in beta version.<br/>
+            </Subtitle>
 
             <BlockDiv>
                 <Button href="/lectiones">
@@ -85,8 +85,8 @@ function StartPage() {
                     Verbum Diēī
                 </Button>
 
-                <Button href="/verbum">
-                    Verbum
+                <Button href="/trainer">
+                    Exercitium
                 </Button>
             </BlockDiv>
         </Wrapper>
