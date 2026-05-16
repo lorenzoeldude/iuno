@@ -15,6 +15,8 @@ import Examinatio from './../../../components/pages/Examinatio';
 import StartPage from './../../../components/pages/StartPage';
 import Trainer from "../../pages/Trainer";
 import AdminLemmaEditor from "../../pages/AdminLemmaEditor";
+import RegisterPage from "../../pages/RegisterPage";
+import LoginPage from "../../pages/LoginPage";
 // import SearchPage from "../../pages/SearchPage";
 
 const Body = styled.div`
@@ -62,6 +64,9 @@ function AppContent() {
             <Route path="/lectiones/1/grammatica" element={<Grammatica />} />
             <Route path="/lectiones/1/vocabula" element={<Vocabula />} />
             <Route path="/lectiones/1/examinatio" element={<Examinatio />} />
+
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/login" element={<LoginPage />} />
           </Routes>
         </Content>
       </Body>
