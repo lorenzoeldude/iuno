@@ -39,6 +39,9 @@ function Searchbar({ className }) {
 
     const navigate = useNavigate();
 
+    // =====================================================
+    // SEARCH (debounced)
+    // =====================================================
     useEffect(() => {
         if (!query.trim()) {
             setResults([]);
@@ -51,7 +54,7 @@ function Searchbar({ className }) {
                 .then((res) => res.json())
                 .then((data) => {
                     setResults(data || []);
-                    setOpen(true); // always try to open
+                    setOpen(true);
                 })
                 .catch(() => {
                     setResults([]);
@@ -61,6 +64,15 @@ function Searchbar({ className }) {
 
         return () => clearTimeout(timeout);
     }, [query]);
+
+    // =====================================================
+    // NAVIGATION HELPERS
+    // =====================================================
+    const goToSearchPage = (q) => {
+        if (!q.trim()) return;
+        setOpen(false);
+        navigate(`/search?q=${encodeURIComponent(q)}`);
+    };
 
     const handleSelect = (slug) => {
         setQuery("");
@@ -78,13 +90,18 @@ function Searchbar({ className }) {
                 value={query}
                 onChange={(e) => {
                     setQuery(e.target.value);
-                    setOpen(true); // 👈 important
+                    setOpen(true);
                 }}
                 onFocus={() => {
                     if (results.length > 0) setOpen(true);
                 }}
                 onBlur={() => {
                     setTimeout(() => setOpen(false), 150);
+                }}
+                onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                        goToSearchPage(query);
+                    }
                 }}
             />
 
@@ -97,7 +114,7 @@ function Searchbar({ className }) {
                         >
                             <strong>{item.lemma}</strong>
                             {" — "}
-                            {item.meaning}
+                            {item.translation || item.meaning}
                         </Item>
                     ))}
                 </Dropdown>
