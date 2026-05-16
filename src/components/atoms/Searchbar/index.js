@@ -20,7 +20,7 @@ const Dropdown = styled.div`
     right: 0;
     background: white;
     border: 1px solid #ccc;
-    z-index: 10;
+    z-index: 999;
 `;
 
 const Item = styled.div`
@@ -39,12 +39,10 @@ function Searchbar({ className }) {
 
     const navigate = useNavigate();
 
-    // --------------------
-    // debounce search
-    // --------------------
     useEffect(() => {
-        if (!query) {
+        if (!query.trim()) {
             setResults([]);
+            setOpen(false);
             return;
         }
 
@@ -52,18 +50,18 @@ function Searchbar({ className }) {
             fetch(`http://localhost:8080/api/search?q=${query}`)
                 .then((res) => res.json())
                 .then((data) => {
-                    setResults(data);
-                    setOpen(true);
+                    setResults(data || []);
+                    setOpen(true); // always try to open
                 })
-                .catch(() => setResults([]));
-        }, 200); // debounce
+                .catch(() => {
+                    setResults([]);
+                    setOpen(false);
+                });
+        }, 200);
 
         return () => clearTimeout(timeout);
     }, [query]);
 
-    // --------------------
-    // click result
-    // --------------------
     const handleSelect = (slug) => {
         setQuery("");
         setResults([]);
@@ -78,9 +76,16 @@ function Searchbar({ className }) {
                 type="text"
                 placeholder="quaerere verba"
                 value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                onFocus={() => results.length && setOpen(true)}
-                onBlur={() => setTimeout(() => setOpen(false), 150)}
+                onChange={(e) => {
+                    setQuery(e.target.value);
+                    setOpen(true); // 👈 important
+                }}
+                onFocus={() => {
+                    if (results.length > 0) setOpen(true);
+                }}
+                onBlur={() => {
+                    setTimeout(() => setOpen(false), 150);
+                }}
             />
 
             {open && results.length > 0 && (
@@ -90,7 +95,9 @@ function Searchbar({ className }) {
                             key={item.slug}
                             onMouseDown={() => handleSelect(item.slug)}
                         >
-                            <strong>{item.latin}</strong> — {item.translation}
+                            <strong>{item.lemma}</strong>
+                            {" — "}
+                            {item.meaning}
                         </Item>
                     ))}
                 </Dropdown>
