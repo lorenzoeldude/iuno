@@ -15,11 +15,45 @@ const Header = styled.div`
     margin-bottom: 25px;
 `;
 
+const TopRow = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+`;
+
+const Left = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
+
+const WordRow = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 15px;
+`;
+
 const Word = styled.h1`
     font-family: "Montserrat", sans-serif;
     font-size: 64px;
     font-weight: 700;
     margin: 0;
+`;
+
+const SaveButton = styled.button`
+    font-size: 40px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    opacity: 0.8;
+
+    &:hover {
+        opacity: 1;
+    }
+
+    &:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+    }
 `;
 
 const Meaning = styled.p`
@@ -32,7 +66,7 @@ const Meta = styled.div`
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
-    margin-top: 20px;
+    margin-top: 15px;
 `;
 
 const Tag = styled.div`
@@ -82,6 +116,15 @@ function Verbum() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    const [saved, setSaved] = useState(new Set());
+    const [saving, setSaving] = useState(false);
+
+    const token = localStorage.getItem("token");
+    const isAuthed = !!token;
+
+    // =====================
+    // FETCH WORD DATA
+    // =====================
     useEffect(() => {
 
         setLoading(true);
@@ -89,28 +132,101 @@ function Verbum() {
 
         fetch(`http://localhost:8080/api/word/${word}`)
             .then((res) => {
-
-                if (!res.ok) {
-                    throw new Error("Word not found");
-                }
-
+                if (!res.ok) throw new Error("Word not found");
                 return res.json();
             })
             .then((data) => {
-
                 setWordData(data);
                 setLoading(false);
             })
             .catch((err) => {
-
                 setError(err.message);
                 setLoading(false);
             });
 
     }, [word]);
 
-    if (loading) {
+    // =====================
+    // FETCH SAVED LEMMAS
+    // =====================
+    useEffect(() => {
 
+        if (!isAuthed) return;
+
+        fetch("http://localhost:8080/api/word-lists/lemmas", {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+            .then(res => {
+                if (!res.ok) throw new Error("Failed to fetch saved lemmas");
+                return res.json();
+            })
+            .then(data => {
+                const ids = new Set(data.map(item => item.lemma_id));
+                setSaved(ids);
+            })
+            .catch(err => {
+                console.error(err);
+            });
+
+    }, [isAuthed, token]);
+
+    // =====================
+    // ADD TO LIST (FIXED)
+    // =====================
+    async function addToList(lemmaId) {
+
+        if (!token) {
+            setError("You are not logged in.");
+            return;
+        }
+
+        if (saving) return;
+
+        setSaving(true);
+        setError(null);
+
+        try {
+
+            const res = await fetch(
+                "http://localhost:8080/api/word-lists/add-lemma",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: JSON.stringify({
+                        lemma_id: lemmaId,
+                    }),
+                }
+            );
+
+            const text = await res.text();
+
+            if (!res.ok) {
+                throw new Error(`Error ${res.status}: ${text}`);
+            }
+
+            setSaved(prev => {
+                const next = new Set(prev);
+                next.add(lemmaId);
+                return next;
+            });
+
+        } catch (err) {
+            console.error(err);
+            setError(err.message);
+        } finally {
+            setSaving(false);
+        }
+    }
+
+    // =====================
+    // LOADING STATES
+    // =====================
+    if (loading) {
         return (
             <Wrapper>
                 <Loading>Loading...</Loading>
@@ -119,53 +235,31 @@ function Verbum() {
     }
 
     if (error || !wordData) {
-
         return (
             <Wrapper>
-                <Loading>
-                    Error: {error || "Unknown error"}
-                </Loading>
+                <Loading>Error: {error || "Unknown error"}</Loading>
             </Wrapper>
         );
     }
 
     const wordInfo = wordData.word;
 
+    // =====================
+    // MORPHOLOGY
+    // =====================
     function renderMorphology() {
 
-        // =====================================================
-        // VERBS
-        // =====================================================
-
         if (wordInfo.type === "verb") {
-
-            return (
-                <VerbTable
-                    forms={wordData.forms}
-                />
-            );
+            return <VerbTable forms={wordData.forms} />;
         }
-
-        // =====================================================
-        // NOMINAL SYSTEM
-        // =====================================================
 
         if (
             wordInfo.type === "noun" ||
             wordInfo.type === "adjective" ||
             wordInfo.type === "pronoun"
         ) {
-
-            return (
-                <NominalTable
-                    forms={wordData.forms}
-                />
-            );
+            return <NominalTable forms={wordData.forms} />;
         }
-
-        // =====================================================
-        // INDECLINABLES
-        // =====================================================
 
         return (
             <Definition>
@@ -175,114 +269,85 @@ function Verbum() {
     }
 
     return (
-
         <Wrapper>
-
-            {/* =====================================================
-                HEADER
-            ===================================================== */}
 
             <Header>
 
-                <Word>
-                    {wordInfo.lemma_display || wordInfo.lemma}
-                </Word>
+                <TopRow>
 
-                <Meaning>
-                    {wordData.meanings?.map((m, index) => (
-                        <span key={m.id}>
-                            {m.english}
-                            {index < wordData.meanings.length - 1 ? " · " : ""}
-                        </span>
-                    ))}
-                </Meaning>
+                    <Left>
 
-                <Meta>
+                        <WordRow>
+                            <Word>
+                                {wordInfo.lemma_display || wordInfo.lemma}
+                            </Word>
+                        </WordRow>
 
-                    <Tag>
-                        {wordInfo.type}
-                    </Tag>
+                        <Meaning>
+                            {wordData.meanings?.map((m, index) => (
+                                <span key={m.id}>
+                                    {m.english}
+                                    {index < wordData.meanings.length - 1 ? " · " : ""}
+                                </span>
+                            ))}
+                        </Meaning>
 
-                    {wordInfo.gender && (
-                        <Tag>
-                            {wordInfo.gender}
-                        </Tag>
-                    )}
+                        <Meta>
 
-                    {wordInfo.declension > 0 && (
-                        <Tag>
-                            {wordInfo.declension}. declension
-                        </Tag>
-                    )}
+                            <Tag>{wordInfo.type}</Tag>
 
-                    {wordInfo.conjugation > 0 && (
-                        <Tag>
-                            {wordInfo.conjugation}. conjugation
-                        </Tag>
-                    )}
+                            {wordInfo.gender && (
+                                <Tag>{wordInfo.gender}</Tag>
+                            )}
 
-                    {wordInfo.is_irregular && (
-                        <Tag>
-                            irregular
-                        </Tag>
-                    )}
+                            {wordInfo.declension > 0 && (
+                                <Tag>{wordInfo.declension}. declension</Tag>
+                            )}
 
-                </Meta>
+                            {wordInfo.conjugation > 0 && (
+                                <Tag>{wordInfo.conjugation}. conjugation</Tag>
+                            )}
+
+                            {wordInfo.is_irregular && (
+                                <Tag>irregular</Tag>
+                            )}
+
+                        </Meta>
+
+                    </Left>
+
+                    <SaveButton
+                        disabled={!isAuthed || saving}
+                        onClick={() => addToList(wordInfo.id)}
+                    >
+                        {saved.has(wordInfo.id) ? "✔" : "+"}
+                    </SaveButton>
+
+                </TopRow>
 
             </Header>
 
             <Line />
 
-            {/* =====================================================
-                DEFINITION
-            ===================================================== */}
-
             <Section>
-
-                <SectionTitle>
-                    Definitio
-                </SectionTitle>
-
-                <Definition>
-                    {wordInfo.definition}
-                </Definition>
-
+                <SectionTitle>Definitio</SectionTitle>
+                <Definition>{wordInfo.definition}</Definition>
             </Section>
 
-            {/* =====================================================
-                EXAMPLES
-            ===================================================== */}
-
             {wordData.examples?.length > 0 && (
-
                 <Section>
-
-                    <SectionTitle>
-                        Exempla
-                    </SectionTitle>
-
+                    <SectionTitle>Exempla</SectionTitle>
                     {wordData.examples.map((example) => (
-
                         <Example key={example.id}>
                             {example.latin}
                         </Example>
                     ))}
-
                 </Section>
             )}
 
-            {/* =====================================================
-                MORPHOLOGY
-            ===================================================== */}
-
             <Section>
-
-                <SectionTitle>
-                    Morphologia
-                </SectionTitle>
-
+                <SectionTitle>Morphologia</SectionTitle>
                 {renderMorphology()}
-
             </Section>
 
         </Wrapper>

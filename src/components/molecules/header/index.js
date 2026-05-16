@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Searchbar from "../../atoms/Searchbar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
     display: flex;
@@ -30,14 +30,73 @@ const StyledLink = styled(Link)`
     align-items: center;
 `;
 
+const Right = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 15px;
+`;
+
+const UserBox = styled.div`
+    font-size: 14px;
+    opacity: 0.8;
+`;
+
+const Button = styled.button`
+    padding: 6px 10px;
+    border: 1px solid rgba(0,0,0,0.2);
+    background: white;
+    cursor: pointer;
+
+    &:hover {
+        background: #f5f5f5;
+    }
+`;
+
 function Header() {
+
+    const navigate = useNavigate();
+
+    const user = JSON.parse(
+        localStorage.getItem("user")
+    );
+
+    function logout() {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        navigate("/login");
+    }
+
     return (
         <Wrapper>
+
             <StyledLink to="/">
                 <HeadLine>IUNO</HeadLine>
             </StyledLink>
+
             <Searchbar />
-            <div>Help</div>
+
+            <Right>
+
+                {/* <div>Help</div> */}
+
+                {user ? (
+                    <>
+                        <UserBox>
+                            {user.username}
+                        </UserBox>
+
+                        <Button onClick={logout}>
+                            Logout
+                        </Button>
+                    </>
+                ) : (
+                    <Link to="/login">
+                        Login
+                    </Link>
+                )}
+
+            </Right>
+
         </Wrapper>
     );
 }

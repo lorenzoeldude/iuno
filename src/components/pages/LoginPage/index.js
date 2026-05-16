@@ -81,9 +81,6 @@ function LoginPage() {
 
     const navigate = useNavigate();
 
-    // =====================================================
-    // LOGIN
-    // =====================================================
     async function handleLogin() {
 
         setLoading(true);
@@ -91,47 +88,67 @@ function LoginPage() {
 
         try {
 
-            const res = await fetch(
-                "http://localhost:8080/api/auth/login",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        email,
-                        password,
-                    }),
-                }
-            );
+            const res = await fetch("http://localhost:8080/api/auth/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email,
+                    password,
+                }),
+            });
 
-            const data = await res.json();
+            // ================================
+            // SAFE RESPONSE HANDLING (FIX)
+            // ================================
+            const text = await res.text();
 
-            if (!res.ok) {
-                throw new Error(data.error || "Login failed");
+            if (!text) {
+                throw new Error("Empty response from backend");
             }
 
-            // =====================================================
-            // SAVE USER
-            // =====================================================
-            localStorage.setItem(
-                "user",
-                JSON.stringify(data)
-            );
+            let data;
+            try {
+                data = JSON.parse(text);
+            } catch (err) {
+                throw new Error("Backend did not return valid JSON: " + text);
+            }
+
+            console.log("LOGIN RESPONSE:", data);
+
+            if (!res.ok) {
+                throw new Error(data.error || `Login failed (${res.status})`);
+            }
+
+            // ================================
+            // TOKEN EXTRACTION (ROBUST)
+            // ================================
+            const token =
+                data.token ||
+                data.access_token ||
+                data.jwt ||
+                data.data?.token;
+
+            if (!token) {
+                throw new Error("No token returned from backend");
+            }
+
+            localStorage.setItem("token", token);
+
+            if (data.user) {
+                localStorage.setItem("user", JSON.stringify(data.user));
+            }
 
             setStatus("Logged in.");
 
-            // =====================================================
-            // REDIRECT
-            // =====================================================
             setTimeout(() => {
                 navigate("/");
             }, 700);
 
         } catch (err) {
-
-            setStatus("Invalid email or password.");
-
+            console.error(err);
+            setStatus(err.message || "Invalid email or password.");
         }
 
         setLoading(false);
