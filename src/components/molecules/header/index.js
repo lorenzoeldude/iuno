@@ -36,9 +36,17 @@ const Right = styled.div`
     gap: 15px;
 `;
 
-const UserBox = styled.div`
+const UserBox = styled(Link)`
     font-size: 14px;
     opacity: 0.8;
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+        opacity: 1;
+        text-decoration: underline;
+    }
 `;
 
 const Button = styled.button`
@@ -77,11 +85,9 @@ function Header() {
 
             <Right>
 
-                {/* <div>Help</div> */}
-
                 {user ? (
                     <>
-                        <UserBox>
+                        <UserBox to="/user">
                             {user.username}
                         </UserBox>
 

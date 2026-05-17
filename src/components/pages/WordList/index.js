@@ -5,11 +5,11 @@ import { useNavigate } from "react-router-dom";
 const Wrapper = styled.div`
     width: 72%;
     margin: 0 auto;
-    padding: 60px 0;
+    padding: 20px 0;
 `;
 
 const Title = styled.h1`
-    font-size: 42px;
+    font-size: 35px;
     margin-bottom: 30px;
 `;
 
@@ -92,7 +92,7 @@ function WordList() {
     return (
         <Wrapper>
 
-            <Title>Your Word List</Title>
+            <Title>Saved Words</Title>
 
             {words.length === 0 ? (
                 <Empty>No saved words yet.</Empty>

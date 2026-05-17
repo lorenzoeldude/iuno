@@ -49,7 +49,8 @@ function Sidebar () {
             <List>
                 <ListItem><Link href="/lectiones">LECTIONES</Link></ListItem>
                 <ListItem><Link href="/trainer">EXERCITIUM</Link></ListItem>
-                <ListItem><Link href="/wordlist">INDEX</Link></ListItem>
+                <ListItem><Link href="/listtrainer">VOCAB</Link></ListItem>
+                <ListItem><Link href="/user/list">LIST</Link></ListItem>
             </List>
         </Wrapper>
     );
