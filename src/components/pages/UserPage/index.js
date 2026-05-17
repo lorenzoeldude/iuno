@@ -43,29 +43,25 @@ const CardText = styled.p`
     line-height: 1.5;
 `;
 
-function User() {
+function UserPage() {
 
     const navigate = useNavigate();
 
     const [username, setUsername] = useState("User");
 
     // =====================================================
-    // READ USERNAME FROM JWT
+    // READ USERNAME FROM LOCAL STORAGE
     // =====================================================
     useEffect(() => {
 
-        const token = localStorage.getItem("token");
-
-        if (!token) return;
-
         try {
 
-            const payload = JSON.parse(
-                atob(token.split(".")[1])
+            const user = JSON.parse(
+                localStorage.getItem("user")
             );
 
-            if (payload.username) {
-                setUsername(payload.username);
+            if (user?.username) {
+                setUsername(user.username);
             }
 
         } catch (err) {
@@ -103,4 +99,4 @@ function User() {
     );
 }
 
-export default User;
+export default UserPage;
