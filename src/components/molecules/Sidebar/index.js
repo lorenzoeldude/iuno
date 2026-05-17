@@ -48,8 +48,8 @@ function Sidebar () {
             <Line />
             <List>
                 <ListItem><Link href="/lectiones">LECTIONES</Link></ListItem>
-                <ListItem><Link href="/trainer">TRAINER</Link></ListItem>
-                <ListItem><Link href="/wordlist">LIST</Link></ListItem>
+                <ListItem><Link href="/trainer">EXERCITIUM</Link></ListItem>
+                <ListItem><Link href="/wordlist">INDEX</Link></ListItem>
             </List>
         </Wrapper>
     );
