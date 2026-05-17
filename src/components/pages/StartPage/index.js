@@ -115,21 +115,7 @@ function StartPage() {
                     </CardTitle>
 
                     <CardText>
-                        Read guided lessons covering grammar,
-                        morphology and essential Latin concepts.
-                    </CardText>
-
-                </Card>
-
-                <Card href="/dictionary/urbs">
-
-                    <CardTitle>
-                        Word of the Day
-                    </CardTitle>
-
-                    <CardText>
-                        Discover a new Latin word everyday
-                        and explore its meanings and forms.
+                        Learn Latin by reading guided lessons.
                     </CardText>
 
                 </Card>
@@ -141,11 +127,23 @@ function StartPage() {
                     </CardTitle>
 
                     <CardText>
-                        Train saved vocabulary or practice
-                        random dictionary words interactively.
+                        Train your vocabulary and create word lists.
                     </CardText>
 
                 </Card>
+
+                <Card href="/dictionary/urbs">
+
+                    <CardTitle>
+                        Grammar
+                    </CardTitle>
+
+                    <CardText>
+                        Practice Latin grammar interactively.
+                    </CardText>
+
+                </Card>
+
 
             </BlockDiv>
 
