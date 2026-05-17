@@ -49,7 +49,7 @@ function Sidebar () {
             <List>
                 <ListItem><Link href="/lectiones">LECTIONES</Link></ListItem>
                 <ListItem><Link href="/trainer">TRAINER</Link></ListItem>
-                {/* <ListItem><Link href="/litterae">LITTERAE</Link></ListItem> */}
+                <ListItem><Link href="/wordlist">LIST</Link></ListItem>
             </List>
         </Wrapper>
     );

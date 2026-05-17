@@ -5,6 +5,8 @@ import { useParams } from "react-router-dom";
 import NominalTable from "../../morphology/NominalTable";
 import VerbTable from "../../morphology/VerbTable.js";
 
+// ===================== styles =====================
+
 const Wrapper = styled.div`
     width: 72%;
     margin: 0 auto;
@@ -108,6 +110,8 @@ const Loading = styled.p`
     font-size: 28px;
 `;
 
+// ===================== component =====================
+
 function Verbum() {
 
     const { word } = useParams();
@@ -116,116 +120,117 @@ function Verbum() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const [saved, setSaved] = useState(new Set());
+    const [saved, setSaved] = useState(false);
     const [saving, setSaving] = useState(false);
 
-    const token = localStorage.getItem("token");
+    const [token] = useState(() => localStorage.getItem("token"));
     const isAuthed = !!token;
 
-    // =====================
+    // =====================================================
     // FETCH WORD DATA
-    // =====================
+    // =====================================================
     useEffect(() => {
 
         setLoading(true);
         setError(null);
 
         fetch(`http://localhost:8080/api/word/${word}`)
-            .then((res) => {
+            .then(res => {
                 if (!res.ok) throw new Error("Word not found");
                 return res.json();
             })
-            .then((data) => {
+            .then(data => {
                 setWordData(data);
                 setLoading(false);
             })
-            .catch((err) => {
+            .catch(err => {
                 setError(err.message);
                 setLoading(false);
             });
 
     }, [word]);
 
-    // =====================
-    // FETCH SAVED LEMMAS
-    // =====================
+    // =====================================================
+    // CHECK SAVED STATE
+    // =====================================================
     useEffect(() => {
 
-        if (!isAuthed) return;
+        if (!isAuthed || !wordData?.word?.id) return;
 
-        fetch("http://localhost:8080/api/word-lists/lemmas", {
+        const lemmaId = wordData.word.id;
+
+        fetch(`http://localhost:8080/api/word-lists/lemma/${lemmaId}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
         })
             .then(res => {
-                if (!res.ok) throw new Error("Failed to fetch saved lemmas");
+                if (!res.ok) throw new Error("check failed");
                 return res.json();
             })
             .then(data => {
-                const ids = new Set(data.map(item => item.lemma_id));
-                setSaved(ids);
+                setSaved(!!data.saved);
             })
-            .catch(err => {
-                console.error(err);
-            });
+            .catch(console.error);
 
-    }, [isAuthed, token]);
+    }, [isAuthed, token, wordData?.word?.id]);
 
-    // =====================
-    // ADD TO LIST (FIXED)
-    // =====================
-    async function addToList(lemmaId) {
+    // =====================================================
+    // TOGGLE SAVE / UNSAVE
+    // =====================================================
+    async function toggleList(lemmaId) {
 
-        if (!token) {
-            setError("You are not logged in.");
-            return;
-        }
-
-        if (saving) return;
+        if (!token || saving) return;
 
         setSaving(true);
-        setError(null);
 
         try {
 
-            const res = await fetch(
-                "http://localhost:8080/api/word-lists/add-lemma",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                    body: JSON.stringify({
-                        lemma_id: lemmaId,
-                    }),
-                }
-            );
+            if (!saved) {
 
-            const text = await res.text();
+                const res = await fetch(
+                    "http://localhost:8080/api/word-lists/add-lemma",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${token}`,
+                        },
+                        body: JSON.stringify({ lemma_id: lemmaId }),
+                    }
+                );
 
-            if (!res.ok) {
-                throw new Error(`Error ${res.status}: ${text}`);
+                if (!res.ok) throw new Error("add failed");
+
+                setSaved(true);
+
+            } else {
+
+                const res = await fetch(
+                    `http://localhost:8080/api/word-lists/lemma/${lemmaId}`,
+                    {
+                        method: "DELETE",
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+
+                if (!res.ok) throw new Error("delete failed");
+
+                setSaved(false);
             }
 
-            setSaved(prev => {
-                const next = new Set(prev);
-                next.add(lemmaId);
-                return next;
-            });
-
         } catch (err) {
-            console.error(err);
             setError(err.message);
         } finally {
             setSaving(false);
         }
     }
 
-    // =====================
-    // LOADING STATES
-    // =====================
+    // =====================================================
+    // LOADING
+    // =====================================================
     if (loading) {
         return (
             <Wrapper>
@@ -244,9 +249,9 @@ function Verbum() {
 
     const wordInfo = wordData.word;
 
-    // =====================
+    // =====================================================
     // MORPHOLOGY
-    // =====================
+    // =====================================================
     function renderMorphology() {
 
         if (wordInfo.type === "verb") {
@@ -272,7 +277,6 @@ function Verbum() {
         <Wrapper>
 
             <Header>
-
                 <TopRow>
 
                     <Left>
@@ -293,38 +297,24 @@ function Verbum() {
                         </Meaning>
 
                         <Meta>
-
                             <Tag>{wordInfo.type}</Tag>
 
-                            {wordInfo.gender && (
-                                <Tag>{wordInfo.gender}</Tag>
-                            )}
-
-                            {wordInfo.declension > 0 && (
-                                <Tag>{wordInfo.declension}. declension</Tag>
-                            )}
-
-                            {wordInfo.conjugation > 0 && (
-                                <Tag>{wordInfo.conjugation}. conjugation</Tag>
-                            )}
-
-                            {wordInfo.is_irregular && (
-                                <Tag>irregular</Tag>
-                            )}
-
+                            {wordInfo.gender && <Tag>{wordInfo.gender}</Tag>}
+                            {wordInfo.declension > 0 && <Tag>{wordInfo.declension}. declension</Tag>}
+                            {wordInfo.conjugation > 0 && <Tag>{wordInfo.conjugation}. conjugation</Tag>}
+                            {wordInfo.is_irregular && <Tag>irregular</Tag>}
                         </Meta>
 
                     </Left>
 
                     <SaveButton
                         disabled={!isAuthed || saving}
-                        onClick={() => addToList(wordInfo.id)}
+                        onClick={() => toggleList(wordInfo.id)}
                     >
-                        {saved.has(wordInfo.id) ? "✔" : "+"}
+                        {saved ? "✔" : "+"}
                     </SaveButton>
 
                 </TopRow>
-
             </Header>
 
             <Line />
