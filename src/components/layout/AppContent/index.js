@@ -21,6 +21,7 @@ import WordList from "../../pages/WordList";
 import ListTrainer from "../../pages/ListTrainer";
 import UserPage from "../../pages/UserPage";
 import UserSettings from "../../pages/UserSettings";
+import Vocabulary from "../../pages/Vocabulary";
 
 const Body = styled.div`
   display: flex;
@@ -68,6 +69,7 @@ function AppContent() {
             <Route path="/lectiones/1/vocabula" element={<Vocabula />} />
             <Route path="/lectiones/1/examinatio" element={<Examinatio />} />
 
+            <Route path="/vocabulary" element={<Vocabulary />} />
             <Route path="/user/list" element={<WordList />} />
             <Route path="/listtrainer" element={<ListTrainer />} />
 
