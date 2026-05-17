@@ -86,7 +86,7 @@ function Searchbar({ className }) {
             <Input
                 className={className}
                 type="text"
-                placeholder="quaerere verba"
+                placeholder="search word"
                 value={query}
                 onChange={(e) => {
                     setQuery(e.target.value);

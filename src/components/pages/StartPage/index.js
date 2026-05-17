@@ -15,10 +15,12 @@ const fadeIn = keyframes`
 const Wrapper = styled.div`
     height: 100vh;
     width: 100%;
+
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
     text-align: center;
 
     animation: ${fadeIn} 1.5s ease-out;
@@ -26,6 +28,8 @@ const Wrapper = styled.div`
 
 const BlockDiv = styled.div`
     display: flex;
+    gap: 18px;
+    margin-top: 35px;
 `;
 
 const Title = styled.h1`
@@ -39,23 +43,44 @@ const Subtitle = styled.p`
     font-size: 18px;
     opacity: 0.7;
     margin-top: 10px;
-    max-width: 500px;
+    max-width: 550px;
+    line-height: 1.7;
 `;
 
-const Button = styled.a`
-    margin: 30px 10px;
-    padding: 12px 24px;
-    border: 1px solid black;
+const Card = styled.a`
+    width: 240px;
+    min-height: 180px;
+
+    padding: 28px;
+
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 22px;
+
     text-decoration: none;
     color: black;
-    font-size: 20px;
-    letter-spacing: 2px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
     transition: all 0.2s ease;
 
     &:hover {
         background: black;
         color: white;
+        transform: translateY(-2px);
     }
+`;
+
+const CardTitle = styled.h2`
+    font-size: 30px;
+    margin-bottom: 14px;
+`;
+
+const CardText = styled.p`
+    font-size: 16px;
+    line-height: 1.6;
+    opacity: 0.75;
 `;
 
 const StyledSearch = styled(Searchbar)`
@@ -66,29 +91,64 @@ const StyledSearch = styled(Searchbar)`
 `;
 
 function StartPage() {
+
     return (
         <Wrapper>
+
             <Title>IUNO</Title>
 
             <StyledSearch />
 
-            <Subtitle>
-                Learn Latin step by step through reading lessons, and look up words instantaneously with IUNO's built in dictionary. Practice vocabulary and learn new words everyday. This app is currently in beta version.<br/>
-            </Subtitle>
+            {/* <Subtitle>
+                Learn Latin step by step through reading lessons,
+                and look up words instantaneously with IUNO's
+                built in dictionary. Practice vocabulary and
+                learn new words everyday.
+            </Subtitle> */}
 
             <BlockDiv>
-                <Button href="/lectiones">
-                    Lectiones
-                </Button>
 
-                <Button href="/dictionary/urbs">
-                    Verbum Diēī
-                </Button>
+                <Card href="/lectiones">
 
-                <Button href="/trainer">
-                    Exercitium
-                </Button>
+                    <CardTitle>
+                        Lessons
+                    </CardTitle>
+
+                    <CardText>
+                        Read guided lessons covering grammar,
+                        morphology and essential Latin concepts.
+                    </CardText>
+
+                </Card>
+
+                <Card href="/dictionary/urbs">
+
+                    <CardTitle>
+                        Word of the Day
+                    </CardTitle>
+
+                    <CardText>
+                        Discover a new Latin word everyday
+                        and explore its meanings and forms.
+                    </CardText>
+
+                </Card>
+
+                <Card href="/vocabulary">
+
+                    <CardTitle>
+                        Vocabulary
+                    </CardTitle>
+
+                    <CardText>
+                        Train saved vocabulary or practice
+                        random dictionary words interactively.
+                    </CardText>
+
+                </Card>
+
             </BlockDiv>
+
         </Wrapper>
     );
 }

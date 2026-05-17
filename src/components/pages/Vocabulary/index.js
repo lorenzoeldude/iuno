@@ -91,7 +91,7 @@ function Vocabulary() {
             >
 
                 <SmallLabel>
-                    Verbum Diei
+                    Word of the day
                 </SmallLabel>
 
                 <BigWord>

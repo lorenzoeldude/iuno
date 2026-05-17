@@ -47,7 +47,7 @@ function Sidebar () {
         <Wrapper>
             <Line />
             <List>
-                <ListItem><Link href="/lectiones">LECTIONES</Link></ListItem>
+                <ListItem><Link href="/lectiones">LESSONS</Link></ListItem>
                 <ListItem><Link href="/vocabulary">VOCABULARY</Link></ListItem>
                 {/* <ListItem><Link href="/listtrainer">VOCAB</Link></ListItem> */}
             </List>
