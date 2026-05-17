@@ -26,9 +26,22 @@ const Item = styled.div`
     cursor: pointer;
     transition: 0.15s ease;
 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
     &:hover {
         background: rgba(0,0,0,0.03);
     }
+
+    &:hover .delete-button {
+        opacity: 1;
+    }
+`;
+
+const Left = styled.div`
+    display: flex;
+    flex-direction: column;
 `;
 
 const Lemma = styled.div`
@@ -40,6 +53,20 @@ const Meaning = styled.div`
     font-size: 16px;
     opacity: 0.7;
     margin-top: 4px;
+`;
+
+const DeleteButton = styled.button`
+    border: none;
+    background: transparent;
+    font-size: 28px;
+    cursor: pointer;
+    opacity: 0;
+    transition: 0.15s ease;
+    color: #c0392b;
+
+    &:hover {
+        transform: scale(1.1);
+    }
 `;
 
 const Empty = styled.p`
@@ -54,11 +81,12 @@ function WordList() {
 
     const navigate = useNavigate();
 
+    const token = localStorage.getItem("token");
+
+    // =====================================================
+    // FETCH WORDS
+    // =====================================================
     useEffect(() => {
-
-        const token = localStorage.getItem("token");
-
-        console.log("TOKEN:", token);
 
         fetch("http://localhost:8080/api/word-lists/lemmas", {
             headers: {
@@ -66,7 +94,10 @@ function WordList() {
             },
         })
             .then(res => {
-                if (!res.ok) throw new Error("Failed to fetch list");
+                if (!res.ok) {
+                    throw new Error("Failed to fetch list");
+                }
+
                 return res.json();
             })
             .then(data => {
@@ -80,6 +111,41 @@ function WordList() {
 
     }, []);
 
+    // =====================================================
+    // DELETE WORD
+    // =====================================================
+    async function deleteWord(e, lemmaId) {
+
+        e.stopPropagation();
+
+        try {
+
+            const res = await fetch(
+                `http://localhost:8080/api/word-lists/lemma/${lemmaId}`,
+                {
+                    method: "DELETE",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
+            if (!res.ok) {
+                throw new Error("Failed to delete word");
+            }
+
+            setWords(prev =>
+                prev.filter(word => word.id !== lemmaId)
+            );
+
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    // =====================================================
+    // LOADING
+    // =====================================================
     if (loading) {
         return (
             <Wrapper>
@@ -98,15 +164,34 @@ function WordList() {
                 <Empty>No saved words yet.</Empty>
             ) : (
                 <List>
+
                     {words.map(word => (
+
                         <Item
-                            key={word.lemma_id}
-                            onClick={() => navigate(`/dictionary/${word.lemma}`)}
+                            key={word.id}
+                            onClick={() =>
+                                navigate(`/dictionary/${word.lemma}`)
+                            }
                         >
-                            <Lemma>{word.lemma}</Lemma>
-                            <Meaning>{word.meaning}</Meaning>
+
+                            <Left>
+                                <Lemma>{word.lemma}</Lemma>
+                                <Meaning>{word.meaning}</Meaning>
+                            </Left>
+
+                            <DeleteButton
+                                className="delete-button"
+                                onClick={(e) =>
+                                    deleteWord(e, word.id)
+                                }
+                            >
+                                −
+                            </DeleteButton>
+
                         </Item>
+
                     ))}
+
                 </List>
             )}
 
