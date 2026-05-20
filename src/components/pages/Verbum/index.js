@@ -247,7 +247,7 @@ function Verbum() {
         );
     }
 
-    const wordInfo = wordData.word;
+    const wordInfo = wordData.lemma;
 
     // =====================================================
     // MORPHOLOGY
@@ -283,7 +283,7 @@ function Verbum() {
 
                         <WordRow>
                             <Word>
-                                {wordInfo.lemma_display || wordInfo.lemma}
+                                {wordInfo.lemma}
                             </Word>
                         </WordRow>
 

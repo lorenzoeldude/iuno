@@ -42,7 +42,7 @@ const Title = styled.h1`
 const Subtitle = styled.p`
     font-size: 18px;
     opacity: 0.7;
-    margin-top: 10px;
+    // margin-top: 10px;
     max-width: 550px;
     line-height: 1.7;
 `;
@@ -74,7 +74,7 @@ const Card = styled.a`
 
 const CardTitle = styled.h2`
     font-size: 30px;
-    margin-bottom: 14px;
+    margin-bottom: 0px;
 `;
 
 const CardText = styled.p`
@@ -97,14 +97,10 @@ function StartPage() {
 
             <Title>IUNO</Title>
 
+            <Subtitle>Learn Latin now</Subtitle>
+
             <StyledSearch />
 
-            {/* <Subtitle>
-                Learn Latin step by step through reading lessons,
-                and look up words instantaneously with IUNO's
-                built in dictionary. Practice vocabulary and
-                learn new words everyday.
-            </Subtitle> */}
 
             <BlockDiv>
 
