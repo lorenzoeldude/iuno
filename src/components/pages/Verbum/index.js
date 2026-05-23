@@ -120,6 +120,8 @@ function Verbum() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    console.log("wordData: ", wordData);
+
     const [saved, setSaved] = useState(false);
     const [saving, setSaving] = useState(false);
 
@@ -155,9 +157,9 @@ function Verbum() {
     // =====================================================
     useEffect(() => {
 
-        if (!isAuthed || !wordData?.word?.id) return;
+        if (!isAuthed || !wordData?.lemma?.id) return;
 
-        const lemmaId = wordData.word.id;
+        const lemmaId = wordData.lemma.id;
 
         fetch(`http://localhost:8080/api/word-lists/lemma/${lemmaId}`, {
             headers: {
@@ -173,7 +175,7 @@ function Verbum() {
             })
             .catch(console.error);
 
-    }, [isAuthed, token, wordData?.word?.id]);
+    }, [isAuthed, token, wordData?.lemma?.id]);
 
     // =====================================================
     // TOGGLE SAVE / UNSAVE
