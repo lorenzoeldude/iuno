@@ -256,14 +256,14 @@ function Verbum() {
     // =====================================================
     function renderMorphology() {
 
-        if (wordInfo.type === "verb") {
+        if (wordInfo.part_of_speech === "verb") {
             return <VerbTable forms={wordData.forms} />;
         }
 
         if (
-            wordInfo.type === "noun" ||
-            wordInfo.type === "adjective" ||
-            wordInfo.type === "pronoun"
+            wordInfo.part_of_speech === "noun" ||
+            wordInfo.part_of_speech === "adjective" ||
+            wordInfo.part_of_speech === "pronoun"
         ) {
             return <NominalTable forms={wordData.forms} />;
         }
@@ -299,12 +299,12 @@ function Verbum() {
                         </Meaning>
 
                         <Meta>
-                            <Tag>{wordInfo.type}</Tag>
+                            <Tag>{wordInfo.part_of_speech}</Tag>
 
                             {wordInfo.gender && <Tag>{wordInfo.gender}</Tag>}
                             {wordInfo.declension > 0 && <Tag>{wordInfo.declension}. declension</Tag>}
                             {wordInfo.conjugation > 0 && <Tag>{wordInfo.conjugation}. conjugation</Tag>}
-                            {wordInfo.is_irregular && <Tag>irregular</Tag>}
+                            {wordInfo.is_irregular ? <Tag>irregular</Tag> : <Tag>regular</Tag>}
                         </Meta>
 
                     </Left>

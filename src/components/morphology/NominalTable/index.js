@@ -40,13 +40,13 @@ const CASE_LABELS = {
 
 function NominalTable({ forms }) {
 
-    const nominalForms = forms.filter((form) => form.case);
+    const nominalForms = forms.filter((form) => form.grammatical_case);
 
     function getForm(caseName, number, gender = null) {
 
         const found = nominalForms.find((form) => {
 
-            if (form.case !== caseName || form.number !== number) {
+            if (form.grammatical_case !== caseName || form.number !== number) {
                 return false;
             }
 

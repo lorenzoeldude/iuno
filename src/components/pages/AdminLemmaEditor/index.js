@@ -65,8 +65,8 @@ const Row = styled.div`
 function AdminLemmaEditor() {
 
     const [lemma, setLemma] = useState("");
-    const [lemmaDisplay, setLemmaDisplay] = useState("");
-    const [type, setType] = useState("");
+    const [lemmaNormalized, setLemmaNormalized] = useState("");
+    const [partOfSpeech, setPartOfSpeech] = useState("");
     const [gender, setGender] = useState("");
 
     const [definition, setDefinition] = useState("");
@@ -75,46 +75,51 @@ function AdminLemmaEditor() {
     // grammar fields
     const [declension, setDeclension] = useState("");
     const [conjugation, setConjugation] = useState("");
+    const [genitive, setGenitive] = useState("");
 
     // verb-only fields
-    const [stem, setStem] = useState("");
+    // const [stem, setStem] = useState("");
     const [perfect, setPerfect] = useState("");
     const [supine, setSupine] = useState("");
+    const [infinitive, setInfinitive] = useState("");
 
     const [loading, setLoading] = useState(false);
     const [status, setStatus] = useState("");
 
-    const isVerb = type === "verb";
-    const isNominal = type === "noun" || type === "adjective" || type === "pronoun";
+    const isVerb = partOfSpeech === "verb";
+    const isNominal = partOfSpeech === "noun" || partOfSpeech === "adjective" || partOfSpeech === "pronoun";
 
     async function handleSubmit() {
         setLoading(true);
         setStatus("");
 
         try {
-            const res = await fetch("http://localhost:8080/api/admin/lemma", {
+            const res = await fetch("http://localhost:8080/api/admin/write-word/", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    word: {
+                    lemma: {
                         lemma,
-                        lemma_display: lemmaDisplay,
-                        type,
+                        lemma_normalized: lemmaNormalized,
+                        part_of_speech: partOfSpeech,
                         gender,
 
                         definition,
 
-                        declension: isNominal
-                            ? Number(declension) || 0
-                            : 0,
+                        declension: isNominal && declension !== ""
+                            ? parseInt(declension, 10)
+                            : null,
 
                         conjugation: isVerb
                             ? Number(conjugation) || 0
                             : 0,
 
-                        stem: isVerb ? stem : "",
+                        genitive: isNominal ? genitive : "",
+
+                        // stem: isVerb ? stem : "",
+                        infinitive: isVerb ? infinitive : "",
                         perfect: isVerb ? perfect : "",
                         supine: isVerb ? supine : ""
                     },
@@ -146,23 +151,23 @@ function AdminLemmaEditor() {
             <Title>Admin Dictionary Editor</Title>
 
             <Input
-                placeholder="lemma (e.g. luna)"
+                placeholder="lemma (e.g. lūna)"
                 value={lemma}
                 onChange={(e) => setLemma(e.target.value)}
             />
 
             <Input
-                placeholder="lemma display (e.g. lūna)"
-                value={lemmaDisplay}
-                onChange={(e) => setLemmaDisplay(e.target.value)}
+                placeholder="lemma normalized (e.g. luna)"
+                value={lemmaNormalized}
+                onChange={(e) => setLemmaNormalized(e.target.value)}
             />
 
-            {/* TYPE */}
+            {/* part_of_speech */}
             <Select
-                value={type}
-                onChange={(e) => setType(e.target.value)}
+                value={partOfSpeech}
+                onChange={(e) => setPartOfSpeech(e.target.value)}
             >
-                <option value="">type</option>
+                <option value="">part of speech</option>
                 <option value="noun">noun</option>
                 <option value="verb">verb</option>
                 <option value="adjective">adjective</option>
@@ -185,17 +190,25 @@ function AdminLemmaEditor() {
 
             {/* DECLENSION (NOMINAL ONLY) */}
             {isNominal && (
-                <Select
-                    value={declension}
-                    onChange={(e) => setDeclension(e.target.value)}
-                >
-                    <option value="">declension</option>
-                    <option value="1">1st</option>
-                    <option value="2">2nd</option>
-                    <option value="3">3rd</option>
-                    <option value="4">4th</option>
-                    <option value="5">5th</option>
-                </Select>
+                <>
+                    <Select
+                        value={declension}
+                        onChange={(e) => setDeclension(e.target.value)}
+                    >
+                        <option value="">declension</option>
+                        <option value="1">1st</option>
+                        <option value="2">2nd</option>
+                        <option value="3">3rd</option>
+                        <option value="4">4th</option>
+                        <option value="5">5th</option>
+                    </Select>
+
+                    <Input
+                            placeholder="genitive"
+                            value={genitive}
+                            onChange={(e) => setGenitive(e.target.value)}
+                        />
+                </>
             )}
 
             {/* CONJUGATION (VERB ONLY) */}
@@ -211,13 +224,7 @@ function AdminLemmaEditor() {
                         <option value="3">3rd</option>
                         <option value="4">4th</option>
                     </Select>
-
-                    <Input
-                        placeholder="stem (e.g. ama, reg, aud)"
-                        value={stem}
-                        onChange={(e) => setStem(e.target.value)}
-                    />
-
+    
                     <Input
                         placeholder="perfect stem (e.g. amav, rex)"
                         value={perfect}
@@ -228,6 +235,12 @@ function AdminLemmaEditor() {
                         placeholder="supine stem (e.g. amat, rect)"
                         value={supine}
                         onChange={(e) => setSupine(e.target.value)}
+                    />
+
+                    <Input
+                        placeholder="infinitve"
+                        value={infinitive}
+                        onChange={(e) => setInfinitive(e.target.value)}
                     />
                 </>
             )}
