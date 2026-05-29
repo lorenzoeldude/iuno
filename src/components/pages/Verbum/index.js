@@ -292,7 +292,7 @@ function Verbum() {
                         <Meaning>
                             {wordData.meanings?.map((m, index) => (
                                 <span key={m.id}>
-                                    {m.english}
+                                    {m.meaning}
                                     {index < wordData.meanings.length - 1 ? " · " : ""}
                                 </span>
                             ))}
@@ -324,6 +324,11 @@ function Verbum() {
             <Section>
                 <SectionTitle>Definitio</SectionTitle>
                 <Definition>{wordInfo.definition}</Definition>
+                {wordData.definitions.map((definition) => (
+                        <Definition key={definition.id}>
+                            {definition.definition}
+                        </Definition>
+                    ))}
             </Section>
 
             {wordData.examples?.length > 0 && (
@@ -333,6 +338,18 @@ function Verbum() {
                         <Example key={example.id}>
                             {example.latin}
                         </Example>
+                    ))}
+                </Section>
+            )}
+
+            {wordData.examples?.length > 0 && (
+                <Section>
+                    <SectionTitle>Derivatives</SectionTitle>
+                    {wordData.derivatives.map((derivative, index) => (
+                        <span key={derivative.id}>
+                            {derivative.derivative} 
+                            {index < wordData.derivatives.length - 1 ? " · " : ""} 
+                        </span>
                     ))}
                 </Section>
             )}

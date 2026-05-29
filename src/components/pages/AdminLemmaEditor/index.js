@@ -69,8 +69,15 @@ function AdminLemmaEditor() {
     const [partOfSpeech, setPartOfSpeech] = useState("");
     const [gender, setGender] = useState("");
 
-    const [definition, setDefinition] = useState("");
+    const [definitions, setDefinitions] = useState("");
     const [meaningsText, setMeaningsText] = useState("");
+
+    const [derivatives, setDerivatives] = useState("");
+
+    // examples
+    const [example1, setExample1] = useState("");
+    const [example2, setExample2] = useState("");
+    const [example3, setExample3] = useState("");
 
     // grammar fields
     const [declension, setDeclension] = useState("");
@@ -105,9 +112,7 @@ function AdminLemmaEditor() {
                         lemma_normalized: lemmaNormalized,
                         part_of_speech: partOfSpeech,
                         gender,
-
-                        definition,
-
+                        
                         declension: isNominal && declension !== ""
                             ? parseInt(declension, 10)
                             : null,
@@ -124,10 +129,22 @@ function AdminLemmaEditor() {
                         supine: isVerb ? supine : ""
                     },
 
+                    examples: [example1, example2, example3],
+
                     meanings: meaningsText
                         .split(",")
                         .map(m => m.trim())
-                        .filter(Boolean)
+                        .filter(Boolean),
+                    
+                    definitions: definitions
+                        .split(",")
+                        .map(m => m.trim())
+                        .filter(Boolean),
+
+                    derivatives: derivatives
+                    .split(",")
+                    .map(m => m.trim())
+                    .filter(Boolean)
                 })
             });
 
@@ -177,20 +194,20 @@ function AdminLemmaEditor() {
                 <option value="conjunction">conjunction</option>
             </Select>
 
-            {/* GENDER */}
-            <Select
-                value={gender}
-                onChange={(e) => setGender(e.target.value)}
-            >
-                <option value="">gender</option>
-                <option value="masculine">masculine</option>
-                <option value="feminine">feminine</option>
-                <option value="neuter">neuter</option>
-            </Select>
 
             {/* DECLENSION (NOMINAL ONLY) */}
             {isNominal && (
                 <>
+                    {/* GENDER */}
+                    <Select
+                        value={gender}
+                        onChange={(e) => setGender(e.target.value)}
+                    >
+                        <option value="">gender</option>
+                        <option value="masculine">masculine</option>
+                        <option value="feminine">feminine</option>
+                        <option value="neuter">neuter</option>
+                    </Select>
                     <Select
                         value={declension}
                         onChange={(e) => setDeclension(e.target.value)}
@@ -226,13 +243,13 @@ function AdminLemmaEditor() {
                     </Select>
     
                     <Input
-                        placeholder="perfect stem (e.g. amav, rex)"
+                        placeholder="perfect (e.g. amavī)"
                         value={perfect}
                         onChange={(e) => setPerfect(e.target.value)}
                     />
 
                     <Input
-                        placeholder="supine stem (e.g. amat, rect)"
+                        placeholder="supine (e.g. amātum)"
                         value={supine}
                         onChange={(e) => setSupine(e.target.value)}
                     />
@@ -247,14 +264,37 @@ function AdminLemmaEditor() {
 
             <TextArea
                 placeholder="definition"
-                value={definition}
-                onChange={(e) => setDefinition(e.target.value)}
+                value={definitions}
+                onChange={(e) => setDefinitions(e.target.value)}
+            />
+
+            {/* Examples */}
+            <TextArea
+                placeholder="example1"
+                value={example1}
+                onChange={(e) => setExample1(e.target.value)}
+            />
+            <TextArea
+                placeholder="example2"
+                value={example2}
+                onChange={(e) => setExample2(e.target.value)}
+            />
+            <TextArea
+                placeholder="example3"
+                value={example3}
+                onChange={(e) => setExample3(e.target.value)}
             />
 
             <TextArea
                 placeholder="meanings (comma separated: moon, moonlight)"
                 value={meaningsText}
                 onChange={(e) => setMeaningsText(e.target.value)}
+            />
+
+            <TextArea
+                placeholder="derivatives (comma separated: lunar, lunatic)"
+                value={derivatives}
+                onChange={(e) => setDerivatives(e.target.value)}
             />
 
             <Row>
