@@ -170,7 +170,7 @@ function WordList() {
                         <Item
                             key={word.id}
                             onClick={() =>
-                                navigate(`/dictionary/${word.slug}`)
+                                navigate(`/dictionary/${word.lemma_normalized}`)
                             }
                         >
 

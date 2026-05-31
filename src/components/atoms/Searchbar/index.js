@@ -74,11 +74,11 @@ function Searchbar({ className }) {
         navigate(`/search?q=${encodeURIComponent(q)}`);
     };
 
-    const handleSelect = (slug) => {
+    const handleSelect = (lemmaNormalized) => {
         setQuery("");
         setResults([]);
         setOpen(false);
-        navigate(`/dictionary/${slug}`);
+        navigate(`/dictionary/${lemmaNormalized}`);
     };
 
     return (
@@ -109,12 +109,15 @@ function Searchbar({ className }) {
                 <Dropdown>
                     {results.map((item) => (
                         <Item
-                            key={item.slug}
-                            onMouseDown={() => handleSelect(item.slug)}
+                            key={item.lemma}
+                            onMouseDown={() => handleSelect(item.lemma_normalized)}
                         >
-                            <strong>{item.lemma}</strong>
-                            {" — "}
-                            {item.translation || item.meaning}
+                            <strong>{item.form}</strong>
+                            {": "}
+                            {item.lemma}({item.meaning})<br />
+                            {item.grammatical_case || item.tense}
+                            {" – "}
+                            {item.part_of_speech}
                         </Item>
                     ))}
                 </Dropdown>

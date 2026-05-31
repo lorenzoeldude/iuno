@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { FaBook, FaBookOpen, FaUserCircle } from "react-icons/fa";
 
 const Wrapper = styled.div`
     margin: 0px 40px;
@@ -14,6 +15,7 @@ const List = styled.ul`
 const ListItem = styled.li`
     margin: 20px 0px;
     text-decoration: none;
+    color: black;
 `;
 
 const Line =styled.hr`
@@ -25,12 +27,10 @@ const Line =styled.hr`
 
 const Link = styled.a`
     text-decoration: none;
+    font-size: 20px;
 
-    color: #279CF5;
-
-    &:visited {
-        color: #279CF5;
-    }
+    // color: #279CF5;
+    color: black;
 
     &:hover {
         color: #279CF5;
@@ -45,11 +45,11 @@ const Link = styled.a`
 function Sidebar () {
     return (
         <Wrapper>
-            <Line />
+            {/* <Line /> */}
             <List>
-                <ListItem><Link href="/lectiones">LESSONS</Link></ListItem>
-                <ListItem><Link href="/vocabulary">VOCABULARY</Link></ListItem>
-                {/* <ListItem><Link href="/listtrainer">VOCAB</Link></ListItem> */}
+                <ListItem><Link href="/lectiones"><FaBook /></Link></ListItem>
+                <ListItem><Link href="/vocabulary"><FaBookOpen /></Link></ListItem>
+                <ListItem><Link href="/user"><FaUserCircle /></Link></ListItem>
             </List>
         </Wrapper>
     );

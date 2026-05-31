@@ -2,14 +2,17 @@ import styled from "styled-components";
 import { useMemo, useState } from "react";
 
 const Wrapper = styled.div`
-    width: 100%;
+    // width: 100%;
+    background-color: rgba(178, 178, 178, 0.1);
+    border-radius: 10px;
+    padding: 10px;
 `;
 
 const SwitchRow = styled.div`
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
-    margin-bottom: 25px;
+    margin-bottom: 10px;
 `;
 
 const SwitchButton = styled.button`
@@ -38,12 +41,21 @@ const GridRow = styled.div`
     gap: 20px;
 `;
 
+const InfinitiveGrid = styled.div`
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 25px;
+`;
+
+const InfinitiveBlock = styled.div``;
+
 const TenseBlock = styled.div``;
 
 const SectionTitle = styled.h3`
-    font-size: 22px;
-    margin-top: 35px;
-    margin-bottom: 10px;
+    font-size: 15px;
+    margin-top: 5px;
+    margin-bottom: 5px;
 `;
 
 const FormList = styled.div`
@@ -132,8 +144,33 @@ function VerbTable({ forms }) {
         tenseRows.push(TENSES.slice(i, i + 3));
     }
 
+    const infinitives = useMemo(() => {
+        return forms.filter(
+            (form) =>
+                form.mood === "infinitive" &&
+                form.voice === voice
+        );
+    }, [forms, voice]);
+
     return (
         <Wrapper>
+
+            {/* VOICE */}
+            <SwitchRow>
+                <SwitchButton
+                    active={voice === "active"}
+                    onClick={() => setVoice("active")}
+                >
+                    Active
+                </SwitchButton>
+
+                <SwitchButton
+                    active={voice === "passive"}
+                    onClick={() => setVoice("passive")}
+                >
+                    Passive
+                </SwitchButton>
+            </SwitchRow>
 
             {/* MOOD */}
             <SwitchRow>
@@ -159,23 +196,6 @@ function VerbTable({ forms }) {
                 </SwitchButton>
             </SwitchRow>
 
-            {/* VOICE */}
-            <SwitchRow>
-                <SwitchButton
-                    active={voice === "active"}
-                    onClick={() => setVoice("active")}
-                >
-                    Active
-                </SwitchButton>
-
-                <SwitchButton
-                    active={voice === "passive"}
-                    onClick={() => setVoice("passive")}
-                >
-                    Passive
-                </SwitchButton>
-            </SwitchRow>
-
             {/* GRID */}
             <Grid>
                 {tenseRows.map((row, idx) => (
@@ -184,6 +204,45 @@ function VerbTable({ forms }) {
                     </GridRow>
                 ))}
             </Grid>
+
+            {infinitives.length > 0 && (
+                <InfinitiveGrid>
+
+                    <InfinitiveBlock>
+                        <SectionTitle>Infinitive Present</SectionTitle>
+                        <FormRow>
+                            {
+                                infinitives.find(
+                                    f => f.tense === "present"
+                                )?.form || "—"
+                            }
+                        </FormRow>
+                    </InfinitiveBlock>
+
+                    <InfinitiveBlock>
+                        <SectionTitle>Infinitive Perfect</SectionTitle>
+                        <FormRow>
+                            {
+                                infinitives.find(
+                                    f => f.tense === "perfect"
+                                )?.form || "—"
+                            }
+                        </FormRow>
+                    </InfinitiveBlock>
+
+                    <InfinitiveBlock>
+                        <SectionTitle>Infinitive Future</SectionTitle>
+                        <FormRow>
+                            {
+                                infinitives.find(
+                                    f => f.tense === "future"
+                                )?.form || "—"
+                            }
+                        </FormRow>
+                    </InfinitiveBlock>
+
+                </InfinitiveGrid>
+            )}
 
         </Wrapper>
     );

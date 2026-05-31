@@ -68,6 +68,7 @@ function AdminLemmaEditor() {
     const [lemmaNormalized, setLemmaNormalized] = useState("");
     const [partOfSpeech, setPartOfSpeech] = useState("");
     const [gender, setGender] = useState("");
+    const [irregular, setIrregular] = useState(false);
 
     const [definitions, setDefinitions] = useState("");
     const [meaningsText, setMeaningsText] = useState("");
@@ -85,7 +86,6 @@ function AdminLemmaEditor() {
     const [genitive, setGenitive] = useState("");
 
     // verb-only fields
-    // const [stem, setStem] = useState("");
     const [perfect, setPerfect] = useState("");
     const [supine, setSupine] = useState("");
     const [infinitive, setInfinitive] = useState("");
@@ -94,7 +94,10 @@ function AdminLemmaEditor() {
     const [status, setStatus] = useState("");
 
     const isVerb = partOfSpeech === "verb";
-    const isNominal = partOfSpeech === "noun" || partOfSpeech === "adjective" || partOfSpeech === "pronoun";
+    const isAdjective = partOfSpeech === "adjective";
+    const isNoun = partOfSpeech === "noun";
+    // const isPronoun = partOfSpeech === "pronoun";
+    // const isNominal = partOfSpeech === "noun" || partOfSpeech === "adjective" || partOfSpeech === "pronoun";
 
     async function handleSubmit() {
         setLoading(true);
@@ -112,8 +115,9 @@ function AdminLemmaEditor() {
                         lemma_normalized: lemmaNormalized,
                         part_of_speech: partOfSpeech,
                         gender,
+                        irregular,
                         
-                        declension: isNominal && declension !== ""
+                        declension: (isNoun || isAdjective) && declension !== ""
                             ? parseInt(declension, 10)
                             : null,
 
@@ -121,7 +125,7 @@ function AdminLemmaEditor() {
                             ? Number(conjugation) || 0
                             : 0,
 
-                        genitive: isNominal ? genitive : "",
+                        genitive: isNoun ? genitive : "",
 
                         // stem: isVerb ? stem : "",
                         infinitive: isVerb ? infinitive : "",
@@ -137,8 +141,8 @@ function AdminLemmaEditor() {
                         .filter(Boolean),
                     
                     definitions: definitions
-                        .split(",")
-                        .map(m => m.trim())
+                        .split("\n")
+                        .map(d => d.trim())
                         .filter(Boolean),
 
                     derivatives: derivatives
@@ -179,6 +183,14 @@ function AdminLemmaEditor() {
                 onChange={(e) => setLemmaNormalized(e.target.value)}
             />
 
+            <Select
+                value={irregular ? "true" : "false"}
+                onChange={(e) => setIrregular(e.target.value === "true")}
+            >
+                <option value="false">regular</option>
+                <option value="true">irregular</option>
+            </Select>
+
             {/* part_of_speech */}
             <Select
                 value={partOfSpeech}
@@ -195,10 +207,9 @@ function AdminLemmaEditor() {
             </Select>
 
 
-            {/* DECLENSION (NOMINAL ONLY) */}
-            {isNominal && (
+            {/* GENDER (NOUNS ONLY) */}
+            {isNoun && (
                 <>
-                    {/* GENDER */}
                     <Select
                         value={gender}
                         onChange={(e) => setGender(e.target.value)}
@@ -208,6 +219,12 @@ function AdminLemmaEditor() {
                         <option value="feminine">feminine</option>
                         <option value="neuter">neuter</option>
                     </Select>
+                </>
+            )}
+
+            {/* DECLENSION (ADJECTIVES AND NOUNS ONLY) */}
+            {(isAdjective || isNoun) && (
+                <>
                     <Select
                         value={declension}
                         onChange={(e) => setDeclension(e.target.value)}
@@ -227,7 +244,7 @@ function AdminLemmaEditor() {
                         />
                 </>
             )}
-
+            
             {/* CONJUGATION (VERB ONLY) */}
             {isVerb && (
                 <>

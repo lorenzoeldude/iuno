@@ -2,15 +2,31 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
+import { FaCheckCircle } from "react-icons/fa";
+
 import NominalTable from "../../morphology/NominalTable";
 import VerbTable from "../../morphology/VerbTable.js";
 
 // ===================== styles =====================
 
 const Wrapper = styled.div`
-    width: 72%;
+    width: 85%;
     margin: 0 auto;
-    padding: 40px 0 80px 0;
+    padding-top: 40px;
+`;
+
+const Content = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 500px;
+    gap: 80px;
+    align-items: start;
+`;
+
+const Main = styled.div``;
+
+const Sidebar = styled.div`
+    position: sticky;
+    top: 20px;
 `;
 
 const Header = styled.div`
@@ -86,7 +102,7 @@ const Line = styled.hr`
 `;
 
 const Section = styled.section`
-    margin-bottom: 50px;
+    margin-bottom: 40px;
 `;
 
 const SectionTitle = styled.h2`
@@ -278,86 +294,103 @@ function Verbum() {
     return (
         <Wrapper>
 
-            <Header>
-                <TopRow>
+            <Content>
 
-                    <Left>
+    <Main>
 
-                        <WordRow>
-                            <Word>
-                                {wordInfo.lemma}
-                            </Word>
-                        </WordRow>
+        <Header>
+            <TopRow>
 
-                        <Meaning>
-                            {wordData.meanings?.map((m, index) => (
-                                <span key={m.id}>
-                                    {m.meaning}
-                                    {index < wordData.meanings.length - 1 ? " · " : ""}
-                                </span>
-                            ))}
-                        </Meaning>
+                <Left>
 
-                        <Meta>
-                            <Tag>{wordInfo.part_of_speech}</Tag>
+                    <WordRow>
+                        <Word>
+                            {wordInfo.lemma}
+                        </Word>
+                    </WordRow>
 
-                            {wordInfo.gender && <Tag>{wordInfo.gender}</Tag>}
-                            {wordInfo.declension > 0 && <Tag>{wordInfo.declension}. declension</Tag>}
-                            {wordInfo.conjugation > 0 && <Tag>{wordInfo.conjugation}. conjugation</Tag>}
-                            {wordInfo.is_irregular ? <Tag>irregular</Tag> : <Tag>regular</Tag>}
-                        </Meta>
+                    <Meaning>
+                        {wordData.meanings?.map((m, index) => (
+                            <span key={m.id}>
+                                {m.meaning}
+                                {index < wordData.meanings.length - 1 ? " · " : ""}
+                            </span>
+                        ))}
+                    </Meaning>
 
-                    </Left>
+                    <Meta>
+                        <Tag>{wordInfo.part_of_speech}</Tag>
 
-                    <SaveButton
-                        disabled={!isAuthed || saving}
-                        onClick={() => toggleList(wordInfo.id)}
-                    >
-                        {saved ? "✔" : "+"}
-                    </SaveButton>
+                        {wordInfo.gender && <Tag>{wordInfo.gender}</Tag>}
+                        {wordInfo.declension > 0 && (
+                            <Tag>{wordInfo.declension}. declension</Tag>
+                        )}
+                        {wordInfo.conjugation > 0 && (
+                            <Tag>{wordInfo.conjugation}. conjugation</Tag>
+                        )}
+                        {wordInfo.is_irregular ? (
+                            <Tag>irregular</Tag>
+                        ) : (
+                            <Tag>regular</Tag>
+                        )}
+                    </Meta>
 
-                </TopRow>
-            </Header>
+                </Left>
 
-            <Line />
+                <SaveButton
+                    disabled={!isAuthed || saving}
+                    onClick={() => toggleList(wordInfo.id)}
+                >
+                    {saved ? <FaCheckCircle/> : <>+</>}
+                </SaveButton>
 
+            </TopRow>
+        </Header>
+
+        <Line />
+
+        <Section>
+            <SectionTitle>Definition</SectionTitle>
+            <Definition>
+                {wordData.definitions?.[0]?.definition || ""}
+            </Definition>
+        </Section>
+
+        {wordData.examples?.length > 0 && (
             <Section>
-                <SectionTitle>Definitio</SectionTitle>
-                <Definition>{wordInfo.definition}</Definition>
-                {wordData.definitions.map((definition) => (
-                        <Definition key={definition.id}>
-                            {definition.definition}
-                        </Definition>
-                    ))}
+                <SectionTitle>Examples</SectionTitle>
+                {wordData.examples.map((example) => (
+                    <Example key={example.id}>
+                        - {example.latin}
+                    </Example>
+                ))}
             </Section>
+        )}
 
-            {wordData.examples?.length > 0 && (
-                <Section>
-                    <SectionTitle>Exempla</SectionTitle>
-                    {wordData.examples.map((example) => (
-                        <Example key={example.id}>
-                            {example.latin}
-                        </Example>
-                    ))}
-                </Section>
-            )}
-
-            {wordData.examples?.length > 0 && (
-                <Section>
-                    <SectionTitle>Derivatives</SectionTitle>
-                    {wordData.derivatives.map((derivative, index) => (
-                        <span key={derivative.id}>
-                            {derivative.derivative} 
-                            {index < wordData.derivatives.length - 1 ? " · " : ""} 
-                        </span>
-                    ))}
-                </Section>
-            )}
-
+        {wordData.derivatives?.length > 0 && (
             <Section>
-                <SectionTitle>Morphologia</SectionTitle>
-                {renderMorphology()}
+                <SectionTitle>English Derivatives</SectionTitle>
+                {wordData.derivatives.map((derivative, index) => (
+                    <span key={derivative.id}>
+                        {derivative.derivative}
+                        {index < wordData.derivatives.length - 1 ? " · " : ""}
+                    </span>
+                ))}
             </Section>
+        )}
+
+    </Main>
+
+    <Sidebar>
+
+        <Section>
+            {/* <SectionTitle>Morphologia</SectionTitle> */}
+            {renderMorphology()}
+        </Section>
+
+    </Sidebar>
+
+</Content>
 
         </Wrapper>
     );

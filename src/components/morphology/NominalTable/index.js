@@ -1,5 +1,10 @@
 import styled from "styled-components";
 
+const Wrapper = styled.div`
+    background-color: rgba(178, 178, 178, 0.1);
+    border-radius: 10px;
+`;
+
 const Table = styled.table`
     width: 100%;
     border-collapse: collapse;
@@ -65,6 +70,7 @@ function NominalTable({ forms }) {
     const hasNeuter = nominalForms.some(f => f.gender === "neuter");
 
     return (
+        <Wrapper>
         <Table>
 
             {/* =====================================================
@@ -144,6 +150,7 @@ function NominalTable({ forms }) {
             </tbody>
 
         </Table>
+        </Wrapper>
     );
 }
 

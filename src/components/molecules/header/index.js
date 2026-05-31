@@ -50,8 +50,8 @@ const UserBox = styled(Link)`
 `;
 
 const Button = styled.button`
-    padding: 6px 10px;
-    border: 1px solid rgba(0,0,0,0.2);
+    padding: 4px 8px;
+    border: 0.5px solid rgba(0,0,0,0.2);
     background: white;
     cursor: pointer;
 
@@ -87,9 +87,9 @@ function Header() {
 
                 {user ? (
                     <>
-                        <UserBox to="/user">
+                        {/* <UserBox to="/user">
                             {user.username}
-                        </UserBox>
+                        </UserBox> */}
 
                         <Button onClick={logout}>
                             Logout
