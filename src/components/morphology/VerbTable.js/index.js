@@ -45,7 +45,15 @@ const InfinitiveGrid = styled.div`
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
-    margin-top: 25px;
+    margin-top: 0px;
+`;
+
+const Line =styled.hr`
+    border: none;
+    height: 0.5px;
+    background-color: black;
+    opacity: 10%;
+    margin: 10px 0;
 `;
 
 const InfinitiveBlock = styled.div``;
@@ -204,6 +212,8 @@ function VerbTable({ forms }) {
                     </GridRow>
                 ))}
             </Grid>
+
+            <Line />
 
             {infinitives.length > 0 && (
                 <InfinitiveGrid>
