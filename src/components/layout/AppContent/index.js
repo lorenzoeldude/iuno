@@ -25,12 +25,13 @@ import Vocabulary from "../../pages/Vocabulary";
 
 const Body = styled.div`
   display: flex;
+  justify-content: center;
   height: 100%;
 `;
 
 const Content = styled.div`
   display: flex;
-  width:100%;
+  width:90%;
   height: 100%;
   font-family: "Cormorant Garamond", serif;
   font-optical-sizing: auto;
@@ -39,6 +40,7 @@ const Content = styled.div`
   font-size: 25px;
   margin-left: 0%;
   justify-content: center;
+  padding-top: 70px;
 `;
 
 function AppContent() {

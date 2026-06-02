@@ -2,12 +2,28 @@ import styled from "styled-components";
 import Searchbar from "../../atoms/Searchbar";
 import { Link, useNavigate } from "react-router-dom";
 
+// const Wrapper = styled.div`
+//     display: flex;
+//     justify-content: space-between;
+//     align-items: center;
+//     padding: 10px 40px;
+//     margin-bottom: 30px;
+// `;
+
 const Wrapper = styled.div`
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+
     display: flex;
     justify-content: space-between;
     align-items: center;
+
     padding: 10px 40px;
-    margin-bottom: 30px;
+
+    background: white;
+    z-index: 1000;
 `;
 
 const HeadLine = styled.h1`

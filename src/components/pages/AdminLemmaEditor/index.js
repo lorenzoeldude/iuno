@@ -125,7 +125,7 @@ function AdminLemmaEditor() {
                             ? Number(conjugation) || 0
                             : 0,
 
-                        genitive: isNoun ? genitive : "",
+                        genitive: (isNoun || isAdjective) ? genitive : "",
 
                         // stem: isVerb ? stem : "",
                         infinitive: isVerb ? infinitive : "",
@@ -222,7 +222,7 @@ function AdminLemmaEditor() {
                 </>
             )}
 
-            {/* DECLENSION (ADJECTIVES AND NOUNS ONLY) */}
+            {/* DECLENSION */}
             {(isAdjective || isNoun) && (
                 <>
                     <Select
@@ -230,18 +230,41 @@ function AdminLemmaEditor() {
                         onChange={(e) => setDeclension(e.target.value)}
                     >
                         <option value="">declension</option>
-                        <option value="1">1st</option>
-                        <option value="2">2nd</option>
-                        <option value="3">3rd</option>
-                        <option value="4">4th</option>
-                        <option value="5">5th</option>
+
+                        {isNoun ? (
+                            <>
+                                <option value="1">1st</option>
+                                <option value="2">2nd</option>
+                                <option value="3">3rd</option>
+                                <option value="4">4th</option>
+                                <option value="5">5th</option>
+                            </>
+                        ) : (
+                            <>
+                                <option value="12">
+                                    1st/2nd Declension
+                                </option>
+
+                                <option value="31">
+                                    3rd Declension (1 termination)
+                                </option>
+
+                                <option value="32">
+                                    3rd Declension (2 terminations)
+                                </option>
+
+                                <option value="33">
+                                    3rd Declension (3 terminations)
+                                </option>
+                            </>
+                        )}
                     </Select>
 
                     <Input
-                            placeholder="genitive"
-                            value={genitive}
-                            onChange={(e) => setGenitive(e.target.value)}
-                        />
+                        placeholder="genitive"
+                        value={genitive}
+                        onChange={(e) => setGenitive(e.target.value)}
+                    />
                 </>
             )}
             

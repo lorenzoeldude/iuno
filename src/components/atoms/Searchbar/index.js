@@ -114,10 +114,9 @@ function Searchbar({ className }) {
                         >
                             <strong>{item.form}</strong>
                             {": "}
-                            {item.lemma}({item.meaning})<br />
-                            {item.grammatical_case || item.tense}
-                            {" – "}
-                            {item.part_of_speech}
+                            {item.lemma}<br />
+                            {item.grammatical_case || item.tense} - {item.meaning}
+                            {/* {item.part_of_speech} */}
                         </Item>
                     ))}
                 </Dropdown>

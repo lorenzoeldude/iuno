@@ -6,6 +6,7 @@ import { FaCheckCircle } from "react-icons/fa";
 
 import NominalTable from "../../morphology/NominalTable";
 import VerbTable from "../../morphology/VerbTable.js";
+import AdjectiveTable from "../../morphology/AdjectiveTable/index.js";
 
 // ===================== styles =====================
 
@@ -17,7 +18,7 @@ const Wrapper = styled.div`
 
 const Content = styled.div`
     display: grid;
-    grid-template-columns: 1fr 500px;
+    grid-template-columns: 1fr 1fr;
     gap: 80px;
     align-items: start;
 `;
@@ -278,10 +279,13 @@ function Verbum() {
 
         if (
             wordInfo.part_of_speech === "noun" ||
-            wordInfo.part_of_speech === "adjective" ||
             wordInfo.part_of_speech === "pronoun"
         ) {
             return <NominalTable forms={wordData.forms} />;
+        }
+
+        if (wordInfo.part_of_speech === "adjective") {
+            return <AdjectiveTable forms={wordData.forms} />;
         }
 
         return (
