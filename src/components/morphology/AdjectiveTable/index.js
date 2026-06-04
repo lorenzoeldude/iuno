@@ -37,6 +37,7 @@ const TH = styled.th`
     border-bottom: 1px solid rgba(0,0,0,0.1);
     font-size: 17px;
     font-weight: 600;
+    text-decoration: underline;
 `;
 
 const TD = styled.td`
@@ -133,8 +134,7 @@ function AdjectiveTable({ forms }) {
 
                 <thead>
                     <tr>
-                        <TH></TH>
-                        <TH></TH>
+                        <TH><strong>Singular</strong></TH>
                         <TH>Masculine</TH>
                         <TH>Feminine</TH>
                         <TH>Neuter</TH>
@@ -143,77 +143,48 @@ function AdjectiveTable({ forms }) {
 
                 <tbody>
 
-                    {CASE_ORDER.map((caseName, index) => (
+                    {CASE_ORDER.map((caseName) => (
                         <tr key={`singular-${caseName}`}>
-
-                            {index === 0 && (
-                                <TD rowSpan={CASE_ORDER.length}>
-                                    Sing.
-                                </TD>
-                            )}
 
                             <TD>{CASE_LABELS[caseName]}</TD>
 
                             <TD>
-                                {getForm(
-                                    caseName,
-                                    "singular",
-                                    "masculine"
-                                )}
+                                {getForm(caseName, "singular", "masculine")}
                             </TD>
 
                             <TD>
-                                {getForm(
-                                    caseName,
-                                    "singular",
-                                    "feminine"
-                                )}
+                                {getForm(caseName, "singular", "feminine")}
                             </TD>
 
                             <TD>
-                                {getForm(
-                                    caseName,
-                                    "singular",
-                                    "neuter"
-                                )}
+                                {getForm(caseName, "singular", "neuter")}
                             </TD>
 
                         </tr>
                     ))}
 
-                    {CASE_ORDER.map((caseName, index) => (
-                        <tr key={`plural-${caseName}`}>
+                    <tr>
+                        <TH><strong>Plural</strong></TH>
+                        <TH>Masculine</TH>
+                        <TH>Feminine</TH>
+                        <TH>Neuter</TH>
+                    </tr>
 
-                            {index === 0 && (
-                                <TD rowSpan={CASE_ORDER.length}>
-                                    Plur.
-                                </TD>
-                            )}
+                    {CASE_ORDER.map((caseName) => (
+                        <tr key={`plural-${caseName}`}>
 
                             <TD>{CASE_LABELS[caseName]}</TD>
 
                             <TD>
-                                {getForm(
-                                    caseName,
-                                    "plural",
-                                    "masculine"
-                                )}
+                                {getForm(caseName, "plural", "masculine")}
                             </TD>
 
                             <TD>
-                                {getForm(
-                                    caseName,
-                                    "plural",
-                                    "feminine"
-                                )}
+                                {getForm(caseName, "plural", "feminine")}
                             </TD>
 
                             <TD>
-                                {getForm(
-                                    caseName,
-                                    "plural",
-                                    "neuter"
-                                )}
+                                {getForm(caseName, "plural", "neuter")}
                             </TD>
 
                         </tr>
@@ -221,18 +192,17 @@ function AdjectiveTable({ forms }) {
 
                 </tbody>
 
-            </Table>
+                {adverb && (
+                    <tr>
+                        <TH><strong>Adverb</strong></TH>
 
-            {adverb && (
-                <div
-                    style={{
-                        padding: "0 14px 14px 14px",
-                        fontSize: "18px",
-                    }}
-                >
-                    <strong>Adverb:</strong> {adverb}
-                </div>
-            )}
+                        <TD colSpan={3}>
+                            {adverb}
+                        </TD>
+                    </tr>
+                )}
+
+            </Table>
 
         </Wrapper>
     );
