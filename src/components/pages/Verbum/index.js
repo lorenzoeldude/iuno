@@ -329,8 +329,8 @@ function Verbum() {
                         {wordInfo.declension > 0 && (
                             <Tag>
                                 {wordInfo.declension >= 31 && wordInfo.declension <= 33
-                                    ? "3. declension"
-                                    : `${wordInfo.declension}. declension`}
+                                    ? "3rd declension"
+                                    : `1st/2nd declension`}
                             </Tag>
                         )}
                         {wordInfo.conjugation > 0 && (

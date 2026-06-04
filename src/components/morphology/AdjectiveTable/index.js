@@ -80,6 +80,16 @@ function AdjectiveTable({ forms }) {
         return form.degree === degree;
     });
 
+    const adverb = forms.find(
+        (form) =>
+            form.form_type === "adverb" &&
+            (
+                degree === "positive"
+                    ? (!form.degree || form.degree === "positive")
+                    : form.degree === degree
+            )
+    )?.form;
+
     function getForm(caseName, number, gender) {
         return (
             adjectiveForms.find(
@@ -212,6 +222,17 @@ function AdjectiveTable({ forms }) {
                 </tbody>
 
             </Table>
+
+            {adverb && (
+                <div
+                    style={{
+                        padding: "0 14px 14px 14px",
+                        fontSize: "18px",
+                    }}
+                >
+                    <strong>Adverb:</strong> {adverb}
+                </div>
+            )}
 
         </Wrapper>
     );
