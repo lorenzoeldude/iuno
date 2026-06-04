@@ -327,7 +327,11 @@ function Verbum() {
 
                         {wordInfo.gender && <Tag>{wordInfo.gender}</Tag>}
                         {wordInfo.declension > 0 && (
-                            <Tag>{wordInfo.declension}. declension</Tag>
+                            <Tag>
+                                {wordInfo.declension >= 31 && wordInfo.declension <= 33
+                                    ? "3. declension"
+                                    : `${wordInfo.declension}. declension`}
+                            </Tag>
                         )}
                         {wordInfo.conjugation > 0 && (
                             <Tag>{wordInfo.conjugation}. conjugation</Tag>

@@ -90,6 +90,10 @@ function AdminLemmaEditor() {
     const [supine, setSupine] = useState("");
     const [infinitive, setInfinitive] = useState("");
 
+    // adjective-only fields
+    const [feminine, setFeminine] = useState("");
+    const [neuter, setNeuter] = useState("");
+
     const [loading, setLoading] = useState(false);
     const [status, setStatus] = useState("");
 
@@ -127,10 +131,12 @@ function AdminLemmaEditor() {
 
                         genitive: (isNoun || isAdjective) ? genitive : "",
 
-                        // stem: isVerb ? stem : "",
                         infinitive: isVerb ? infinitive : "",
                         perfect: isVerb ? perfect : "",
-                        supine: isVerb ? supine : ""
+                        supine: isVerb ? supine : "",
+
+                        feminine: isAdjective ? feminine : "",
+                        neuter: isAdjective ? neuter : "",
                     },
 
                     examples: [example1, example2, example3],
@@ -265,6 +271,23 @@ function AdminLemmaEditor() {
                         value={genitive}
                         onChange={(e) => setGenitive(e.target.value)}
                     />
+                </>
+            )}
+
+            {/* ADJECTIVE ONLY */}
+            {isAdjective && (
+                <>
+                    <Input
+                            placeholder="feminine (nominative singular)"
+                            value={feminine}
+                            onChange={(e) => setFeminine(e.target.value)}
+                        />
+
+                    <Input
+                        placeholder="neuter (nominative singular)"
+                        value={neuter}
+                        onChange={(e) => setNeuter(e.target.value)}
+                        />
                 </>
             )}
             
