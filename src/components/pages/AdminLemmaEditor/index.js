@@ -302,6 +302,7 @@ function AdminLemmaEditor() {
                         <option value="1">1st</option>
                         <option value="2">2nd</option>
                         <option value="3">3rd</option>
+                        <option value="31">3rd IO</option>
                         <option value="4">4th</option>
                     </Select>
     
