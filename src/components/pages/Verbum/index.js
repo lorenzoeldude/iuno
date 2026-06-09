@@ -11,9 +11,12 @@ import AdjectiveTable from "../../morphology/AdjectiveTable/index.js";
 // ===================== styles =====================
 
 const Wrapper = styled.div`
+    display: grid;
+    justify-content: center;
+    align-items: center;
     width: 85%;
     margin: 0 auto;
-    padding-top: 40px;
+    padding-top: 0px;
 `;
 
 const Content = styled.div`
@@ -21,6 +24,24 @@ const Content = styled.div`
     grid-template-columns: 1fr 1fr;
     gap: 80px;
     align-items: start;
+`;
+
+const FirstLine = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0px;
+`;
+
+const HeaderDiv = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+`;
+
+const Headline = styled.p`
+
 `;
 
 const Main = styled.div``;
@@ -45,10 +66,26 @@ const Left = styled.div`
     flex-direction: column;
 `;
 
-const WordRow = styled.div`
+const WordHeader = styled.div`
     display: flex;
     align-items: center;
-    gap: 15px;
+    justify-content: center;
+    gap: 0px;
+    // padding-bottom: 30px;
+`;
+
+// const WordRow = styled.div`
+//     display: flex;
+//     align-items: center;
+//     gap: 15px;
+// `;
+
+const BigWord = styled.span`
+    font-family: "Montserrat", sans-serif;
+    font-size: 60px;
+    font-weight: 700;
+    margin: 0;
+    text-decoration: underline;
 `;
 
 const Word = styled.h1`
@@ -76,9 +113,11 @@ const SaveButton = styled.button`
 `;
 
 const Meaning = styled.p`
-    font-size: 28px;
-    opacity: 0.7;
-    margin-top: 10px;
+    background-color: rgb(255, 205, 205);
+    padding: 4px 6px;
+    border-radius: 0px;
+    font-size: 20px;
+    // line-height: 1.6;
 `;
 
 const Meta = styled.div`
@@ -89,9 +128,9 @@ const Meta = styled.div`
 `;
 
 const Tag = styled.div`
-    border: 1px solid rgba(0,0,0,0.1);
+    border: 0.5px solid rgba(0,0,0,0.1);
     border-radius: 999px;
-    padding: 8px 15px;
+    padding: 6px 12px;
     font-size: 15px;
 `;
 
@@ -99,7 +138,7 @@ const Line = styled.hr`
     border: none;
     height: 1px;
     background: rgba(0,0,0,0.08);
-    margin: 40px 0;
+    margin: 30px 0;
 `;
 
 const Section = styled.section`
@@ -108,7 +147,7 @@ const Section = styled.section`
 
 const SectionTitle = styled.h2`
     font-size: 28px;
-    margin-bottom: 18px;
+    margin-bottom: 10px;
 `;
 
 const Definition = styled.p`
@@ -297,108 +336,152 @@ function Verbum() {
 
     return (
         <Wrapper>
+            <HeaderDiv>
+                <FirstLine>
+                    <WordHeader>
+                        {wordInfo.part_of_speech === "verb" && (
+                            <Headline>
+                                {wordInfo.lemma}, <BigWord>{wordInfo.infinitive}</BigWord>, {wordInfo.perfect}, {wordInfo.supine}
+                            </Headline>
+                        )}
+
+                        {wordInfo.part_of_speech === "adjective" && (
+                            <Headline>
+                                <BigWord>{wordInfo.lemma}</BigWord>, {wordInfo.feminine}, {wordInfo.neuter}
+                            </Headline>
+                        )}
+
+                        {wordInfo.part_of_speech === "noun" && (
+                            <Headline>
+                                <BigWord>{wordInfo.lemma}</BigWord>, {wordInfo.genitive}
+                            </Headline>
+                        )}
+                    </WordHeader>
+
+                    <SaveButton
+                        disabled={!isAuthed || saving}
+                        onClick={() => toggleList(wordInfo.id)}
+                    >
+                        {saved ? <FaCheckCircle/> : <>+</>}
+                    </SaveButton>
+
+                </FirstLine>
+                <Meaning>
+                            {wordData.meanings?.map((m, index) => (
+                                <span key={m.id}>
+                                    {m.meaning}
+                                    {index < wordData.meanings.length - 1 ? " · " : ""}
+                                </span>
+                            ))}
+                        </Meaning>
+                <Meta>
+                    <Tag>{wordInfo.part_of_speech}</Tag>
+
+                    {wordInfo.gender && <Tag>{wordInfo.gender}</Tag>}
+                    {wordInfo.declension > 0 && (
+                        <Tag>
+                            {wordInfo.declension >= 31 && wordInfo.declension <= 33
+                                ? "3rd declension"
+                                : `1st/2nd declension`}
+                        </Tag>
+                    )}
+                    {wordInfo.conjugation > 0 && (
+                        <Tag>{wordInfo.conjugation}. conjugation</Tag>
+                    )}
+                    {/* {wordInfo.is_irregular ? (
+                        <Tag>irregular</Tag>
+                    ) : (
+                        <Tag>regular</Tag>
+                    )} */}
+                </Meta>
+            </HeaderDiv>
+
+
+            <Line />
+            
+            {/* <WordRow> */}
+            {/* </WordRow> */}
 
             <Content>
+                
 
-    <Main>
+                <Main>
 
-        <Header>
-            <TopRow>
+                    <Header>
+                        <TopRow>
 
-                <Left>
+                            <Left>
+                                {/* <Meaning>
+                                    {wordData.meanings?.map((m, index) => (
+                                        <span key={m.id}>
+                                            {m.meaning}
+                                            {index < wordData.meanings.length - 1 ? " · " : ""}
+                                        </span>
+                                    ))}
+                                </Meaning> */}
 
-                    <WordRow>
-                        <Word>
-                            {wordInfo.lemma}
-                        </Word>
-                    </WordRow>
+                        
 
-                    <Meaning>
-                        {wordData.meanings?.map((m, index) => (
-                            <span key={m.id}>
-                                {m.meaning}
-                                {index < wordData.meanings.length - 1 ? " · " : ""}
-                            </span>
-                        ))}
-                    </Meaning>
+                            </Left>
 
-                    <Meta>
-                        <Tag>{wordInfo.part_of_speech}</Tag>
+                        </TopRow>
+                    </Header>
 
-                        {wordInfo.gender && <Tag>{wordInfo.gender}</Tag>}
-                        {wordInfo.declension > 0 && (
-                            <Tag>
-                                {wordInfo.declension >= 31 && wordInfo.declension <= 33
-                                    ? "3rd declension"
-                                    : `1st/2nd declension`}
-                            </Tag>
-                        )}
-                        {wordInfo.conjugation > 0 && (
-                            <Tag>{wordInfo.conjugation}. conjugation</Tag>
-                        )}
-                        {wordInfo.is_irregular ? (
-                            <Tag>irregular</Tag>
-                        ) : (
-                            <Tag>regular</Tag>
-                        )}
-                    </Meta>
+                    {/* <Line /> */}
+                    <Section>
+                        {/* <SectionTitle>Translations</SectionTitle>
+                        <Meaning>
+                            {wordData.meanings?.map((m, index) => (
+                                <span key={m.id}>
+                                    {m.meaning}
+                                    {index < wordData.meanings.length - 1 ? " · " : ""}
+                                </span>
+                            ))}
+                        </Meaning> */}
+                    </Section>
 
-                </Left>
+                    <Section>
+                        <SectionTitle>Definition</SectionTitle>
+                        <Definition>
+                            {wordData.definitions?.[0]?.definition || ""}
+                        </Definition>
+                    </Section>
 
-                <SaveButton
-                    disabled={!isAuthed || saving}
-                    onClick={() => toggleList(wordInfo.id)}
-                >
-                    {saved ? <FaCheckCircle/> : <>+</>}
-                </SaveButton>
+                    {wordData.examples?.length > 0 && (
+                        <Section>
+                            <SectionTitle>Examples</SectionTitle>
+                            {wordData.examples.map((example) => (
+                                <Example key={example.id}>
+                                    - {example.latin}
+                                </Example>
+                            ))}
+                        </Section>
+                    )}
 
-            </TopRow>
-        </Header>
+                    {wordData.derivatives?.length > 0 && (
+                        <Section>
+                            <SectionTitle>English Derivatives</SectionTitle>
+                            {wordData.derivatives.map((derivative, index) => (
+                                <span key={derivative.id}>
+                                    {derivative.derivative}
+                                    {index < wordData.derivatives.length - 1 ? " · " : ""}
+                                </span>
+                            ))}
+                        </Section>
+                    )}
 
-        <Line />
+                </Main>
 
-        <Section>
-            <SectionTitle>Definition</SectionTitle>
-            <Definition>
-                {wordData.definitions?.[0]?.definition || ""}
-            </Definition>
-        </Section>
+                <Sidebar>
 
-        {wordData.examples?.length > 0 && (
-            <Section>
-                <SectionTitle>Examples</SectionTitle>
-                {wordData.examples.map((example) => (
-                    <Example key={example.id}>
-                        - {example.latin}
-                    </Example>
-                ))}
-            </Section>
-        )}
+                    <Section>
+                        {/* <SectionTitle>Morphologia</SectionTitle> */}
+                        {renderMorphology()}
+                    </Section>
 
-        {wordData.derivatives?.length > 0 && (
-            <Section>
-                <SectionTitle>English Derivatives</SectionTitle>
-                {wordData.derivatives.map((derivative, index) => (
-                    <span key={derivative.id}>
-                        {derivative.derivative}
-                        {index < wordData.derivatives.length - 1 ? " · " : ""}
-                    </span>
-                ))}
-            </Section>
-        )}
+                </Sidebar>
 
-    </Main>
-
-    <Sidebar>
-
-        <Section>
-            {/* <SectionTitle>Morphologia</SectionTitle> */}
-            {renderMorphology()}
-        </Section>
-
-    </Sidebar>
-
-</Content>
+            </Content>
 
         </Wrapper>
     );

@@ -11,6 +11,10 @@ const Input = styled.input`
     height: 30px;
     width: 100%;
     padding: 5px;
+    border: 0.1px solid #eaeaea;
+    border-radius: 0px;
+    text-align: center;
+    // opacity: 0%;
 `;
 
 const Dropdown = styled.div`
@@ -19,7 +23,7 @@ const Dropdown = styled.div`
     left: 0;
     right: 0;
     background: white;
-    border: 1px solid #ccc;
+    border: 0.1px solid #ccc;
     z-index: 999;
 `;
 
@@ -98,11 +102,6 @@ function Searchbar({ className }) {
                 onBlur={() => {
                     setTimeout(() => setOpen(false), 150);
                 }}
-                // onKeyDown={(e) => {
-                //     if (e.key === "Enter") {
-                //         goToSearchPage(query);
-                //     }
-                // }}
             />
 
             {open && results.length > 0 && (

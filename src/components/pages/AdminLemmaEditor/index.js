@@ -2,33 +2,85 @@ import styled from "styled-components";
 import { useState } from "react";
 
 const Wrapper = styled.div`
-    width: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
     margin: 0 auto;
-    padding: 40px 0;
 `;
 
-const Title = styled.h1`
-    font-size: 32px;
-    margin-bottom: 25px;
+const TopDiv = styled.div`
+    width: 50%;
+`; 
+
+const BelowDiv = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+`;
+
+const RowDiv = styled.div`
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+`;
+
+const Left = styled.div`
+
+`;
+
+const Right = styled.div`
+    // border: 1px solid black;
+    // height: 400px;
+`;
+
+const SectionTitle = styled.h2`
+    font-size: 28px;
+    margin-bottom: 10px;
 `;
 
 const Input = styled.input`
     width: 100%;
     padding: 12px;
-    font-size: 18px;
+    font-size: 15px;
     margin-bottom: 15px;
-    border: 1px solid rgba(0,0,0,0.2);
-    border-radius: 8px;
+    // border: 0.1px solid rgba(190, 190, 190, 0.2);
+    border: none;
+
+    outline: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    &:focus {
+        outline: none;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+`;
+
+const Lemma = styled(Input)`
+    font-family: "Montserrat", sans-serif;
+    font-size: 50px;
+    font-weight: 700;
+    box-shadow: none;
+    text-align: center;
 `;
 
 const TextArea = styled.textarea`
     width: 100%;
     padding: 12px;
-    font-size: 18px;
+    font-size: 15px;
     margin-bottom: 15px;
-    border: 1px solid rgba(0,0,0,0.2);
-    border-radius: 8px;
-    min-height: 120px;
+    // border: 1px solid rgba(201, 201, 201, 0.2);
+    border: none;
+    min-height: 20px;
+    resize: none;
+    outline: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    &:focus {
+        outline: none;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
 `;
 
 const Select = styled.select`
@@ -36,25 +88,37 @@ const Select = styled.select`
     padding: 12px;
     font-size: 18px;
     margin-bottom: 15px;
-    border: 1px solid rgba(0,0,0,0.2);
-    border-radius: 8px;
+    border: 1px solid rgba(142, 142, 142, 0.1);
     background: white;
 `;
 
 const Button = styled.button`
-    padding: 12px 18px;
+    padding: 15px 24px;
     font-size: 16px;
     border: none;
     border-radius: 999px;
     cursor: pointer;
 
-    background: black;
+    background: rgba(72, 72, 72, 1);
     color: white;
+    
+    margin-top: 30px;
 
     &:disabled {
         opacity: 0.5;
         cursor: not-allowed;
     }
+
+    &:hover {
+        background: rgba(0, 0, 0, 1);
+    }
+`;
+
+const Line = styled.hr`
+    border: none;
+    height: 1px;
+    background: rgba(0,0,0,0.08);
+    margin: 30px 0;
 `;
 
 const Row = styled.div`
@@ -62,10 +126,15 @@ const Row = styled.div`
     gap: 10px;
 `;
 
+const Note = styled.p`
+    font-size: 20px;
+    margin: 20px 0;
+`;
+
 function AdminLemmaEditor() {
 
     const [lemma, setLemma] = useState("");
-    const [lemmaNormalized, setLemmaNormalized] = useState("");
+    // const [lemmaNormalized, setLemmaNormalized] = useState("");
     const [partOfSpeech, setPartOfSpeech] = useState("");
     const [gender, setGender] = useState("");
     const [irregular, setIrregular] = useState(false);
@@ -116,7 +185,7 @@ function AdminLemmaEditor() {
                 body: JSON.stringify({
                     lemma: {
                         lemma,
-                        lemma_normalized: lemmaNormalized,
+                        // lemma_normalized: lemmaNormalized,
                         part_of_speech: partOfSpeech,
                         gender,
                         irregular,
@@ -174,28 +243,19 @@ function AdminLemmaEditor() {
 
     return (
         <Wrapper>
+            <TopDiv>
 
-            <Title>Admin Dictionary Editor</Title>
-
-            <Input
-                placeholder="lemma (e.g. lūna)"
+            <Lemma
+                placeholder="lemma"
                 value={lemma}
                 onChange={(e) => setLemma(e.target.value)}
             />
 
-            <Input
+            {/* <Input
                 placeholder="lemma normalized (e.g. luna)"
                 value={lemmaNormalized}
                 onChange={(e) => setLemmaNormalized(e.target.value)}
-            />
-
-            <Select
-                value={irregular ? "true" : "false"}
-                onChange={(e) => setIrregular(e.target.value === "true")}
-            >
-                <option value="false">regular</option>
-                <option value="true">irregular</option>
-            </Select>
+            /> */}
 
             {/* part_of_speech */}
             <Select
@@ -215,7 +275,7 @@ function AdminLemmaEditor() {
 
             {/* GENDER (NOUNS ONLY) */}
             {isNoun && (
-                <>
+                <RowDiv>
                     <Select
                         value={gender}
                         onChange={(e) => setGender(e.target.value)}
@@ -225,8 +285,9 @@ function AdminLemmaEditor() {
                         <option value="feminine">feminine</option>
                         <option value="neuter">neuter</option>
                     </Select>
-                </>
+                </RowDiv>
             )}
+
 
             {/* DECLENSION */}
             {(isAdjective || isNoun) && (
@@ -265,7 +326,27 @@ function AdminLemmaEditor() {
                             </>
                         )}
                     </Select>
+                </>
+            )}
+            {isVerb && (
+                <>
+                    <Select
+                        value={conjugation}
+                        onChange={(e) => setConjugation(e.target.value)}
+                    >
+                        <option value="">conjugation</option>
+                        <option value="1">1st</option>
+                        <option value="2">2nd</option>
+                        <option value="3">3rd</option>
+                        <option value="31">3rd IO</option>
+                        <option value="4">4th</option>
+                    </Select>
+                </>
+            )}
 
+            <RowDiv>
+            {(isAdjective || isNoun) && (
+                <>
                     <Input
                         placeholder="genitive"
                         value={genitive}
@@ -273,6 +354,7 @@ function AdminLemmaEditor() {
                     />
                 </>
             )}
+
 
             {/* ADJECTIVE ONLY */}
             {isAdjective && (
@@ -291,75 +373,89 @@ function AdminLemmaEditor() {
                 </>
             )}
             
-            {/* CONJUGATION (VERB ONLY) */}
             {isVerb && (
                 <>
-                    <Select
-                        value={conjugation}
-                        onChange={(e) => setConjugation(e.target.value)}
-                    >
-                        <option value="">conjugation</option>
-                        <option value="1">1st</option>
-                        <option value="2">2nd</option>
-                        <option value="3">3rd</option>
-                        <option value="31">3rd IO</option>
-                        <option value="4">4th</option>
-                    </Select>
-    
-                    <Input
-                        placeholder="perfect (e.g. amavī)"
-                        value={perfect}
-                        onChange={(e) => setPerfect(e.target.value)}
-                    />
 
-                    <Input
-                        placeholder="supine (e.g. amātum)"
-                        value={supine}
-                        onChange={(e) => setSupine(e.target.value)}
-                    />
+                    <RowDiv>
+                        <Input
+                            placeholder="infinitive"
+                            value={infinitive}
+                            onChange={(e) => setInfinitive(e.target.value)}
+                        />
+                        <Input
+                            placeholder="perfect (e.g. amavī)"
+                            value={perfect}
+                            onChange={(e) => setPerfect(e.target.value)}
+                        />
+                        <Input
+                            placeholder="supine (e.g. amātum)"
+                            value={supine}
+                            onChange={(e) => setSupine(e.target.value)}
+                        />
 
-                    <Input
-                        placeholder="infinitve"
-                        value={infinitive}
-                        onChange={(e) => setInfinitive(e.target.value)}
-                    />
+                    </RowDiv>
                 </>
             )}
+            </RowDiv>
+            <Line />
+            </TopDiv>
 
-            <TextArea
-                placeholder="definition"
-                value={definitions}
-                onChange={(e) => setDefinitions(e.target.value)}
-            />
 
-            {/* Examples */}
-            <TextArea
-                placeholder="example1"
-                value={example1}
-                onChange={(e) => setExample1(e.target.value)}
-            />
-            <TextArea
-                placeholder="example2"
-                value={example2}
-                onChange={(e) => setExample2(e.target.value)}
-            />
-            <TextArea
-                placeholder="example3"
-                value={example3}
-                onChange={(e) => setExample3(e.target.value)}
-            />
+            <BelowDiv>
 
-            <TextArea
-                placeholder="meanings (comma separated: moon, moonlight)"
-                value={meaningsText}
-                onChange={(e) => setMeaningsText(e.target.value)}
-            />
+                <Left>
+                    <SectionTitle>Translation</SectionTitle>
+                    <TextArea
+                        placeholder="meanings (comma separated)"
+                        value={meaningsText}
+                        onChange={(e) => setMeaningsText(e.target.value)}
+                    />
 
-            <TextArea
-                placeholder="derivatives (comma separated: lunar, lunatic)"
-                value={derivatives}
-                onChange={(e) => setDerivatives(e.target.value)}
-            />
+                    <SectionTitle>Definition</SectionTitle>
+                    <TextArea
+                        placeholder="definition"
+                        value={definitions}
+                        onChange={(e) => setDefinitions(e.target.value)}
+                    />
+
+                    <SectionTitle>Examples</SectionTitle>
+                    <TextArea
+                        placeholder="example1"
+                        value={example1}
+                        onChange={(e) => setExample1(e.target.value)}
+                    />
+                    <TextArea
+                        placeholder="example2"
+                        value={example2}
+                        onChange={(e) => setExample2(e.target.value)}
+                    />
+                    <TextArea
+                        placeholder="example3"
+                        value={example3}
+                        onChange={(e) => setExample3(e.target.value)}
+                    />
+
+                    <SectionTitle>Derivatives</SectionTitle>
+                    <TextArea
+                        placeholder="derivatives (comma separated)"
+                        value={derivatives}
+                        onChange={(e) => setDerivatives(e.target.value)}
+                    />
+                </Left>
+
+                <Right>
+                    <SectionTitle>Morphology</SectionTitle>
+                    <Select
+                        value={irregular ? "true" : "false"}
+                        onChange={(e) => setIrregular(e.target.value === "true")}
+                    >
+                        <option value="false">regular</option>
+                        <option value="true">irregular</option>
+                    </Select>
+                    <Note>Morphology automatically created</Note>
+
+                </Right>
+            </BelowDiv>
 
             <Row>
                 <Button onClick={handleSubmit} disabled={loading}>

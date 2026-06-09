@@ -20,7 +20,7 @@ const Wrapper = styled.div`
     justify-content: space-between;
     align-items: center;
 
-    padding: 10px 40px;
+    padding: 10px 30px;
 
     background: white;
     z-index: 1000;
@@ -94,7 +94,7 @@ function Header() {
         <Wrapper>
 
             <StyledLink to="/">
-                <HeadLine>IUNO</HeadLine>
+                <HeadLine>I</HeadLine>
             </StyledLink>
 
             <Searchbar />
@@ -112,9 +112,10 @@ function Header() {
                         </Button>
                     </>
                 ) : (
-                    <Link to="/login">
-                        Login
-                    </Link>
+                    // <Link to="/login">
+                    //     Login
+                    // </Link>
+                    <></>
                 )}
 
             </Right>
