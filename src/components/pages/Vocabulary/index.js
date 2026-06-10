@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { Capitula } from "../Lectiones";
 
 const Wrapper = styled.div`
     width: 72%;
@@ -16,8 +17,8 @@ const Grid = styled.div`
 const HeroCard = styled.div`
     width: 100%;
     padding: 50px;
-    border-radius: 24px;
-    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 0px;
+    // border: 1px solid rgba(0,0,0,0.08);
     margin-bottom: 20px;
     cursor: pointer;
     transition: 0.15s ease;
@@ -32,7 +33,11 @@ const HeroCard = styled.div`
     }
 `;
 
-const Card = styled.div`
+const Card = styled(HeroCard)`
+
+`;
+
+const Card2 = styled.div`
     padding: 40px;
     border-radius: 24px;
     border: 1px solid rgba(0,0,0,0.08);

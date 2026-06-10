@@ -82,7 +82,7 @@ const WordHeader = styled.div`
 
 const BigWord = styled.span`
     font-family: "Montserrat", sans-serif;
-    font-size: 60px;
+    font-size: 55px;
     font-weight: 700;
     margin: 0;
     text-decoration: underline;
@@ -117,6 +117,7 @@ const Meaning = styled.p`
     padding: 4px 6px;
     border-radius: 0px;
     font-size: 20px;
+    margin-top: 10px;
     // line-height: 1.6;
 `;
 
@@ -380,9 +381,23 @@ function Verbum() {
                     {wordInfo.gender && <Tag>{wordInfo.gender}</Tag>}
                     {wordInfo.declension > 0 && (
                         <Tag>
-                            {wordInfo.declension >= 31 && wordInfo.declension <= 33
+                            {/* {wordInfo.declension >= 31 && wordInfo.declension <= 33
                                 ? "3rd declension"
-                                : `1st/2nd declension`}
+                                : `1st/2nd declension`} */}
+                            {(wordInfo.declension === 1) || (wordInfo.declension === 2) && (
+                                "1st/2nd declension"
+                            )}
+
+                            {[1, 2].includes(wordInfo.declension) && "1st/2nd declension"}
+
+                            {[3, 31].includes(wordInfo.declension) && "3rd declension"}
+
+                            {wordInfo.declension === 4 && (
+                                "4th declension"
+                            )}
+                            {wordInfo.declension === 5 && (
+                                "5th declension"
+                            )}
                         </Tag>
                     )}
                     {wordInfo.conjugation > 0 && (

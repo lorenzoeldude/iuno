@@ -12,15 +12,16 @@ const Grid = styled.div`
     gap: 20px;
 `;
 
-const Capitula = styled.div`
+export const Capitula = styled.div`
     display: flex;
     align-items: center; 
     justify-content: center; 
+    flex-direction: column;
     height: 100px;
     width: 500px;
     margin: 0px 0;
     background-color: #ffffff;
-    border: 0.5px solid black;
+    // border: 0.5px solid black;
     text-decoration: none;
     color: black;
     transition: all 0.2s ease;

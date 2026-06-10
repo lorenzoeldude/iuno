@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useState } from "react";
+import NounFormEditor from "../Editors/NounFormEditor";
 
 const Wrapper = styled.div`
     display: flex;
@@ -40,7 +41,7 @@ const SectionTitle = styled.h2`
     margin-bottom: 10px;
 `;
 
-const Input = styled.input`
+export const Input = styled.input`
     width: 100%;
     padding: 12px;
     font-size: 15px;
@@ -170,7 +171,10 @@ function AdminLemmaEditor() {
     const isAdjective = partOfSpeech === "adjective";
     const isNoun = partOfSpeech === "noun";
     // const isPronoun = partOfSpeech === "pronoun";
-    // const isNominal = partOfSpeech === "noun" || partOfSpeech === "adjective" || partOfSpeech === "pronoun";
+
+    const [manualForms, setManualForms] = useState([]);
+
+    console.log("manual forms: ", manualForms);
 
     async function handleSubmit() {
         setLoading(true);
@@ -185,7 +189,6 @@ function AdminLemmaEditor() {
                 body: JSON.stringify({
                     lemma: {
                         lemma,
-                        // lemma_normalized: lemmaNormalized,
                         part_of_speech: partOfSpeech,
                         gender,
                         irregular,
@@ -207,6 +210,8 @@ function AdminLemmaEditor() {
                         feminine: isAdjective ? feminine : "",
                         neuter: isAdjective ? neuter : "",
                     },
+
+                    manual_forms: manualForms,
 
                     examples: [example1, example2, example3],
 
@@ -251,13 +256,6 @@ function AdminLemmaEditor() {
                 onChange={(e) => setLemma(e.target.value)}
             />
 
-            {/* <Input
-                placeholder="lemma normalized (e.g. luna)"
-                value={lemmaNormalized}
-                onChange={(e) => setLemmaNormalized(e.target.value)}
-            /> */}
-
-            {/* part_of_speech */}
             <Select
                 value={partOfSpeech}
                 onChange={(e) => setPartOfSpeech(e.target.value)}
@@ -452,7 +450,15 @@ function AdminLemmaEditor() {
                         <option value="false">regular</option>
                         <option value="true">irregular</option>
                     </Select>
-                    <Note>Morphology automatically created</Note>
+
+                    {irregular && isNoun ? (
+                        <NounFormEditor
+                            forms={manualForms}
+                            setForms={setManualForms}
+                        />
+                    ): (
+                        <Note>Morphology automatically created</Note>
+                    )}
 
                 </Right>
             </BelowDiv>

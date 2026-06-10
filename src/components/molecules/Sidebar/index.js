@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { FaBook, FaBookOpen, FaUserCircle } from "react-icons/fa";
+import { FaBook, FaBookOpen, FaUserCircle, FaList } from "react-icons/fa";
 
 // const Wrapper = styled.div`
 //     margin: 0 40px;
@@ -56,6 +56,7 @@ function Sidebar () {
             <List>
                 <ListItem><Link href="/lectiones"><FaBook /></Link></ListItem>
                 <ListItem><Link href="/vocabulary"><FaBookOpen /></Link></ListItem>
+                <ListItem><Link href="/litterae"><FaList /></Link></ListItem>
                 <ListItem><Link href="/user"><FaUserCircle /></Link></ListItem>
             </List>
         </Wrapper>

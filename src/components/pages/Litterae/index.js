@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Capitula } from "../Lectiones";
 
 const Wrapper = styled.div`
     display:flex;
@@ -12,32 +13,32 @@ const Grid = styled.div`
     gap: 20px;
 `;
 
-const Capitula = styled.div`
-    display: flex;
-    align-items: center; 
-    justify-content: center; 
-    height: 200px;
-    width: 500px;
-    margin: 0px 0;
-    background-color: #ffffff;
-    border: 0.5px solid black;
-    text-decoration: none;
-    color: black;
+// const Capitula = styled.div`
+//     display: flex;
+//     align-items: center; 
+//     justify-content: center; 
+//     height: 200px;
+//     width: 500px;
+//     margin: 0px 0;
+//     background-color: #ffffff;
+//     // border: 0.5px solid black;
+//     text-decoration: none;
+//     color: black;
 
-    &:visited {
-        color: black;
-        text-decoration: none;
-    }
+//     &:visited {
+//         color: black;
+//         text-decoration: none;
+//     }
 
-    &:hover {
-        background-color: #2e2e2e;
-        color: white;
-    }
+//     &:hover {
+//         background-color: #2e2e2e;
+//         color: white;
+//     }
 
-    &:active {
-        color: black;
-    }
-`;
+//     &:active {
+//         color: black;
+//     }
+// `;
 
 const Title = styled.h1`
     font-family: "Cormorant Garamond", serif;
