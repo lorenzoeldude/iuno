@@ -44,15 +44,15 @@ const Headline = styled.p`
 
 `;
 
-const Main = styled.div``;
+const Main = styled.div`
+`;
 
 const Sidebar = styled.div`
     position: sticky;
-    top: 20px;
+    top: 0px;
 `;
 
 const Header = styled.div`
-    margin-bottom: 25px;
 `;
 
 const TopRow = styled.div`
@@ -73,12 +73,6 @@ const WordHeader = styled.div`
     gap: 0px;
     // padding-bottom: 30px;
 `;
-
-// const WordRow = styled.div`
-//     display: flex;
-//     align-items: center;
-//     gap: 15px;
-// `;
 
 const BigWord = styled.span`
     font-family: "Montserrat", sans-serif;
@@ -148,7 +142,6 @@ const Section = styled.section`
 
 const SectionTitle = styled.h2`
     font-size: 28px;
-    margin-bottom: 10px;
 `;
 
 const Definition = styled.p`
@@ -160,7 +153,7 @@ const Example = styled.p`
     font-size: 23px;
     line-height: 1.7;
     font-style: italic;
-    margin: 10px 0;
+    margin-bottom: 10px;
 `;
 
 const Loading = styled.p`
@@ -413,48 +406,8 @@ function Verbum() {
 
 
             <Line />
-            
-            {/* <WordRow> */}
-            {/* </WordRow> */}
-
             <Content>
-                
-
                 <Main>
-
-                    <Header>
-                        <TopRow>
-
-                            <Left>
-                                {/* <Meaning>
-                                    {wordData.meanings?.map((m, index) => (
-                                        <span key={m.id}>
-                                            {m.meaning}
-                                            {index < wordData.meanings.length - 1 ? " · " : ""}
-                                        </span>
-                                    ))}
-                                </Meaning> */}
-
-                        
-
-                            </Left>
-
-                        </TopRow>
-                    </Header>
-
-                    {/* <Line /> */}
-                    <Section>
-                        {/* <SectionTitle>Translations</SectionTitle>
-                        <Meaning>
-                            {wordData.meanings?.map((m, index) => (
-                                <span key={m.id}>
-                                    {m.meaning}
-                                    {index < wordData.meanings.length - 1 ? " · " : ""}
-                                </span>
-                            ))}
-                        </Meaning> */}
-                    </Section>
-
                     <Section>
                         <SectionTitle>Definition</SectionTitle>
                         <Definition>
@@ -488,16 +441,11 @@ function Verbum() {
                 </Main>
 
                 <Sidebar>
-
                     <Section>
-                        {/* <SectionTitle>Morphologia</SectionTitle> */}
                         {renderMorphology()}
                     </Section>
-
                 </Sidebar>
-
             </Content>
-
         </Wrapper>
     );
 }

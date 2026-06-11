@@ -8,6 +8,7 @@ const Table = styled.table`
 
 const TH = styled.th`
     padding: 14px;
+    text-align: left;
 `;
 
 const TD = styled.td`
@@ -15,46 +16,48 @@ const TD = styled.td`
 `;
 
 const CASE_ORDER = [
-    "nominative",
     "genitive",
     "dative",
     "accusative",
     "ablative",
-    "vocative",
 ];
 
 const CASE_LABELS = {
-    nominative: "Nom.",
     genitive: "Gen.",
     dative: "Dat.",
     accusative: "Acc.",
     ablative: "Abl.",
-    vocative: "Voc.",
 };
 
-function NounFormEditor({ forms, setForms, gender }) {
-    function getValue(caseName, number) {
+function VerbGerundEditor({
+    forms,
+    setForms,
+}) {
+
+    function getValue(caseName) {
         const form = forms.find(
             f =>
-                f.grammatical_case === caseName &&
-                f.number === number
+                f.mood === "gerund" &&
+                f.grammatical_case === caseName
         );
 
         return form?.form || "";
     }
 
-    function setValue(caseName, number, value) {
+    function setValue(caseName, value) {
+
         setForms(prev => {
+
             const existing = prev.find(
                 f =>
-                    f.grammatical_case === caseName &&
-                    f.number === number
+                    f.mood === "gerund" &&
+                    f.grammatical_case === caseName
             );
 
             if (existing) {
                 return prev.map(f =>
                     f === existing
-                        ? { ...f, form: value, gender }
+                        ? { ...f, form: value }
                         : f
                 );
             }
@@ -62,10 +65,9 @@ function NounFormEditor({ forms, setForms, gender }) {
             return [
                 ...prev,
                 {
-                    grammatical_case: caseName,
-                    number,
-                    gender,
                     form: value,
+                    mood: "gerund",
+                    grammatical_case: caseName,
                 },
             ];
         });
@@ -73,50 +75,42 @@ function NounFormEditor({ forms, setForms, gender }) {
 
     return (
         <Table>
+
             <thead>
                 <tr>
-                    <TH></TH>
-                    <TH>Sing.</TH>
-                    <TH>Plur.</TH>
+                    <TH>Case</TH>
+                    <TH>Form</TH>
                 </tr>
             </thead>
 
             <tbody>
+
                 {CASE_ORDER.map(caseName => (
                     <tr key={caseName}>
-                        <TD>{CASE_LABELS[caseName]}</TD>
+
+                        <TD>
+                            {CASE_LABELS[caseName]}
+                        </TD>
 
                         <TD>
                             <Input
-                                value={getValue(caseName, "singular")}
+                                value={getValue(caseName)}
                                 onChange={e =>
                                     setValue(
                                         caseName,
-                                        "singular",
                                         e.target.value
                                     )
                                 }
                             />
                         </TD>
 
-                        <TD>
-                            <Input
-                                value={getValue(caseName, "plural")}
-                                onChange={e =>
-                                    setValue(
-                                        caseName,
-                                        "plural",
-                                        e.target.value
-                                    )
-                                }
-                            />
-                        </TD>
                     </tr>
                 ))}
+
             </tbody>
+
         </Table>
     );
-
 }
 
-export default NounFormEditor;
+export default VerbGerundEditor;

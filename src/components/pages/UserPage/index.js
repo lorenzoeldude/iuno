@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { HeroCard } from "../Vocabulary";
 
 const Wrapper = styled.div`
     width: 72%;
@@ -77,21 +78,21 @@ function UserPage() {
 
             <Grid>
 
-                <Card onClick={() => navigate("/user/settings")}>
+                <HeroCard onClick={() => navigate("/user/settings")}>
                     <CardTitle>Account Settings</CardTitle>
 
                     <CardText>
                         Manage your account, authentication and preferences.
                     </CardText>
-                </Card>
+                </HeroCard>
 
-                <Card onClick={() => navigate("/user/list")}>
+                <HeroCard onClick={() => navigate("/user/list")}>
                     <CardTitle>Word List</CardTitle>
 
                     <CardText>
                         View and manage your saved Latin vocabulary.
                     </CardText>
-                </Card>
+                </HeroCard>
 
             </Grid>
 

@@ -2,13 +2,11 @@ import styled from "styled-components";
 
 const Wrapper = styled.div`
     background-color: rgba(178, 178, 178, 0.1);
-    border-radius: 10px;
 `;
 
 const Table = styled.table`
     width: 100%;
     border-collapse: collapse;
-    margin-top: 10px;
 `;
 
 const TH = styled.th`
@@ -72,20 +70,7 @@ function NominalTable({ forms }) {
     return (
         <Wrapper>
         <Table>
-
-            {/* =====================================================
-                HEADER
-            ===================================================== */}
             <thead>
-
-                <tr>
-                    {/* <TH></TH> */}
-
-                    {/* {hasMasculine && <TH colSpan={2}>Masculine</TH>}
-                    {hasFeminine && <TH colSpan={2}>Feminine</TH>}
-                    {hasNeuter && <TH colSpan={2}>Neuter</TH>} */}
-                </tr>
-
                 <tr>
                     <TH></TH>
 
@@ -113,9 +98,6 @@ function NominalTable({ forms }) {
 
             </thead>
 
-            {/* =====================================================
-                BODY
-            ===================================================== */}
             <tbody>
 
                 {CASE_ORDER.map((caseName) => (

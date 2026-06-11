@@ -4,7 +4,6 @@ import { useMemo, useState } from "react";
 const Wrapper = styled.div`
     // width: 100%;
     background-color: rgba(178, 178, 178, 0.1);
-    border-radius: 10px;
     padding: 10px;
 `;
 

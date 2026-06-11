@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import { useState } from "react";
 import NounFormEditor from "../Editors/NounFormEditor";
+import AdjectiveFormEditor from "../Editors/AdjectiveFormEditor";
+import VerbFormEditor from "../Editors/VerbFormEditor";
+import Input from "../../styled/Input";
 
 const Wrapper = styled.div`
     display: flex;
@@ -39,23 +42,6 @@ const Right = styled.div`
 const SectionTitle = styled.h2`
     font-size: 28px;
     margin-bottom: 10px;
-`;
-
-export const Input = styled.input`
-    width: 100%;
-    padding: 12px;
-    font-size: 15px;
-    margin-bottom: 15px;
-    // border: 0.1px solid rgba(190, 190, 190, 0.2);
-    border: none;
-
-    outline: none;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-
-    &:focus {
-        outline: none;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    }
 `;
 
 const Lemma = styled(Input)`
@@ -451,13 +437,30 @@ function AdminLemmaEditor() {
                         <option value="true">irregular</option>
                     </Select>
 
-                    {irregular && isNoun ? (
+                    {!irregular && (
+                        <Note>Morphology automatically created</Note>
+                    )}
+                    
+                    {isNoun && irregular && (
                         <NounFormEditor
                             forms={manualForms}
                             setForms={setManualForms}
+                            gender={gender}
                         />
-                    ): (
-                        <Note>Morphology automatically created</Note>
+                    )}
+                    
+                    {isAdjective && irregular && (
+                        <AdjectiveFormEditor
+                            forms={manualForms}
+                            setForms={setManualForms}
+                        />
+                    )}
+
+                    {isVerb && irregular && (
+                        <VerbFormEditor
+                            forms={manualForms}
+                            setForms={setManualForms}
+                        />
                     )}
 
                 </Right>

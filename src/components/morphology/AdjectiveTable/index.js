@@ -3,7 +3,6 @@ import { useState } from "react";
 
 const Wrapper = styled.div`
     background-color: rgba(178, 178, 178, 0.1);
-    border-radius: 10px;
 `;
 
 const SwitchRow = styled.div`

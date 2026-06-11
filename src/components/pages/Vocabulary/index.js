@@ -14,11 +14,10 @@ const Grid = styled.div`
     gap: 20px;
 `;
 
-const HeroCard = styled.div`
+export const HeroCard = styled.div`
     width: 100%;
     padding: 50px;
     border-radius: 0px;
-    // border: 1px solid rgba(0,0,0,0.08);
     margin-bottom: 20px;
     cursor: pointer;
     transition: 0.15s ease;
@@ -30,6 +29,10 @@ const HeroCard = styled.div`
     &:hover {
         background: rgba(0,0,0,0.03);
         transform: translateY(-2px);
+    }
+
+    &:visited {
+        color: black;
     }
 `;
 

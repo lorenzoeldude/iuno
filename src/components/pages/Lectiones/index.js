@@ -1,4 +1,7 @@
 import styled from "styled-components";
+import { HeroCard } from "../Vocabulary";
+import { useNavigate } from "react-router-dom";
+
 
 const Wrapper = styled.div`
     display:flex;
@@ -54,38 +57,14 @@ const Link = styled.a`
 `;
 
 function Lectiones () {
+    const navigate = useNavigate();
+
     return (
         <Wrapper>
             <Grid>
-                <Link href="/lectiones/1/textus">
-                    <Capitula>
-                        <Title>CAPITVLVM I</Title>
-                    </Capitula>
-                </Link>
-
-                {/* <Link href="/lectiones/1/textus">
-                    <Capitula>
-                        <Title>II</Title>
-                    </Capitula>
-                </Link>
-
-                <Link href="/lectiones/1/textus">
-                    <Capitula>
-                        <Title>III</Title>
-                    </Capitula>
-                </Link>
-
-                <Link href="/lectiones/1/textus">
-                    <Capitula>
-                        <Title>IV</Title>
-                    </Capitula>
-                </Link>
-
-                <Link href="/lectiones/Unus">
-                    <Capitula>
-                        <Title>V</Title>
-                    </Capitula>
-                </Link> */}
+                <HeroCard onClick={() => navigate("/lectiones/1/textus")}>
+                    <Title>CAPITVLVM I</Title>
+                </HeroCard>
             </Grid>
         </Wrapper>
     );
