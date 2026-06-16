@@ -2,14 +2,6 @@ import styled from "styled-components";
 import Searchbar from "../../atoms/Searchbar";
 import { Link, useNavigate } from "react-router-dom";
 
-// const Wrapper = styled.div`
-//     display: flex;
-//     justify-content: space-between;
-//     align-items: center;
-//     padding: 10px 40px;
-//     margin-bottom: 30px;
-// `;
-
 const Wrapper = styled.div`
     position: fixed;
     top: 0;

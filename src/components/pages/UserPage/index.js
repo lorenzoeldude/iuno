@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { HeroCard } from "../Vocabulary";
 
@@ -12,6 +12,17 @@ const Wrapper = styled.div`
 const Title = styled.h1`
     font-size: 52px;
     margin-bottom: 20px;
+`;
+
+const Button = styled.button`
+    padding: 4px 8px;
+    border: 0.5px solid rgba(0,0,0,0.2);
+    background: white;
+    cursor: pointer;
+
+    &:hover {
+        background: #f5f5f5;
+    }
 `;
 
 const Grid = styled.div`
@@ -49,6 +60,16 @@ function UserPage() {
     const navigate = useNavigate();
 
     const [username, setUsername] = useState("User");
+
+    const user = JSON.parse(
+        localStorage.getItem("user")
+    );
+
+    function logout() {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        navigate("/login");
+    }
 
     // =====================================================
     // READ USERNAME FROM LOCAL STORAGE
@@ -96,6 +117,15 @@ function UserPage() {
 
             </Grid>
 
+            {user ? (
+            <Button onClick={logout}>
+                Logout
+            </Button>
+            ) : (
+                <Link to="/login">
+                Login
+            </Link>
+            )}
         </Wrapper>
     );
 }

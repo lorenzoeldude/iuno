@@ -61,30 +61,6 @@ function Litterae () {
                         <Title>Aeneis</Title>
                     </Capitula>
                 </Link>
-
-                {/* <Link href="/lectiones/Unus">
-                    <Capitula>
-                        <Title>II</Title>
-                    </Capitula>
-                </Link>
-
-                <Link href="/lectiones/Unus">
-                    <Capitula>
-                        <Title>III</Title>
-                    </Capitula>
-                </Link>
-
-                <Link href="/lectiones/Unus">
-                    <Capitula>
-                        <Title>IV</Title>
-                    </Capitula>
-                </Link>
-
-                <Link href="/lectiones/Unus">
-                    <Capitula>
-                        <Title>V</Title>
-                    </Capitula>
-                </Link> */}
             </Grid>
         </Wrapper>
     );

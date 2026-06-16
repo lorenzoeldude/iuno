@@ -107,14 +107,6 @@ const SaveButton = styled.button`
     }
 `;
 
-// const Meaning = styled.p`
-//     background-color: rgb(255, 205, 205);
-//     padding: 4px 6px;
-//     border-radius: 0px;
-//     font-size: 20px;
-//     margin-top: 10px;
-// `;
-
 const Meaning = styled.div`
     display: flex;
     flex-wrap: wrap;
