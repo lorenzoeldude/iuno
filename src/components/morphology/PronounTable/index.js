@@ -1,0 +1,217 @@
+import styled from "styled-components";
+
+const Wrapper = styled.div`
+    background-color: rgba(178, 178, 178, 0.1);
+`;
+
+const Table = styled.table`
+    width: 100%;
+    border-collapse: collapse;
+`;
+
+const TH = styled.th`
+    text-align: left;
+    padding: 14px;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    font-size: 17px;
+    font-weight: 600;
+`;
+
+const TD = styled.td`
+    padding: 14px;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    font-size: 21px;
+`;
+
+const CASE_ORDER = [
+    "nominative",
+    "genitive",
+    "dative",
+    "accusative",
+    "ablative",
+    "vocative",
+];
+
+const CASE_LABELS = {
+    nominative: "Nom.",
+    genitive: "Gen.",
+    dative: "Dat.",
+    accusative: "Acc.",
+    ablative: "Abl.",
+    vocative: "Voc.",
+};
+
+function PronounTable({ forms }) {
+    const pronounForms = forms.filter((f) => f.grammatical_case);
+
+    const genders = [
+        ...new Set(
+            pronounForms
+                .map((f) => f.gender)
+                .filter(Boolean)
+        ),
+    ];
+
+    const hasGender = genders.length > 1;
+
+    const hasSingular = pronounForms.some(
+        (f) => f.number === "singular"
+    );
+
+    const hasPlural = pronounForms.some(
+        (f) => f.number === "plural"
+    );
+
+    function getForm(caseName, number, gender = null) {
+        const found = pronounForms.find((form) => {
+            return (
+                form.grammatical_case === caseName &&
+                form.number === number &&
+                (hasGender
+                    ? form.gender === gender
+                    : true)
+            );
+        });
+
+        return found?.form || "—";
+    }
+
+    if (hasGender) {
+        return (
+            <Wrapper>
+                <Table>
+                    <tbody>
+                        {hasSingular && (
+                            <>
+                                <tr>
+                                    <TH>Sing.</TH>
+                                    <TH>Masc.</TH>
+                                    <TH>Fem.</TH>
+                                    <TH>Neut.</TH>
+                                </tr>
+
+                                {CASE_ORDER.map((caseName) => (
+                                    <tr key={`sg-${caseName}`}>
+                                        <TD>
+                                            {CASE_LABELS[caseName]}
+                                        </TD>
+
+                                        <TD>
+                                            {getForm(
+                                                caseName,
+                                                "singular",
+                                                "masculine"
+                                            )}
+                                        </TD>
+
+                                        <TD>
+                                            {getForm(
+                                                caseName,
+                                                "singular",
+                                                "feminine"
+                                            )}
+                                        </TD>
+
+                                        <TD>
+                                            {getForm(
+                                                caseName,
+                                                "singular",
+                                                "neuter"
+                                            )}
+                                        </TD>
+                                    </tr>
+                                ))}
+                            </>
+                        )}
+
+                        {hasPlural && (
+                            <>
+                                <tr>
+                                    <TH>Plur.</TH>
+                                    <TH>Masc.</TH>
+                                    <TH>Fem.</TH>
+                                    <TH>Neut.</TH>
+                                </tr>
+
+                                {CASE_ORDER.map((caseName) => (
+                                    <tr key={`pl-${caseName}`}>
+                                        <TD>
+                                            {CASE_LABELS[caseName]}
+                                        </TD>
+
+                                        <TD>
+                                            {getForm(
+                                                caseName,
+                                                "plural",
+                                                "masculine"
+                                            )}
+                                        </TD>
+
+                                        <TD>
+                                            {getForm(
+                                                caseName,
+                                                "plural",
+                                                "feminine"
+                                            )}
+                                        </TD>
+
+                                        <TD>
+                                            {getForm(
+                                                caseName,
+                                                "plural",
+                                                "neuter"
+                                            )}
+                                        </TD>
+                                    </tr>
+                                ))}
+                            </>
+                        )}
+                    </tbody>
+                </Table>
+            </Wrapper>
+        );
+    }
+
+    return (
+        <Wrapper>
+            <Table>
+                <thead>
+                    <tr>
+                        <TH></TH>
+
+                        {hasSingular && <TH>Sing.</TH>}
+                        {hasPlural && <TH>Plur.</TH>}
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {CASE_ORDER.map((caseName) => (
+                        <tr key={caseName}>
+                            <TD>{CASE_LABELS[caseName]}</TD>
+
+                            {hasSingular && (
+                                <TD>
+                                    {getForm(
+                                        caseName,
+                                        "singular"
+                                    )}
+                                </TD>
+                            )}
+
+                            {hasPlural && (
+                                <TD>
+                                    {getForm(
+                                        caseName,
+                                        "plural"
+                                    )}
+                                </TD>
+                            )}
+                        </tr>
+                    ))}
+                </tbody>
+            </Table>
+        </Wrapper>
+    );
+}
+
+export default PronounTable;

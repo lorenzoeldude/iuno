@@ -7,6 +7,7 @@ import { FaCheckCircle } from "react-icons/fa";
 import NominalTable from "../../morphology/NominalTable";
 import VerbTable from "../../morphology/VerbTable.js";
 import AdjectiveTable from "../../morphology/AdjectiveTable/index.js";
+import PronounTable from "../../morphology/PronounTable/index.js";
 
 // ===================== styles =====================
 
@@ -106,13 +107,24 @@ const SaveButton = styled.button`
     }
 `;
 
-const Meaning = styled.p`
-    background-color: rgb(255, 205, 205);
-    padding: 4px 6px;
-    border-radius: 0px;
+// const Meaning = styled.p`
+//     background-color: rgb(255, 205, 205);
+//     padding: 4px 6px;
+//     border-radius: 0px;
+//     font-size: 20px;
+//     margin-top: 10px;
+// `;
+
+const Meaning = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+`;
+
+const MeaningItem = styled.span`
+    background: rgb(255, 205, 205);
     font-size: 20px;
-    margin-top: 10px;
-    // line-height: 1.6;
+    padding: 4px 8px;
 `;
 
 const Meta = styled.div`
@@ -311,14 +323,17 @@ function Verbum() {
         }
 
         if (
-            wordInfo.part_of_speech === "noun" ||
-            wordInfo.part_of_speech === "pronoun"
+            wordInfo.part_of_speech === "noun"
         ) {
             return <NominalTable forms={wordData.forms} />;
         }
 
         if (wordInfo.part_of_speech === "adjective") {
             return <AdjectiveTable forms={wordData.forms} />;
+        }
+
+        if (wordInfo.part_of_speech === "pronoun") {
+            return <PronounTable forms={wordData.forms} />;
         }
 
         return (
@@ -350,6 +365,13 @@ function Verbum() {
                                 <BigWord>{wordInfo.lemma}</BigWord>, {wordInfo.genitive}
                             </Headline>
                         )}
+
+                        {(wordInfo.part_of_speech === "pronoun" || wordInfo.part_of_speech === "preposition" || wordInfo.part_of_speech === "conjunction") && (
+                            <Headline>
+                                <BigWord>{wordInfo.lemma}</BigWord>
+                            </Headline>
+                        )}
+                        
                     </WordHeader>
 
                     <SaveButton
@@ -361,13 +383,16 @@ function Verbum() {
 
                 </FirstLine>
                 <Meaning>
-                            {wordData.meanings?.map((m, index) => (
-                                <span key={m.id}>
-                                    {m.meaning}
-                                    {index < wordData.meanings.length - 1 ? " · " : ""}
-                                </span>
-                            ))}
-                        </Meaning>
+                    {wordData.meanings?.map((m, index) => (
+                        <>
+                            <MeaningItem key={m.id}>
+                                {m.governs_case ? `+${m.governs_case}: ` : ""}
+                                {m.meaning}
+                            </MeaningItem>
+                            {index < wordData.meanings.length - 1 ? " · " : ""}
+                        </>
+                    ))}
+                </Meaning>
                 <Meta>
                     <Tag>{wordInfo.part_of_speech}</Tag>
 
@@ -396,11 +421,6 @@ function Verbum() {
                     {wordInfo.conjugation > 0 && (
                         <Tag>{wordInfo.conjugation}. conjugation</Tag>
                     )}
-                    {/* {wordInfo.is_irregular ? (
-                        <Tag>irregular</Tag>
-                    ) : (
-                        <Tag>regular</Tag>
-                    )} */}
                 </Meta>
             </HeaderDiv>
 

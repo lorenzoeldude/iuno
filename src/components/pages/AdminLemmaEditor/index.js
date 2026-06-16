@@ -4,6 +4,7 @@ import NounFormEditor from "../Editors/NounFormEditor";
 import AdjectiveFormEditor from "../Editors/AdjectiveFormEditor";
 import VerbFormEditor from "../Editors/VerbFormEditor";
 import Input from "../../styled/Input";
+import PronounFormEditor from "../Editors/PronounFormEditor";
 
 const Wrapper = styled.div`
     display: flex;
@@ -156,11 +157,17 @@ function AdminLemmaEditor() {
     const isVerb = partOfSpeech === "verb";
     const isAdjective = partOfSpeech === "adjective";
     const isNoun = partOfSpeech === "noun";
-    // const isPronoun = partOfSpeech === "pronoun";
+    const isPronoun = partOfSpeech === "pronoun";
+
+    const [pronounType, setPronounType] = useState("");
 
     const [manualForms, setManualForms] = useState([]);
 
+    const supportsMorphology = isNoun || isAdjective || isVerb || isPronoun;
+
     console.log("manual forms: ", manualForms);
+
+    console.log("pronounType: ", pronounType, isPronoun)
 
     async function handleSubmit() {
         setLoading(true);
@@ -195,6 +202,7 @@ function AdminLemmaEditor() {
 
                         feminine: isAdjective ? feminine : "",
                         neuter: isAdjective ? neuter : "",
+                        pronoun_type: isPronoun ? pronounType : "",
                     },
 
                     manual_forms: manualForms,
@@ -202,9 +210,19 @@ function AdminLemmaEditor() {
                     examples: [example1, example2, example3],
 
                     meanings: meaningsText
-                        .split(",")
-                        .map(m => m.trim())
-                        .filter(Boolean),
+                        .split(";")
+                        .map(line => line.trim())
+                        .filter(Boolean)
+                        .map(line => {
+                            const [governsCase, translation] = line.split("|");
+
+                            return {
+                                meaning: (translation ?? governsCase).trim(),
+                                governs_case: translation
+                                    ? governsCase.trim()
+                                    : null,
+                            };
+                        }),
                     
                     definitions: definitions
                         .split("\n")
@@ -255,6 +273,21 @@ function AdminLemmaEditor() {
                 <option value="preposition">preposition</option>
                 <option value="conjunction">conjunction</option>
             </Select>
+
+            {isPronoun && (
+                <Select
+                    value={pronounType}
+                    onChange={(e) => setPronounType(e.target.value)}
+                >
+                    <option value="personal">personal</option>
+                    <option value="reflexive">reflexive</option>
+                    <option value="demonstrative">demonstrative</option>
+                    <option value="relative">relative</option>
+                    <option value="interrogative">interrogative</option>
+                    <option value="indefinite">indefinite</option>
+                    <option value="possessive">possessive</option>
+                </Select>
+            )}
 
 
             {/* GENDER (NOUNS ONLY) */}
@@ -390,7 +423,9 @@ function AdminLemmaEditor() {
                 <Left>
                     <SectionTitle>Translation</SectionTitle>
                     <TextArea
-                        placeholder="meanings (comma separated)"
+                        placeholder={`|and
+                    ablative|with
+                    accusative|to, toward`}
                         value={meaningsText}
                         onChange={(e) => setMeaningsText(e.target.value)}
                     />
@@ -426,6 +461,8 @@ function AdminLemmaEditor() {
                         onChange={(e) => setDerivatives(e.target.value)}
                     />
                 </Left>
+
+                {supportsMorphology && (
 
                 <Right>
                     <SectionTitle>Morphology</SectionTitle>
@@ -463,7 +500,18 @@ function AdminLemmaEditor() {
                         />
                     )}
 
+                    {isPronoun && irregular && (
+                        <PronounFormEditor
+                            forms={manualForms}
+                            setForms={setManualForms}
+                            pronounType={pronounType}
+                        />
+                    )}
+
+                
+
                 </Right>
+                )}
             </BelowDiv>
 
             <Row>
