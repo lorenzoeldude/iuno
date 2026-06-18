@@ -1,8 +1,11 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Capitula } from "../Lectiones";
+import { useNavigate } from "react-router-dom";
+
+import { HeroCard } from "../Vocabulary";
 
 const Wrapper = styled.div`
-    display:flex;
+    display: flex;
     width: 100%;
     justify-content: center;
 `;
@@ -13,54 +16,54 @@ const Grid = styled.div`
     gap: 20px;
 `;
 
-// const Capitula = styled.div`
-//     display: flex;
-//     align-items: center; 
-//     justify-content: center; 
-//     height: 200px;
-//     width: 500px;
-//     margin: 0px 0;
-//     background-color: #ffffff;
-//     // border: 0.5px solid black;
-//     text-decoration: none;
-//     color: black;
-
-//     &:visited {
-//         color: black;
-//         text-decoration: none;
-//     }
-
-//     &:hover {
-//         background-color: #2e2e2e;
-//         color: white;
-//     }
-
-//     &:active {
-//         color: black;
-//     }
-// `;
-
 const Title = styled.h1`
     font-family: "Cormorant Garamond", serif;
     font-optical-sizing: auto;
     font-weight: 500;
     font-style: normal;
     font-size: 60px;
+    margin: 0;
 `;
 
-const Link = styled.a`
-    text-decoration: none;
+const Author = styled.div`
+    opacity: 0.7;
 `;
 
-function Litterae () {
+function Litterae() {
+    const navigate = useNavigate();
+
+    const [texts, setTexts] = useState([]);
+
+    useEffect(() => {
+
+        fetch("http://localhost:8080/api/texts")
+            .then(res => {
+                console.log("status", res.status);
+                return res.json();
+            })
+            .then(data => {
+                console.log("texts", data);
+                setTexts(data);
+            })
+            .catch(err => {
+                console.error(err);
+            });
+
+    }, []);
+    // console.log("texts: ", texts);
+
     return (
         <Wrapper>
             <Grid>
-                <Link href="/litterae/aeneis">
-                    <Capitula>
-                        <Title>Aeneis</Title>
-                    </Capitula>
-                </Link>
+                {texts.map(text => (
+                    <HeroCard
+                        key={text.id}
+                        onClick={() => navigate(`/litterae/${text.author}/${text.title}/1`)}
+                    >
+                        <Title>{text.title}</Title>
+                        <Author>{text.author}</Author>
+                    </HeroCard>
+                ))}
             </Grid>
         </Wrapper>
     );

@@ -1,9 +1,12 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import ProgressBar from "../../atoms/ProgressBar";
 import ArrowButton from "../../atoms/ArrowButton";
 import LessonLayout from "../../layout/LessonLayout";
+import ClickableText from "../../atoms/ClickableText";
+import DictionaryPopup from "../../atoms/DictionaryPopup";
+import useDictionaryLookup from "../../../hooks/useDictionaryLookups";
 
 const Wrapper = styled.div`
     display: flex;
@@ -130,11 +133,20 @@ function Textus () {
         };
     }
 
+    const wrapperRef = useRef(null);
+
+    const {
+        popup,
+        entry,
+        lookupWord,
+        closePopup,
+    } = useDictionaryLookup();
+
     const progress = (index / (sentences.length - 1)) * 100;
 
     return (
         <LessonLayout active={"textus"}>
-            <UnderWrapper>
+            <UnderWrapper ref={wrapperRef}>
                 <Title>CAPITVLVM VNVM</Title>
 
                 <ProgressBar progress={progress} />
@@ -148,7 +160,14 @@ function Textus () {
                 <TextDiv>
                     {
                     (progress == 0) ? (
-                        <FirstText>{sentences[index]}</FirstText>
+                        <FirstText>
+                            <ClickableText
+                                text={sentences[index]}
+                                onWordClick={(word, e) =>
+                                    lookupWord(word, e, wrapperRef)
+                                }
+                            />
+                        </FirstText>
                     ) : (
                         <>
                             <Text>
@@ -156,7 +175,11 @@ function Textus () {
                                     sentence.trim() && (
                                         <>
                                         <p key={index}>
-                                        {sentence}
+                                            <ClickableText 
+                                                text={sentence} 
+                                                onWordClick={(word, e) =>
+                                                lookupWord(word, e, wrapperRef)
+                                            }/>
                                         </p>
                                         <br/>
                                         </>
@@ -166,6 +189,11 @@ function Textus () {
                         </>
                     )
                 }
+                <DictionaryPopup
+                    popup={popup}
+                    entry={entry}
+                    onClose={closePopup}
+                />
                 </TextDiv>
             </UnderWrapper>
 

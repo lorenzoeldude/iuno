@@ -66,7 +66,7 @@ function AppContent() {
             <Route path="/lectiones/1/textus" element={<Textus />} />
             <Route path="/quiz" element={<Quiz />} />
             <Route path="/litterae" element={<Litterae />} />
-            <Route path="/litterae/aeneis" element={<Aeneis />} />
+            <Route path="/litterae/:author/:title/:position" element={<Aeneis />}/>
             <Route path="/lectiones/1/grammatica" element={<Grammatica />} />
             <Route path="/lectiones/1/vocabula" element={<Vocabula />} />
             <Route path="/lectiones/1/examinatio" element={<Examinatio />} />

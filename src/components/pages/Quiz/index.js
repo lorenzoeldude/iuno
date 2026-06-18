@@ -111,7 +111,7 @@ function Quiz() {
             <Text>Lux <Blank >{answer === correctWord ? answer : ""}</Blank> noctem argenteam facit.</Text>
 
         </Wrapper>
-            <Navigatio />
+            {/* <Navigatio /> */}
         </Outer>
     );
 }

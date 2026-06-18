@@ -55,8 +55,8 @@ function Sidebar () {
             {/* <Line /> */}
             <List>
                 <ListItem><Link href="/lectiones"><FaBook /></Link></ListItem>
-                <ListItem><Link href="/vocabulary"><FaBookOpen /></Link></ListItem>
-                <ListItem><Link href="/litterae"><FaList /></Link></ListItem>
+                <ListItem><Link href="/vocabulary"><FaList /></Link></ListItem>
+                <ListItem><Link href="/litterae"><FaBookOpen /></Link></ListItem>
                 <ListItem><Link href="/user"><FaUserCircle /></Link></ListItem>
             </List>
         </Wrapper>
