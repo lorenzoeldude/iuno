@@ -3,7 +3,7 @@ import Navigatio from "../../molecules/Navigatio";
 
 const Wrapper = styled.div`
     display: flex;
-    width: 90%;
+    width: 80%;
     justify-content: space-between;
 `;
 
@@ -11,7 +11,7 @@ const ContentWrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 0 100px;
+    margin-right: 0px;
     width: 100%;
 `;
 

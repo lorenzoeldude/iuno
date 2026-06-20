@@ -8,7 +8,7 @@ import Lectiones from './../../../components/pages/Lectiones';
 import Footer from './../../../components/molecules/footer';
 import Quiz from './../../../components/pages/Quiz';
 import Litterae from './../../../components/pages/Litterae';
-import Aeneis from './../../../components/pages/Aeneis';
+import TextSection from '../../pages/TextSection';
 import Grammatica from './../../../components/pages/Grammatica';
 import Vocabula from './../../../components/pages/Vocabula';
 import Examinatio from './../../../components/pages/Examinatio';
@@ -22,6 +22,7 @@ import ListTrainer from "../../pages/ListTrainer";
 import UserPage from "../../pages/UserPage";
 import UserSettings from "../../pages/UserSettings";
 import Vocabulary from "../../pages/Vocabulary";
+import Text from "../../pages/Text";
 
 const Body = styled.div`
   display: flex;
@@ -65,8 +66,9 @@ function AppContent() {
             <Route path="/lectiones" element={<Lectiones />} />
             <Route path="/lectiones/1/textus" element={<Textus />} />
             <Route path="/quiz" element={<Quiz />} />
-            <Route path="/litterae" element={<Litterae />} />
-            <Route path="/litterae/:author/:title/:position" element={<Aeneis />}/>
+            <Route path="/read" element={<Litterae />} />
+            <Route path="/read/:author/:title" element={<Text />}/>
+            <Route path="/read/:author/:title/:position" element={<TextSection />}/>
             <Route path="/lectiones/1/grammatica" element={<Grammatica />} />
             <Route path="/lectiones/1/vocabula" element={<Vocabula />} />
             <Route path="/lectiones/1/examinatio" element={<Examinatio />} />

@@ -21,6 +21,7 @@ const UnderWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     min-height: 400px;
+    position: relative;
 `;
 
 const ContentDiv = styled.div`

@@ -15,39 +15,18 @@ const Button = styled.div`
     font-size: 30px;
     color: white;
     cursor: pointer;
-    border: 2px solid #212121;
+    border: 2px solid white;
 
     background-color: ${(props) => {
         if (props.state === 1) return "green";
         if (props.state === 2) return "red";
-        return "#212121";
+        return "#2f2f2f";
     }};
 
     &:hover {
-        border: 2px solid #d9d9d9;
+        border: 2px solid #2f2f2f;
     }
 `;
-
-// const Button = styled.a`
-//     margin: 30px 10px;
-//     padding: 12px 24px;
-//     border: 1px solid black;
-//     text-decoration: none;
-//     color: black;
-//     font-size: 20px;
-//     letter-spacing: 2px;
-//     transition: all 0.2s ease;
-
-//     background-color: ${(props) => {
-//         if (props.state === 1) return "green";
-//         if (props.state === 2) return "red";
-//         return "#ffffff";
-//     }};
-
-//     &:hover {
-//         color: white;
-//     }
-// `;
 
 function AnswerButton({
     children,

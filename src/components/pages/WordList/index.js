@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
-    width: 72%;
+    width: 40%;
     margin: 0 auto;
     padding: 20px 0;
 `;
@@ -11,18 +11,17 @@ const Wrapper = styled.div`
 const Title = styled.h1`
     font-size: 35px;
     margin-bottom: 30px;
+    text-align: center;
 `;
 
 const List = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 5px;
 `;
 
 const Item = styled.div`
-    padding: 18px 20px;
-    border: 1px solid rgba(0,0,0,0.1);
-    border-radius: 12px;
+    padding: 10px 20px;
     cursor: pointer;
     transition: 0.15s ease;
 
@@ -45,7 +44,7 @@ const Left = styled.div`
 `;
 
 const Lemma = styled.div`
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 600;
 `;
 

@@ -114,7 +114,7 @@ function Vocabulary() {
 
             <Grid>
 
-                <Card onClick={() => navigate("/listtrainer")}>
+                {/* <Card onClick={() => navigate("/listtrainer")}>
 
                     <CardTitle>
                         Vocabulary
@@ -124,12 +124,12 @@ function Vocabulary() {
                         Train the words from your vocabulary list.
                     </CardText>
 
-                </Card>
+                </Card> */}
 
                 <Card onClick={() => navigate("/trainer")}>
 
                     <CardTitle>
-                        Random
+                        Train Words
                     </CardTitle>
 
                     <CardText>

@@ -234,9 +234,9 @@ function Examinatio() {
 
             <ProgressBar progress={progress} />
 
-            <Title>
+            {/* <Title>
                 Exāminātiō
-            </Title>
+            </Title> */}
 
             <Question>
 

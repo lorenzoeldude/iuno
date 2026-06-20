@@ -1,8 +1,14 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
 import { FaCheckCircle } from "react-icons/fa";
+
+import { useRef } from "react";
+
+import ClickableText from "../../atoms/ClickableText";
+import DictionaryPopup from "../../atoms/DictionaryPopup";
+import useDictionaryLookup from "../../../hooks/useDictionaryLookups";
+
 
 import NominalTable from "../../morphology/NominalTable";
 import VerbTable from "../../morphology/VerbTable.js";
@@ -18,6 +24,7 @@ const Wrapper = styled.div`
     width: 85%;
     margin: 0 auto;
     padding-top: 0px;
+    position: relative;
 `;
 
 const Content = styled.div`
@@ -167,6 +174,14 @@ const Loading = styled.p`
 // ===================== component =====================
 
 function Verbum() {
+    const wrapperRef = useRef(null);
+
+    const {
+        popup,
+        entry,
+        lookupWord,
+        closePopup,
+    } = useDictionaryLookup();
 
     const { word } = useParams();
 
@@ -336,7 +351,7 @@ function Verbum() {
     }
 
     return (
-        <Wrapper>
+        <Wrapper ref={wrapperRef}>
             <HeaderDiv>
                 <FirstLine>
                     <WordHeader>
@@ -358,7 +373,7 @@ function Verbum() {
                             </Headline>
                         )}
 
-                        {(wordInfo.part_of_speech === "pronoun" || wordInfo.part_of_speech === "preposition" || wordInfo.part_of_speech === "conjunction") && (
+                        {(wordInfo.part_of_speech === "pronoun" || wordInfo.part_of_speech === "preposition" || wordInfo.part_of_speech === "conjunction" || wordInfo.part_of_speech === "adverb") && (
                             <Headline>
                                 <BigWord>{wordInfo.lemma}</BigWord>
                             </Headline>
@@ -423,7 +438,16 @@ function Verbum() {
                     <Section>
                         <SectionTitle>Definition</SectionTitle>
                         <Definition>
-                            {wordData.definitions?.[0]?.definition || ""}
+                            <ClickableText
+                                text={wordData.definitions?.[0]?.definition || ""}
+                                onWordClick={(word, e) =>
+                                    lookupWord(
+                                        word,
+                                        e,
+                                        wrapperRef,
+                                    )
+                                }
+                            />
                         </Definition>
                     </Section>
 
@@ -432,7 +456,17 @@ function Verbum() {
                             <SectionTitle>Examples</SectionTitle>
                             {wordData.examples.map((example) => (
                                 <Example key={example.id}>
-                                    - {example.latin}
+                                    -{" "}
+                                    <ClickableText
+                                        text={example.latin}
+                                        onWordClick={(word, e) =>
+                                            lookupWord(
+                                                word,
+                                                e,
+                                                wrapperRef,
+                                            )
+                                        }
+                                    />
                                 </Example>
                             ))}
                         </Section>
@@ -458,6 +492,11 @@ function Verbum() {
                     </Section>
                 </Sidebar>
             </Content>
+            <DictionaryPopup
+                popup={popup}
+                entry={entry}
+                onClose={closePopup}
+            />
         </Wrapper>
     );
 }
