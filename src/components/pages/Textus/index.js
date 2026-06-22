@@ -8,13 +8,6 @@ import ClickableText from "../../atoms/ClickableText";
 import DictionaryPopup from "../../atoms/DictionaryPopup";
 import useDictionaryLookup from "../../../hooks/useDictionaryLookups";
 
-const Wrapper = styled.div`
-    display: flex;
-    // background-color: grey;
-    width: 90%;
-    justify-content: space-between;
-`;
-
 const UnderWrapper = styled.div`
     display: flex;
     width: 90%;
@@ -22,11 +15,6 @@ const UnderWrapper = styled.div`
     align-items: center;
     min-height: 400px;
     position: relative;
-`;
-
-const ContentDiv = styled.div`
-    margin: 0 100px;
-    width: 100%;
 `;
 
 const ArrowDiv = styled.div`
@@ -46,24 +34,6 @@ const Head = styled.div`
     // border: 0.3px solid black;
 `;
 
-const Title = styled.h1`
-    font-family: "Cormorant Garamond", serif;
-    font-optical-sizing: auto;
-    font-weight: 800;
-    font-style: normal;
-    font-size: 30px;
-    text-decoration: underline;
-`;
-
-const Title2 = styled.h2`
-    font-family: "Cormorant Garamond", serif;
-    font-optical-sizing: auto;
-    font-weight: 500;
-    font-style: normal;
-    font-size: 20px;
-    text-decoration: underline;
-`;
-
 const FirstText = styled.p`
     font-size: 35px;
 
@@ -79,7 +49,7 @@ const Text = styled.p`
 `;
 
 const Image = styled.img`
-    width: 400px;
+    width: 50%;
     height: auto;
     margin-bottom: 20px 0;
 `;
@@ -148,8 +118,6 @@ function Textus () {
     return (
         <LessonLayout active={"textus"}>
             <UnderWrapper ref={wrapperRef}>
-                <Title>CAPITVLVM VNVM</Title>
-
                 <ProgressBar progress={progress} />
 
                 <Head>

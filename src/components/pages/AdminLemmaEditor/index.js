@@ -169,6 +169,62 @@ function AdminLemmaEditor() {
 
     console.log("pronounType: ", pronounType, isPronoun)
 
+    async function loadLemma() {
+        const res = await fetch(
+            `http://localhost:8080/api/word/${lemma}`
+        );
+
+        if (!res.ok) {
+            setStatus("Lemma not found");
+            return;
+        }
+
+        const data = await res.json();
+
+        setPartOfSpeech(data.lemma.part_of_speech);
+        setGender(data.lemma.gender || "");
+        setDeclension(data.lemma.declension || "");
+        setConjugation(data.lemma.conjugation || "");
+
+        setGenitive(data.lemma.genitive || "");
+        setPerfect(data.lemma.perfect || "");
+        setSupine(data.lemma.supine || "");
+        setInfinitive(data.lemma.infinitive || "");
+
+        setFeminine(data.lemma.feminine || "");
+        setNeuter(data.lemma.neuter || "");
+
+        setIrregular(data.lemma.irregular);
+
+        setManualForms(data.forms);
+
+        setMeaningsText(
+            data.meanings
+                .map(m =>
+                    m.governs_case
+                        ? `${m.governs_case}|${m.meaning}`
+                        : m.meaning
+                )
+                .join(";")
+        );
+
+        setDefinitions(
+            data.definitions
+                .map(d => d.definition)
+                .join("\n")
+        );
+
+        setDerivatives(
+            data.derivatives
+                .map(d => d.derivative)
+                .join(", ")
+        );
+
+        setExample1(data.examples[0]?.latin || "");
+        setExample2(data.examples[1]?.latin || "");
+        setExample3(data.examples[2]?.latin || "");
+    }
+
     async function handleSubmit() {
         setLoading(true);
         setStatus("");
@@ -258,6 +314,7 @@ function AdminLemmaEditor() {
                 placeholder="lemma"
                 value={lemma}
                 onChange={(e) => setLemma(e.target.value)}
+                onBlur={() => loadLemma(lemma)}
             />
 
             <Select

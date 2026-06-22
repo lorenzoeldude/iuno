@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
     position: relative;
-    width: 220px;
+    width: 100%;
+    max-width: 350px;
 `;
 
 const Input = styled.input`
@@ -14,7 +15,6 @@ const Input = styled.input`
     border: 0.1px solid #eaeaea;
     border-radius: 0px;
     text-align: center;
-    // opacity: 0%;
 `;
 
 const Dropdown = styled.div`

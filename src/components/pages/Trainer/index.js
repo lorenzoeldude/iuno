@@ -9,18 +9,19 @@ import DictionaryPopup from "../../atoms/DictionaryPopup";
 import useDictionaryLookup from "../../../hooks/useDictionaryLookups";
 
 const Page = styled.div`
-    width: 80%;
+    width: 70%;
     display: flex;
-    justify-content: center;
-    gap: 100px;
+    justify-content: space-between;
     align-items: center;
+    // gap: 100px;
     padding-top: 80px;
     position: relative;
+    // border: 1px solid black;
 `;
 
 const InfoPanel = styled.div`
     padding: 25px;
-    min-width: 300px;
+    // border: 1px solid red;
 
     opacity: ${(props) => (props.visible ? 1 : 0)};
     transform: ${(props) =>
@@ -59,6 +60,8 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    // border: 1px solid green;
+    margin-right: 100px;
 `;
 
 const Verbum = styled.p`

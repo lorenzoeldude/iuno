@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useRef } from "react";
 
 const Popup = styled.div`
     position: absolute;
@@ -39,6 +40,27 @@ function normalizeLatin(word) {
 
 function DictionaryPopup({ popup, entry, onClose }) {
     const navigate = useNavigate();
+    const popupRef = useRef(null);
+
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (
+                popupRef.current &&
+                !popupRef.current.contains(event.target)
+            ) {
+                onClose();
+            }
+        }
+
+        document.addEventListener("click", handleClickOutside);
+
+        return () => {
+            document.removeEventListener(
+                "click",
+                handleClickOutside
+            );
+        };
+    }, [onClose]);
 
     if (!popup) {
         return null;
@@ -46,6 +68,7 @@ function DictionaryPopup({ popup, entry, onClose }) {
 
     return (
         <Popup
+            ref={popupRef}
             style={{
                 left: popup.x,
                 top: popup.y,

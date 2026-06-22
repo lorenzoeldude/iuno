@@ -3,6 +3,7 @@ import Navigatio from "../../molecules/Navigatio";
 
 const Wrapper = styled.div`
     display: flex;
+    flex-direction: column;
     width: 80%;
     justify-content: space-between;
 `;
@@ -20,11 +21,12 @@ function LessonLayout({ children, active }) {
     return (
         <Wrapper>
 
+            <Navigatio active={active} />
+
             <ContentWrapper>
                 {children}
             </ContentWrapper>
 
-            <Navigatio active={active} />
 
         </Wrapper>
     );

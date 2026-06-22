@@ -41,7 +41,8 @@ const Content = styled.div`
   font-size: 25px;
   margin-left: 0%;
   justify-content: center;
-  padding-top: 70px;
+  
+  padding-top: ${({ isStartPage }) => isStartPage ? "0" : "70px"};
 `;
 
 function AppContent() {
@@ -56,7 +57,7 @@ function AppContent() {
       <Body>
         {!isStartPage && <Sidebar />}
 
-        <Content>
+        <Content isStartPage={isStartPage}>
           <Routes>
             <Route path="/" element={<StartPage />} />
             <Route path="/admin" element={<AdminLemmaEditor />} />

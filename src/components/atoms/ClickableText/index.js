@@ -25,7 +25,10 @@ function ClickableText({ text, onWordClick }) {
         return (
             <Word
                 key={index}
-                onClick={(e) => onWordClick(cleanWord, e)}
+                onClick={(e) => {
+                    e.stopPropagation();
+                    onWordClick(cleanWord, e);
+                }}
             >
                 {token}
             </Word>

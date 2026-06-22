@@ -13,7 +13,7 @@ const fadeIn = keyframes`
 `;
 
 const Wrapper = styled.div`
-    height: 100vh;
+    min-height: 100vh;
     width: 100%;
 
     display: flex;
@@ -23,13 +23,26 @@ const Wrapper = styled.div`
 
     text-align: center;
 
+    padding: 40px 20px;
+    box-sizing: border-box;
+
     animation: ${fadeIn} 1.5s ease-out;
 `;
 
 const BlockDiv = styled.div`
-    display: flex;
-    gap: 18px;
+    width: 100%;
+    max-width: 1200px;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 20px;
+
     margin-top: 35px;
+
+    @media (max-width: 900px) {
+        grid-template-columns: 1fr;
+    }
 `;
 
 const Title = styled.h1`
@@ -37,24 +50,31 @@ const Title = styled.h1`
     font-size: 60px;
     letter-spacing: 8px;
     margin: 0;
+
+    @media (max-width: 600px) {
+        font-size: 45px;
+        letter-spacing: 5px;
+    }
 `;
 
 const Subtitle = styled.p`
     font-size: 18px;
     opacity: 0.7;
-    // margin-top: 10px;
+
     max-width: 550px;
+
     line-height: 1.7;
+
+    margin: 10px 0;
 `;
 
 const Card = styled.a`
-    width: 240px;
-    min-height: 180px;
+    min-height: 220px;
 
-    padding: 28px;
+    padding: 80px;
 
-    border: 1px solid rgba(0,0,0,0.1);
-    border-radius: 22px;
+    background: white;
+    border: 1px solid #e6e1d8;
 
     text-decoration: none;
     color: black;
@@ -63,44 +83,81 @@ const Card = styled.a`
     flex-direction: column;
     justify-content: center;
 
-    transition: all 0.2s ease;
+    transition: all 0.25s ease;
+
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        width: 100%;
+        height: 3px;
+
+        background: #b89b5e;
+
+        transform: scaleX(0);
+        transform-origin: left;
+
+        transition: transform 0.25s ease;
+    }
 
     &:hover {
-        background: black;
-        color: white;
-        transform: translateY(-2px);
+        transform: translateY(-4px);
+
+        border-color: #b89b5e;
+
+        box-shadow:
+            0 10px 25px rgba(0, 0, 0, 0.08);
+
+        color: black;
+    }
+
+    &:hover::before {
+        transform: scaleX(1);
     }
 `;
 
 const CardTitle = styled.h2`
     font-size: 30px;
-    margin-bottom: 0px;
+    margin: 0 0 10px 0;
 `;
 
 const CardText = styled.p`
-    font-size: 16px;
+    font-size: 20px;
     line-height: 1.6;
     opacity: 0.75;
 `;
 
 const StyledSearch = styled(Searchbar)`
-    height: 40px;
-    width: 200px;
+    height: 50px;
+    width: 300px;
+
+    border: 1px solid #e6e1d8;
+
     text-align: center;
-    margin: 30px 0;
+
+    margin: 20px 0;
 `;
+
 
 function StartPage() {
 
     return (
         <Wrapper>
 
-            <Title>IUNO</Title>
+            <Title>
+                IUNO
+            </Title>
 
-            <Subtitle>Learn Latin now</Subtitle>
+            <Subtitle>
+                Learn Latin now
+            </Subtitle>
 
             <StyledSearch />
-
 
             <BlockDiv>
 
@@ -111,10 +168,11 @@ function StartPage() {
                     </CardTitle>
 
                     <CardText>
-                        Learn Latin by reading guided lessons.
+                        Learn Latin by reading through our guided lessons.
                     </CardText>
 
                 </Card>
+
 
                 <Card href="/vocabulary">
 
@@ -123,23 +181,23 @@ function StartPage() {
                     </CardTitle>
 
                     <CardText>
-                        Train your vocabulary and create word lists.
+                        Train your vocabulary and create word lists. 
                     </CardText>
 
                 </Card>
 
-                <Card href="/dictionary/urbs">
+
+                <Card href="/read">
 
                     <CardTitle>
-                        Grammar
+                        Read
                     </CardTitle>
 
                     <CardText>
-                        Practice Latin grammar interactively.
+                        Read texts from beginner to the Aeneid, and lookup words on the spot.
                     </CardText>
 
                 </Card>
-
 
             </BlockDiv>
 
