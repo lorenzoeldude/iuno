@@ -16,7 +16,7 @@ const StyledCard = styled.a`
     background: white;
     border: 1px solid #e6e1d8;
 
-    margin-bottom: 10px;
+    margin: 5px 0;
 
     text-decoration: none;
     color: black;

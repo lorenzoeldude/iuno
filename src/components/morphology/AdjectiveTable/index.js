@@ -43,6 +43,11 @@ const TD = styled.td`
     padding: 14px;
     border-bottom: 1px solid rgba(0,0,0,0.06);
     font-size: 21px;
+
+    &.highlight {
+        background-color: rgba(255, 215, 0, 0.4);
+        font-weight: bold;
+    }
 `;
 
 const CASE_ORDER = [
@@ -63,7 +68,28 @@ const CASE_LABELS = {
     vocative: "Voc.",
 };
 
-function AdjectiveTable({ forms }) {
+function FormCell({ form, highlightedForm }) {
+
+    function normalizeLatin(word) {
+        return word
+            ?.normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .toLowerCase();
+    }
+
+    const highlighted =
+        highlightedForm &&
+        normalizeLatin(form?.form) ===
+        normalizeLatin(highlightedForm);
+
+    return (
+        <TD className={highlighted ? "highlight" : ""}>
+            {form?.form || "—"}
+        </TD>
+    );
+}
+
+function AdjectiveTable({ forms, highlightedForm }) {
 
     const [degree, setDegree] = useState("positive");
 
@@ -80,7 +106,7 @@ function AdjectiveTable({ forms }) {
         return form.degree === degree;
     });
 
-    const adverb = forms.find(
+    const adverbObj = forms.find(
         (form) =>
             form.form_type === "adverb" &&
             (
@@ -88,18 +114,28 @@ function AdjectiveTable({ forms }) {
                     ? (!form.degree || form.degree === "positive")
                     : form.degree === degree
             )
-    )?.form;
+    );
 
     function getForm(caseName, number, gender) {
-        return (
-            adjectiveForms.find(
-                (form) =>
-                    form.grammatical_case === caseName &&
-                    form.number === number &&
-                    form.gender === gender
-            )?.form || "—"
+        return adjectiveForms.find(
+            (form) =>
+                form.grammatical_case === caseName &&
+                form.number === number &&
+                form.gender === gender
         );
     }
+
+    function normalizeLatin(word) {
+        return word
+            ?.normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .toLowerCase();
+    }
+
+    const adverbHighlighted =
+        highlightedForm &&
+        normalizeLatin(adverbObj?.form) ===
+        normalizeLatin(highlightedForm);
 
     return (
         <Wrapper>
@@ -147,17 +183,20 @@ function AdjectiveTable({ forms }) {
 
                             <TD>{CASE_LABELS[caseName]}</TD>
 
-                            <TD>
-                                {getForm(caseName, "singular", "masculine")}
-                            </TD>
+                            <FormCell
+                                form={getForm(caseName, "singular", "masculine")}
+                                highlightedForm={highlightedForm}
+                            />
 
-                            <TD>
-                                {getForm(caseName, "singular", "feminine")}
-                            </TD>
+                            <FormCell
+                                form={getForm(caseName, "singular", "feminine")}
+                                highlightedForm={highlightedForm}
+                            />
 
-                            <TD>
-                                {getForm(caseName, "singular", "neuter")}
-                            </TD>
+                            <FormCell
+                                form={getForm(caseName, "singular", "neuter")}
+                                highlightedForm={highlightedForm}
+                            />
 
                         </tr>
                     ))}
@@ -174,32 +213,38 @@ function AdjectiveTable({ forms }) {
 
                             <TD>{CASE_LABELS[caseName]}</TD>
 
-                            <TD>
-                                {getForm(caseName, "plural", "masculine")}
-                            </TD>
+                            <FormCell
+                                form={getForm(caseName, "plural", "masculine")}
+                                highlightedForm={highlightedForm}
+                            />
 
-                            <TD>
-                                {getForm(caseName, "plural", "feminine")}
-                            </TD>
+                            <FormCell
+                                form={getForm(caseName, "plural", "feminine")}
+                                highlightedForm={highlightedForm}
+                            />
 
-                            <TD>
-                                {getForm(caseName, "plural", "neuter")}
-                            </TD>
+                            <FormCell
+                                form={getForm(caseName, "plural", "neuter")}
+                                highlightedForm={highlightedForm}
+                            />
 
                         </tr>
                     ))}
 
+                    {adverbObj && (
+                        <tr>
+                            <TH><strong>Adverb</strong></TH>
+
+                            <TD
+                                colSpan={3}
+                                className={adverbHighlighted ? "highlight" : ""}
+                            >
+                                {adverbObj.form}
+                            </TD>
+                        </tr>
+                    )}
+
                 </tbody>
-
-                {adverb && (
-                    <tr>
-                        <TH><strong>Adverb</strong></TH>
-
-                        <TD colSpan={3}>
-                            {adverb}
-                        </TD>
-                    </tr>
-                )}
 
             </Table>
 

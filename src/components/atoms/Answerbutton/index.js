@@ -3,6 +3,9 @@ import styled from "styled-components";
 const correctSound = new Audio("/sounds/correct.mp3");
 const wrongSound = new Audio("/sounds/wrong.mp3");
 
+correctSound.volume = 0.3;
+wrongSound.volume = 0.3;
+
 const Button = styled.div`
     display: flex;
     flex-direction: column;

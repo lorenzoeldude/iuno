@@ -21,6 +21,11 @@ const TD = styled.td`
     padding: 14px;
     border-bottom: 1px solid rgba(0,0,0,0.06);
     font-size: 21px;
+
+    &.highlight {
+        background-color: rgba(255, 215, 0, 0.4);
+        font-weight: bold;
+    }
 `;
 
 const CASE_ORDER = [
@@ -41,8 +46,32 @@ const CASE_LABELS = {
     vocative: "Voc.",
 };
 
-function PronounTable({ forms }) {
-    const pronounForms = forms.filter((f) => f.grammatical_case);
+function FormCell({ form, highlightedForm }) {
+
+    function normalizeLatin(word) {
+        return word
+            ?.normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .toLowerCase();
+    }
+
+    const highlighted =
+        highlightedForm &&
+        normalizeLatin(form?.form) ===
+        normalizeLatin(highlightedForm);
+
+    return (
+        <TD className={highlighted ? "highlight" : ""}>
+            {form?.form || "—"}
+        </TD>
+    );
+}
+
+function PronounTable({ forms, highlightedForm }) {
+
+    const pronounForms = forms.filter(
+        (f) => f.grammatical_case
+    );
 
     const genders = [
         ...new Set(
@@ -62,18 +91,22 @@ function PronounTable({ forms }) {
         (f) => f.number === "plural"
     );
 
-    function getForm(caseName, number, gender = null) {
-        const found = pronounForms.find((form) => {
+    function getForm(
+        caseName,
+        number,
+        gender = null
+    ) {
+        return pronounForms.find((form) => {
             return (
                 form.grammatical_case === caseName &&
                 form.number === number &&
-                (hasGender
-                    ? form.gender === gender
-                    : true)
+                (
+                    hasGender
+                        ? form.gender === gender
+                        : true
+                )
             );
         });
-
-        return found?.form || "—";
     }
 
     if (hasGender) {
@@ -81,6 +114,7 @@ function PronounTable({ forms }) {
             <Wrapper>
                 <Table>
                     <tbody>
+
                         {hasSingular && (
                             <>
                                 <tr>
@@ -92,33 +126,38 @@ function PronounTable({ forms }) {
 
                                 {CASE_ORDER.map((caseName) => (
                                     <tr key={`sg-${caseName}`}>
+
                                         <TD>
                                             {CASE_LABELS[caseName]}
                                         </TD>
 
-                                        <TD>
-                                            {getForm(
+                                        <FormCell
+                                            form={getForm(
                                                 caseName,
                                                 "singular",
                                                 "masculine"
                                             )}
-                                        </TD>
+                                            highlightedForm={highlightedForm}
+                                        />
 
-                                        <TD>
-                                            {getForm(
+                                        <FormCell
+                                            form={getForm(
                                                 caseName,
                                                 "singular",
                                                 "feminine"
                                             )}
-                                        </TD>
+                                            highlightedForm={highlightedForm}
+                                        />
 
-                                        <TD>
-                                            {getForm(
+                                        <FormCell
+                                            form={getForm(
                                                 caseName,
                                                 "singular",
                                                 "neuter"
                                             )}
-                                        </TD>
+                                            highlightedForm={highlightedForm}
+                                        />
+
                                     </tr>
                                 ))}
                             </>
@@ -135,37 +174,43 @@ function PronounTable({ forms }) {
 
                                 {CASE_ORDER.map((caseName) => (
                                     <tr key={`pl-${caseName}`}>
+
                                         <TD>
                                             {CASE_LABELS[caseName]}
                                         </TD>
 
-                                        <TD>
-                                            {getForm(
+                                        <FormCell
+                                            form={getForm(
                                                 caseName,
                                                 "plural",
                                                 "masculine"
                                             )}
-                                        </TD>
+                                            highlightedForm={highlightedForm}
+                                        />
 
-                                        <TD>
-                                            {getForm(
+                                        <FormCell
+                                            form={getForm(
                                                 caseName,
                                                 "plural",
                                                 "feminine"
                                             )}
-                                        </TD>
+                                            highlightedForm={highlightedForm}
+                                        />
 
-                                        <TD>
-                                            {getForm(
+                                        <FormCell
+                                            form={getForm(
                                                 caseName,
                                                 "plural",
                                                 "neuter"
                                             )}
-                                        </TD>
+                                            highlightedForm={highlightedForm}
+                                        />
+
                                     </tr>
                                 ))}
                             </>
                         )}
+
                     </tbody>
                 </Table>
             </Wrapper>
@@ -175,6 +220,7 @@ function PronounTable({ forms }) {
     return (
         <Wrapper>
             <Table>
+
                 <thead>
                     <tr>
                         <TH></TH>
@@ -185,30 +231,39 @@ function PronounTable({ forms }) {
                 </thead>
 
                 <tbody>
+
                     {CASE_ORDER.map((caseName) => (
                         <tr key={caseName}>
-                            <TD>{CASE_LABELS[caseName]}</TD>
+
+                            <TD>
+                                {CASE_LABELS[caseName]}
+                            </TD>
 
                             {hasSingular && (
-                                <TD>
-                                    {getForm(
+                                <FormCell
+                                    form={getForm(
                                         caseName,
                                         "singular"
                                     )}
-                                </TD>
+                                    highlightedForm={highlightedForm}
+                                />
                             )}
 
                             {hasPlural && (
-                                <TD>
-                                    {getForm(
+                                <FormCell
+                                    form={getForm(
                                         caseName,
                                         "plural"
                                     )}
-                                </TD>
+                                    highlightedForm={highlightedForm}
+                                />
                             )}
+
                         </tr>
                     ))}
+
                 </tbody>
+
             </Table>
         </Wrapper>
     );

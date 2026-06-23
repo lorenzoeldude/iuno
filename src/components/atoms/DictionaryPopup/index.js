@@ -83,11 +83,11 @@ function DictionaryPopup({ popup, entry, onClose }) {
                     <Lemma
                         onClick={() =>
                             navigate(
-                                `/dictionary/${normalizeLatin(entry[0].lemma)}`
+                                `/dictionary/${normalizeLatin(entry[0].lemma)}?form=${encodeURIComponent(entry[0].form)}`
                             )
                         }
                     >
-                        {entry[0].lemma}
+                        {entry[0].form} ({entry[0].lemma})
                     </Lemma>
 
                     <p>{entry[0].meaning}</p>

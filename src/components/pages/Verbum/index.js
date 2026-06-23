@@ -9,7 +9,6 @@ import ClickableText from "../../atoms/ClickableText";
 import DictionaryPopup from "../../atoms/DictionaryPopup";
 import useDictionaryLookup from "../../../hooks/useDictionaryLookups";
 
-
 import NominalTable from "../../morphology/NominalTable";
 import VerbTable from "../../morphology/VerbTable.js";
 import AdjectiveTable from "../../morphology/AdjectiveTable/index.js";

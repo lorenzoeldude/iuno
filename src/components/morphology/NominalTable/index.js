@@ -21,6 +21,11 @@ const TD = styled.td`
     padding: 14px;
     border-bottom: 1px solid rgba(0,0,0,0.06);
     font-size: 21px;
+
+    &.highlight {
+        background-color: rgba(255, 215, 0, 0.4);
+        font-weight: bold;
+    }
 `;
 
 const CASE_ORDER = [
@@ -41,15 +46,45 @@ const CASE_LABELS = {
     vocative: "Voc.",
 };
 
-function NominalTable({ forms }) {
+function FormCell({ form, highlightedForm }) {
 
-    const nominalForms = forms.filter((form) => form.grammatical_case);
+    function normalizeLatin(word) {
+        return word
+            ?.normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .toLowerCase();
+    }
 
-    function getForm(caseName, number, gender = null) {
+    const highlighted =
+        highlightedForm &&
+        normalizeLatin(form?.form) ===
+        normalizeLatin(highlightedForm);
 
-        const found = nominalForms.find((form) => {
+    return (
+        <TD className={highlighted ? "highlight" : ""}>
+            {form?.form || "—"}
+        </TD>
+    );
+}
 
-            if (form.grammatical_case !== caseName || form.number !== number) {
+function NominalTable({ forms, highlightedForm }) {
+
+    const nominalForms = forms.filter(
+        (form) => form.grammatical_case
+    );
+
+    function getForm(
+        caseName,
+        number,
+        gender = null
+    ) {
+
+        return nominalForms.find((form) => {
+
+            if (
+                form.grammatical_case !== caseName ||
+                form.number !== number
+            ) {
                 return false;
             }
 
@@ -59,79 +94,136 @@ function NominalTable({ forms }) {
 
             return true;
         });
-
-        return found?.form || "—";
     }
 
-    const hasMasculine = nominalForms.some(f => f.gender === "masculine");
-    const hasFeminine = nominalForms.some(f => f.gender === "feminine");
-    const hasNeuter = nominalForms.some(f => f.gender === "neuter");
+    const hasMasculine = nominalForms.some(
+        (f) => f.gender === "masculine"
+    );
+
+    const hasFeminine = nominalForms.some(
+        (f) => f.gender === "feminine"
+    );
+
+    const hasNeuter = nominalForms.some(
+        (f) => f.gender === "neuter"
+    );
 
     return (
         <Wrapper>
-        <Table>
-            <thead>
-                <tr>
-                    <TH></TH>
+            <Table>
 
-                    {hasMasculine && (
-                        <>
-                            <TH>Sing.</TH>
-                            <TH>Plur.</TH>
-                        </>
-                    )}
+                <thead>
 
-                    {hasFeminine && (
-                        <>
-                            <TH>Sing.</TH>
-                            <TH>Plur.</TH>
-                        </>
-                    )}
+                    <tr>
 
-                    {hasNeuter && (
-                        <>
-                            <TH>Sing.</TH>
-                            <TH>Plur.</TH>
-                        </>
-                    )}
-                </tr>
-
-            </thead>
-
-            <tbody>
-
-                {CASE_ORDER.map((caseName) => (
-                    <tr key={caseName}>
-
-                        <TD>{CASE_LABELS[caseName]}</TD>
+                        <TH></TH>
 
                         {hasMasculine && (
                             <>
-                                <TD>{getForm(caseName, "singular", "masculine")}</TD>
-                                <TD>{getForm(caseName, "plural", "masculine")}</TD>
+                                <TH>Sing.</TH>
+                                <TH>Plur.</TH>
                             </>
                         )}
 
                         {hasFeminine && (
                             <>
-                                <TD>{getForm(caseName, "singular", "feminine")}</TD>
-                                <TD>{getForm(caseName, "plural", "feminine")}</TD>
+                                <TH>Sing.</TH>
+                                <TH>Plur.</TH>
                             </>
                         )}
 
                         {hasNeuter && (
                             <>
-                                <TD>{getForm(caseName, "singular", "neuter")}</TD>
-                                <TD>{getForm(caseName, "plural", "neuter")}</TD>
+                                <TH>Sing.</TH>
+                                <TH>Plur.</TH>
                             </>
                         )}
 
                     </tr>
-                ))}
 
-            </tbody>
+                </thead>
 
-        </Table>
+                <tbody>
+
+                    {CASE_ORDER.map((caseName) => (
+                        <tr key={caseName}>
+
+                            <TD>
+                                {CASE_LABELS[caseName]}
+                            </TD>
+
+                            {hasMasculine && (
+                                <>
+                                    <FormCell
+                                        form={getForm(
+                                            caseName,
+                                            "singular",
+                                            "masculine"
+                                        )}
+                                        highlightedForm={highlightedForm}
+                                    />
+
+                                    <FormCell
+                                        form={getForm(
+                                            caseName,
+                                            "plural",
+                                            "masculine"
+                                        )}
+                                        highlightedForm={highlightedForm}
+                                    />
+                                </>
+                            )}
+
+                            {hasFeminine && (
+                                <>
+                                    <FormCell
+                                        form={getForm(
+                                            caseName,
+                                            "singular",
+                                            "feminine"
+                                        )}
+                                        highlightedForm={highlightedForm}
+                                    />
+
+                                    <FormCell
+                                        form={getForm(
+                                            caseName,
+                                            "plural",
+                                            "feminine"
+                                        )}
+                                        highlightedForm={highlightedForm}
+                                    />
+                                </>
+                            )}
+
+                            {hasNeuter && (
+                                <>
+                                    <FormCell
+                                        form={getForm(
+                                            caseName,
+                                            "singular",
+                                            "neuter"
+                                        )}
+                                        highlightedForm={highlightedForm}
+                                    />
+
+                                    <FormCell
+                                        form={getForm(
+                                            caseName,
+                                            "plural",
+                                            "neuter"
+                                        )}
+                                        highlightedForm={highlightedForm}
+                                    />
+                                </>
+                            )}
+
+                        </tr>
+                    ))}
+
+                </tbody>
+
+            </Table>
         </Wrapper>
     );
 }

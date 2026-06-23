@@ -78,11 +78,14 @@ function Searchbar({ className }) {
         navigate(`/search?q=${encodeURIComponent(q)}`);
     };
 
-    const handleSelect = (lemmaNormalized) => {
+    const handleSelect = (lemmaNormalized, form) => {
         setQuery("");
         setResults([]);
         setOpen(false);
-        navigate(`/dictionary/${lemmaNormalized}`);
+
+        navigate(
+            `/dictionary/${lemmaNormalized}?form=${encodeURIComponent(form)}`
+        );
     };
 
     return (
@@ -109,7 +112,7 @@ function Searchbar({ className }) {
                     {results.map((item) => (
                         <Item
                             key={item.lemma}
-                            onMouseDown={() => handleSelect(item.lemma_normalized)}
+                            onMouseDown={() => handleSelect(item.lemma_normalized, item.form)}
                         >
                             <strong>{item.form}</strong>
                             {": "}

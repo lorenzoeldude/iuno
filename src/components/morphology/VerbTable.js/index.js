@@ -43,6 +43,13 @@ const CaseLabel = styled.div`
 
 const CaseForm = styled.div`
     font-size: 20px;
+
+    &.highlight {
+        background-color: rgba(255, 215, 0, 0.4);
+        font-weight: bold;
+        border-radius: 5px;
+        padding: 2px 6px;
+    }
 `;
 
 const Grid = styled.div`
@@ -105,10 +112,6 @@ const FormList = styled.div`
     gap: 8px;
 `;
 
-// const FormRow = styled.div`
-//     font-size: 20px;
-// `;
-
 const FormRow = styled.div`
     font-size: 20px;
     padding: 4px 8px;
@@ -167,6 +170,13 @@ function VerbTable({ forms, highlightedForm }) {
             ?.normalize("NFD")
             .replace(/[\u0300-\u036f]/g, "")
             .toLowerCase();
+    }
+
+    function isHighlighted(form) {
+        return (
+            highlightedForm &&
+            normalizeLatin(form) === normalizeLatin(highlightedForm)
+        );
     }
 
     const highlightedData = useMemo(() => {
@@ -360,6 +370,47 @@ function VerbTable({ forms, highlightedForm }) {
         );
     }, [forms, participle]);
 
+    // GERUNDS
+    const genitiveGerund =
+        gerunds.find(f => f.grammatical_case === "genitive")?.form;
+
+    const dativeGerund =
+        gerunds.find(f => f.grammatical_case === "dative")?.form;
+
+    const accusativeGerund =
+        gerunds.find(f => f.grammatical_case === "accusative")?.form;
+
+    const ablativeGerund =
+        gerunds.find(f => f.grammatical_case === "ablative")?.form;
+
+
+    // INFINITIVES
+    const presentInfinitive =
+        infinitives.find(f => f.tense === "present")?.form;
+
+    const perfectInfinitive =
+        infinitives.find(f => f.tense === "perfect")?.form;
+
+    const futureInfinitive =
+        infinitives.find(f => f.tense === "future")?.form;
+
+
+    // PARTICIPLES
+    const presentActiveParticiple =
+        participles.find(
+            f => f.tense === "present" && f.voice === "active"
+        )?.form;
+
+    const perfectPassiveParticiple =
+        participles.find(
+            f => f.tense === "perfect" && f.voice === "passive"
+        )?.form;
+
+    const futureActiveParticiple =
+        participles.find(
+            f => f.tense === "future" && f.voice === "active"
+        )?.form;
+
     return (
         <Wrapper>
 
@@ -460,29 +511,37 @@ function VerbTable({ forms, highlightedForm }) {
                     <div>
                         <GerundRow>
                             <CaseLabel>Genitive</CaseLabel>
-                            <CaseForm>
-                                {gerunds.find(f => f.grammatical_case === "genitive")?.form || "—"}
+                            <CaseForm
+                                className={isHighlighted(genitiveGerund) ? "highlight" : ""}
+                            >
+                                {genitiveGerund || "—"}
                             </CaseForm>
                         </GerundRow>
 
                         <GerundRow>
                             <CaseLabel>Dative</CaseLabel>
-                            <CaseForm>
-                                {gerunds.find(f => f.grammatical_case === "dative")?.form || "—"}
+                            <CaseForm
+                                className={isHighlighted(dativeGerund) ? "highlight" : ""}
+                            >
+                                {dativeGerund || "—"}
                             </CaseForm>
                         </GerundRow>
 
                         <GerundRow>
                             <CaseLabel>Accusative</CaseLabel>
-                            <CaseForm>
-                                {gerunds.find(f => f.grammatical_case === "accusative")?.form || "—"}
+                            <CaseForm
+                                className={isHighlighted(accusativeGerund) ? "highlight" : ""}
+                            >
+                                {accusativeGerund || "—"}
                             </CaseForm>
                         </GerundRow>
 
                         <GerundRow>
                             <CaseLabel>Ablative</CaseLabel>
-                            <CaseForm>
-                                {gerunds.find(f => f.grammatical_case === "ablative")?.form || "—"}
+                            <CaseForm
+                                className={isHighlighted(ablativeGerund) ? "highlight" : ""}
+                            >
+                                {ablativeGerund || "—"}
                             </CaseForm>
                         </GerundRow>
                     </div>
@@ -712,34 +771,28 @@ function VerbTable({ forms, highlightedForm }) {
 
                     <InfinitiveBlock>
                         <SectionTitle>Infinitive Present</SectionTitle>
-                        <FormRow>
-                            {
-                                infinitives.find(
-                                    f => f.tense === "present"
-                                )?.form || "—"
-                            }
+                        <FormRow
+                            className={isHighlighted(presentInfinitive) ? "highlight" : ""}
+                        >
+                            {presentInfinitive || "—"}
                         </FormRow>
                     </InfinitiveBlock>
 
                     <InfinitiveBlock>
                         <SectionTitle>Infinitive Perfect</SectionTitle>
-                        <FormRow>
-                            {
-                                infinitives.find(
-                                    f => f.tense === "perfect"
-                                )?.form || "—"
-                            }
+                        <FormRow
+                            className={isHighlighted(perfectInfinitive) ? "highlight" : ""}
+                        >
+                            {perfectInfinitive || "—"}
                         </FormRow>
                     </InfinitiveBlock>
 
                     <InfinitiveBlock>
                         <SectionTitle>Infinitive Future</SectionTitle>
-                        <FormRow>
-                            {
-                                infinitives.find(
-                                    f => f.tense === "future"
-                                )?.form || "—"
-                            }
+                        <FormRow
+                            className={isHighlighted(futureInfinitive) ? "highlight" : ""}
+                        >
+                            {futureInfinitive || "—"}
                         </FormRow>
                     </InfinitiveBlock>
 

@@ -43,7 +43,7 @@ function Vocabulary() {
             {/* WORD OF THE DAY */}
             {/* ========================================= */}
 
-            <Card
+            {/* <Card
                 href="/dictionary/urbs"
                 title=""
             >
@@ -62,11 +62,6 @@ function Vocabulary() {
 
             </Card>
 
-
-            {/* ========================================= */}
-            {/* TRAINERS */}
-            {/* ========================================= */}
-
             <Grid>
 
                 <Card
@@ -74,6 +69,36 @@ function Vocabulary() {
                     title="Train Words"
                 >
                     Practice random Latin words from the dictionary.
+                </Card>
+
+            </Grid> */}
+
+            <Card
+                href="/trainer"
+                title=""
+            >
+
+                <WordCardContent>
+
+                    <BigWord>
+                        Trainer
+                    </BigWord>
+
+                    <SmallLabel>
+                        Practice random Latin words from the dictionary.
+                    </SmallLabel>
+
+                </WordCardContent>
+
+            </Card>
+
+            <Grid>
+
+                <Card
+                    href="/dictionary/urbs"
+                    title="Word of the day"
+                >
+                    Urbs
                 </Card>
 
             </Grid>
