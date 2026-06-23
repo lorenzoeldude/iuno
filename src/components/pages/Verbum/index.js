@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { FaCheckCircle } from "react-icons/fa";
 
 import { useRef } from "react";
@@ -184,6 +184,9 @@ function Verbum() {
     } = useDictionaryLookup();
 
     const { word } = useParams();
+    const [searchParams] = useSearchParams();
+
+    const highlightedForm = searchParams.get("form");
 
     const [wordData, setWordData] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -326,21 +329,21 @@ function Verbum() {
     function renderMorphology() {
 
         if (wordInfo.part_of_speech === "verb") {
-            return <VerbTable forms={wordData.forms} />;
+            return <VerbTable forms={wordData.forms} highlightedForm={highlightedForm}/>;
         }
 
         if (
             wordInfo.part_of_speech === "noun"
         ) {
-            return <NominalTable forms={wordData.forms} />;
+            return <NominalTable forms={wordData.forms} highlightedForm={highlightedForm}/>;
         }
 
         if (wordInfo.part_of_speech === "adjective") {
-            return <AdjectiveTable forms={wordData.forms} />;
+            return <AdjectiveTable forms={wordData.forms} highlightedForm={highlightedForm}/>;
         }
 
         if (wordInfo.part_of_speech === "pronoun") {
-            return <PronounTable forms={wordData.forms} />;
+            return <PronounTable forms={wordData.forms} highlightedForm={highlightedForm}/>;
         }
 
         return (

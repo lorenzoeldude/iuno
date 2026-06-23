@@ -1,5 +1,6 @@
 import styled, { keyframes } from "styled-components";
 import Searchbar from "../../atoms/Searchbar";
+import Card from "../../atoms/Card";
 
 const fadeIn = keyframes`
     from {
@@ -68,70 +69,6 @@ const Subtitle = styled.p`
     margin: 10px 0;
 `;
 
-const Card = styled.a`
-    min-height: 220px;
-
-    padding: 80px;
-
-    background: white;
-    border: 1px solid #e6e1d8;
-
-    text-decoration: none;
-    color: black;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-
-    transition: all 0.25s ease;
-
-    position: relative;
-    overflow: hidden;
-
-    &::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-
-        width: 100%;
-        height: 3px;
-
-        background: #b89b5e;
-
-        transform: scaleX(0);
-        transform-origin: left;
-
-        transition: transform 0.25s ease;
-    }
-
-    &:hover {
-        transform: translateY(-4px);
-
-        border-color: #b89b5e;
-
-        box-shadow:
-            0 10px 25px rgba(0, 0, 0, 0.08);
-
-        color: black;
-    }
-
-    &:hover::before {
-        transform: scaleX(1);
-    }
-`;
-
-const CardTitle = styled.h2`
-    font-size: 30px;
-    margin: 0 0 10px 0;
-`;
-
-const CardText = styled.p`
-    font-size: 20px;
-    line-height: 1.6;
-    opacity: 0.75;
-`;
-
 const StyledSearch = styled(Searchbar)`
     height: 50px;
     width: 300px;
@@ -161,42 +98,27 @@ function StartPage() {
 
             <BlockDiv>
 
-                <Card href="/lectiones">
-
-                    <CardTitle>
-                        Lessons
-                    </CardTitle>
-
-                    <CardText>
-                        Learn Latin by reading through our guided lessons.
-                    </CardText>
-
+                <Card
+                    href="/lectiones"
+                    title="Lessons"
+                >
+                    Learn Latin by reading through our guided lessons.
                 </Card>
 
 
-                <Card href="/vocabulary">
-
-                    <CardTitle>
-                        Vocabulary
-                    </CardTitle>
-
-                    <CardText>
-                        Train your vocabulary and create word lists. 
-                    </CardText>
-
+                <Card
+                    href="/vocabulary"
+                    title="Vocabulary"
+                >
+                    Train your vocabulary and create word lists.
                 </Card>
 
 
-                <Card href="/read">
-
-                    <CardTitle>
-                        Read
-                    </CardTitle>
-
-                    <CardText>
-                        Read texts from beginner to the Aeneid, and lookup words on the spot.
-                    </CardText>
-
+                <Card
+                    href="/read"
+                    title="Read"
+                >
+                    Read texts from beginner to the Aeneid, and lookup words on the spot.
                 </Card>
 
             </BlockDiv>

@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
-import { Capitula } from "../Lectiones";
+import Card from "../../atoms/Card";
+
 
 const Wrapper = styled.div`
     width: 72%;
@@ -14,48 +14,9 @@ const Grid = styled.div`
     gap: 20px;
 `;
 
-export const HeroCard = styled.div`
-    width: 100%;
-    padding: 50px;
-    border-radius: 0px;
-    margin-bottom: 20px;
-    cursor: pointer;
-    transition: 0.15s ease;
-
+const WordCardContent = styled.div`
     display: flex;
     flex-direction: column;
-    justify-content: center;
-
-    &:hover {
-        background: rgba(0,0,0,0.03);
-        transform: translateY(-2px);
-    }
-
-    &:visited {
-        color: black;
-    }
-`;
-
-const Card = styled(HeroCard)`
-
-`;
-
-const Card2 = styled.div`
-    padding: 40px;
-    border-radius: 24px;
-    border: 1px solid rgba(0,0,0,0.08);
-    cursor: pointer;
-    transition: 0.15s ease;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    min-height: 220px;
-
-    &:hover {
-        background: rgba(0,0,0,0.03);
-        transform: translateY(-2px);
-    }
 `;
 
 const SmallLabel = styled.p`
@@ -72,20 +33,8 @@ const BigWord = styled.h1`
     font-family: "Cormorant Garamond", serif;
 `;
 
-const CardTitle = styled.h2`
-    font-size: 38px;
-    margin-bottom: 12px;
-`;
-
-const CardText = styled.p`
-    font-size: 18px;
-    opacity: 0.7;
-    line-height: 1.5;
-`;
 
 function Vocabulary() {
-
-    const navigate = useNavigate();
 
     return (
         <Wrapper>
@@ -94,19 +43,25 @@ function Vocabulary() {
             {/* WORD OF THE DAY */}
             {/* ========================================= */}
 
-            <HeroCard
-                onClick={() => navigate("/dictionary/urbs")}
+            <Card
+                href="/dictionary/urbs"
+                title=""
             >
 
-                <SmallLabel>
-                    Word of the day
-                </SmallLabel>
+                <WordCardContent>
 
-                <BigWord>
-                    urbs
-                </BigWord>
+                    <SmallLabel>
+                        Word of the day
+                    </SmallLabel>
 
-            </HeroCard>
+                    <BigWord>
+                        urbs
+                    </BigWord>
+
+                </WordCardContent>
+
+            </Card>
+
 
             {/* ========================================= */}
             {/* TRAINERS */}
@@ -114,28 +69,11 @@ function Vocabulary() {
 
             <Grid>
 
-                {/* <Card onClick={() => navigate("/listtrainer")}>
-
-                    <CardTitle>
-                        Vocabulary
-                    </CardTitle>
-
-                    <CardText>
-                        Train the words from your vocabulary list.
-                    </CardText>
-
-                </Card> */}
-
-                <Card onClick={() => navigate("/trainer")}>
-
-                    <CardTitle>
-                        Train Words
-                    </CardTitle>
-
-                    <CardText>
-                        Practice random Latin words from the dictionary.
-                    </CardText>
-
+                <Card
+                    href="/trainer"
+                    title="Train Words"
+                >
+                    Practice random Latin words from the dictionary.
                 </Card>
 
             </Grid>

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 
 const Wrapper = styled.div`
     // width: 100%;
@@ -105,8 +105,19 @@ const FormList = styled.div`
     gap: 8px;
 `;
 
+// const FormRow = styled.div`
+//     font-size: 20px;
+// `;
+
 const FormRow = styled.div`
     font-size: 20px;
+    padding: 4px 8px;
+    border-radius: 5px;
+
+    &.highlight {
+        background-color: rgba(255, 215, 0, 0.4);
+        font-weight: bold;
+    }
 `;
 
 const TENSES = [
@@ -145,11 +156,67 @@ const CASE_LABELS = {
     vocative: "Voc.",
 };
 
-function VerbTable({ forms }) {
+function VerbTable({ forms, highlightedForm }) {
 
     const [voice, setVoice] = useState("active");
     const [mood, setMood] = useState("indicative");
     const [participle, setParticiple] = useState("ppp");
+
+    function normalizeLatin(word) {
+        return word
+            ?.normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .toLowerCase();
+    }
+
+    const highlightedData = useMemo(() => {
+        return forms.find(
+            f =>
+                normalizeLatin(f.form) === normalizeLatin(highlightedForm)
+        );
+    }, [forms, highlightedForm]);
+
+    useEffect(() => {
+
+    if (!highlightedData) return;
+
+    // normal finite verbs
+    if (
+        highlightedData.voice &&
+        highlightedData.mood &&
+        highlightedData.tense
+    ) {
+        setVoice(highlightedData.voice);
+        setMood(highlightedData.mood);
+    }
+
+    // participles
+    if (highlightedData.mood === "participle") {
+            setVoice("participle");
+
+            if (
+                highlightedData.tense === "perfect" &&
+                highlightedData.voice === "passive"
+            ) {
+                setParticiple("ppp");
+            }
+
+            if (
+                highlightedData.tense === "present" &&
+                highlightedData.voice === "active"
+            ) {
+                setParticiple("pap");
+            }
+
+            if (
+                highlightedData.tense === "future" &&
+                highlightedData.voice === "active"
+            ) {
+                setParticiple("fap");
+            }
+        }
+
+    }, [highlightedData]);
 
     // =====================================================
     // FINITE FORMS
@@ -219,7 +286,14 @@ function VerbTable({ forms }) {
                         );
 
                         return (
-                            <FormRow key={`${p.person}-${p.number}`}>
+                            <FormRow
+                                key={`${p.person}-${p.number}`}
+                                className={
+                                    normalizeLatin(form?.form) === normalizeLatin(highlightedForm)
+                                        ? "highlight"
+                                        : ""
+                                }
+                            >
                                 {form?.form || "—"}
                             </FormRow>
                         );

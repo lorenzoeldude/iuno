@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import Card from "../../atoms/Card";
 
-import { HeroCard } from "../Vocabulary";
 
 const Wrapper = styled.div`
     width: 80%;
@@ -39,13 +38,13 @@ const ColumnTitle = styled.h2`
     font-weight: 200;
     text-align: center;
     margin: 0;
-    // text-decoration: underline;
 `;
 
-const SmallHeroCard = styled(HeroCard)`
+const TextCard = styled(Card)`
     padding: 14px;
+    min-height: auto;
+
     text-align: center;
-    cursor: pointer;
 
     background: ${({ difficulty }) =>
         difficulty?.toLowerCase() === "beginner"
@@ -56,22 +55,17 @@ const SmallHeroCard = styled(HeroCard)`
             ? "rgba(244, 67, 54, 0.15)"
             : "rgba(255, 255, 255, 0.03)"};
 
-    border: 1px solid rgba(255, 255, 255, 0.12);
-
-    transition:
-        transform 0.15s ease,
-        box-shadow 0.15s ease;
+    border: 1px solid rgba(255,255,255,0.12);
 
     &:hover {
-        transform: translateY(-2px);
         background: ${({ difficulty }) =>
-        difficulty?.toLowerCase() === "beginner"
-            ? "rgba(76, 175, 80, 0.2)"
-            : difficulty?.toLowerCase() === "intermediate"
-            ? "rgba(255, 152, 0, 0.2)"
-            : difficulty?.toLowerCase() === "advanced"
-            ? "rgba(244, 67, 54, 0.2)"
-            : "rgba(255, 255, 255, 0.03)"};
+            difficulty?.toLowerCase() === "beginner"
+                ? "rgba(76, 175, 80, 0.2)"
+                : difficulty?.toLowerCase() === "intermediate"
+                ? "rgba(255, 152, 0, 0.2)"
+                : difficulty?.toLowerCase() === "advanced"
+                ? "rgba(244, 67, 54, 0.2)"
+                : "rgba(255,255,255,0.03)"};
     }
 `;
 
@@ -88,8 +82,8 @@ const Author = styled.div`
     margin-top: 4px;
 `;
 
+
 function Litterae() {
-    const navigate = useNavigate();
 
     const [texts, setTexts] = useState([]);
 
@@ -110,6 +104,7 @@ function Litterae() {
             });
     }, []);
 
+
     const beginnerTexts = texts.filter(
         text => text.difficulty?.toLowerCase() === "beginner"
     );
@@ -122,44 +117,60 @@ function Litterae() {
         text => text.difficulty?.toLowerCase() === "advanced"
     );
 
+
     const renderTexts = items =>
         items.map(text => (
-            <SmallHeroCard
+            <TextCard
                 key={text.id}
                 difficulty={text.difficulty}
-                onClick={() =>
-                    navigate(
-                        `/read/${encodeURIComponent(
-                            text.author
-                        )}/${encodeURIComponent(
-                            text.title
-                        )}`
-                    )
-                }
+                size="small"
+                href={`/read/${encodeURIComponent(text.author)}/${encodeURIComponent(text.title)}`}
             >
-                <Title>{text.title}</Title>
-                <Author>{text.author}</Author>
-            </SmallHeroCard>
+                <Title>
+                    {text.title}
+                </Title>
+
+                <Author>
+                    {text.author}
+                </Author>
+
+            </TextCard>
         ));
+
 
     return (
         <Wrapper>
+
             <Columns>
+
                 <Column>
-                    <ColumnTitle>Beginner</ColumnTitle>
+                    <ColumnTitle>
+                        Beginner
+                    </ColumnTitle>
+
                     {renderTexts(beginnerTexts)}
                 </Column>
 
+
                 <Column>
-                    <ColumnTitle>Intermediate</ColumnTitle>
+                    <ColumnTitle>
+                        Intermediate
+                    </ColumnTitle>
+
                     {renderTexts(intermediateTexts)}
                 </Column>
 
+
                 <Column>
-                    <ColumnTitle>Advanced</ColumnTitle>
+                    <ColumnTitle>
+                        Advanced
+                    </ColumnTitle>
+
                     {renderTexts(advancedTexts)}
                 </Column>
+
             </Columns>
+
         </Wrapper>
     );
 }
