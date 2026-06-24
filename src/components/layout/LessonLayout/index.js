@@ -5,15 +5,17 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     width: 80%;
-    justify-content: space-between;
+    height: 70vh;
+    overflow: hidden;
 `;
 
 const ContentWrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-right: 0px;
     width: 100%;
+    flex: 1;
+    min-height: 0;
 `;
 
 function LessonLayout({ children, active }) {
@@ -26,7 +28,6 @@ function LessonLayout({ children, active }) {
             <ContentWrapper>
                 {children}
             </ContentWrapper>
-
 
         </Wrapper>
     );

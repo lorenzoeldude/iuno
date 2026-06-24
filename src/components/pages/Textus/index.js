@@ -10,79 +10,114 @@ import useDictionaryLookup from "../../../hooks/useDictionaryLookups";
 
 const UnderWrapper = styled.div`
     display: flex;
-    width: 90%;
     flex-direction: column;
-    align-items: center;
-    min-height: 400px;
+    width: 100%;
+    height: 100%;
     position: relative;
+    padding: 10px;
+    box-sizing: border-box;
+`;
+
+const ProgressWrapper = styled.div`
+    width: 100%;
+    margin-bottom: 20px;
+`;
+
+const ContentWrapper = styled.div`
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 `;
 
 const ArrowDiv = styled.div`
+    position: fixed;
+    bottom: 45px;
+    left: 0;
+    width: 100%;
     display: flex;
     justify-content: center;
+    gap: 35px;
+    z-index: 10;
 `;
 
 const TextDiv = styled.div`
-    width: 100%;
+    width: 90%;
+    max-width: 1000px;
+    text-align: center;
+
+    // border: 1px solid red;
 `;
 
 const Head = styled.div`
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
-    // border: 0.3px solid black;
 `;
 
 const FirstText = styled.p`
-    font-size: 35px;
+    font-size: clamp(28px, 3.5vw, 50px);
+    text-align: center;
+    line-height: 1.4;
+    margin: 0;
 
     &::first-letter {
-    color: red;
-    font-size: 2em;
-    font-weight: bold;
-  }
+        color: red;
+        font-size: 1.8em;
+        font-weight: bold;
+    }
 `;
 
-const Text = styled.p`
-    font-size: 35px;
+const Text = styled.div`
+    font-size: clamp(24px, 3vw, 45px);
+    text-align: center;
+    line-height: 1.4;
+
+    // border: 1px solid black;
+
+    p {
+        margin: 5px 0;
+    }
 `;
 
 const Image = styled.img`
+    // width: min(22vw, 220px);
     width: 50%;
     height: auto;
-    margin-bottom: 20px 0;
+    margin-bottom: 15px;
 `;
 
 
 
 function Textus () {
+
     const sentences = [
-    "Rōma in Italiā est. Italia in Eurōpā est.",
-    "Graecia in Eurōpā est. Italia et Graecia in Eurōpā sunt.  Hispānia quoque in Eurōpā est. Hispānia et Italia et Graecia in Eurōpā sunt.",
-    "Aegyptus in Eurōpā nōn est, Aegyptus in Āfricā est.  Gallia nōn in Āfricā est, Gallia est in Eurōpā.",
-    "Syria nōn est in Eurōpā, sed in Asiā..  Arabia quoque in Asiā est. Syria et Arabia in Asiā sunt.",
-    "Germānia nōn in Asiā, sed in Eurōpā est..  Britannia quoque in Eurōpā est. Germānia et Britannia sunt in Eurōpā.", 
-    "Estne Gallia in Eurōpā? Gallia in Eurōpā est..  Estne Rōma in Galliā? Rōma in Galliā nōn est.", 
-    "Ubi est Rōma? Rōma est in Italiā..  Ubi est Italia? Italia in Eurōpā est.",
-    "Ubi sunt Gallia et Hispānia?.  Gallia et Hispānia in Eurōpā sunt.", 
-    "Estne Nīlus in Eurōpā? Nīlus in Eurōpā nōn est..  Ubi est Nīlus? Nīlus in Āfricā est.",
-    "Rhēnus ubi est?.  Rhēnus est in Germāniā..  ",
-    "Nīlus fluvius est. Rhēnus fluvius est..  Nīlus et Rhēnus fluviī sunt..  Dānuvius quoque fluvius est.",
-    "Rhēnus et Dānuvius sunt fluviī in Germāniā..  Tiberis fluvius in Italiā est..  Nīlus fluvius magnus est.",
-    "Tiberis nōn est fluvius magnus, Tiberis fluvius parvus est..  Rhēnus nōn est fluvius parvus, sed fluvius magnus.",
-    "Nīlus et Rhēnus nōn fluviī parvī, sed fluviī magnī sunt..  Dānuvius quoque fluvius magnus est.",
-    "Corsica īnsula est. Corsica et Sardinia et Sicilia īnsulae sunt..  Britannia quoque īnsula est. Italia īnsula nōn est. ",
-    "Sicilia īnsula magna est. Melita est īnsula parva..  Britannia nōn īnsula parva, sed īnsula magna est.",
-    "Sicilia et Sardinia nōn īnsulae parvae, sed īnsulae magnae sunt.",
-    "Brundisium oppidum est. Brundisium et Tūsculum oppida sunt..  Sparta quoque oppidum est.",
-    "Brundisium est oppidum magnum..  Tūsculum oppidum parvum est.",
-    "Delphī quoque oppidum parvum est..  Tūsculum et Delphī nōn oppida magna, sed oppida parva sunt.",
-    "Ubi est Sparta? Sparta est in Graeciā..  Sparta est oppidum Graecum.",
-    "Sparta et Delphī oppida Graeca sunt..  Tūsculum nōn oppidum Graecum, sed oppidum Rōmānum est.",
-    "Tūsculum et Brundisium sunt oppida Rōmāna..  Sardinia īnsula Rōmāna est.",
-    "Crēta, Rhodus, Naxus, Samos, Chios, Lesbos, Lēmnos, Euboea sunt īnsulae Graecae..  In Graeciā multae īnsulae sunt.",
-    "In Italiā et in Graeciā sunt multa oppida."
+        "Rōma in Italiā est. Italia in Eurōpā est.",
+        "Graecia in Eurōpā est. Italia et Graecia in Eurōpā sunt. Hispānia quoque in Eurōpā est. Hispānia et Italia et Graecia in Eurōpā sunt.",
+        "Aegyptus in Eurōpā nōn est, Aegyptus in Āfricā est. Gallia nōn in Āfricā est, Gallia est in Eurōpā.",
+        "Syria nōn est in Eurōpā, sed in Asiā. Arabia quoque in Asiā est. Syria et Arabia in Asiā sunt.",
+        "Germānia nōn in Asiā, sed in Eurōpā est. Britannia quoque in Eurōpā est.",
+        "Estne Gallia in Eurōpā? Gallia in Eurōpā est. Estne Rōma in Galliā? Rōma in Galliā nōn est.",
+        "Ubi est Rōma? Rōma est in Italiā. Ubi est Italia? Italia in Eurōpā est.",
+        "Ubi sunt Gallia et Hispānia? Gallia et Hispānia in Eurōpā sunt.",
+        "Estne Nīlus in Eurōpā? Nīlus in Eurōpā nōn est. Ubi est Nīlus? Nīlus in Āfricā est.",
+        "Rhēnus ubi est? Rhēnus est in Germāniā.",
+        "Nīlus fluvius est. Rhēnus fluvius est. Nīlus et Rhēnus fluviī sunt.",
+        "Rhēnus et Dānuvius sunt fluviī in Germāniā. Tiberis fluvius in Italiā est.",
+        "Tiberis nōn est fluvius magnus, Tiberis fluvius parvus est.",
+        "Nīlus et Rhēnus nōn fluviī parvī, sed fluviī magnī sunt.",
+        "Corsica īnsula est. Corsica et Sardinia et Sicilia īnsulae sunt.",
+        "Sicilia īnsula magna est. Melita est īnsula parva.",
+        "Sicilia et Sardinia nōn īnsulae parvae, sed īnsulae magnae sunt.",
+        "Brundisium oppidum est. Brundisium et Tūsculum oppida sunt.",
+        "Brundisium est oppidum magnum. Tūsculum oppidum parvum est.",
+        "Delphī quoque oppidum parvum est.",
+        "Ubi est Sparta? Sparta est in Graeciā.",
+        "Sparta et Delphī oppida Graeca sunt.",
+        "Tūsculum et Brundisium sunt oppida Rōmāna.",
+        "Crēta, Rhodus, Naxus, Samos, Chios, Lesbos sunt īnsulae Graecae.",
+        "In Italiā et in Graeciā sunt multa oppida."
     ];
 
     const [index, setIndex] = useState(0);
@@ -90,19 +125,18 @@ function Textus () {
     const navigate = useNavigate();
 
     const nextSentence = () => {
-
-    if (index < sentences.length - 1) {
-        setIndex(index + 1);
-    } else {
-        navigate("/lectiones/1/vocabula");
-    }
-}
+        if (index < sentences.length - 1) {
+            setIndex(index + 1);
+        } else {
+            navigate("/lectiones/1/vocabula");
+        }
+    };
 
     const previousSentence = () => {
-        if (index != 0) {
+        if (index !== 0) {
             setIndex(index - 1);
-        };
-    }
+        }
+    };
 
     const wrapperRef = useRef(null);
 
@@ -115,60 +149,74 @@ function Textus () {
 
     const progress = (index / (sentences.length - 1)) * 100;
 
+
     return (
         <LessonLayout active={"textus"}>
+
             <UnderWrapper ref={wrapperRef}>
-                <ProgressBar progress={progress} />
 
-                <Head>
-                    {(progress == 0) && (
-                        <Image src={"/test3.png"} alt="luna" />
-                    )}
-                </Head>
+                <ProgressWrapper>
+                    <ProgressBar progress={progress}/>
+                </ProgressWrapper>
 
-                <TextDiv>
-                    {
-                    (progress == 0) ? (
-                        <FirstText>
-                            <ClickableText
-                                text={sentences[index]}
-                                onWordClick={(word, e) =>
-                                    lookupWord(word, e, wrapperRef)
-                                }
-                            />
-                        </FirstText>
-                    ) : (
-                        <>
+                <ContentWrapper>
+
+                    <Head>
+                        {progress === 0 && (
+                            <Image src={"/test3.png"} alt="luna"/>
+                        )}
+                    </Head>
+
+                    <TextDiv>
+
+                        {progress === 0 ? (
+                            <FirstText>
+                                <ClickableText
+                                    text={sentences[index]}
+                                    onWordClick={(word,e)=>
+                                        lookupWord(word,e,wrapperRef)
+                                    }
+                                />
+                            </FirstText>
+                        ) : (
                             <Text>
-                                {sentences[index].split(".  ").map((sentence, index) => (
-                                    sentence.trim() && (
-                                        <>
+                                {sentences[index]
+                                    .split(".  ")
+                                    .map((sentence,index)=>
+                                        sentence.trim() &&
                                         <p key={index}>
-                                            <ClickableText 
-                                                text={sentence} 
-                                                onWordClick={(word, e) =>
-                                                lookupWord(word, e, wrapperRef)
-                                            }/>
+                                            <ClickableText
+                                                text={sentence}
+                                                onWordClick={(word,e)=>
+                                                    lookupWord(word,e,wrapperRef)
+                                                }
+                                            />
                                         </p>
-                                        <br/>
-                                        </>
-                                    )
-                                    ))}
-                            </Text><br/>
-                        </>
-                    )
-                }
-                <DictionaryPopup
-                    popup={popup}
-                    entry={entry}
-                    onClose={closePopup}
-                />
-                </TextDiv>
+                                    )}
+                            </Text>
+                        )}
+
+                        <DictionaryPopup
+                            popup={popup}
+                            entry={entry}
+                            onClose={closePopup}
+                        />
+
+                    </TextDiv>
+
+                </ContentWrapper>
+
             </UnderWrapper>
 
+
             <ArrowDiv>
-                <ArrowButton onClick={previousSentence}>{"<"}</ArrowButton>
-                <ArrowButton onClick={nextSentence}>{">"}</ArrowButton>
+                <ArrowButton onClick={previousSentence}>
+                    {"<"}
+                </ArrowButton>
+
+                <ArrowButton onClick={nextSentence}>
+                    {">"}
+                </ArrowButton>
             </ArrowDiv>
 
         </LessonLayout>

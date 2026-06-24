@@ -102,15 +102,15 @@ function StartPage() {
                     href="/lectiones"
                     title="Lessons"
                 >
-                    Learn Latin by reading through our guided lessons.
+                    Master Latin step by step through structured lessons covering grammar, vocabulary, and reading.
                 </Card>
 
 
                 <Card
-                    href="/vocabulary"
-                    title="Vocabulary"
+                    href="/trainer"
+                    title="Trainer"
                 >
-                    Train your vocabulary and create word lists.
+                    Train vocabulary, create word lists and use our built-in algorithm for spaced repition.
                 </Card>
 
 

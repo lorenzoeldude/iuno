@@ -376,7 +376,10 @@ function AdminLemmaEditor() {
                             <>
                                 <option value="1">1st</option>
                                 <option value="2">2nd</option>
-                                <option value="3">3rd</option>
+                                <option value="3">3: consonant stem</option>
+                                <option value="31">31: mixed i-stem</option>
+                                <option value="32">32: pure i-stem</option>
+                                <option value="33">33: neuter i-stem</option>
                                 <option value="4">4th</option>
                                 <option value="5">5th</option>
                             </>

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const ArrowButton = styled.button`
-    font-size: 40px;
+    font-size: 50px;
     padding: 10px 16px;
     cursor: pointer;
     background: none;
