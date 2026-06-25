@@ -78,25 +78,25 @@ function Navigatio({ active }) {
                 </ActiveLabel> */}
 
                 <NavigationDiv>
-                    <Link href="/lectiones/1/textus">
+                    <Link href="/lesson/1/textus">
                         <Navigation active={active === "textus"}>
                             Text
                         </Navigation>
                     </Link>
 
-                    <Link href="/lectiones/1/vocabula">
+                    <Link href="/lesson/1/vocabula">
                         <Navigation active={active === "vocabula"}>
                             Vocabulary
                         </Navigation>
                     </Link>
 
-                    <Link href="/lectiones/1/grammatica">
+                    <Link href="/lesson/1/grammatica">
                         <Navigation active={active === "grammatica"}>
                             Grammar
                         </Navigation>
                     </Link>
 
-                    <Link href="/lectiones/1/examinatio">
+                    <Link href="/lesson/1/examinatio">
                         <Navigation active={active === "examinatio"}>
                             Quiz
                         </Navigation>

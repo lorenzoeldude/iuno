@@ -125,7 +125,7 @@ function Textus () {
         if (index < sentences.length - 1) {
             setIndex(index + 1);
         } else {
-            navigate("/lectiones/1/vocabula");
+            navigate("/lesson/1/vocabula");
         }
     };
 

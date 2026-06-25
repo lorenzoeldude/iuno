@@ -62,7 +62,7 @@ function Vocabula() {
             setStep(step + 1);
             setSelected(null);
         } else {
-            navigate("/lectiones/1/grammatica");
+            navigate("/lesson/1/grammatica");
         }
     }
 

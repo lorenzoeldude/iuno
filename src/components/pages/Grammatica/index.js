@@ -133,7 +133,7 @@ function Grammatica() {
             setStep(step + 1);
             setSelected(null);
         } else {
-            navigate("/lectiones/1/examinatio");
+            navigate("/lesson/1/examinatio");
         }
     }
 

@@ -54,7 +54,7 @@ function Sidebar () {
         <Wrapper>
             {/* <Line /> */}
             <List>
-                <ListItem><Link href="/lectiones"><FaBook /></Link></ListItem>
+                <ListItem><Link href="/lesson"><FaBook /></Link></ListItem>
                 <ListItem><Link href="/trainer"><FaList /></Link></ListItem>
                 <ListItem><Link href="/read"><FaBookOpen /></Link></ListItem>
                 <ListItem><Link href="/user"><FaUserCircle /></Link></ListItem>

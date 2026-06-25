@@ -80,7 +80,7 @@ const Title = styled.h1`
 `;
 
 
-function Lectiones() {
+function Lessons() {
 
     const lessons = [
         "Familia Romana",
@@ -122,7 +122,7 @@ function Lectiones() {
                                     <CardWrapper key={lesson}>
 
                                         <Card
-                                            href="/lectiones/1/textus"
+                                            href="/lesson/1/textus"
                                             title={rowIndex * 3 + index + 1}
                                             size="small"
                                         >
@@ -185,4 +185,4 @@ function Lectiones() {
     );
 }
 
-export default Lectiones;
+export default Lessons;

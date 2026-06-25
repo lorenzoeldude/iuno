@@ -118,7 +118,7 @@ function StartPage() {
             <BlockDiv>
 
                 <Card
-                    href="/lectiones"
+                    href="/lesson"
                     title="Lessons"
                 >
                     Master Latin step by step through structured lessons covering grammar, vocabulary, and reading.

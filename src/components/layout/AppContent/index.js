@@ -4,7 +4,7 @@ import Verbum from '../../../components/pages/Verbum';
 import Header from './../../../components/molecules/header';
 import Sidebar from './../../../components/molecules/Sidebar';
 import Textus from './../../../components/pages/Textus';
-import Lectiones from './../../../components/pages/Lectiones';
+import Lessons from '../../pages/Lessons';
 import Footer from './../../../components/molecules/footer';
 import Quiz from './../../../components/pages/Quiz';
 import Litterae from './../../../components/pages/Litterae';
@@ -15,6 +15,7 @@ import Examinatio from './../../../components/pages/Examinatio';
 import StartPage from './../../../components/pages/StartPage';
 import Trainer from "../../pages/Trainer";
 import AdminLemmaEditor from "../../pages/AdminLemmaEditor";
+import AdminPage from "../../pages/AdminPage";
 import RegisterPage from "../../pages/RegisterPage";
 import LoginPage from "../../pages/LoginPage";
 import WordList from "../../pages/WordList";
@@ -60,19 +61,19 @@ function AppContent() {
         <Content isStartPage={isStartPage}>
           <Routes>
             <Route path="/" element={<StartPage />} />
-            <Route path="/admin" element={<AdminLemmaEditor />} />
+            <Route path="/admin" element={<AdminPage />} />
+            <Route path="/admin/editor" element={<AdminLemmaEditor />} />
             <Route path="/trainer" element={<Trainer />} />
             <Route path="/dictionary/:word" element={<Verbum />} />
-            {/* <Route path="/search" element={<SearchPage />} /> */}
-            <Route path="/lectiones" element={<Lectiones />} />
-            <Route path="/lectiones/1/textus" element={<Textus />} />
+            <Route path="/lesson" element={<Lessons />} />
+            <Route path="/lesson/1/textus" element={<Textus />} />
             <Route path="/quiz" element={<Quiz />} />
             <Route path="/read" element={<Litterae />} />
             <Route path="/read/:author/:title" element={<Text />}/>
             <Route path="/read/:author/:title/:position" element={<TextSection />}/>
-            <Route path="/lectiones/1/grammatica" element={<Grammatica />} />
-            <Route path="/lectiones/1/vocabula" element={<Vocabula />} />
-            <Route path="/lectiones/1/examinatio" element={<Examinatio />} />
+            <Route path="/lesson/1/grammatica" element={<Grammatica />} />
+            <Route path="/lesson/1/vocabula" element={<Vocabula />} />
+            <Route path="/lesson/1/examinatio" element={<Examinatio />} />
 
             <Route path="/vocabulary" element={<Vocabulary />} />
             <Route path="/user/list" element={<WordList />} />
