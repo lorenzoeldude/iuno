@@ -230,67 +230,74 @@ function AdminLemmaEditor() {
         setStatus("");
 
         try {
-            const res = await fetch("http://localhost:8080/api/admin/write-word/", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    lemma: {
-                        lemma,
-                        part_of_speech: partOfSpeech,
-                        gender,
-                        irregular,
-                        
-                        declension: (isNoun || isAdjective) && declension !== ""
-                            ? parseInt(declension, 10)
-                            : null,
+            const token = localStorage.getItem("token");
 
-                        conjugation: isVerb
-                            ? Number(conjugation) || 0
-                            : 0,
-
-                        genitive: (isNoun || isAdjective) ? genitive : "",
-
-                        infinitive: isVerb ? infinitive : "",
-                        perfect: isVerb ? perfect : "",
-                        supine: isVerb ? supine : "",
-
-                        feminine: isAdjective ? feminine : "",
-                        neuter: isAdjective ? neuter : "",
-                        pronoun_type: isPronoun ? pronounType : "",
+            const res = await fetch(
+                "http://localhost:8080/api/admin/write-word/",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`,
                     },
+                    body: JSON.stringify({
+                        lemma: {
+                            lemma,
+                            part_of_speech: partOfSpeech,
+                            gender,
+                            irregular,
 
-                    manual_forms: manualForms,
-
-                    examples: [example1, example2, example3],
-
-                    meanings: meaningsText
-                        .split(";")
-                        .map(line => line.trim())
-                        .filter(Boolean)
-                        .map(line => {
-                            const [governsCase, translation] = line.split("|");
-
-                            return {
-                                meaning: (translation ?? governsCase).trim(),
-                                governs_case: translation
-                                    ? governsCase.trim()
+                            declension:
+                                (isNoun || isAdjective) && declension !== ""
+                                    ? parseInt(declension, 10)
                                     : null,
-                            };
-                        }),
-                    
-                    definitions: definitions
-                        .split("\n")
-                        .map(d => d.trim())
-                        .filter(Boolean),
 
-                    derivatives: derivatives
-                    .split(",")
-                    .map(m => m.trim())
-                    .filter(Boolean)
-                })
-            });
+                            conjugation: isVerb
+                                ? Number(conjugation) || 0
+                                : 0,
+
+                            genitive: (isNoun || isAdjective) ? genitive : "",
+
+                            infinitive: isVerb ? infinitive : "",
+                            perfect: isVerb ? perfect : "",
+                            supine: isVerb ? supine : "",
+
+                            feminine: isAdjective ? feminine : "",
+                            neuter: isAdjective ? neuter : "",
+                            pronoun_type: isPronoun ? pronounType : "",
+                        },
+
+                        manual_forms: manualForms,
+
+                        examples: [example1, example2, example3],
+
+                        meanings: meaningsText
+                            .split(";")
+                            .map(line => line.trim())
+                            .filter(Boolean)
+                            .map(line => {
+                                const [governsCase, translation] = line.split("|");
+
+                                return {
+                                    meaning: (translation ?? governsCase).trim(),
+                                    governs_case: translation
+                                        ? governsCase.trim()
+                                        : null,
+                                };
+                            }),
+
+                        definitions: definitions
+                            .split("\n")
+                            .map(d => d.trim())
+                            .filter(Boolean),
+
+                        derivatives: derivatives
+                            .split(",")
+                            .map(m => m.trim())
+                            .filter(Boolean),
+                    }),
+                }
+            );
 
             if (!res.ok) {
                 throw new Error("Failed to save lemma");

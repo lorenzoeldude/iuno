@@ -1,6 +1,7 @@
 import styled, { keyframes } from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import AdminPage from "../AdminPage";
 
 import Card from "../../atoms/Card";
 
@@ -115,6 +116,7 @@ function UserPage() {
         } catch (err) {
             console.error(err);
         }
+        console.log("user: ", user);
 
     }, []);
 
@@ -123,6 +125,7 @@ function UserPage() {
 
             <Title>
                 {username}
+                {user?.is_admin && " (admin)"}
             </Title>
 
             <Grid>
@@ -141,7 +144,17 @@ function UserPage() {
                     View and manage your saved Latin vocabulary.
                 </Card>
 
+
             </Grid>
+            
+            {user?.is_admin && (
+                <Card
+                    title="Admin Page"
+                    onClick={() => navigate("/admin")}
+                >
+                    Add words and see the stats of IUNO.com
+                </Card>
+            )}
 
             {user ? (
                 <Button onClick={logout}>

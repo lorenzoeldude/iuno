@@ -24,6 +24,7 @@ import UserPage from "../../pages/UserPage";
 import UserSettings from "../../pages/UserSettings";
 import Vocabulary from "../../pages/Vocabulary";
 import Text from "../../pages/Text";
+import AdminRoute from "../../../routes/AdminRoutes";
 
 const Body = styled.div`
   display: flex;
@@ -61,8 +62,10 @@ function AppContent() {
         <Content isStartPage={isStartPage}>
           <Routes>
             <Route path="/" element={<StartPage />} />
-            <Route path="/admin" element={<AdminPage />} />
-            <Route path="/admin/editor" element={<AdminLemmaEditor />} />
+
+            <Route path="/admin" element={<AdminRoute><AdminPage /></AdminRoute>} />
+            <Route path="/admin/editor" element={<AdminRoute><AdminLemmaEditor /></AdminRoute>} />
+
             <Route path="/trainer" element={<Trainer />} />
             <Route path="/dictionary/:word" element={<Verbum />} />
             <Route path="/lesson" element={<Lessons />} />

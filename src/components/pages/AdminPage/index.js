@@ -70,14 +70,28 @@ function AdminPage() {
 
         async function fetchStats() {
 
+            console.log("FETCH STATS RUNNING");
             try {
 
+                const token = localStorage.getItem("token");
+
+                const config = {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                };
+
+
                 const userResponse = await fetch(
-                    "http://localhost:8080/admin/users/count"
+                    "http://localhost:8080/admin/users/count",
+                    config
                 );
 
+                console.log("userResponse", userResponse.status);
+
                 const lemmaResponse = await fetch(
-                    "http://localhost:8080/admin/lemmas/count"
+                    "http://localhost:8080/admin/lemmas/count",
+                    config
                 );
 
 
@@ -87,6 +101,7 @@ function AdminPage() {
 
                 setUsers(userData.count);
                 setLemmas(lemmaData.count);
+                console.log("token: ------------ ", localStorage.getItem("token"));
 
 
             } catch (error) {
@@ -144,7 +159,7 @@ function AdminPage() {
                 <Card>
 
                     <AdminButton to="/admin/editor">
-                        Open Lemma Editor
+                        Lemma Editor
                     </AdminButton>
 
                 </Card>
