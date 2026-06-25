@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useState } from "react";
 import Input from "../../../styled/Input";
 
+
 const SwitchRow = styled.div`
     display: flex;
     gap: 10px;
@@ -34,6 +35,7 @@ const TD = styled.td`
     padding: 14px;
 `;
 
+
 const CASE_ORDER = [
     "nominative",
     "genitive",
@@ -42,6 +44,7 @@ const CASE_ORDER = [
     "ablative",
     "vocative",
 ];
+
 
 const CASE_LABELS = {
     nominative: "Nom.",
@@ -52,29 +55,47 @@ const CASE_LABELS = {
     vocative: "Voc.",
 };
 
+
 const GENDERS = [
     "masculine",
     "feminine",
     "neuter",
 ];
 
+
+const ADVERB_DEGREES = [
+    "positive",
+    "comparative",
+    "superlative",
+];
+
+
 function AdjectiveFormEditor({ forms, setForms }) {
 
     const [degree, setDegree] = useState("positive");
 
+
+    // ==============================
+    // ADJECTIVE FORMS
+    // ==============================
+
     function getValue(caseName, number, gender) {
+
         const form = forms.find(
             f =>
                 f.degree === degree &&
                 f.grammatical_case === caseName &&
                 f.number === number &&
-                f.gender === gender
+                f.gender === gender &&
+                f.form_type !== "adverb"
         );
 
         return form?.form || "";
     }
 
+
     function setValue(caseName, number, gender, value) {
+
         setForms(prev => {
 
             const existing = prev.find(
@@ -82,16 +103,23 @@ function AdjectiveFormEditor({ forms, setForms }) {
                     f.degree === degree &&
                     f.grammatical_case === caseName &&
                     f.number === number &&
-                    f.gender === gender
+                    f.gender === gender &&
+                    f.form_type !== "adverb"
             );
 
+
             if (existing) {
+
                 return prev.map(f =>
                     f === existing
-                        ? { ...f, form: value }
+                        ? {
+                            ...f,
+                            form: value,
+                        }
                         : f
                 );
             }
+
 
             return [
                 ...prev,
@@ -101,13 +129,75 @@ function AdjectiveFormEditor({ forms, setForms }) {
                     grammatical_case: caseName,
                     number,
                     gender,
+                    form_type: "adjective",
                 },
             ];
         });
     }
 
+
+
+    // ==============================
+    // ADVERBS
+    // ==============================
+
+    function getAdverb(adverbDegree) {
+
+        const form = forms.find(
+            f =>
+                f.degree === adverbDegree &&
+                f.form_type === "adverb"
+        );
+
+        return form?.form || "";
+    }
+
+
+
+    function setAdverb(adverbDegree, value) {
+
+        setForms(prev => {
+
+            const existing = prev.find(
+                f =>
+                    f.degree === adverbDegree &&
+                    f.form_type === "adverb"
+            );
+
+
+            if (existing) {
+
+                return prev.map(f =>
+                    f === existing
+                        ? {
+                            ...f,
+                            form: value,
+                        }
+                        : f
+                );
+            }
+
+
+            return [
+                ...prev,
+                {
+                    form: value,
+                    degree: adverbDegree,
+                    form_type: "adverb",
+                },
+            ];
+        });
+    }
+
+
+
     return (
         <>
+
+            {/* =========================
+                DEGREE SWITCH
+            ========================== */}
+
             <SwitchRow>
 
                 <SwitchButton
@@ -117,12 +207,14 @@ function AdjectiveFormEditor({ forms, setForms }) {
                     Positive
                 </SwitchButton>
 
+
                 <SwitchButton
                     $active={degree === "comparative"}
                     onClick={() => setDegree("comparative")}
                 >
                     Comparative
                 </SwitchButton>
+
 
                 <SwitchButton
                     $active={degree === "superlative"}
@@ -133,36 +225,77 @@ function AdjectiveFormEditor({ forms, setForms }) {
 
             </SwitchRow>
 
+
+
+
+            {/* =========================
+                ADJECTIVES
+            ========================== */}
+
+
             <Table>
 
                 <thead>
+
                     <tr>
+
                         <TH></TH>
-                        <TH>Masc.</TH>
-                        <TH>Fem.</TH>
-                        <TH>Neut.</TH>
+
+                        <TH>
+                            Masc.
+                        </TH>
+
+                        <TH>
+                            Fem.
+                        </TH>
+
+                        <TH>
+                            Neut.
+                        </TH>
+
                     </tr>
+
                 </thead>
+
+
 
                 <tbody>
 
+
                     <tr>
-                        <TH>Singular</TH>
+
+                        <TH>
+                            Singular
+                        </TH>
+
                     </tr>
 
+
+
                     {CASE_ORDER.map(caseName => (
+
                         <tr key={`singular-${caseName}`}>
 
-                            <TD>{CASE_LABELS[caseName]}</TD>
+                            <TD>
+                                {CASE_LABELS[caseName]}
+                            </TD>
+
 
                             {GENDERS.map(gender => (
+
                                 <TD key={gender}>
+
                                     <Input
-                                        value={getValue(
-                                            caseName,
-                                            "singular",
-                                            gender
-                                        )}
+
+                                        value={
+                                            getValue(
+                                                caseName,
+                                                "singular",
+                                                gender
+                                            )
+                                        }
+
+
                                         onChange={e =>
                                             setValue(
                                                 caseName,
@@ -171,30 +304,57 @@ function AdjectiveFormEditor({ forms, setForms }) {
                                                 e.target.value
                                             )
                                         }
+
                                     />
+
                                 </TD>
+
                             ))}
 
+
                         </tr>
+
                     ))}
 
+
+
+
                     <tr>
-                        <TH>Plural</TH>
+
+                        <TH>
+                            Plural
+                        </TH>
+
                     </tr>
 
+
+
                     {CASE_ORDER.map(caseName => (
+
                         <tr key={`plural-${caseName}`}>
 
-                            <TD>{CASE_LABELS[caseName]}</TD>
+                            <TD>
+                                {CASE_LABELS[caseName]}
+                            </TD>
+
+
 
                             {GENDERS.map(gender => (
+
                                 <TD key={gender}>
+
+
                                     <Input
-                                        value={getValue(
-                                            caseName,
-                                            "plural",
-                                            gender
-                                        )}
+
+                                        value={
+                                            getValue(
+                                                caseName,
+                                                "plural",
+                                                gender
+                                            )
+                                        }
+
+
                                         onChange={e =>
                                             setValue(
                                                 caseName,
@@ -203,18 +363,82 @@ function AdjectiveFormEditor({ forms, setForms }) {
                                                 e.target.value
                                             )
                                         }
+
                                     />
+
+
                                 </TD>
+
                             ))}
 
+
                         </tr>
+
+                    ))}
+
+
+
+                </tbody>
+
+
+            </Table>
+
+            {/* =========================
+                ADVERBS
+            ========================== */}
+
+            <Table>
+
+                <thead>
+                    <tr>
+                        <TH>Adverb</TH>
+                        <TH>Form</TH>
+                    </tr>
+                </thead>
+
+
+                <tbody>
+
+                    {ADVERB_DEGREES.map(adverbDegree => (
+
+                        <tr key={adverbDegree}>
+
+                            <TD>
+                                {adverbDegree}
+                            </TD>
+
+
+                            <TD>
+
+                                <Input
+
+                                    value={
+                                        getAdverb(adverbDegree)
+                                    }
+
+                                    onChange={e =>
+                                        setAdverb(
+                                            adverbDegree,
+                                            e.target.value
+                                        )
+                                    }
+
+                                />
+
+                            </TD>
+
+                        </tr>
+
                     ))}
 
                 </tbody>
 
             </Table>
+
+
         </>
     );
 }
+
 
 export default AdjectiveFormEditor;

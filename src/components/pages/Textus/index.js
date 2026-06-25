@@ -12,9 +12,8 @@ const UnderWrapper = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 100%;
+    height: calc(100vh - 400px);
     position: relative;
-    padding: 10px;
     box-sizing: border-box;
 `;
 
@@ -43,7 +42,7 @@ const ArrowDiv = styled.div`
 `;
 
 const TextDiv = styled.div`
-    width: 90%;
+    // width: 90%;
     max-width: 1000px;
     text-align: center;
 
@@ -54,6 +53,7 @@ const Head = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
 `;
 
 const FirstText = styled.p`
@@ -82,13 +82,10 @@ const Text = styled.div`
 `;
 
 const Image = styled.img`
-    // width: min(22vw, 220px);
-    width: 50%;
-    height: auto;
-    margin-bottom: 15px;
+    width: 60%;
+    max-height: 50vh;
+    object-fit: contain;
 `;
-
-
 
 function Textus () {
 
@@ -161,11 +158,11 @@ function Textus () {
 
                 <ContentWrapper>
 
-                    <Head>
+                    {/* <Head>
                         {progress === 0 && (
                             <Image src={"/test3.png"} alt="luna"/>
                         )}
-                    </Head>
+                    </Head> */}
 
                     <TextDiv>
 

@@ -17,6 +17,8 @@ const Wrapper = styled.div`
     min-height: 100vh;
     width: 100%;
 
+    position: relative;
+
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -43,6 +45,23 @@ const BlockDiv = styled.div`
 
     @media (max-width: 900px) {
         grid-template-columns: 1fr;
+    }
+`;
+
+const Footer = styled.div`
+    position: absolute;
+    bottom: 20px;
+
+    font-size: 12px;
+    opacity: 0.5;
+
+    a {
+        color: inherit;
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
     }
 `;
 
@@ -122,6 +141,10 @@ function StartPage() {
                 </Card>
 
             </BlockDiv>
+
+            <Footer>
+                © 2026 IUNO | <a href="/impressum">Impressum</a> | <a href="/privacy">Privacy Policy</a>
+            </Footer>
 
         </Wrapper>
     );

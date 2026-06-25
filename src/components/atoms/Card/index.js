@@ -56,6 +56,7 @@ const StyledCard = styled.a`
             0 10px 25px rgba(0, 0, 0, 0.08);
 
         color: black;
+        cursor: pointer;
     }
 
     &:hover::before {

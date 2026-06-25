@@ -5,17 +5,17 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     width: 80%;
-    height: 70vh;
-    overflow: hidden;
+    // height: 70vh;
+    // overflow: hidden;
 `;
 
 const ContentWrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
+    // width: 100%;
     flex: 1;
-    min-height: 0;
+    // border: 1px solid black;
 `;
 
 function LessonLayout({ children, active }) {

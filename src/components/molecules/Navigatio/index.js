@@ -80,25 +80,25 @@ function Navigatio({ active }) {
                 <NavigationDiv>
                     <Link href="/lectiones/1/textus">
                         <Navigation active={active === "textus"}>
-                            T
+                            Text
                         </Navigation>
                     </Link>
 
                     <Link href="/lectiones/1/vocabula">
                         <Navigation active={active === "vocabula"}>
-                            V
+                            Vocabulary
                         </Navigation>
                     </Link>
 
                     <Link href="/lectiones/1/grammatica">
                         <Navigation active={active === "grammatica"}>
-                            G
+                            Grammar
                         </Navigation>
                     </Link>
 
                     <Link href="/lectiones/1/examinatio">
                         <Navigation active={active === "examinatio"}>
-                            Q
+                            Quiz
                         </Navigation>
                     </Link>
                 </NavigationDiv>

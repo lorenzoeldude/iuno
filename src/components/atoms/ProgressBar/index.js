@@ -5,7 +5,7 @@ const Bar = styled.div`
     height: 5px;
     background: #f1f1f1;
     overflow: hidden;
-    margin: 30px 0;
+    margin: 10px 0;
 `;
 
 const Progress = styled.div`

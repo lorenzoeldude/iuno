@@ -1,58 +1,86 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { HeroCard } from "../../atoms/HeroCard";
+
+import Card from "../../atoms/Card";
+
+const fadeIn = keyframes`
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+`;
 
 const Wrapper = styled.div`
-    width: 72%;
+    width: 100%;
+    max-width: 1200px;
+
     margin: 0 auto;
-    padding: 20px 0;
+    padding: 40px 20px;
+
+    animation: ${fadeIn} 0.8s ease-out;
 `;
 
 const Title = styled.h1`
     font-size: 52px;
-    margin-bottom: 20px;
-`;
+    letter-spacing: 2px;
 
-const Button = styled.button`
-    padding: 4px 8px;
-    border: 0.5px solid rgba(0,0,0,0.2);
-    background: white;
-    cursor: pointer;
+    margin-bottom: 30px;
 
-    &:hover {
-        background: #f5f5f5;
+    @media (max-width: 600px) {
+        font-size: 40px;
     }
 `;
 
 const Grid = styled.div`
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+
     gap: 20px;
+
+    margin-bottom: 30px;
 `;
 
-const Card = styled.div`
-    padding: 28px;
+const Button = styled.button`
+    padding: 10px 18px;
+
     border: 1px solid rgba(0,0,0,0.08);
-    border-radius: 18px;
+    border-radius: 12px;
+
+    background: white;
+
     cursor: pointer;
-    transition: 0.15s ease;
+
+    transition: all 0.15s ease;
 
     &:hover {
         background: rgba(0,0,0,0.03);
-        transform: translateY(-2px);
+        transform: translateY(-1px);
     }
 `;
 
-const CardTitle = styled.h2`
-    font-size: 28px;
-    margin-bottom: 10px;
-`;
+const LoginLink = styled(Link)`
+    display: inline-block;
 
-const CardText = styled.p`
-    font-size: 18px;
-    opacity: 0.7;
-    line-height: 1.5;
+    padding: 10px 18px;
+
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 12px;
+
+    text-decoration: none;
+    color: inherit;
+
+    transition: all 0.15s ease;
+
+    &:hover {
+        background: rgba(0,0,0,0.03);
+        transform: translateY(-1px);
+    }
 `;
 
 function UserPage() {
@@ -68,12 +96,10 @@ function UserPage() {
     function logout() {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
+
         navigate("/login");
     }
 
-    // =====================================================
-    // READ USERNAME FROM LOCAL STORAGE
-    // =====================================================
     useEffect(() => {
 
         try {
@@ -95,37 +121,38 @@ function UserPage() {
     return (
         <Wrapper>
 
-            <Title>{username}</Title>
+            <Title>
+                {username}
+            </Title>
 
             <Grid>
 
-                <HeroCard onClick={() => navigate("/user/settings")}>
-                    <CardTitle>Account Settings</CardTitle>
+                <Card
+                    title="Account Settings"
+                    onClick={() => navigate("/user/settings")}
+                >
+                    Manage your account, authentication and preferences.
+                </Card>
 
-                    <CardText>
-                        Manage your account, authentication and preferences.
-                    </CardText>
-                </HeroCard>
-
-                <HeroCard onClick={() => navigate("/user/list")}>
-                    <CardTitle>Word List</CardTitle>
-
-                    <CardText>
-                        View and manage your saved Latin vocabulary.
-                    </CardText>
-                </HeroCard>
+                <Card
+                    title="Word List"
+                    onClick={() => navigate("/user/list")}
+                >
+                    View and manage your saved Latin vocabulary.
+                </Card>
 
             </Grid>
 
             {user ? (
-            <Button onClick={logout}>
-                Logout
-            </Button>
+                <Button onClick={logout}>
+                    Logout
+                </Button>
             ) : (
-                <Link to="/login">
-                Login
-            </Link>
+                <LoginLink to="/login">
+                    Login
+                </LoginLink>
             )}
+
         </Wrapper>
     );
 }
