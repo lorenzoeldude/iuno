@@ -86,7 +86,7 @@ function Header() {
         <Wrapper>
 
             <StyledLink to="/">
-                <HeadLine>I</HeadLine>
+                <HeadLine>i</HeadLine>
             </StyledLink>
 
             <Searchbar />

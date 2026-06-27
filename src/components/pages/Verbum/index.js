@@ -4,6 +4,7 @@ import { useParams, useSearchParams } from "react-router-dom";
 import { FaCheckCircle } from "react-icons/fa";
 
 import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 import ClickableText from "../../atoms/ClickableText";
 import DictionaryPopup from "../../atoms/DictionaryPopup";
@@ -24,6 +25,16 @@ const Wrapper = styled.div`
     margin: 0 auto;
     padding-top: 0px;
     position: relative;
+`;
+
+const EditButton = styled.button`
+    padding: 10px 20px;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    background: black;
+    color: white;
+    font-size: 16px;
 `;
 
 const Content = styled.div`
@@ -174,6 +185,7 @@ const Loading = styled.p`
 
 function Verbum() {
     const wrapperRef = useRef(null);
+    const navigate = useNavigate();
 
     const {
         popup,
@@ -198,6 +210,25 @@ function Verbum() {
 
     const [token] = useState(() => localStorage.getItem("token"));
     const isAuthed = !!token;
+
+    const [isAdmin, setIsAdmin] = useState(false);
+    
+    useEffect(() => {
+
+        if (!token) return;
+
+        try {
+            const payload = JSON.parse(
+                atob(token.split(".")[1])
+            );
+
+            setIsAdmin(payload.is_admin === true);
+
+        } catch (err) {
+            console.error("Invalid JWT");
+        }
+
+    }, [token]);
 
     // =====================================================
     // FETCH WORD DATA
@@ -390,6 +421,16 @@ function Verbum() {
                         {saved ? <FaCheckCircle/> : <>+</>}
                     </SaveButton>
 
+                    {isAdmin && (
+                        <EditButton
+                            onClick={() =>
+                                navigate(`/admin/editor/${wordInfo.id}`)
+                            }
+                        >
+                            Edit
+                        </EditButton>
+                    )}
+
                 </FirstLine>
                 <Meaning>
                     {wordData.meanings?.map((m, index) => (
@@ -408,23 +449,13 @@ function Verbum() {
                     {wordInfo.gender && <Tag>{wordInfo.gender}</Tag>}
                     {wordInfo.declension > 0 && (
                         <Tag>
-                            {/* {wordInfo.declension >= 31 && wordInfo.declension <= 33
-                                ? "3rd declension"
-                                : `1st/2nd declension`} */}
-                            {(wordInfo.declension === 1) || (wordInfo.declension === 2) && (
-                                "1st/2nd declension"
-                            )}
+                            {[1, 2, 12].includes(wordInfo.declension) && "1st/2nd declension"}
 
-                            {[1, 2].includes(wordInfo.declension) && "1st/2nd declension"}
+                            {[3, 31, 32, 33].includes(wordInfo.declension) && "3rd declension"}
 
-                            {[3, 31].includes(wordInfo.declension) && "3rd declension"}
+                            {wordInfo.declension === 4 && "4th declension"}
 
-                            {wordInfo.declension === 4 && (
-                                "4th declension"
-                            )}
-                            {wordInfo.declension === 5 && (
-                                "5th declension"
-                            )}
+                            {wordInfo.declension === 5 && "5th declension"}
                         </Tag>
                     )}
                     {wordInfo.conjugation > 0 && (

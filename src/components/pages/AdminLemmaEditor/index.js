@@ -1,10 +1,12 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import NounFormEditor from "../Editors/NounFormEditor";
 import AdjectiveFormEditor from "../Editors/AdjectiveFormEditor";
 import VerbFormEditor from "../Editors/VerbFormEditor";
 import Input from "../../styled/Input";
 import PronounFormEditor from "../Editors/PronounFormEditor";
+import { useParams } from "react-router-dom";
+
 
 const Wrapper = styled.div`
     display: flex;
@@ -163,16 +165,34 @@ function AdminLemmaEditor() {
 
     const [manualForms, setManualForms] = useState([]);
 
+    // const { lemma: urlLemma } = useParams();
+    const { id } = useParams();
+
+    useEffect(() => {
+        if (id) {
+            loadLemma(id);
+        }
+    }, [id]);
+
     const supportsMorphology = isNoun || isAdjective || isVerb || isPronoun;
 
-    console.log("manual forms: ", manualForms);
+    // console.log("manual forms: ", manualForms);
 
-    console.log("pronounType: ", pronounType, isPronoun)
+    // console.log("pronounType: ", pronounType, isPronoun)
 
-    async function loadLemma() {
+    async function loadLemma(value = lemma) {
+
+        const token = localStorage.getItem("token");
+
         const res = await fetch(
-            `http://localhost:8080/api/word/${lemma}`
+            `http://localhost:8080/api/admin/lemma/${value}`,
+            {
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                },
+            }
         );
+
 
         if (!res.ok) {
             setStatus("Lemma not found");
@@ -180,6 +200,10 @@ function AdminLemmaEditor() {
         }
 
         const data = await res.json();
+
+        console.log("LOADED:", data);
+
+        setLemma(data.lemma.lemma);
 
         setPartOfSpeech(data.lemma.part_of_speech);
         setGender(data.lemma.gender || "");
@@ -196,10 +220,10 @@ function AdminLemmaEditor() {
 
         setIrregular(data.lemma.irregular);
 
-        setManualForms(data.forms);
+        setManualForms(data.forms || []);
 
         setMeaningsText(
-            data.meanings
+            (data.meanings || [])
                 .map(m =>
                     m.governs_case
                         ? `${m.governs_case}|${m.meaning}`
@@ -209,20 +233,20 @@ function AdminLemmaEditor() {
         );
 
         setDefinitions(
-            data.definitions
+            (data.definitions || [])
                 .map(d => d.definition)
                 .join("\n")
         );
 
         setDerivatives(
-            data.derivatives
+            (data.derivatives || [])
                 .map(d => d.derivative)
                 .join(", ")
         );
 
-        setExample1(data.examples[0]?.latin || "");
-        setExample2(data.examples[1]?.latin || "");
-        setExample3(data.examples[2]?.latin || "");
+        setExample1(data.examples?.[0]?.latin || "");
+        setExample2(data.examples?.[1]?.latin || "");
+        setExample3(data.examples?.[2]?.latin || "");
     }
 
     async function handleSubmit() {
@@ -313,6 +337,7 @@ function AdminLemmaEditor() {
         setLoading(false);
     }
 
+    console.log("lemma: ", lemma);
     return (
         <Wrapper>
             <TopDiv>

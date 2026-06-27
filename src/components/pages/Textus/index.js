@@ -89,7 +89,7 @@ const Image = styled.img`
 
 function Textus () {
 
-    const sentences = [
+    const sentences2 = [
         "Rōma in Italiā est. Italia in Eurōpā est.",
         "Graecia in Eurōpā est. Italia et Graecia in Eurōpā sunt. Hispānia quoque in Eurōpā est. Hispānia et Italia et Graecia in Eurōpā sunt.",
         "Aegyptus in Eurōpā nōn est, Aegyptus in Āfricā est. Gallia nōn in Āfricā est, Gallia est in Eurōpā.",
@@ -115,6 +115,15 @@ function Textus () {
         "Tūsculum et Brundisium sunt oppida Rōmāna.",
         "Crēta, Rhodus, Naxus, Samos, Chios, Lesbos sunt īnsulae Graecae.",
         "In Italiā et in Graeciā sunt multa oppida."
+    ];
+
+    const sentences = [
+        "Rōma in Italiā est. Italia pulchra est.",
+        "Rōma magna urbs est. Multī virī et multae fēminae in Rōmā habitant. Rōma caput est.",
+        "In Italiā multī fluviī sunt. Padus fluvius longus est. Tiberis quoque fluvius longus est.",
+        "Italia in Eurōpā est. Germania quoque in Eurōpā est. Syria non in Eurōpā est.",
+        "In Italiā multae urbes sunt. Rōma urbs antiqua est. Italia terra magna est.",
+        "Populus Rōmānus magnus est. Rōmānī Italiam amant. Rōma pulchra et clara est."
     ];
 
     const [index, setIndex] = useState(0);

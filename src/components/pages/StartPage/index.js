@@ -106,7 +106,7 @@ function StartPage() {
         <Wrapper>
 
             <Title>
-                IUNO
+                IUNONI
             </Title>
 
             <Subtitle>

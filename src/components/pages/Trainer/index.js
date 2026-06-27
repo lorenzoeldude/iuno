@@ -8,22 +8,22 @@ import ClickableText from "../../atoms/ClickableText";
 import DictionaryPopup from "../../atoms/DictionaryPopup";
 import useDictionaryLookup from "../../../hooks/useDictionaryLookups";
 
+
 const Page = styled.div`
     width: 70%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    // gap: 100px;
     padding-top: 80px;
     position: relative;
-    // border: 1px solid black;
 `;
+
 
 const InfoPanel = styled.div`
     padding: 25px;
-    // border: 1px solid red;
 
     opacity: ${(props) => (props.visible ? 1 : 0)};
+
     transform: ${(props) =>
         props.visible
             ? "translateX(0)"
@@ -34,9 +34,11 @@ const InfoPanel = styled.div`
         transform 0.4s ease;
 `;
 
+
 const PanelTitle = styled.h6`
     margin-bottom: 12px;
 `;
+
 
 const Definition = styled.p`
     font-size: 25px;
@@ -44,10 +46,12 @@ const Definition = styled.p`
     margin-bottom: 30px;
 `;
 
+
 const Example = styled.p`
     line-height: 1.6;
     margin-bottom: 12px;
 `;
+
 
 const AnswerWrapper = styled.div`
     transition: opacity 0.3s ease;
@@ -56,30 +60,29 @@ const AnswerWrapper = styled.div`
         props.fade ? 0.1 : 1};
 `;
 
+
 const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    // border: 1px solid green;
     margin-right: 100px;
 `;
+
 
 const Verbum = styled.p`
     font-size: 50px;
     text-decoration: underline;
     margin-bottom: 30px;
-    cursor: ${(props) => (props.clickable ? "pointer" : "default")};
 
-    color: ${(props) => {
-        // if (props.state === 1) return "green";
-        // if (props.state === 2) return "red";
-        return "black";
-    }};
+    cursor: ${(props) =>
+        props.clickable ? "pointer" : "default"};
 
     &:hover {
-        opacity: ${(props) => (props.clickable ? 0.7 : 1)};
+        opacity: ${(props) =>
+            props.clickable ? 0.7 : 1};
     }
 `;
+
 
 const ArrowDiv = styled.div`
     display: flex;
@@ -87,15 +90,20 @@ const ArrowDiv = styled.div`
     margin-top: 30px;
 `;
 
-function Trainer() {
+
+
+function Trainer({ mode = "all" }) {
+
 
     const [question, setQuestion] = useState(null);
     const [selected, setSelected] = useState(null);
     const [loading, setLoading] = useState(true);
 
+
     const navigate = useNavigate();
 
     const wrapperRef = useRef(null);
+
 
     const {
         popup,
@@ -105,24 +113,66 @@ function Trainer() {
     } = useDictionaryLookup();
 
 
+
     // =====================================================
-    // FETCH ONE QUESTION
+    // FETCH QUESTION
     // =====================================================
+
     async function fetchQuestion() {
 
         setLoading(true);
+        setSelected(null);
+
 
         try {
 
+
+            let url;
+
+
+            if (mode === "list") {
+
+                url =
+                    "http://localhost:8080/api/trainer/list/random";
+
+            } else {
+
+                url =
+                    "http://localhost:8080/api/trainer/random";
+
+            }
+
+
+
             const res = await fetch(
-                "http://localhost:8080/api/trainer/random"
+                url,
+                {
+                    headers: {
+                        Authorization:
+                            `Bearer ${localStorage.getItem("token")}`,
+                    },
+                }
             );
+
+
+
+            if (!res.ok) {
+
+                throw new Error(
+                    "Failed to fetch trainer question"
+                );
+
+            }
+
+
 
             const data = await res.json();
 
-            console.log("data: ", data);
+
 
             setQuestion(data);
+
+
 
         } catch (err) {
 
@@ -130,24 +180,30 @@ function Trainer() {
 
         }
 
-        setSelected(null);
+
+
         setLoading(false);
+
     }
 
 
+
     // =====================================================
-    // INITIAL FETCH
+    // RELOAD WHEN MODE CHANGES
     // =====================================================
+
     useEffect(() => {
 
         fetchQuestion();
 
-    }, []);
+    }, [mode]);
+
 
 
     // =====================================================
     // LOADING
     // =====================================================
+
     if (loading || !question) {
 
         return <Wrapper />;
@@ -155,14 +211,20 @@ function Trainer() {
     }
 
 
+
     return (
 
         <Page ref={wrapperRef}>
 
+
             <Wrapper>
 
+
+
                 <Verbum
+
                     clickable={selected !== null}
+
 
                     onClick={() => {
 
@@ -176,92 +238,132 @@ function Trainer() {
 
                     }}
 
-                    state={
-                        selected !== null
-                            ? selected === question.correct
-                                ? 1
-                                : 2
-                            : 0
-                    }
                 >
 
                     {question.infinitive || question.lemma}
 
+
                 </Verbum>
+
+
 
 
                 {question.answers.map((answer, index) => (
 
+
                     <AnswerWrapper
+
                         key={index}
+
                         fade={
                             selected === question.correct &&
                             answer !== question.correct
                         }
+
                     >
 
+
                         <AnswerButton
+
                             index={answer}
+
                             correct={question.correct}
+
                             selected={selected}
+
                             setSelected={setSelected}
+
                         >
+
                             {answer}
+
+
                         </AnswerButton>
 
+
                     </AnswerWrapper>
+
 
                 ))}
 
 
+
+
+
                 {selected !== null && (
+
 
                     <ArrowDiv>
 
+
                         <ArrowButton
+
                             onClick={fetchQuestion}
+
 
                             state={
                                 selected === question.correct
                                     ? 1
                                     : 2
                             }
+
                         >
 
                             {">"}
 
+
                         </ArrowButton>
+
 
                     </ArrowDiv>
 
+
                 )}
 
+
+
             </Wrapper>
+
+
+
+
+
             <InfoPanel visible={selected !== null}>
+
 
                 {selected !== null && (
 
+
                     <>
+
 
                         <PanelTitle>
                             Definition
                         </PanelTitle>
 
 
+
                         <Definition>
 
+
                             <ClickableText
+
                                 text={question.definition}
+
                                 onWordClick={(word, e) =>
                                     lookupWord(
                                         word,
                                         e,
-                                        wrapperRef,
+                                        wrapperRef
                                     )
                                 }
+
                             />
 
+
                         </Definition>
+
+
 
 
                         <PanelTitle>
@@ -269,42 +371,71 @@ function Trainer() {
                         </PanelTitle>
 
 
-                        {question.examples?.slice(0, 3).map((example, index) => (
 
-                            <Example key={index}>
 
-                                {index + 1}.{" "}
+                        {question.examples?.slice(0, 3).map(
+                            (example, index) => (
 
-                                <ClickableText
-                                    text={example}
-                                    onWordClick={(word, e) =>
-                                        lookupWord(
-                                            word,
-                                            e,
-                                            wrapperRef,
-                                        )
-                                    }
-                                />
 
-                            </Example>
+                                <Example key={index}>
 
-                        ))}
+
+                                    {index + 1}.{" "}
+
+
+
+                                    <ClickableText
+
+                                        text={example}
+
+                                        onWordClick={(word, e) =>
+                                            lookupWord(
+                                                word,
+                                                e,
+                                                wrapperRef
+                                            )
+                                        }
+
+                                    />
+
+
+                                </Example>
+
+
+                            )
+                        )}
+
+
 
                     </>
 
                 )}
 
+
+
             </InfoPanel>
 
+
+
+
+
             <DictionaryPopup
+
                 popup={popup}
+
                 entry={entry}
+
                 onClose={closePopup}
+
             />
+
+
 
         </Page>
 
     );
+
 }
+
 
 export default Trainer;

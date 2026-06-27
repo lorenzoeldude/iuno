@@ -15,6 +15,12 @@ const Input = styled.input`
     border: 0.1px solid #eaeaea;
     border-radius: 0px;
     text-align: center;
+
+    &:focus {
+        outline: none;
+        border-color: ;
+        border: 1px solid #cdc3b1;
+    }
 `;
 
 const Dropdown = styled.div`

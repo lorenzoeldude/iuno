@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 
 import Card from "../../atoms/Card";
 
-
 const Wrapper = styled.div`
     width: 100%;
     display: flex;
@@ -156,15 +155,23 @@ function AdminPage() {
                 </Grid>
 
 
-                <Card>
+                <Grid>
+                    <Card>
 
-                    <AdminButton to="/admin/editor">
-                        Lemma Editor
-                    </AdminButton>
+                        <AdminButton to="/admin/editor">
+                            Lemma Editor
+                        </AdminButton>
 
-                </Card>
+                    </Card>
 
+                    <Card>
 
+                        <AdminButton to="/admin/bulk">
+                            Bulk Import
+                        </AdminButton>
+
+                    </Card>
+                </Grid>
             </Container>
 
         </Wrapper>

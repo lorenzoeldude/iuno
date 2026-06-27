@@ -13,7 +13,7 @@ import Grammatica from './../../../components/pages/Grammatica';
 import Vocabula from './../../../components/pages/Vocabula';
 import Examinatio from './../../../components/pages/Examinatio';
 import StartPage from './../../../components/pages/StartPage';
-import Trainer from "../../pages/Trainer";
+import TrainerPage from "../../pages/TrainerPage";
 import AdminLemmaEditor from "../../pages/AdminLemmaEditor";
 import AdminPage from "../../pages/AdminPage";
 import RegisterPage from "../../pages/RegisterPage";
@@ -25,6 +25,9 @@ import UserSettings from "../../pages/UserSettings";
 import Vocabulary from "../../pages/Vocabulary";
 import Text from "../../pages/Text";
 import AdminRoute from "../../../routes/AdminRoutes";
+import Impressum from "../../pages/Impressum";
+import PrivacyPolicy from "../../pages/PrivacyPolicy";
+import BulkImportPage from "../../pages/BulkImportPage";
 
 const Body = styled.div`
   display: flex;
@@ -65,8 +68,10 @@ function AppContent() {
 
             <Route path="/admin" element={<AdminRoute><AdminPage /></AdminRoute>} />
             <Route path="/admin/editor" element={<AdminRoute><AdminLemmaEditor /></AdminRoute>} />
+            <Route path="/admin/editor/:id" element={<AdminRoute><AdminLemmaEditor /></AdminRoute>} />
+            <Route path="/admin/bulk" element={<AdminRoute><BulkImportPage /></AdminRoute>} />
 
-            <Route path="/trainer" element={<Trainer />} />
+            <Route path="/trainer" element={<TrainerPage />} />
             <Route path="/dictionary/:word" element={<Verbum />} />
             <Route path="/lesson" element={<Lessons />} />
             <Route path="/lesson/1/textus" element={<Textus />} />
@@ -86,6 +91,9 @@ function AppContent() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/user" element={<UserPage />} />
             <Route path="/user/settings" element={<UserSettings />} />
+
+            <Route path="/impressum" element={<Impressum />} />
+            <Route path="/privacy" element={<PrivacyPolicy />} />
           </Routes>
         </Content>
       </Body>

@@ -1,9 +1,6 @@
 import styled from "styled-components";
 import { FaBook, FaBookOpen, FaUserCircle, FaList } from "react-icons/fa";
 
-// const Wrapper = styled.div`
-//     margin: 0 40px;
-// `;
 
 const Wrapper = styled.div`
     position: fixed;
@@ -33,15 +30,27 @@ const Line =styled.hr`
 `;
 
 const Link = styled.a`
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
     text-decoration: none;
     font-size: 23px;
-
-    // color: #279CF5;
     color: black;
+
+    transition: color 0.2s ease;
+
+    svg {
+        transition: transform 0.2s ease;
+    }
 
     &:hover {
         color: #279CF5;
         text-decoration: underline;
+    }
+
+    &:hover svg {
+        transform: rotate(+5deg) scale(1.05);
     }
 
     &:active {

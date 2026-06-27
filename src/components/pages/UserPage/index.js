@@ -1,9 +1,9 @@
 import styled, { keyframes } from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import AdminPage from "../AdminPage";
 
 import Card from "../../atoms/Card";
+
 
 const fadeIn = keyframes`
     from {
@@ -84,41 +84,64 @@ const LoginLink = styled(Link)`
     }
 `;
 
+
 function UserPage() {
 
     const navigate = useNavigate();
 
     const [username, setUsername] = useState("User");
+    const [user, setUser] = useState(null);
 
-    const user = JSON.parse(
-        localStorage.getItem("user")
-    );
+
+    useEffect(() => {
+
+        const token = localStorage.getItem("token");
+        const storedUser = localStorage.getItem("user");
+
+
+        if (!token || !storedUser) {
+            navigate("/login");
+            return;
+        }
+
+
+        try {
+
+            const parsedUser = JSON.parse(storedUser);
+
+            setUser(parsedUser);
+
+            if (parsedUser?.username) {
+                setUsername(parsedUser.username);
+            }
+
+        } catch (err) {
+
+            console.error(err);
+
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+
+            navigate("/login");
+        }
+
+
+    }, [navigate]);
+
 
     function logout() {
+
         localStorage.removeItem("token");
         localStorage.removeItem("user");
 
         navigate("/login");
     }
 
-    useEffect(() => {
 
-        try {
+    if (!user) {
+        return null;
+    }
 
-            const user = JSON.parse(
-                localStorage.getItem("user")
-            );
-
-            if (user?.username) {
-                setUsername(user.username);
-            }
-
-        } catch (err) {
-            console.error(err);
-        }
-        console.log("user: ", user);
-
-    }, []);
 
     return (
         <Wrapper>
@@ -127,6 +150,7 @@ function UserPage() {
                 {username}
                 {user?.is_admin && " (admin)"}
             </Title>
+
 
             <Grid>
 
@@ -137,6 +161,7 @@ function UserPage() {
                     Manage your account, authentication and preferences.
                 </Card>
 
+
                 <Card
                     title="Word List"
                     onClick={() => navigate("/user/list")}
@@ -145,29 +170,26 @@ function UserPage() {
                 </Card>
 
 
-            </Grid>
-            
-            {user?.is_admin && (
-                <Card
-                    title="Admin Page"
-                    onClick={() => navigate("/admin")}
-                >
-                    Add words and see the stats of IUNO.com
-                </Card>
-            )}
+                {user?.is_admin && (
+                    <Card
+                        title="Admin Page"
+                        onClick={() => navigate("/admin")}
+                    >
+                        Add words and see the stats of IUNO.com
+                    </Card>
+                )}
 
-            {user ? (
-                <Button onClick={logout}>
-                    Logout
-                </Button>
-            ) : (
-                <LoginLink to="/login">
-                    Login
-                </LoginLink>
-            )}
+            </Grid>
+
+
+            <Button onClick={logout}>
+                Logout
+            </Button>
+
 
         </Wrapper>
     );
 }
+
 
 export default UserPage;
