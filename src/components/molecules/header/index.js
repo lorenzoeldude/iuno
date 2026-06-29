@@ -21,9 +21,16 @@ const Wrapper = styled.div`
 const HeadLine = styled.h1`
     font-size: 25px;
     letter-spacing: 5px;
+
     font-family: "Luxurious Roman", serif;
     font-weight: 400;
     font-style: normal;
+
+    font-family: "Jost", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: <weight>;
+    font-style: normal;
+
     cursor: pointer;
     color: inherit;
     text-decoration: none;
@@ -68,6 +75,11 @@ const Button = styled.button`
     }
 `;
 
+const Image = styled.img`
+    height: 50px;
+`;
+
+
 function Header() {
 
     const navigate = useNavigate();
@@ -88,6 +100,7 @@ function Header() {
             <StyledLink to="/">
                 <HeadLine>i</HeadLine>
             </StyledLink>
+
 
             <Searchbar />
 

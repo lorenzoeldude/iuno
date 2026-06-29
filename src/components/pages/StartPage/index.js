@@ -66,10 +66,39 @@ const Footer = styled.div`
 `;
 
 const Title = styled.h1`
-    font-family: "Luxurious Roman", serif;
-    font-size: 60px;
-    letter-spacing: 8px;
-    margin: 0;
+    // LUXURIOUS ROMAN
+    // font-family: "Luxurious Roman", serif;
+    // font-size: 50px;
+    // letter-spacing: 8px;
+
+    // // MONTSERRAT
+    // font-family: "Montserrat", sans-serif;
+    // font-weight: 700;
+    // letter-spacing: 8px;
+
+    // // BODONI
+    // font-family: "Bodoni Moda", serif;
+    // font-optical-sizing: auto;
+    // font-weight: <weight>;
+    // font-style: normal;
+
+    // // JOST
+    // font-family: "Jost", sans-serif;
+    // font-optical-sizing: auto;
+    // font-weight: <weight>;
+    // font-style: normal;
+
+    // // JOSEFIN
+    // font-family: "Josefin Sans", sans-serif;
+    // font-optical-sizing: auto;
+    // font-weight: 700;
+    // font-style: normal;
+
+    // // LEXEND
+    // font-family: "Lexend", sans-serif;
+    // font-optical-sizing: auto;
+    // font-weight: <weight>;
+    // font-style: normal;
 
     @media (max-width: 600px) {
         font-size: 45px;
@@ -99,18 +128,31 @@ const StyledSearch = styled(Searchbar)`
     margin: 20px 0;
 `;
 
+const Image = styled.img`
+    height: 100px;
+`;
+
+const Column = styled.div`
+    // display: flex;
+    // justify-content: center;
+    // align-items: center;
+`;
+
+
 
 function StartPage() {
 
     return (
         <Wrapper>
 
-            <Title>
-                IUNONI
-            </Title>
+            <Column>
+                <Title>
+                    IUNONI
+                </Title>
+            </Column>
 
             <Subtitle>
-                Learn Latin now
+                Where Latin comes alive
             </Subtitle>
 
             <StyledSearch />
@@ -143,7 +185,7 @@ function StartPage() {
             </BlockDiv>
 
             <Footer>
-                © 2026 IUNO | <a href="/impressum">Impressum</a> | <a href="/privacy">Privacy Policy</a>
+                © 2026 IUNONI | <a href="/impressum">Impressum</a> | <a href="/privacy">Privacy Policy</a>
             </Footer>
 
         </Wrapper>
