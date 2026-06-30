@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Card from "../../atoms/Card";
-
 
 const Wrapper = styled.div`
     width: 80%;
@@ -26,10 +26,6 @@ const Column = styled.div`
     gap: 14px;
 
     padding: 20px;
-    border-radius: 18px;
-
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
 `;
 
 const ColumnTitle = styled.h2`
@@ -83,9 +79,12 @@ const Author = styled.div`
 `;
 
 
-function Litterae() {
+function ReadPage() {
+
+    const navigate = useNavigate();
 
     const [texts, setTexts] = useState([]);
+
 
     useEffect(() => {
         fetch("http://localhost:8080/api/texts")
@@ -124,7 +123,11 @@ function Litterae() {
                 key={text.id}
                 difficulty={text.difficulty}
                 size="small"
-                href={`/read/${encodeURIComponent(text.author)}/${encodeURIComponent(text.title)}`}
+                onClick={() =>
+                    navigate(
+                        `/read/${encodeURIComponent(text.author)}/${encodeURIComponent(text.title)}`
+                    )
+                }
             >
                 <Title>
                     {text.title}
@@ -175,4 +178,4 @@ function Litterae() {
     );
 }
 
-export default Litterae;
+export default ReadPage;

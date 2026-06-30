@@ -32,7 +32,6 @@ const Label = styled.label`
 
 const Input = styled.input`
     padding: 16px;
-    border-radius: 12px;
     border: 1px solid rgba(0,0,0,0.12);
     font-size: 18px;
     outline: none;
@@ -106,6 +105,7 @@ const Message = styled.p`
 
 const Overlay = styled.div`
     position: fixed;
+    color: black;
     inset: 0;
     background: rgba(0,0,0,0.45);
     display: flex;

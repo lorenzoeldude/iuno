@@ -5,9 +5,9 @@ import { useEffect, useRef } from "react";
 const Popup = styled.div`
     position: absolute;
     z-index: 1000;
-    background: white;
+    background: ${({ theme }) => theme.colors.background};
     border: 1px solid #ddd;
-    border-radius: 8px;
+    border-radius: 4px;
     padding: 12px;
     min-width: 250px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);

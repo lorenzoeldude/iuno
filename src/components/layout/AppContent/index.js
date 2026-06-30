@@ -1,13 +1,11 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import Verbum from '../../../components/pages/Verbum';
 import Header from './../../../components/molecules/header';
 import Sidebar from './../../../components/molecules/Sidebar';
 import Textus from './../../../components/pages/Textus';
 import Lessons from '../../pages/Lessons';
 import Footer from './../../../components/molecules/footer';
 import Quiz from './../../../components/pages/Quiz';
-import Litterae from './../../../components/pages/Litterae';
 import TextSection from '../../pages/TextSection';
 import Grammatica from './../../../components/pages/Grammatica';
 import Vocabula from './../../../components/pages/Vocabula';
@@ -28,6 +26,8 @@ import AdminRoute from "../../../routes/AdminRoutes";
 import Impressum from "../../pages/Impressum";
 import PrivacyPolicy from "../../pages/PrivacyPolicy";
 import BulkImportPage from "../../pages/BulkImportPage";
+import ReadPage from "../../pages/ReadPage";
+import DictionaryPage from "../../pages/DictionaryPage";
 
 const Body = styled.div`
   display: flex;
@@ -36,18 +36,17 @@ const Body = styled.div`
 `;
 
 const Content = styled.div`
-  display: flex;
-  width:90%;
-  height: 100%;
-  font-family: "Cormorant Garamond", serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-  font-size: 25px;
-  margin-left: 0%;
-  justify-content: center;
-  
-  padding-top: ${({ isStartPage }) => isStartPage ? "0" : "70px"};
+    display: flex;
+    width: 90%;
+    height: 100%;
+
+    font-family: ${({ theme }) => theme.fonts.body};
+    font-size: ${({ theme }) => theme.fontSizes.xl};
+
+    margin-left: 0%;
+    justify-content: center;
+
+    padding-top: ${({ isStartPage }) => isStartPage ? "0" : "70px"};
 `;
 
 function AppContent() {
@@ -72,11 +71,11 @@ function AppContent() {
             <Route path="/admin/bulk" element={<AdminRoute><BulkImportPage /></AdminRoute>} />
 
             <Route path="/trainer" element={<TrainerPage />} />
-            <Route path="/dictionary/:word" element={<Verbum />} />
+            <Route path="/dictionary/:word" element={<DictionaryPage />} />
             <Route path="/lesson" element={<Lessons />} />
             <Route path="/lesson/1/textus" element={<Textus />} />
             <Route path="/quiz" element={<Quiz />} />
-            <Route path="/read" element={<Litterae />} />
+            <Route path="/read" element={<ReadPage />} />
             <Route path="/read/:author/:title" element={<Text />}/>
             <Route path="/read/:author/:title/:position" element={<TextSection />}/>
             <Route path="/lesson/1/grammatica" element={<Grammatica />} />
@@ -96,9 +95,9 @@ function AppContent() {
             <Route path="/privacy" element={<PrivacyPolicy />} />
           </Routes>
         </Content>
+      {!isStartPage && <Footer />}
       </Body>
 
-      {!isStartPage && <Footer />}
     </>
   );
 }

@@ -11,34 +11,59 @@ const Wrapper = styled.div`
 const Input = styled.input`
     height: 30px;
     width: 100%;
+
     padding: 5px;
-    border: 0.1px solid #eaeaea;
+
+    border: 1px solid ${({ theme }) => theme.colors.border};
     border-radius: 0px;
+
+    background: ${({ theme }) => theme.colors.background};
+    color: ${({ theme }) => theme.colors.text};
+
     text-align: center;
+
+    transition: border ${({ theme }) => theme.transition.normal},
+                background ${({ theme }) => theme.transition.normal};
+
+    &::placeholder {
+        color: ${({ theme }) => theme.colors.textSecondary};
+    }
 
     &:focus {
         outline: none;
-        border-color: ;
-        border: 1px solid #cdc3b1;
+        border: 1px solid ${({ theme }) => theme.colors.accent};
     }
 `;
 
 const Dropdown = styled.div`
     position: absolute;
+
     top: calc(100% + 6px);
     left: 0;
     right: 0;
-    background: white;
-    border: 0.1px solid #ccc;
+
+    background: ${({ theme }) => theme.colors.card};
+
+    color: ${({ theme }) => theme.colors.text};
+
+    border: 1px solid ${({ theme }) => theme.colors.border};
+
     z-index: 999;
+
+    box-shadow: 0 10px 25px ${({ theme }) => theme.colors.shadow};
 `;
 
 const Item = styled.div`
     padding: 8px;
+
+    color: ${({ theme }) => theme.colors.text};
+
     cursor: pointer;
 
+    transition: background ${({ theme }) => theme.transition.fast};
+
     &:hover {
-        background: #f0f0f0;
+        background: ${({ theme }) => theme.colors.surface};
     }
 `;
 
@@ -80,7 +105,9 @@ function Searchbar({ className }) {
     // =====================================================
     const goToSearchPage = (q) => {
         if (!q.trim()) return;
+
         setOpen(false);
+
         navigate(`/search?q=${encodeURIComponent(q)}`);
     };
 
@@ -118,13 +145,19 @@ function Searchbar({ className }) {
                     {results.map((item) => (
                         <Item
                             key={item.lemma}
-                            onMouseDown={() => handleSelect(item.lemma_normalized, item.form)}
+                            onMouseDown={() =>
+                                handleSelect(
+                                    item.lemma_normalized,
+                                    item.form
+                                )
+                            }
                         >
                             <strong>{item.form}</strong>
                             {": "}
-                            {item.lemma}<br />
-                            {item.grammatical_case || item.tense} - {item.meaning}
-                            {/* {item.part_of_speech} */}
+                            {item.lemma}
+                            <br />
+                            {item.grammatical_case || item.tense} -{" "}
+                            {item.meaning}
                         </Item>
                     ))}
                 </Dropdown>

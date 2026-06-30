@@ -12,7 +12,7 @@ const ArrowButton = styled.button`
         opacity: 100%;
     }
 
-    color: ${(props) => props.color || "black"};
+    color: ${({ theme }) => theme.colors.text};
 `;
 
 export default ArrowButton;

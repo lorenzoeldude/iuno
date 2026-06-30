@@ -14,22 +14,12 @@ const Wrapper = styled.div`
 
     padding: 10px 30px;
 
-    background: white;
     z-index: 1000;
 `;
 
 const HeadLine = styled.h1`
     font-size: 25px;
     letter-spacing: 5px;
-
-    font-family: "Luxurious Roman", serif;
-    font-weight: 400;
-    font-style: normal;
-
-    font-family: "Jost", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: <weight>;
-    font-style: normal;
 
     cursor: pointer;
     color: inherit;
@@ -51,33 +41,14 @@ const Right = styled.div`
     gap: 15px;
 `;
 
-const UserBox = styled(Link)`
-    font-size: 14px;
-    opacity: 0.8;
-    color: inherit;
-    text-decoration: none;
-    cursor: pointer;
-
-    &:hover {
-        opacity: 1;
-        text-decoration: underline;
-    }
-`;
-
 const Button = styled.button`
     padding: 4px 8px;
     border: 0.5px solid rgba(0,0,0,0.2);
-    background: white;
+    background: none;
+    color: ${({ theme }) => theme.colors.text};
     cursor: pointer;
-
-    &:hover {
-        background: #f5f5f5;
-    }
 `;
 
-const Image = styled.img`
-    height: 50px;
-`;
 
 
 function Header() {
@@ -107,20 +78,12 @@ function Header() {
             <Right>
 
                 {user ? (
-                    <>
-                        {/* <UserBox to="/user">
-                            {user.username}
-                        </UserBox> */}
-
-                        <Button onClick={logout}>
-                            Logout
-                        </Button>
-                    </>
+                    <Button onClick={logout}>
+                        Logout
+                    </Button>
                 ) : (
-                    // <Link to="/login">
-                    //     Login
-                    // </Link>
-                    <></>
+                    <>
+                    </>
                 )}
 
             </Right>

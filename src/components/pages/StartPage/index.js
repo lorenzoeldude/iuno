@@ -1,6 +1,9 @@
 import styled, { keyframes } from "styled-components";
+import { Link, useNavigate } from "react-router-dom";
+
 import Searchbar from "../../atoms/Searchbar";
 import Card from "../../atoms/Card";
+
 
 const fadeIn = keyframes`
     from {
@@ -30,6 +33,10 @@ const Wrapper = styled.div`
     box-sizing: border-box;
 
     animation: ${fadeIn} 1.5s ease-out;
+
+    transition:
+        background ${({ theme }) => theme.transition.normal},
+        color ${({ theme }) => theme.transition.normal};
 `;
 
 const BlockDiv = styled.div`
@@ -43,7 +50,7 @@ const BlockDiv = styled.div`
 
     margin-top: 35px;
 
-    @media (max-width: 900px) {
+    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}px) {
         grid-template-columns: 1fr;
     }
 `;
@@ -53,7 +60,7 @@ const Footer = styled.div`
     bottom: 20px;
 
     font-size: 12px;
-    opacity: 0.5;
+    color: ${({ theme }) => theme.colors.textSecondary};
 
     a {
         color: inherit;
@@ -66,41 +73,12 @@ const Footer = styled.div`
 `;
 
 const Title = styled.h1`
-    // LUXURIOUS ROMAN
-    // font-family: "Luxurious Roman", serif;
-    // font-size: 50px;
-    // letter-spacing: 8px;
+    font-family: ${({ theme }) => theme.fonts.heading};
+    font-size: 50px;
+    letter-spacing: 8px;
+    color: ${({ theme }) => theme.colors.text};
 
-    // // MONTSERRAT
-    // font-family: "Montserrat", sans-serif;
-    // font-weight: 700;
-    // letter-spacing: 8px;
-
-    // // BODONI
-    // font-family: "Bodoni Moda", serif;
-    // font-optical-sizing: auto;
-    // font-weight: <weight>;
-    // font-style: normal;
-
-    // // JOST
-    // font-family: "Jost", sans-serif;
-    // font-optical-sizing: auto;
-    // font-weight: <weight>;
-    // font-style: normal;
-
-    // // JOSEFIN
-    // font-family: "Josefin Sans", sans-serif;
-    // font-optical-sizing: auto;
-    // font-weight: 700;
-    // font-style: normal;
-
-    // // LEXEND
-    // font-family: "Lexend", sans-serif;
-    // font-optical-sizing: auto;
-    // font-weight: <weight>;
-    // font-style: normal;
-
-    @media (max-width: 600px) {
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}px) {
         font-size: 45px;
         letter-spacing: 5px;
     }
@@ -108,7 +86,7 @@ const Title = styled.h1`
 
 const Subtitle = styled.p`
     font-size: 18px;
-    opacity: 0.7;
+    color: ${({ theme }) => theme.colors.textSecondary};
 
     max-width: 550px;
 
@@ -121,26 +99,28 @@ const StyledSearch = styled(Searchbar)`
     height: 50px;
     width: 300px;
 
-    border: 1px solid #e6e1d8;
+    border: 1px solid ${({ theme }) => theme.colors.border};
 
     text-align: center;
 
     margin: 20px 0;
 `;
 
-const Image = styled.img`
-    height: 100px;
+const FooterLink = styled(Link)`
+    color: inherit;
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+    }
 `;
 
-const Column = styled.div`
-    // display: flex;
-    // justify-content: center;
-    // align-items: center;
-`;
-
+const Column = styled.div``;
 
 
 function StartPage() {
+
+    const navigate = useNavigate();
 
     return (
         <Wrapper>
@@ -151,41 +131,55 @@ function StartPage() {
                 </Title>
             </Column>
 
+
             <Subtitle>
                 Where Latin comes alive
             </Subtitle>
 
+
             <StyledSearch />
+
 
             <BlockDiv>
 
                 <Card
-                    href="/lesson"
                     title="Lessons"
+                    onClick={() => navigate("/lesson")}
                 >
-                    Master Latin step by step through structured lessons covering grammar, vocabulary, and reading.
+                    Master Latin step by step through structured lessons
+                    covering grammar, vocabulary, and reading.
                 </Card>
 
 
                 <Card
-                    href="/trainer"
                     title="Trainer"
+                    onClick={() => navigate("/trainer")}
                 >
-                    Train vocabulary, create word lists and use our built-in algorithm for spaced repition.
+                    Train vocabulary, create word lists and use our built-in
+                    algorithm for spaced repetition.
                 </Card>
 
 
                 <Card
-                    href="/read"
                     title="Read"
+                    onClick={() => navigate("/read")}
                 >
-                    Read texts from beginner to the Aeneid, and lookup words on the spot.
+                    Read texts from beginner to the Aeneid, and lookup words on
+                    the spot.
                 </Card>
 
             </BlockDiv>
 
+
             <Footer>
-                © 2026 IUNONI | <a href="/impressum">Impressum</a> | <a href="/privacy">Privacy Policy</a>
+                © 2026 IUNONI |{" "}
+                <FooterLink to="/impressum">
+                    Impressum
+                </FooterLink>
+                {" | "}
+                <FooterLink to="/privacy">
+                    Privacy Policy
+                </FooterLink>
             </Footer>
 
         </Wrapper>

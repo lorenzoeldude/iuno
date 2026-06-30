@@ -16,14 +16,14 @@ const Button = styled.div`
     height: 50px;
     margin: 10px 0;
     font-size: 30px;
-    color: white;
+    color: ${({ theme }) => theme.colors.text};
     cursor: pointer;
     border: 2px solid white;
 
     background-color: ${(props) => {
         if (props.state === 1) return "green";
         if (props.state === 2) return "red";
-        return "#2f2f2f";
+        return `${({ theme }) => theme.colors.background}`;
     }};
 
     &:hover {

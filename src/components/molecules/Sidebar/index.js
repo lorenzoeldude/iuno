@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { FaBook, FaBookOpen, FaUserCircle, FaList } from "react-icons/fa";
-
+import { useNavigate } from "react-router-dom";
+import { FaBook, FaBookOpen, FaUserCircle, FaList, FaFont, FaLanguage } from "react-icons/fa";
 
 const Wrapper = styled.div`
     position: fixed;
@@ -13,60 +13,84 @@ const List = styled.ul`
     padding-left: 0;
     margin: 0;
     list-style: none;
-    text-decoration: none;
 `;
 
 const ListItem = styled.li`
-    margin: 20px 0px;
-    text-decoration: none;
-    color: black;
+    margin: 20px 0;
 `;
 
-const Line =styled.hr`
-    border: none;
-    height: 0.8px;
-    background-color: black;
-    opacity: 50%;
-`;
-
-const Link = styled.a`
+const Link = styled.button`
     display: inline-flex;
     align-items: center;
     justify-content: center;
 
+    padding: 0;
+    border: none;
+    background: none;
+
     text-decoration: none;
     font-size: 23px;
-    color: black;
 
-    transition: color 0.2s ease;
+    color: ${({ theme }) => theme.colors.text};
+
+    cursor: pointer;
+
+    transition: color ${({ theme }) => theme.transition.fast};
 
     svg {
-        transition: transform 0.2s ease;
+        transition: transform ${({ theme }) => theme.transition.fast};
     }
 
     &:hover {
-        color: #279CF5;
+        color: ${({ theme }) => theme.colors.primary};
         text-decoration: underline;
     }
 
     &:hover svg {
-        transform: rotate(+5deg) scale(1.05);
+        transform: rotate(5deg) scale(1.05);
     }
 
     &:active {
-        color: #279CF5;
+        color: ${({ theme }) => theme.colors.primaryHover};
     }
 `;
 
-function Sidebar () {
+function Sidebar() {
+
+    const navigate = useNavigate();
+
     return (
         <Wrapper>
-            {/* <Line /> */}
             <List>
-                <ListItem><Link href="/lesson"><FaBook /></Link></ListItem>
-                <ListItem><Link href="/trainer"><FaList /></Link></ListItem>
-                <ListItem><Link href="/read"><FaBookOpen /></Link></ListItem>
-                <ListItem><Link href="/user"><FaUserCircle /></Link></ListItem>
+                <ListItem>
+                    <Link onClick={() => navigate("/lesson")}>
+                        <FaBook />
+                    </Link>
+                </ListItem>
+
+                {/* <ListItem>
+                    <Link onClick={() => navigate("/trainer")}>
+                        <FaList />
+                    </Link>
+                </ListItem> */}
+
+                <ListItem>
+                    <Link onClick={() => navigate("/trainer")}>
+                        <FaFont />
+                    </Link>
+                </ListItem>
+
+                <ListItem>
+                    <Link onClick={() => navigate("/read")}>
+                        <FaBookOpen />
+                    </Link>
+                </ListItem>
+
+                <ListItem>
+                    <Link onClick={() => navigate("/user")}>
+                        <FaUserCircle />
+                    </Link>
+                </ListItem>
             </List>
         </Wrapper>
     );

@@ -6,7 +6,7 @@ const Word = styled.span`
     transition: background-color 0.15s;
 
     &:hover {
-        background: rgba(255, 255, 0, 0.3);
+        background: ${({ theme }) => theme.colors.highlight};
     }
 `;
 

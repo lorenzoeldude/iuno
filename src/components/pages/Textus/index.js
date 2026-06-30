@@ -42,18 +42,8 @@ const ArrowDiv = styled.div`
 `;
 
 const TextDiv = styled.div`
-    // width: 90%;
     max-width: 1000px;
     text-align: center;
-
-    // border: 1px solid red;
-`;
-
-const Head = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
 `;
 
 const FirstText = styled.p`
@@ -74,17 +64,9 @@ const Text = styled.div`
     text-align: center;
     line-height: 1.4;
 
-    // border: 1px solid black;
-
     p {
         margin: 5px 0;
     }
-`;
-
-const Image = styled.img`
-    width: 60%;
-    max-height: 50vh;
-    object-fit: contain;
 `;
 
 function Textus () {
@@ -166,12 +148,6 @@ function Textus () {
                 </ProgressWrapper>
 
                 <ContentWrapper>
-
-                    {/* <Head>
-                        {progress === 0 && (
-                            <Image src={"/test3.png"} alt="luna"/>
-                        )}
-                    </Head> */}
 
                     <TextDiv>
 

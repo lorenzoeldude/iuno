@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+
 
 const ACTIVE_COLOR = "#454545";
 
@@ -7,22 +9,12 @@ const OuterWrapper = styled.div`
     justify-content: center;
 `;
 
+
 const Wrapper = styled.div`
     display: inline-flex;
     flex-direction: column;
 `;
 
-const ActiveLabel = styled.div`
-    // background-color: ${ACTIVE_COLOR};
-    color: black;
-
-    font-family: "Cormorant Garamond", serif;
-    font-weight: 500;
-    font-size: 20px;
-    text-align: center;
-
-    padding: 0px 0;
-`;
 
 const NavigationDiv = styled.div`
     display: flex;
@@ -30,16 +22,6 @@ const NavigationDiv = styled.div`
     align-items: center;
 `;
 
-const Link = styled.a`
-    text-decoration: none;
-
-    color: #279cf5;
-
-    &:hover {
-        color: #279cf5;
-        text-decoration: none;
-    }
-`;
 
 const Navigation = styled.p`
     font-family: "Cormorant Garamond", serif;
@@ -49,11 +31,15 @@ const Navigation = styled.p`
     margin: 0;
     padding: 10px 20px;
 
-    background-color: ${(props) =>
-        props.active ? ACTIVE_COLOR : "transparent"};
+    background-color: ${({ active }) =>
+        active ? ACTIVE_COLOR : "transparent"};
 
-    color: ${(props) =>
-        props.active ? "white" : "black"};
+    color: ${({ active, theme }) =>
+        active ? "white" : theme.colors.text};
+
+    transition:
+        background-color ${({ theme }) => theme.transition.fast},
+        color ${({ theme }) => theme.transition.fast};
 
     &:hover {
         background-color: #2e2e2e;
@@ -62,49 +48,63 @@ const Navigation = styled.p`
     }
 `;
 
+
+
 function Navigatio({ active }) {
-    const labels = {
-        textus: "Text",
-        vocabula: "Vocabulary",
-        grammatica: "Grammar",
-        examinatio: "Quiz",
-    };
+
+    const navigate = useNavigate();
+
+
+    const links = [
+        {
+            id: "textus",
+            label: "Text",
+            path: "/lesson/1/textus",
+        },
+        {
+            id: "vocabula",
+            label: "Vocabulary",
+            path: "/lesson/1/vocabula",
+        },
+        {
+            id: "grammatica",
+            label: "Grammar",
+            path: "/lesson/1/grammatica",
+        },
+        {
+            id: "examinatio",
+            label: "Quiz",
+            path: "/lesson/1/examinatio",
+        },
+    ];
+
 
     return (
         <OuterWrapper>
+
             <Wrapper>
-                {/* <ActiveLabel>
-                    {labels[active]}
-                </ActiveLabel> */}
 
                 <NavigationDiv>
-                    <Link href="/lesson/1/textus">
-                        <Navigation active={active === "textus"}>
-                            Text
-                        </Navigation>
-                    </Link>
 
-                    <Link href="/lesson/1/vocabula">
-                        <Navigation active={active === "vocabula"}>
-                            Vocabulary
-                        </Navigation>
-                    </Link>
+                    {links.map((link) => (
 
-                    <Link href="/lesson/1/grammatica">
-                        <Navigation active={active === "grammatica"}>
-                            Grammar
+                        <Navigation
+                            key={link.id}
+                            active={active === link.id}
+                            onClick={() => navigate(link.path)}
+                        >
+                            {link.label}
                         </Navigation>
-                    </Link>
 
-                    <Link href="/lesson/1/examinatio">
-                        <Navigation active={active === "examinatio"}>
-                            Quiz
-                        </Navigation>
-                    </Link>
+                    ))}
+
                 </NavigationDiv>
+
             </Wrapper>
+
         </OuterWrapper>
     );
 }
+
 
 export default Navigatio;

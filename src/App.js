@@ -1,12 +1,15 @@
 import './App.css';
 import { BrowserRouter as Router } from "react-router-dom";
 import AppContent from './components/layout/AppContent';
+import { AppThemeProvider } from './context/AppThemeProvider';
 
 function App() {
   return (
-    <Router>
-      <AppContent />
-    </Router>
+    <AppThemeProvider>
+      <Router>
+        <AppContent />
+      </Router>
+    </AppThemeProvider>
   );
 }
 

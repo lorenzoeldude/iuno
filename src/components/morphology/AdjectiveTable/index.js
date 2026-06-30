@@ -45,7 +45,7 @@ const TD = styled.td`
     font-size: 21px;
 
     &.highlight {
-        background-color: rgba(255, 215, 0, 0.4);
+        background-color: ${({ theme }) => theme.colors.highlight};
         font-weight: bold;
     }
 `;

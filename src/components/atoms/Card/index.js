@@ -13,19 +13,18 @@ const StyledCard = styled.a`
         "80px"
     };
 
-    background: white;
-    border: 1px solid #e6e1d8;
+    border: 1px solid ${({ theme }) => theme.colors.border};
 
     margin: 5px 0;
 
     text-decoration: none;
-    color: black;
+    color: ${({ theme }) => theme.colors.text};
 
     display: flex;
     flex-direction: column;
     justify-content: center;
 
-    transition: all 0.25s ease;
+    transition: all ${({ theme }) => theme.transition.normal};
 
     position: relative;
     overflow: hidden;
@@ -39,12 +38,12 @@ const StyledCard = styled.a`
         width: 100%;
         height: 3px;
 
-        background: #b89b5e;
+        background: ${({ theme }) => theme.colors.accent};
 
         transform: scaleX(0);
         transform-origin: left;
 
-        transition: transform 0.25s ease;
+        transition: transform ${({ theme }) => theme.transition.normal};
     }
 
     &:hover {
@@ -53,9 +52,8 @@ const StyledCard = styled.a`
         border-color: #b89b5e;
 
         box-shadow:
-            0 10px 25px rgba(0, 0, 0, 0.08);
+            0 10px 25px ${({ theme }) => theme.colors.shadow};
 
-        color: black;
         cursor: pointer;
     }
 
@@ -72,7 +70,7 @@ const CardTitle = styled.h2`
 const CardText = styled.p`
     font-size: 20px;
     line-height: 1.6;
-    opacity: 0.75;
+    color: ${({ theme }) => theme.colors.text};
 `;
 
 function Card({ href, title, children, size = "medium", ...props  }) {

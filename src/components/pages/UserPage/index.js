@@ -2,6 +2,7 @@ import styled, { keyframes } from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
+import { useTheme } from "../../../context/AppThemeProvider";
 import Card from "../../atoms/Card";
 
 
@@ -47,20 +48,32 @@ const Grid = styled.div`
     margin-bottom: 30px;
 `;
 
+const ButtonGroup = styled.div`
+    display: flex;
+    gap: 12px;
+
+    margin-bottom: 20px;
+
+    @media (max-width: 600px) {
+        flex-direction: column;
+    }
+`;
+
 const Button = styled.button`
     padding: 10px 18px;
 
-    border: 1px solid rgba(0,0,0,0.08);
-    border-radius: 12px;
+    border: 1px solid ${({ theme }) => theme.colors.border};
+    border-radius: ${({ theme }) => theme.borderRadius.md};
 
-    background: white;
+    background: ${({ theme }) => theme.colors.surface};
+    color: ${({ theme }) => theme.colors.text};
 
     cursor: pointer;
 
-    transition: all 0.15s ease;
+    transition: all ${({ theme }) => theme.transition.fast};
 
     &:hover {
-        background: rgba(0,0,0,0.03);
+        background: ${({ theme }) => theme.colors.card};
         transform: translateY(-1px);
     }
 `;
@@ -70,16 +83,16 @@ const LoginLink = styled(Link)`
 
     padding: 10px 18px;
 
-    border: 1px solid rgba(0,0,0,0.08);
-    border-radius: 12px;
+    border: 1px solid ${({ theme }) => theme.colors.border};
+    border-radius: ${({ theme }) => theme.borderRadius.md};
 
     text-decoration: none;
-    color: inherit;
+    color: ${({ theme }) => theme.colors.text};
 
-    transition: all 0.15s ease;
+    transition: all ${({ theme }) => theme.transition.fast};
 
     &:hover {
-        background: rgba(0,0,0,0.03);
+        background: ${({ theme }) => theme.colors.surface};
         transform: translateY(-1px);
     }
 `;
@@ -88,6 +101,8 @@ const LoginLink = styled(Link)`
 function UserPage() {
 
     const navigate = useNavigate();
+
+    const { theme, setTheme } = useTheme();
 
     const [username, setUsername] = useState("User");
     const [user, setUser] = useState(null);
@@ -180,6 +195,31 @@ function UserPage() {
                 )}
 
             </Grid>
+
+
+            <ButtonGroup>
+
+                <Button
+                    onClick={() => setTheme("light")}
+                >
+                    ☀️ Light {theme === "light" && "✓"}
+                </Button>
+
+
+                <Button
+                    onClick={() => setTheme("dark")}
+                >
+                    🌙 Dark {theme === "dark" && "✓"}
+                </Button>
+
+
+                <Button
+                    onClick={() => setTheme("system")}
+                >
+                    💻 System {theme === "system" && "✓"}
+                </Button>
+
+            </ButtonGroup>
 
 
             <Button onClick={logout}>

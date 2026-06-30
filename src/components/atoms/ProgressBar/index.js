@@ -3,7 +3,7 @@ import styled from "styled-components";
 const Bar = styled.div`
     width: 100%;
     height: 5px;
-    background: #f1f1f1;
+    background: ${({ theme }) => theme.colors.background};
     overflow: hidden;
     margin: 10px 0;
 `;

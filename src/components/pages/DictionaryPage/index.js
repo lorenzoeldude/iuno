@@ -6,12 +6,12 @@ import { FaCheckCircle } from "react-icons/fa";
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-import ClickableText from "../../atoms/ClickableText";
-import DictionaryPopup from "../../atoms/DictionaryPopup";
-import useDictionaryLookup from "../../../hooks/useDictionaryLookups";
+import ClickableText from "../../atoms/ClickableText/index.js";
+import DictionaryPopup from "../../atoms/DictionaryPopup/index.js";
+import useDictionaryLookup from "../../../hooks/useDictionaryLookups.js";
 
-import NominalTable from "../../morphology/NominalTable";
-import VerbTable from "../../morphology/VerbTable.js";
+import NominalTable from "../../morphology/NominalTable/index.js";
+import VerbTable from "../../morphology/VerbTable.js/index.js";
 import AdjectiveTable from "../../morphology/AdjectiveTable/index.js";
 import PronounTable from "../../morphology/PronounTable/index.js";
 
@@ -32,8 +32,8 @@ const EditButton = styled.button`
     border: none;
     border-radius: 999px;
     cursor: pointer;
-    background: black;
-    color: white;
+    background: ${({ theme }) => theme.colors.text};
+    color: ${({ theme }) => theme.colors.opposite};
     font-size: 16px;
 `;
 
@@ -70,26 +70,11 @@ const Sidebar = styled.div`
     top: 0px;
 `;
 
-const Header = styled.div`
-`;
-
-const TopRow = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-`;
-
-const Left = styled.div`
-    display: flex;
-    flex-direction: column;
-`;
-
 const WordHeader = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 0px;
-    // padding-bottom: 30px;
 `;
 
 const BigWord = styled.span`
@@ -100,19 +85,13 @@ const BigWord = styled.span`
     text-decoration: underline;
 `;
 
-const Word = styled.h1`
-    font-family: "Montserrat", sans-serif;
-    font-size: 64px;
-    font-weight: 700;
-    margin: 0;
-`;
-
 const SaveButton = styled.button`
     font-size: 40px;
     border: none;
     background: transparent;
     cursor: pointer;
     opacity: 0.8;
+    color: ${({ theme }) => theme.colors.text};
 
     &:hover {
         opacity: 1;
@@ -134,6 +113,7 @@ const MeaningItem = styled.span`
     background: rgb(255, 205, 205);
     font-size: 20px;
     padding: 4px 8px;
+    color: black;
 `;
 
 const Meta = styled.div`
@@ -145,6 +125,7 @@ const Meta = styled.div`
 
 const Tag = styled.div`
     border: 0.5px solid rgba(0,0,0,0.1);
+    border: 0.5px solid ${({ theme }) => theme.colors.textSecondary};
     border-radius: 999px;
     padding: 6px 12px;
     font-size: 15px;
@@ -183,7 +164,7 @@ const Loading = styled.p`
 
 // ===================== component =====================
 
-function Verbum() {
+function DictionaryPage() {
     const wrapperRef = useRef(null);
     const navigate = useNavigate();
 
@@ -534,4 +515,4 @@ function Verbum() {
     );
 }
 
-export default Verbum;
+export default DictionaryPage;
