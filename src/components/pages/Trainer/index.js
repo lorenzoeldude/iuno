@@ -124,7 +124,7 @@ function Trainer({ mode = "all" }) {
         setLoading(true);
         setSelected(null);
 
-        console.log(API_URL);
+        console.log("api_url: ", API_URL);
 
         try {
             const url =
