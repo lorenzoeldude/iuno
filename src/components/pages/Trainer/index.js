@@ -8,6 +8,8 @@ import ClickableText from "../../atoms/ClickableText";
 import DictionaryPopup from "../../atoms/DictionaryPopup";
 import useDictionaryLookup from "../../../hooks/useDictionaryLookups";
 
+import { API_URL } from "../../../config";
+
 
 const Page = styled.div`
     width: 70%;
@@ -125,8 +127,8 @@ function Trainer({ mode = "all" }) {
         try {
             const url =
                 mode === "list"
-                    ? "http://localhost:8080/api/trainer/list/random"
-                    : "http://localhost:8080/api/trainer/random";
+                    ? `${API_URL}/api/trainer/list/random`
+                    : `${API_URL}/api/trainer/random`;
 
             const res = await fetch(url, {
                 headers: {

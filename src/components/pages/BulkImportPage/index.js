@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { API_URL } from "../../../config";
 
 export default function BulkImportPage() {
     const [jsonText, setJsonText] = useState("");
@@ -96,7 +97,7 @@ export default function BulkImportPage() {
             const token = localStorage.getItem("token");
 
             const res = await fetch(
-                "http://localhost:8080/api/admin/bulk-import",
+                `${API_URL}/api/admin/bulk-import`,
                 {
                     method: "POST",
                     headers: {

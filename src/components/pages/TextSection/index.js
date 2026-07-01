@@ -6,6 +6,8 @@ import ClickableText from "../../atoms/ClickableText";
 import DictionaryPopup from "../../atoms/DictionaryPopup";
 import useDictionaryLookup from "../../../hooks/useDictionaryLookups";
 
+import { API_URL } from "../../../config";
+
 const Wrapper = styled.div`
     max-width: 1000px;
     margin: 0 auto;
@@ -77,7 +79,7 @@ function TextSection() {
         setError(null);
 
         fetch(
-            `http://localhost:8080/api/text-section/${author}/${title}/${position}`
+            `${API_URL}/api/text-section/${author}/${title}/${position}`
         )
             .then(res => {
                 if (!res.ok) {

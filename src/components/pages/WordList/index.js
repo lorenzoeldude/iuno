@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../../../config";
 
 const Wrapper = styled.div`
     width: 40%;
@@ -85,7 +86,7 @@ function WordList() {
     useEffect(() => {
         const token = localStorage.getItem("token");
 
-        fetch("http://localhost:8080/api/word-lists/lemmas", {
+        fetch(`${API_URL}/api/word-lists/lemmas`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -117,7 +118,7 @@ function WordList() {
 
         try {
             const res = await fetch(
-                `http://localhost:8080/api/word-lists/lemma/${lemmaId}`,
+                `${API_URL}/api/word-lists/lemma/${lemmaId}`,
                 {
                     method: "DELETE",
                     headers: {

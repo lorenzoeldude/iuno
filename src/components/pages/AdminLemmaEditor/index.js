@@ -6,6 +6,7 @@ import VerbFormEditor from "../Editors/VerbFormEditor";
 import Input from "../../styled/Input";
 import PronounFormEditor from "../Editors/PronounFormEditor";
 import { useParams } from "react-router-dom";
+import { API_URL } from "../../../config";
 
 
 const Wrapper = styled.div`
@@ -178,7 +179,7 @@ function AdminLemmaEditor() {
         const token = localStorage.getItem("token");
 
         const res = await fetch(
-            `http://localhost:8080/api/admin/lemma/${value}`,
+            `${API_URL}/api/admin/lemma/${value}`,
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -255,7 +256,7 @@ function AdminLemmaEditor() {
             const token = localStorage.getItem("token");
 
             const res = await fetch(
-                "http://localhost:8080/api/admin/write-word/",
+                `${API_URL}/api/admin/write-word/`,
                 {
                     method: "POST",
                     headers: {

@@ -5,6 +5,7 @@ import { FaCheckCircle } from "react-icons/fa";
 
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../../../config.js";
 
 import ClickableText from "../../atoms/ClickableText/index.js";
 import DictionaryPopup from "../../atoms/DictionaryPopup/index.js";
@@ -219,7 +220,7 @@ function DictionaryPage() {
         setLoading(true);
         setError(null);
 
-        fetch(`http://localhost:8080/api/word/${word}`)
+        fetch(`${API_URL}/api/word/${word}`)
             .then(res => {
                 if (!res.ok) throw new Error("Word not found");
                 return res.json();
@@ -244,7 +245,7 @@ function DictionaryPage() {
 
         const lemmaId = wordData.lemma.id;
 
-        fetch(`http://localhost:8080/api/word-lists/lemma/${lemmaId}`, {
+        fetch(`${API_URL}/api/word-lists/lemma/${lemmaId}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -274,7 +275,7 @@ function DictionaryPage() {
             if (!saved) {
 
                 const res = await fetch(
-                    "http://localhost:8080/api/word-lists/add-lemma",
+                    `${API_URL}/api/word-lists/add-lemma`,
                     {
                         method: "POST",
                         headers: {
@@ -292,7 +293,7 @@ function DictionaryPage() {
             } else {
 
                 const res = await fetch(
-                    `http://localhost:8080/api/word-lists/lemma/${lemmaId}`,
+                    `${API_URL}/api/word-lists/lemma/${lemmaId}`,
                     {
                         method: "DELETE",
                         headers: {

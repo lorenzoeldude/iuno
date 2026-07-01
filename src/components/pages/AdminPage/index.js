@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { API_URL } from "../../../config";
 
 import Card from "../../atoms/Card";
 
@@ -82,14 +83,14 @@ function AdminPage() {
 
 
                 const userResponse = await fetch(
-                    "http://localhost:8080/admin/users/count",
+                    `${API_URL}/admin/users/count`,
                     config
                 );
 
                 console.log("userResponse", userResponse.status);
 
                 const lemmaResponse = await fetch(
-                    "http://localhost:8080/admin/lemmas/count",
+                    `${API_URL}/admin/lemmas/count`,
                     config
                 );
 

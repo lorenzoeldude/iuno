@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../../../config";
 
 const Wrapper = styled.div`
     position: relative;
@@ -85,7 +86,7 @@ function Searchbar({ className }) {
         }
 
         const timeout = setTimeout(() => {
-            fetch(`http://localhost:8080/api/search?q=${query}`)
+            fetch(`${API_URL}/api/search?q=${query}`)
                 .then((res) => res.json())
                 .then((data) => {
                     setResults(data || []);

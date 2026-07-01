@@ -4,6 +4,8 @@ import { useState, useEffect, useCallback } from "react";
 import ArrowButton from "../../atoms/ArrowButton";
 import AnswerButton from "../../atoms/Answerbutton";
 
+import { API_URL } from "../../../config";
+
 const Wrapper = styled.div`
     width: 100%;
     max-width: 700px;
@@ -47,7 +49,7 @@ function ListTrainer() {
 
         try {
             const res = await fetch(
-                "http://localhost:8080/api/trainer/list/random",
+                `${API_URL}/api/trainer/list/random`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,

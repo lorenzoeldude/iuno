@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../../../config";
 
 const Wrapper = styled.div`
     width: 60%;
@@ -68,7 +69,7 @@ function SearchPage() {
         const timeout = setTimeout(() => {
             setLoading(true);
 
-            fetch(`http://localhost:8080/api/search?q=${query}`)
+            fetch(`${API_URL}/api/search?q=${query}`)
                 .then((res) => res.json())
                 .then((data) => {
                     setResults(data || []);

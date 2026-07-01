@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
+import { API_URL } from "../../../config";
 
 const Wrapper = styled.div`
     width: 72%;
@@ -217,7 +218,7 @@ function UserSettings() {
         try {
 
             const res = await fetch(
-                "http://localhost:8080/api/settings",
+                `${API_URL}/api/settings`,
                 {
                     method: "PUT",
                     headers: {
@@ -284,7 +285,7 @@ function UserSettings() {
         try {
 
             const res = await fetch(
-                "http://localhost:8080/api/account",
+                `${API_URL}/api/account`,
                 {
                     method: "DELETE",
                     headers: {

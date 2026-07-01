@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
+import { API_URL } from "../../../config";
 
 const Wrapper = styled.div`
     max-width: 1000px;
@@ -56,7 +57,7 @@ function Text() {
         setError(null);
 
         fetch(
-            `http://localhost:8080/api/text/${author}/${title}`
+            `${API_URL}/api/text/${author}/${title}`
         )
             .then(res => {
                 if (!res.ok) {

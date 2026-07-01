@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { API_URL } from "../config";
 
 function normalizeLatin(word) {
     const result = word
@@ -31,7 +32,7 @@ export default function useDictionaryLookup() {
             const normalized = normalizeLatin(word);
 
             const response = await fetch(
-                `http://localhost:8080/api/search?q=${encodeURIComponent(
+                `${API_URL}/api/search?q=${encodeURIComponent(
                     normalized
                 )}`
             );
