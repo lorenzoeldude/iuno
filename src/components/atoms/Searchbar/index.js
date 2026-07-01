@@ -103,13 +103,6 @@ function Searchbar({ className }) {
     // =====================================================
     // NAVIGATION HELPERS
     // =====================================================
-    const goToSearchPage = (q) => {
-        if (!q.trim()) return;
-
-        setOpen(false);
-
-        navigate(`/search?q=${encodeURIComponent(q)}`);
-    };
 
     const handleSelect = (lemmaNormalized, form) => {
         setQuery("");

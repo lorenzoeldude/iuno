@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import NounFormEditor from "../Editors/NounFormEditor";
 import AdjectiveFormEditor from "../Editors/AdjectiveFormEditor";
 import VerbFormEditor from "../Editors/VerbFormEditor";
@@ -168,31 +168,23 @@ function AdminLemmaEditor() {
     // const { lemma: urlLemma } = useParams();
     const { id } = useParams();
 
-    useEffect(() => {
-        if (id) {
-            loadLemma(id);
-        }
-    }, [id]);
-
     const supportsMorphology = isNoun || isAdjective || isVerb || isPronoun;
 
     // console.log("manual forms: ", manualForms);
 
     // console.log("pronounType: ", pronounType, isPronoun)
 
-    async function loadLemma(value = lemma) {
-
+    const loadLemma = useCallback(async (value) => {
         const token = localStorage.getItem("token");
 
         const res = await fetch(
             `http://localhost:8080/api/admin/lemma/${value}`,
             {
                 headers: {
-                    "Authorization": `Bearer ${token}`,
+                    Authorization: `Bearer ${token}`,
                 },
             }
         );
-
 
         if (!res.ok) {
             setStatus("Lemma not found");
@@ -224,7 +216,7 @@ function AdminLemmaEditor() {
 
         setMeaningsText(
             (data.meanings || [])
-                .map(m =>
+                .map((m) =>
                     m.governs_case
                         ? `${m.governs_case}|${m.meaning}`
                         : m.meaning
@@ -234,20 +226,26 @@ function AdminLemmaEditor() {
 
         setDefinitions(
             (data.definitions || [])
-                .map(d => d.definition)
+                .map((d) => d.definition)
                 .join("\n")
         );
 
         setDerivatives(
             (data.derivatives || [])
-                .map(d => d.derivative)
+                .map((d) => d.derivative)
                 .join(", ")
         );
 
         setExample1(data.examples?.[0]?.latin || "");
         setExample2(data.examples?.[1]?.latin || "");
         setExample3(data.examples?.[2]?.latin || "");
-    }
+    }, []);
+
+    useEffect(() => {
+        if (id) {
+            loadLemma(id);
+        }
+    }, [id, loadLemma]);
 
     async function handleSubmit() {
         setLoading(true);

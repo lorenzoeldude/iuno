@@ -37,7 +37,7 @@ function VerbFormEditor({ forms, setForms }) {
     const [mode, setMode] = useState("active");
     const [mood, setMood] = useState("indicative");
     const [participle, setParticiple] = useState("ppp");
-    const [voice, setVoice] = useState("active");
+    // const [voice, setVoice] = useState("active");
 
     return (
         <Wrapper>

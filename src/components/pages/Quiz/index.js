@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { useState } from "react";
-import Navigatio from "../../molecules/Navigatio";
 
 const Outer = styled.div`
     display: flex;

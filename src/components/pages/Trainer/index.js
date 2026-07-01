@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
 import ArrowButton from "../../atoms/ArrowButton";
@@ -118,73 +118,35 @@ function Trainer({ mode = "all" }) {
     // FETCH QUESTION
     // =====================================================
 
-    async function fetchQuestion() {
-
+    const fetchQuestion = useCallback(async () => {
         setLoading(true);
         setSelected(null);
 
-
         try {
+            const url =
+                mode === "list"
+                    ? "http://localhost:8080/api/trainer/list/random"
+                    : "http://localhost:8080/api/trainer/random";
 
-
-            let url;
-
-
-            if (mode === "list") {
-
-                url =
-                    "http://localhost:8080/api/trainer/list/random";
-
-            } else {
-
-                url =
-                    "http://localhost:8080/api/trainer/random";
-
-            }
-
-
-
-            const res = await fetch(
-                url,
-                {
-                    headers: {
-                        Authorization:
-                            `Bearer ${localStorage.getItem("token")}`,
-                    },
-                }
-            );
-
-
+            const res = await fetch(url, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+            });
 
             if (!res.ok) {
-
-                throw new Error(
-                    "Failed to fetch trainer question"
-                );
-
+                throw new Error("Failed to fetch trainer question");
             }
-
-
 
             const data = await res.json();
 
-
-
             setQuestion(data);
-
-
-
         } catch (err) {
-
             console.error(err);
-
         }
 
-
-
         setLoading(false);
-
-    }
+    }, [mode]);
 
 
 
@@ -193,10 +155,8 @@ function Trainer({ mode = "all" }) {
     // =====================================================
 
     useEffect(() => {
-
         fetchQuestion();
-
-    }, [mode]);
+    }, [fetchQuestion]);
 
 
 

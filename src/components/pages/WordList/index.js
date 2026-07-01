@@ -30,7 +30,7 @@ const Item = styled.div`
     align-items: center;
 
     &:hover {
-        background: rgba(0,0,0,0.03);
+        background: rgba(0, 0, 0, 0.03);
     }
 
     &:hover .delete-button {
@@ -74,51 +74,48 @@ const Empty = styled.p`
 `;
 
 function WordList() {
-
     const [words, setWords] = useState([]);
     const [loading, setLoading] = useState(true);
 
     const navigate = useNavigate();
 
-    const token = localStorage.getItem("token");
-
     // =====================================================
     // FETCH WORDS
     // =====================================================
     useEffect(() => {
+        const token = localStorage.getItem("token");
 
         fetch("http://localhost:8080/api/word-lists/lemmas", {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
         })
-            .then(res => {
+            .then((res) => {
                 if (!res.ok) {
                     throw new Error("Failed to fetch list");
                 }
 
                 return res.json();
             })
-            .then(data => {
+            .then((data) => {
                 setWords(data);
                 setLoading(false);
             })
-            .catch(err => {
+            .catch((err) => {
                 console.error(err);
                 setLoading(false);
             });
-
     }, []);
 
     // =====================================================
     // DELETE WORD
     // =====================================================
     async function deleteWord(e, lemmaId) {
-
         e.stopPropagation();
 
-        try {
+        const token = localStorage.getItem("token");
 
+        try {
             const res = await fetch(
                 `http://localhost:8080/api/word-lists/lemma/${lemmaId}`,
                 {
@@ -133,10 +130,9 @@ function WordList() {
                 throw new Error("Failed to delete word");
             }
 
-            setWords(prev =>
-                prev.filter(word => word.id !== lemmaId)
+            setWords((prev) =>
+                prev.filter((word) => word.id !== lemmaId)
             );
-
         } catch (err) {
             console.error(err);
         }
@@ -156,23 +152,19 @@ function WordList() {
 
     return (
         <Wrapper>
-
             <Title>Saved Words</Title>
 
             {words.length === 0 ? (
                 <Empty>No saved words yet.</Empty>
             ) : (
                 <List>
-
-                    {words.map(word => (
-
+                    {words.map((word) => (
                         <Item
                             key={word.id}
                             onClick={() =>
                                 navigate(`/dictionary/${word.lemma_normalized}`)
                             }
                         >
-
                             <Left>
                                 <Lemma>{word.lemma}</Lemma>
                                 <Meaning>{word.meaning}</Meaning>
@@ -180,20 +172,14 @@ function WordList() {
 
                             <DeleteButton
                                 className="delete-button"
-                                onClick={(e) =>
-                                    deleteWord(e, word.id)
-                                }
+                                onClick={(e) => deleteWord(e, word.id)}
                             >
                                 −
                             </DeleteButton>
-
                         </Item>
-
                     ))}
-
                 </List>
             )}
-
         </Wrapper>
     );
 }

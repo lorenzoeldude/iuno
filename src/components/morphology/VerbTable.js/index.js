@@ -396,20 +396,20 @@ function VerbTable({ forms, highlightedForm }) {
 
 
     // PARTICIPLES
-    const presentActiveParticiple =
-        participles.find(
-            f => f.tense === "present" && f.voice === "active"
-        )?.form;
+    // const presentActiveParticiple =
+    //     participles.find(
+    //         f => f.tense === "present" && f.voice === "active"
+    //     )?.form;
 
-    const perfectPassiveParticiple =
-        participles.find(
-            f => f.tense === "perfect" && f.voice === "passive"
-        )?.form;
+    // const perfectPassiveParticiple =
+    //     participles.find(
+    //         f => f.tense === "perfect" && f.voice === "passive"
+    //     )?.form;
 
-    const futureActiveParticiple =
-        participles.find(
-            f => f.tense === "future" && f.voice === "active"
-        )?.form;
+    // const futureActiveParticiple =
+    //     participles.find(
+    //         f => f.tense === "future" && f.voice === "active"
+    //     )?.form;
 
     return (
         <Wrapper>

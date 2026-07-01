@@ -78,25 +78,6 @@ const Button = styled.button`
     }
 `;
 
-const LoginLink = styled(Link)`
-    display: inline-block;
-
-    padding: 10px 18px;
-
-    border: 1px solid ${({ theme }) => theme.colors.border};
-    border-radius: ${({ theme }) => theme.borderRadius.md};
-
-    text-decoration: none;
-    color: ${({ theme }) => theme.colors.text};
-
-    transition: all ${({ theme }) => theme.transition.fast};
-
-    &:hover {
-        background: ${({ theme }) => theme.colors.surface};
-        transform: translateY(-1px);
-    }
-`;
-
 
 function UserPage() {
 
@@ -190,7 +171,7 @@ function UserPage() {
                         title="Admin Page"
                         onClick={() => navigate("/admin")}
                     >
-                        Add words and see the stats of IUNO.com
+                        Add words and see stats
                     </Card>
                 )}
 

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 import ArrowButton from "../../atoms/ArrowButton";
 import AnswerButton from "../../atoms/Answerbutton";
@@ -31,28 +31,21 @@ const ArrowDiv = styled.div`
     margin-top: 30px;
 `;
 
-const Loading = styled.p`
-    font-size: 30px;
-`;
-
 function ListTrainer() {
-
     const [question, setQuestion] = useState(null);
     const [selected, setSelected] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    const token = localStorage.getItem("token");
-
     // =====================================================
     // FETCH QUESTION (FROM USER LIST)
     // =====================================================
-    async function fetchQuestion() {
+    const fetchQuestion = useCallback(async () => {
+        const token = localStorage.getItem("token");
 
         setLoading(true);
         setSelected(null);
 
         try {
-
             const res = await fetch(
                 "http://localhost:8080/api/trainer/list/random",
                 {
@@ -69,20 +62,19 @@ function ListTrainer() {
             const data = await res.json();
 
             setQuestion(data);
-
         } catch (err) {
             console.error(err);
         }
 
         setLoading(false);
-    }
+    }, []);
 
     // =====================================================
     // INITIAL LOAD
     // =====================================================
     useEffect(() => {
         fetchQuestion();
-    }, []);
+    }, [fetchQuestion]);
 
     // =====================================================
     // LOADING
@@ -93,7 +85,6 @@ function ListTrainer() {
 
     return (
         <Wrapper>
-            {/* <p>sdaf</p> */}
             <Verbum
                 state={
                     selected !== null
@@ -122,15 +113,12 @@ function ListTrainer() {
                 <ArrowDiv>
                     <ArrowButton
                         onClick={fetchQuestion}
-                        state={
-                            selected === question.correct ? 1 : 2
-                        }
+                        state={selected === question.correct ? 1 : 2}
                     >
                         {">"}
                     </ArrowButton>
                 </ArrowDiv>
             )}
-
         </Wrapper>
     );
 }

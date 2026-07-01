@@ -71,33 +71,33 @@ const Text = styled.div`
 
 function Textus () {
 
-    const sentences2 = [
-        "Rōma in Italiā est. Italia in Eurōpā est.",
-        "Graecia in Eurōpā est. Italia et Graecia in Eurōpā sunt. Hispānia quoque in Eurōpā est. Hispānia et Italia et Graecia in Eurōpā sunt.",
-        "Aegyptus in Eurōpā nōn est, Aegyptus in Āfricā est. Gallia nōn in Āfricā est, Gallia est in Eurōpā.",
-        "Syria nōn est in Eurōpā, sed in Asiā. Arabia quoque in Asiā est. Syria et Arabia in Asiā sunt.",
-        "Germānia nōn in Asiā, sed in Eurōpā est. Britannia quoque in Eurōpā est.",
-        "Estne Gallia in Eurōpā? Gallia in Eurōpā est. Estne Rōma in Galliā? Rōma in Galliā nōn est.",
-        "Ubi est Rōma? Rōma est in Italiā. Ubi est Italia? Italia in Eurōpā est.",
-        "Ubi sunt Gallia et Hispānia? Gallia et Hispānia in Eurōpā sunt.",
-        "Estne Nīlus in Eurōpā? Nīlus in Eurōpā nōn est. Ubi est Nīlus? Nīlus in Āfricā est.",
-        "Rhēnus ubi est? Rhēnus est in Germāniā.",
-        "Nīlus fluvius est. Rhēnus fluvius est. Nīlus et Rhēnus fluviī sunt.",
-        "Rhēnus et Dānuvius sunt fluviī in Germāniā. Tiberis fluvius in Italiā est.",
-        "Tiberis nōn est fluvius magnus, Tiberis fluvius parvus est.",
-        "Nīlus et Rhēnus nōn fluviī parvī, sed fluviī magnī sunt.",
-        "Corsica īnsula est. Corsica et Sardinia et Sicilia īnsulae sunt.",
-        "Sicilia īnsula magna est. Melita est īnsula parva.",
-        "Sicilia et Sardinia nōn īnsulae parvae, sed īnsulae magnae sunt.",
-        "Brundisium oppidum est. Brundisium et Tūsculum oppida sunt.",
-        "Brundisium est oppidum magnum. Tūsculum oppidum parvum est.",
-        "Delphī quoque oppidum parvum est.",
-        "Ubi est Sparta? Sparta est in Graeciā.",
-        "Sparta et Delphī oppida Graeca sunt.",
-        "Tūsculum et Brundisium sunt oppida Rōmāna.",
-        "Crēta, Rhodus, Naxus, Samos, Chios, Lesbos sunt īnsulae Graecae.",
-        "In Italiā et in Graeciā sunt multa oppida."
-    ];
+    // const sentences2 = [
+    //     "Rōma in Italiā est. Italia in Eurōpā est.",
+    //     "Graecia in Eurōpā est. Italia et Graecia in Eurōpā sunt. Hispānia quoque in Eurōpā est. Hispānia et Italia et Graecia in Eurōpā sunt.",
+    //     "Aegyptus in Eurōpā nōn est, Aegyptus in Āfricā est. Gallia nōn in Āfricā est, Gallia est in Eurōpā.",
+    //     "Syria nōn est in Eurōpā, sed in Asiā. Arabia quoque in Asiā est. Syria et Arabia in Asiā sunt.",
+    //     "Germānia nōn in Asiā, sed in Eurōpā est. Britannia quoque in Eurōpā est.",
+    //     "Estne Gallia in Eurōpā? Gallia in Eurōpā est. Estne Rōma in Galliā? Rōma in Galliā nōn est.",
+    //     "Ubi est Rōma? Rōma est in Italiā. Ubi est Italia? Italia in Eurōpā est.",
+    //     "Ubi sunt Gallia et Hispānia? Gallia et Hispānia in Eurōpā sunt.",
+    //     "Estne Nīlus in Eurōpā? Nīlus in Eurōpā nōn est. Ubi est Nīlus? Nīlus in Āfricā est.",
+    //     "Rhēnus ubi est? Rhēnus est in Germāniā.",
+    //     "Nīlus fluvius est. Rhēnus fluvius est. Nīlus et Rhēnus fluviī sunt.",
+    //     "Rhēnus et Dānuvius sunt fluviī in Germāniā. Tiberis fluvius in Italiā est.",
+    //     "Tiberis nōn est fluvius magnus, Tiberis fluvius parvus est.",
+    //     "Nīlus et Rhēnus nōn fluviī parvī, sed fluviī magnī sunt.",
+    //     "Corsica īnsula est. Corsica et Sardinia et Sicilia īnsulae sunt.",
+    //     "Sicilia īnsula magna est. Melita est īnsula parva.",
+    //     "Sicilia et Sardinia nōn īnsulae parvae, sed īnsulae magnae sunt.",
+    //     "Brundisium oppidum est. Brundisium et Tūsculum oppida sunt.",
+    //     "Brundisium est oppidum magnum. Tūsculum oppidum parvum est.",
+    //     "Delphī quoque oppidum parvum est.",
+    //     "Ubi est Sparta? Sparta est in Graeciā.",
+    //     "Sparta et Delphī oppida Graeca sunt.",
+    //     "Tūsculum et Brundisium sunt oppida Rōmāna.",
+    //     "Crēta, Rhodus, Naxus, Samos, Chios, Lesbos sunt īnsulae Graecae.",
+    //     "In Italiā et in Graeciā sunt multa oppida."
+    // ];
 
     const sentences = [
         "Rōma in Italiā est. Italia pulchra est.",

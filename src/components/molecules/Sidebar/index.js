@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { FaBook, FaBookOpen, FaUserCircle, FaList, FaFont, FaLanguage } from "react-icons/fa";
+import { FaBook, FaBookOpen, FaUserCircle, FaFont } from "react-icons/fa";
 
 const Wrapper = styled.div`
     position: fixed;
@@ -67,12 +67,6 @@ function Sidebar() {
                         <FaBook />
                     </Link>
                 </ListItem>
-
-                {/* <ListItem>
-                    <Link onClick={() => navigate("/trainer")}>
-                        <FaList />
-                    </Link>
-                </ListItem> */}
 
                 <ListItem>
                     <Link onClick={() => navigate("/trainer")}>
