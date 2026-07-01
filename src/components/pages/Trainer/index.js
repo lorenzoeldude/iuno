@@ -124,6 +124,8 @@ function Trainer({ mode = "all" }) {
         setLoading(true);
         setSelected(null);
 
+        console.log(API_URL);
+
         try {
             const url =
                 mode === "list"
