@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { API_URL } from "../../../config";
 
 const Wrapper = styled.div`
@@ -79,13 +79,9 @@ function RegisterPage() {
     const [password, setPassword] = useState("");
 
     const [loading, setLoading] = useState(false);
+    const [registered, setRegistered] = useState(false);
     const [status, setStatus] = useState("");
 
-    const navigate = useNavigate();
-
-    // =====================================================
-    // REGISTER
-    // =====================================================
     async function handleRegister() {
 
         setLoading(true);
@@ -114,18 +110,7 @@ function RegisterPage() {
                 throw new Error(data.error || "Failed to register");
             }
 
-            // save user locally
-            localStorage.setItem(
-                "user",
-                JSON.stringify(data)
-            );
-
-            setStatus("Account created.");
-
-            // redirect
-            setTimeout(() => {
-                navigate("/");
-            }, 800);
+            setRegistered(true);
 
         } catch (err) {
 
@@ -141,50 +126,70 @@ function RegisterPage() {
 
             <Card>
 
-                <Title>Register</Title>
+                {!registered ? (
+                    <>
+                        <Title>Register</Title>
 
-                <Subtitle>
-                    Create your IUNO account.
-                </Subtitle>
+                        <Subtitle>
+                            Create your IUNO account.
+                        </Subtitle>
 
-                <Input
-                    type="email"
-                    placeholder="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
+                        <Input
+                            type="email"
+                            placeholder="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
 
-                <Input
-                    type="text"
-                    placeholder="username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                />
+                        <Input
+                            type="text"
+                            placeholder="username"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                        />
 
-                <Input
-                    type="password"
-                    placeholder="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
+                        <Input
+                            type="password"
+                            placeholder="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
 
-                <Button
-                    onClick={handleRegister}
-                    disabled={loading}
-                >
-                    {loading ? "Creating..." : "Create Account"}
-                </Button>
+                        <Button
+                            onClick={handleRegister}
+                            disabled={loading}
+                        >
+                            {loading ? "Creating..." : "Create Account"}
+                        </Button>
 
-                {status && (
-                    <Status>{status}</Status>
+                        {status && (
+                            <Status>{status}</Status>
+                        )}
+
+                        <BottomText>
+                            Already have an account?{" "}
+                            <StyledLink to="/login">
+                                Login
+                            </StyledLink>
+                        </BottomText>
+                    </>
+                ) : (
+                    <>
+                        <Title>Check your email</Title>
+
+                        <Subtitle>
+                            We sent a verification link to:
+                        </Subtitle>
+
+                        <Status>
+                            {email}
+                        </Status>
+
+                        <Status>
+                            Please click the link in the email to verify your account.
+                        </Status>
+                    </>
                 )}
-
-                <BottomText>
-                    Already have an account?{" "}
-                    <StyledLink to="/login">
-                        Login
-                    </StyledLink>
-                </BottomText>
 
             </Card>
 

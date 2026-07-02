@@ -28,6 +28,7 @@ import PrivacyPolicy from "../../pages/PrivacyPolicy";
 import BulkImportPage from "../../pages/BulkImportPage";
 import ReadPage from "../../pages/ReadPage";
 import DictionaryPage from "../../pages/DictionaryPage";
+import VerifyEmail from "../../pages/VerifyEmail";
 
 const Body = styled.div`
   display: flex;
@@ -93,6 +94,8 @@ function AppContent() {
 
             <Route path="/impressum" element={<Impressum />} />
             <Route path="/privacy" element={<PrivacyPolicy />} />
+
+            <Route path="/verify-email" element={<VerifyEmail />} />
           </Routes>
         </Content>
       {!isStartPage && <Footer />}

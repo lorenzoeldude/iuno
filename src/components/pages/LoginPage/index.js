@@ -17,6 +17,7 @@ const Card = styled.div`
     border: 1px solid rgba(0,0,0,0.1);
     border-radius: 16px;
     background: white;
+    color: black;
 `;
 
 const Title = styled.h1`
@@ -110,10 +111,11 @@ function LoginPage() {
             }
 
             let data;
+
             try {
                 data = JSON.parse(text);
-            } catch (err) {
-                throw new Error("Backend did not return valid JSON: " + text);
+            } catch {
+                throw new Error(text);
             }
 
             console.log("LOGIN RESPONSE:", data);
