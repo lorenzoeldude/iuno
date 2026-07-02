@@ -1,332 +1,179 @@
 import styled from "styled-components";
 
-
 const Wrapper = styled.div`
     width: 70%;
     padding: 60px 0;
     line-height: 1.7;
 `;
 
-
 const Title = styled.h1`
     margin-bottom: 30px;
 `;
-
 
 const Section = styled.section`
     margin-bottom: 35px;
 `;
 
-
 const Heading = styled.h2`
     margin-bottom: 10px;
 `;
 
-
-
 function PrivacyPolicy() {
-
     return (
-
         <Wrapper>
-
 
             <Title>
                 Privacy Policy
             </Title>
 
-
-
+            {/* ========================= */}
             <Section>
-
+                <Heading>1. Data Controller</Heading>
                 <p>
-                    We take the protection of your personal data seriously.
-                    This privacy policy explains what personal data we
-                    collect, how we use it, and what rights you have regarding
-                    your data.
-                </p>
-
-            </Section>
-
-
-
-
-            <Section>
-
-                <Heading>
-                    1. Controller
-                </Heading>
-
-                <p>
-                    The controller responsible for data processing is:
-                </p>
-
-                <p>
-                    [Your Full Name / Company Name]
+                    Lorenz Frank
                     <br />
-                    [Address]
+                    Rothenberg-Nord 5,
                     <br />
-                    [Email Address]
-                </p>
-
-            </Section>
-
-
-
-
-            <Section>
-
-                <Heading>
-                    2. Data We Collect
-                </Heading>
-
-                <p>
-                    When you create an account and use our platform, we may
-                    collect the following information:
-                </p>
-
-                <ul>
-                    <li>Email address</li>
-                    <li>Username or display name</li>
-                    <li>Password data (stored securely as a hash)</li>
-                    <li>Saved vocabulary and word lists</li>
-                    <li>Learning progress and training activity</li>
-                </ul>
-
-                <p>
-                    We may also collect technical information such as IP
-                    address, browser type, and access times when necessary
-                    for security and operation of the service.
-                </p>
-
-            </Section>
-
-
-
-
-            <Section>
-
-                <Heading>
-                    3. Purpose of Data Processing
-                </Heading>
-
-                <p>
-                    We process your data for the following purposes:
-                </p>
-
-                <ul>
-                    <li>
-                        Providing and maintaining your user account
-                    </li>
-
-                    <li>
-                        Saving your vocabulary lists and learning progress
-                    </li>
-
-                    <li>
-                        Providing vocabulary training features
-                    </li>
-
-                    <li>
-                        Improving the functionality and security of the
-                        platform
-                    </li>
-                </ul>
-
-            </Section>
-
-
-
-
-            <Section>
-
-                <Heading>
-                    4. Account Authentication
-                </Heading>
-
-                <p>
-                    To authenticate users, we use secure authentication
-                    methods. Passwords are not stored in plain text but are
-                    protected using secure hashing techniques.
-                </p>
-
-                <p>
-                    Authentication tokens may be stored on your device to
-                    keep you logged in.
-                </p>
-
-            </Section>
-
-
-
-
-            <Section>
-
-                <Heading>
-                    5. Storage of Data
-                </Heading>
-
-                <p>
-                    Your personal data is stored on secure servers provided
-                    by our hosting provider:
-                </p>
-
-                <p>
-                    [Hosting Provider Name]
+                    82431 Kochel am See
                     <br />
-                    [Location if applicable]
-                </p>
-
-                <p>
-                    We take reasonable technical and organizational measures
-                    to protect your information against unauthorized access,
-                    loss, or misuse.
-                </p>
-
-            </Section>
-
-
-
-
-            <Section>
-
-                <Heading>
-                    6. Sharing of Data
-                </Heading>
-
-                <p>
-                    We do not sell your personal data.
-                </p>
-
-                <p>
-                    Your data may only be shared with service providers
-                    necessary to operate the platform, such as hosting or
-                    infrastructure providers.
-                </p>
-
-            </Section>
-
-
-
-
-            <Section>
-
-                <Heading>
-                    7. Cookies and Local Storage
-                </Heading>
-
-                <p>
-                    Our platform may use browser storage technologies,
-                    such as local storage, to maintain authentication and
-                    provide essential functionality.
-                </p>
-
-                <p>
-                    We do not use tracking cookies or advertising cookies
-                    unless explicitly stated.
-                </p>
-
-            </Section>
-
-
-
-
-            <Section>
-
-                <Heading>
-                    8. Your Rights
-                </Heading>
-
-                <p>
-                    Depending on applicable data protection laws, you may
-                    have the right to:
-                </p>
-
-                <ul>
-                    <li>Request access to your personal data</li>
-                    <li>Request correction of inaccurate data</li>
-                    <li>Request deletion of your account and data</li>
-                    <li>Object to certain types of processing</li>
-                    <li>Request restriction of processing</li>
-                </ul>
-
-                <p>
-                    To exercise these rights, contact:
+                    Germany
                     <br />
-                    [Your Email Address]
+                    Email: lorenz@lorenzfrank.com
                 </p>
-
             </Section>
 
-
-
-
+            {/* ========================= */}
             <Section>
+                <Heading>2. Data We Collect</Heading>
 
-                <Heading>
-                    9. Account Deletion
-                </Heading>
-
+                <p><strong>Account Data:</strong></p>
                 <p>
-                    You may request deletion of your account and associated
-                    personal data by contacting us at:
+                    Email address, username, and hashed password.
                 </p>
 
+                <p><strong>Authentication Data:</strong></p>
                 <p>
-                    [Your Email Address]
+                    JSON Web Tokens (JWT), login timestamps, and session metadata.
                 </p>
 
+                <p><strong>Email Verification Data:</strong></p>
                 <p>
-                    After deletion, your personal data will be removed unless
-                    we are legally required to retain certain information.
+                    Verification token (hashed), verification status, and expiry timestamp.
                 </p>
 
+                <p><strong>Usage Data:</strong></p>
+                <p>
+                    Basic server logs such as login attempts and IP addresses for security purposes.
+                </p>
             </Section>
 
-
-
-
+            {/* ========================= */}
             <Section>
-
-                <Heading>
-                    10. Changes to This Privacy Policy
-                </Heading>
-
+                <Heading>3. How We Use Your Data</Heading>
                 <p>
-                    We may update this privacy policy from time to time.
-                    The latest version will always be available on this page.
+                    We use your data to provide and maintain the service, authenticate users,
+                    verify email addresses, secure the platform, and prevent abuse.
                 </p>
-
             </Section>
 
-
-
-
+            {/* ========================= */}
             <Section>
-
-                <Heading>
-                    11. Contact
-                </Heading>
-
+                <Heading>4. Legal Basis (GDPR)</Heading>
                 <p>
-                    If you have questions about this privacy policy, contact:
+                    We process your data under Art. 6 (1)(b) GDPR (contract performance),
+                    Art. 6 (1)(c) GDPR (legal obligation), and Art. 6 (1)(f) GDPR (legitimate interests).
                 </p>
-
-                <p>
-                    [Your Name]
-                    <br />
-                    [Your Email Address]
-                </p>
-
             </Section>
 
+            {/* ========================= */}
+            <Section>
+                <Heading>5. Data Storage</Heading>
+                <p>
+                    Your data is stored in a PostgreSQL database. We use bcrypt hashing for passwords,
+                    hashed tokens for email verification, and JWT-based authentication for sessions.
+                </p>
+            </Section>
 
+            {/* ========================= */}
+            <Section>
+                <Heading>6. Email Verification</Heading>
+                <p>
+                    We send a verification email when you register. The token is stored in hashed form
+                    and expires after a limited time or after successful verification.
+                </p>
+            </Section>
+
+            {/* ========================= */}
+            <Section>
+                <Heading>7. Authentication (JWT)</Heading>
+                <p>
+                    We use JSON Web Tokens (JWT) for authentication. Tokens are stored in your browser
+                    and are required for accessing protected endpoints.
+                </p>
+            </Section>
+
+            {/* ========================= */}
+            <Section>
+                <Heading>8. Cookies & Local Storage</Heading>
+                <p>
+                    We use localStorage to store authentication tokens. We do not use tracking or advertising cookies.
+                </p>
+            </Section>
+
+            {/* ========================= */}
+            <Section>
+                <Heading>9. Third-Party Services</Heading>
+                <p>
+                    We may use third-party services such as email providers (e.g. Resend) and hosting providers
+                    to operate the platform.
+                </p>
+            </Section>
+
+            {/* ========================= */}
+            <Section>
+                <Heading>10. Data Retention</Heading>
+                <p>
+                    We retain data only as long as necessary to provide the service or comply with legal obligations.
+                    Verification tokens are deleted after use or expiry.
+                </p>
+            </Section>
+
+            {/* ========================= */}
+            <Section>
+                <Heading>11. Your Rights (GDPR)</Heading>
+                <p>
+                    You have the right to access, correct, delete, and restrict processing of your personal data.
+                    You may also request data portability.
+                </p>
+            </Section>
+
+            {/* ========================= */}
+            <Section>
+                <Heading>12. Security</Heading>
+                <p>
+                    We use industry-standard security measures including password hashing (bcrypt),
+                    token hashing, JWT authentication, and secure database access.
+                </p>
+            </Section>
+
+            {/* ========================= */}
+            <Section>
+                <Heading>13. Changes</Heading>
+                <p>
+                    We may update this Privacy Policy from time to time. The latest version will always be available on this page.
+                </p>
+            </Section>
+
+            {/* ========================= */}
+            <Section>
+                <Heading>14. Contact</Heading>
+                <p>
+                    Email: lorenz@lorenzfrank.com
+                </p>
+            </Section>
 
         </Wrapper>
-
     );
-
 }
-
 
 export default PrivacyPolicy;

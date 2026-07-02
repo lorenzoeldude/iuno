@@ -1,13 +1,52 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
-const Wrapper = styled.div`
-    height: 100px;
-    margin-top: 100px;
+const Wrapper = styled.footer`
+    width: 100%;
+    padding: 20px 0;
+
+    display: flex;
+    justify-content: center;
+
+    font-size: 12px;
+    color: ${({ theme }) => theme.colors.textSecondary};
 `;
 
-function Footer () {
+const Inner = styled.div`
+    width: 100%;
+    max-width: 1200px;
+
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+`;
+
+const FooterLink = styled(Link)`
+    color: inherit;
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+    }
+`;
+
+function Footer() {
     return (
         <Wrapper>
+            <Inner>
+                <span>© 2026 IUNONI</span>
+                <span>|</span>
+
+                <FooterLink to="/impressum">
+                    Legal Notice
+                </FooterLink>
+
+                <span>|</span>
+
+                <FooterLink to="/privacy">
+                    Privacy Policy
+                </FooterLink>
+            </Inner>
         </Wrapper>
     );
 }

@@ -33,7 +33,7 @@ import VerifyEmail from "../../pages/VerifyEmail";
 const Body = styled.div`
   display: flex;
   justify-content: center;
-  height: 100%;
+  flex: 1;
 `;
 
 const Content = styled.div`
@@ -50,13 +50,20 @@ const Content = styled.div`
     padding-top: ${({ isStartPage }) => isStartPage ? "0" : "70px"};
 `;
 
+const AppWrapper = styled.div`
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+`;
+
 function AppContent() {
   const location = useLocation();
 
   const isStartPage = location.pathname === "/";
 
   return (
-    <>
+    <AppWrapper>
+
       {!isStartPage && <Header />}
 
       <Body>
@@ -98,10 +105,11 @@ function AppContent() {
             <Route path="/verify-email" element={<VerifyEmail />} />
           </Routes>
         </Content>
-      {!isStartPage && <Footer />}
       </Body>
 
-    </>
+      <Footer />
+
+    </AppWrapper>
   );
 }
 

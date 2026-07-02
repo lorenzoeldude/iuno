@@ -1,5 +1,5 @@
 import styled, { keyframes } from "styled-components";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import Searchbar from "../../atoms/Searchbar";
 import Card from "../../atoms/Card";
@@ -55,23 +55,6 @@ const BlockDiv = styled.div`
     }
 `;
 
-const Footer = styled.div`
-    position: absolute;
-    bottom: 20px;
-
-    font-size: 12px;
-    color: ${({ theme }) => theme.colors.textSecondary};
-
-    a {
-        color: inherit;
-        text-decoration: none;
-
-        &:hover {
-            text-decoration: underline;
-        }
-    }
-`;
-
 const Title = styled.h1`
     font-family: ${({ theme }) => theme.fonts.heading};
     font-size: 50px;
@@ -104,15 +87,6 @@ const StyledSearch = styled(Searchbar)`
     text-align: center;
 
     margin: 20px 0;
-`;
-
-const FooterLink = styled(Link)`
-    color: inherit;
-    text-decoration: none;
-
-    &:hover {
-        text-decoration: underline;
-    }
 `;
 
 const Column = styled.div``;
@@ -169,18 +143,6 @@ function StartPage() {
                 </Card>
 
             </BlockDiv>
-
-
-            <Footer>
-                © 2026 IUNONI |{" "}
-                <FooterLink to="/impressum">
-                    Impressum
-                </FooterLink>
-                {" | "}
-                <FooterLink to="/privacy">
-                    Privacy Policy
-                </FooterLink>
-            </Footer>
 
         </Wrapper>
     );
