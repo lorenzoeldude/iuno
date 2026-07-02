@@ -2,16 +2,18 @@ import styled from "styled-components";
 
 const StyledCard = styled.div`
     min-height: ${({ size }) =>
-        size === "small" ? "140px" :
-        size === "big" ? "320px" :
-        "220px"
-    };
+        size === "small"
+            ? "140px"
+            : size === "big"
+            ? "320px"
+            : "220px"};
 
     padding: ${({ size }) =>
-        size === "small" ? "40px" :
-        size === "big" ? "100px" :
-        "80px"
-    };
+        size === "small"
+            ? "40px"
+            : size === "big"
+            ? "100px"
+            : "80px"};
 
     border: 1px solid ${({ theme }) => theme.colors.border};
 
@@ -28,6 +30,20 @@ const StyledCard = styled.div`
 
     position: relative;
     overflow: hidden;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}px) {
+        padding: ${({ size }) =>
+            size === "small"
+                ? "30px"
+                : size === "big"
+                ? "60px"
+                : "50px"};
+    }
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}px) {
+        padding: 30px 24px;
+        min-height: auto;
+    }
 
     &::before {
         content: "";
@@ -51,8 +67,7 @@ const StyledCard = styled.div`
 
         border-color: #b89b5e;
 
-        box-shadow:
-            0 10px 25px ${({ theme }) => theme.colors.shadow};
+        box-shadow: 0 10px 25px ${({ theme }) => theme.colors.shadow};
 
         cursor: pointer;
     }
@@ -65,26 +80,28 @@ const StyledCard = styled.div`
 const CardTitle = styled.h2`
     font-size: 30px;
     margin: 0 0 10px 0;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}px) {
+        font-size: 26px;
+    }
 `;
 
 const CardText = styled.p`
     font-size: 20px;
     line-height: 1.6;
     color: ${({ theme }) => theme.colors.text};
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}px) {
+        font-size: 18px;
+    }
 `;
 
-function Card({ href, title, children, size = "medium", ...props  }) {
+function Card({ href, title, children, size = "medium", ...props }) {
     return (
         <StyledCard href={href} size={size} {...props}>
+            <CardTitle>{title}</CardTitle>
 
-            <CardTitle>
-                {title}
-            </CardTitle>
-
-            <CardText>
-                {children}
-            </CardText>
-
+            <CardText>{children}</CardText>
         </StyledCard>
     );
 }

@@ -25,10 +25,16 @@ const SwitchButton = styled.button`
         active ? "white" : "black"};
 `;
 
+const TableWrapper = styled.div`
+    width: 100%;
+    overflow-x: auto;
+`;
+
 const Table = styled.table`
     width: 100%;
     border-collapse: collapse;
 `;
+
 
 const TH = styled.th`
     text-align: left;
@@ -37,12 +43,22 @@ const TH = styled.th`
     font-size: 17px;
     font-weight: 600;
     text-decoration: underline;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}px) {
+        padding: 10px 8px;
+        font-size: 15px;
+    }
 `;
 
 const TD = styled.td`
     padding: 14px;
     border-bottom: 1px solid rgba(0,0,0,0.06);
     font-size: 21px;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}px) {
+        padding: 10px 8px;
+        font-size: 17px;
+    }
 
     &.highlight {
         background-color: ${({ theme }) => theme.colors.highlight};
@@ -165,6 +181,7 @@ function AdjectiveTable({ forms, highlightedForm }) {
 
             </SwitchRow>
 
+            <TableWrapper>
             <Table>
 
                 <thead>
@@ -247,6 +264,7 @@ function AdjectiveTable({ forms, highlightedForm }) {
                 </tbody>
 
             </Table>
+            </TableWrapper>
 
         </Wrapper>
     );

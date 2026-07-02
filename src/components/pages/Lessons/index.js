@@ -103,7 +103,7 @@ function Lessons() {
                                         onClick={() => {
                                             if (!locked) {
                                                 navigate(
-                                                    `/lesson/${lessonNumber}/textus`
+                                                    `/lesson/${lessonNumber}`
                                                 );
                                             }
                                         }}

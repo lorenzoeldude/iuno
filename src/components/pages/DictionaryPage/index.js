@@ -16,13 +16,16 @@ import VerbTable from "../../morphology/VerbTable.js/index.js";
 import AdjectiveTable from "../../morphology/AdjectiveTable/index.js";
 import PronounTable from "../../morphology/PronounTable/index.js";
 
-// ===================== styles =====================
 
 const Wrapper = styled.div`
     display: grid;
     justify-content: center;
     align-items: center;
-    width: 85%;
+    width: min(85%, 1400px);
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        width: 94%;
+    }
     margin: 0 auto;
     padding-top: 0px;
     position: relative;
@@ -43,6 +46,11 @@ const Content = styled.div`
     grid-template-columns: 1fr 1fr;
     gap: 80px;
     align-items: start;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+        grid-template-columns: 1fr;
+        gap: 50px;
+    }
 `;
 
 const FirstLine = styled.div`
@@ -60,7 +68,13 @@ const HeaderDiv = styled.div`
 `;
 
 const Headline = styled.p`
+    margin: 0;
+    text-align: center;
+    line-height: 1.4;
 
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        font-size: 18px;
+    }
 `;
 
 const Main = styled.div`
@@ -68,7 +82,11 @@ const Main = styled.div`
 
 const Sidebar = styled.div`
     position: sticky;
-    top: 0px;
+    top: 0;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+        position: static;
+    }
 `;
 
 const WordHeader = styled.div`
@@ -84,6 +102,10 @@ const BigWord = styled.span`
     font-weight: 700;
     margin: 0;
     text-decoration: underline;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        font-size: 38px;
+    }
 `;
 
 const SaveButton = styled.button`
@@ -145,11 +167,19 @@ const Section = styled.section`
 
 const SectionTitle = styled.h2`
     font-size: 28px;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        font-size: 24px;
+    }
 `;
 
 const Definition = styled.p`
     font-size: 24px;
     line-height: 1.7;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        font-size: 20px;
+    }
 `;
 
 const Example = styled.p`
@@ -157,6 +187,10 @@ const Example = styled.p`
     line-height: 1.7;
     font-style: italic;
     margin-bottom: 10px;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        font-size: 19px;
+    }
 `;
 
 const Loading = styled.p`

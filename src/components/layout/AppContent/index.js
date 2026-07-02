@@ -29,6 +29,7 @@ import BulkImportPage from "../../pages/BulkImportPage";
 import ReadPage from "../../pages/ReadPage";
 import DictionaryPage from "../../pages/DictionaryPage";
 import VerifyEmail from "../../pages/VerifyEmail";
+import LessonIntroduction from "../../pages/LessonIntroduction";
 
 const Body = styled.div`
   display: flex;
@@ -81,14 +82,15 @@ function AppContent() {
             <Route path="/trainer" element={<TrainerPage />} />
             <Route path="/dictionary/:word" element={<DictionaryPage />} />
             <Route path="/lesson" element={<Lessons />} />
+            <Route path="/lesson/1" element={<LessonIntroduction />} />
             <Route path="/lesson/1/textus" element={<Textus />} />
+            <Route path="/lesson/1/grammatica" element={<Grammatica />} />
+            <Route path="/lesson/1/vocabula" element={<Vocabula />} />
+            <Route path="/lesson/1/examinatio" element={<Examinatio />} />
             <Route path="/quiz" element={<Quiz />} />
             <Route path="/read" element={<ReadPage />} />
             <Route path="/read/:author/:title" element={<Text />}/>
             <Route path="/read/:author/:title/:position" element={<TextSection />}/>
-            <Route path="/lesson/1/grammatica" element={<Grammatica />} />
-            <Route path="/lesson/1/vocabula" element={<Vocabula />} />
-            <Route path="/lesson/1/examinatio" element={<Examinatio />} />
 
             <Route path="/vocabulary" element={<Vocabulary />} />
             <Route path="/user/list" element={<WordList />} />

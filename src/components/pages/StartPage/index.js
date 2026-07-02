@@ -44,15 +44,11 @@ const BlockDiv = styled.div`
     max-width: 1200px;
 
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
 
     gap: 20px;
 
     margin-top: 35px;
-
-    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}px) {
-        grid-template-columns: 1fr;
-    }
 `;
 
 const Title = styled.h1`
@@ -76,6 +72,11 @@ const Subtitle = styled.p`
     line-height: 1.7;
 
     margin: 10px 0;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}px) {
+        font-size: 16px;
+        padding: 0 10px;
+    }
 `;
 
 const StyledSearch = styled(Searchbar)`
@@ -87,6 +88,11 @@ const StyledSearch = styled(Searchbar)`
     text-align: center;
 
     margin: 20px 0;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}px) {
+        width: 100%;
+        max-width: 300px;
+    }
 `;
 
 const Column = styled.div``;
