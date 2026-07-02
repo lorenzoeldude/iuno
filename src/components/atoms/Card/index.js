@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const StyledCard = styled.a`
+const StyledCard = styled.div`
     min-height: ${({ size }) =>
         size === "small" ? "140px" :
         size === "big" ? "320px" :

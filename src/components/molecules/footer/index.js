@@ -37,7 +37,7 @@ function Footer() {
                 <span>© 2026 IUNONI</span>
                 <span>|</span>
 
-                <FooterLink to="/impressum">
+                <FooterLink to="/legalnotice">
                     Legal Notice
                 </FooterLink>
 

@@ -107,7 +107,7 @@ function StartPage() {
 
 
             <Subtitle>
-                Where Latin comes alive
+                Bringing Latin to life
             </Subtitle>
 
 
@@ -129,7 +129,7 @@ function StartPage() {
                     title="Trainer"
                     onClick={() => navigate("/trainer")}
                 >
-                    Train vocabulary, create word lists and use our built-in
+                    Train vocabulary, add words to your list and use our built-in
                     algorithm for spaced repetition.
                 </Card>
 

@@ -1,38 +1,35 @@
+import { Fragment } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { FaLock } from "react-icons/fa";
+import { FaLock, FaArrowDown } from "react-icons/fa";
 import Card from "../../atoms/Card";
 
 const Wrapper = styled.div`
     width: 100%;
     display: flex;
     justify-content: center;
-    padding: 40px 0;
+    padding: 40px 20px;
+    box-sizing: border-box;
 `;
 
 const Container = styled.div`
-    width: 900px;
+    width: 100%;
+    max-width: 560px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 `;
 
 const CardWrapper = styled.div`
-    width: 260px;
-    height: 180px;
-
-    display: flex;
-    flex-shrink: 0;
-
-    & > * {
-        width: 100%;
-        height: 100%;
-    }
+    width: 100%;
 `;
 
 const LockedCardWrapper = styled.div`
     position: relative;
     width: 100%;
-    height: 100%;
-    opacity: 0.5;
-    cursor: not-allowed;
+    opacity: ${({ locked }) => (locked ? 0.5 : 1)};
+    cursor: ${({ locked }) => (locked ? "not-allowed" : "pointer")};
 `;
 
 const LockIcon = styled(FaLock)`
@@ -40,44 +37,16 @@ const LockIcon = styled(FaLock)`
     top: 12px;
     right: 12px;
     font-size: 20px;
-    z-index: 2;
+    z-index: 10;
 `;
 
-const ArrowRow = styled.div`
-    height: 50px;
-
+const ArrowWrapper = styled.div`
+    padding: 16px 0;
     display: flex;
-    align-items: center;
+    justify-content: center;
 
-    justify-content: ${(props) =>
-        props.reverse ? "flex-start" : "flex-end"};
-
-    padding-right: ${(props) =>
-        props.reverse ? "0" : "130px"};
-
-    padding-left: ${(props) =>
-        props.reverse ? "130px" : "0"};
-`;
-
-const Arrow = styled.div`
-    font-size: 35px;
-    opacity: 0.5;
-`;
-
-const HorizontalArrow = styled.div`
-    position: absolute;
-    font-size: 35px;
-    opacity: 0.5;
-`;
-
-const CardRow = styled.div`
-    position: relative;
-    display: flex;
-    justify-content: space-between;
-    flex-direction: ${(props) =>
-        props.reverse ? "row-reverse" : "row"};
-
-    width: 100%;
+    font-size: 28px;
+    opacity: 0.45;
 `;
 
 const Title = styled.h1`
@@ -87,106 +56,69 @@ const Title = styled.h1`
     text-align: center;
     line-height: 1.05;
 
-    font-size: ${({ children }) => {
-        const len = children.length;
-        if (len > 20) return "22px";
-        if (len > 14) return "26px";
-        if (len > 8) return "32px";
-        return "40px";
-    }};
+    ${({ children }) => {
+        const len = String(children).length;
+
+        if (len > 20) return "font-size:22px;";
+        if (len > 14) return "font-size:26px;";
+        if (len > 8) return "font-size:32px;";
+
+        return "font-size:40px;";
+    }}
 `;
 
 function Lessons() {
     const navigate = useNavigate();
 
-    const unlockedLesson = 3;
+    const unlockedLesson = 1;
 
     const lessons = [
-        "Roma",
-        "In Urbs",
-        "Via Longa",
-        "Coming Soon",
-        "Coming Soon",
-        "Coming Soon",
-        "Coming Soon",
-        "Coming Soon",
-        "Coming Soon"
+        { title: "Roma" },
+        { title: "Coming Soon" },
+        { title: "Coming Soon" },
+        { title: "Coming Soon" },
+        { title: "Coming Soon" },
+        { title: "Coming Soon" },
+        { title: "Coming Soon" },
+        { title: "Coming Soon" },
+        { title: "Coming Soon" },
     ];
-
-    const rows = [];
-
-    for (let i = 0; i < lessons.length; i += 3) {
-        rows.push(lessons.slice(i, i + 3));
-    }
 
     return (
         <Wrapper>
             <Container>
-                {rows.map((row, rowIndex) => {
-                    const reverse = rowIndex % 2 === 1;
+                {lessons.map((lesson, index) => {
+                    const lessonNumber = index + 1;
+                    const locked = lessonNumber > unlockedLesson;
 
                     return (
-                        <div key={rowIndex}>
-                            <CardRow reverse={reverse}>
-                                {row.map((lesson, index) => {
-                                    const lessonNumber = rowIndex * 3 + index + 1;
-                                    const locked = lessonNumber > unlockedLesson;
+                        <Fragment key={lessonNumber}>
+                            <CardWrapper>
+                                <LockedCardWrapper locked={locked}>
+                                    {locked && <LockIcon />}
 
-                                    return (
-                                        <CardWrapper key={lesson}>
-                                            <LockedCardWrapper
-                                                style={{
-                                                    opacity: locked ? 0.5 : 1,
-                                                    cursor: locked ? "not-allowed" : "pointer",
-                                                }}
-                                            >
-                                                {locked && <LockIcon />}
+                                    <Card
+                                        title={lessonNumber}
+                                        size="small"
+                                        onClick={() => {
+                                            if (!locked) {
+                                                navigate(
+                                                    `/lesson/${lessonNumber}/textus`
+                                                );
+                                            }
+                                        }}
+                                    >
+                                        <Title>{lesson.title}</Title>
+                                    </Card>
+                                </LockedCardWrapper>
+                            </CardWrapper>
 
-                                                <Card
-                                                    title={lessonNumber}
-                                                    size="small"
-                                                    onClick={() => {
-                                                        if (!locked) {
-                                                            navigate(`/lesson/${lessonNumber}/textus`);
-                                                        }
-                                                    }}
-                                                >
-                                                    <Title>{lesson}</Title>
-                                                </Card>
-                                            </LockedCardWrapper>
-                                        </CardWrapper>
-                                    );
-                                })}
-
-                                {row.length === 3 && (
-                                    <>
-                                        <HorizontalArrow
-                                            style={{
-                                                left: "32%",
-                                                top: "70px"
-                                            }}
-                                        >
-                                            {reverse ? "←" : "→"}
-                                        </HorizontalArrow>
-
-                                        <HorizontalArrow
-                                            style={{
-                                                left: "65%",
-                                                top: "70px"
-                                            }}
-                                        >
-                                            {reverse ? "←" : "→"}
-                                        </HorizontalArrow>
-                                    </>
-                                )}
-                            </CardRow>
-
-                            {rowIndex !== rows.length - 1 && (
-                                <ArrowRow reverse={reverse}>
-                                    <Arrow>↓</Arrow>
-                                </ArrowRow>
+                            {lessonNumber < lessons.length && (
+                                <ArrowWrapper>
+                                    <FaArrowDown />
+                                </ArrowWrapper>
                             )}
-                        </div>
+                        </Fragment>
                     );
                 })}
             </Container>

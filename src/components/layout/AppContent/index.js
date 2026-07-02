@@ -99,7 +99,7 @@ function AppContent() {
             <Route path="/user" element={<UserPage />} />
             <Route path="/user/settings" element={<UserSettings />} />
 
-            <Route path="/impressum" element={<Impressum />} />
+            <Route path="/legalnotice" element={<Impressum />} />
             <Route path="/privacy" element={<PrivacyPolicy />} />
 
             <Route path="/verify-email" element={<VerifyEmail />} />
