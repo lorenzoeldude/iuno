@@ -79,7 +79,6 @@ const ExitButton = styled.button`
 
         width: 42px;
         height: 42px;
-        // font-size: 30px;
     }
 `;
 
@@ -104,7 +103,12 @@ const ContentWrapper = styled.div`
     }
 `;
 
-function LessonLayout({ children, active, progress = 0 }) {
+function LessonLayout({
+    children,
+    active,
+    progress = 0,
+    completed = [],
+}) {
     const navigate = useNavigate();
 
     return (
@@ -120,7 +124,10 @@ function LessonLayout({ children, active, progress = 0 }) {
                     </ExitButton>
 
                     <NavigationWrapper>
-                        <Navigatio active={active} />
+                        <Navigatio
+                            active={active}
+                            completed={completed}
+                        />
                     </NavigationWrapper>
                 </TopBar>
 

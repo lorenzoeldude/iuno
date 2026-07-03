@@ -244,6 +244,7 @@ function Examinatio() {
     return (
         <LessonLayout
             active="examinatio"
+            completed={["textus", "vocabula", "grammatica"]}
             progress={progress}
         >
             <Wrapper>

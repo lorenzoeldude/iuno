@@ -146,7 +146,7 @@ function AppContent() {
                 </Content>
             </Body>
 
-            {!isStartPage && !isLessonPage && <Footer />}
+            {!isLessonPage && <Footer />}
         </AppWrapper>
     );
 }

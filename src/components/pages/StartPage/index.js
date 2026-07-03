@@ -95,6 +95,19 @@ const StyledSearch = styled(Searchbar)`
     }
 `;
 
+const BetaText = styled.p`
+    font-size: 13px;
+    color: ${({ theme }) => theme.colors.textSecondary};
+
+    opacity: 0.75;
+
+    margin: -2px 0 18px;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}px) {
+        font-size: 12px;
+    }
+`;
+
 const Column = styled.div``;
 
 
@@ -117,8 +130,12 @@ function StartPage() {
             </Subtitle>
 
 
+
             <StyledSearch />
 
+            <BetaText>
+                Currently in beta
+            </BetaText>
 
             <BlockDiv>
 

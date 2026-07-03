@@ -163,6 +163,7 @@ function Grammatica() {
     return (
         <LessonLayout
             active="grammatica"
+            completed={["textus", "vocabula"]}
             progress={progress}
         >
             <Wrapper>

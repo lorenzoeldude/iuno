@@ -98,6 +98,7 @@ function Vocabula() {
     return (
         <LessonLayout
             active="vocabula"
+            completed={["textus"]}
             progress={progress}
         >
             <Wrapper>

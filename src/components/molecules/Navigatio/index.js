@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-
+import { FaCheck } from "react-icons/fa";
 
 const ACTIVE_COLOR = "#454545";
 
@@ -9,51 +9,65 @@ const OuterWrapper = styled.div`
     justify-content: center;
 `;
 
-
-const Wrapper = styled.div`
-    display: inline-flex;
-    flex-direction: column;
-`;
-
-
 const NavigationDiv = styled.div`
-    display: flex;
-    justify-content: center;
+    display: inline-flex;
     align-items: center;
+    gap: 6px;
 `;
 
+const Navigation = styled.button`
+    display: flex;
+    align-items: center;
+    gap: 8px;
 
-const Navigation = styled.p`
-    font-family: "Cormorant Garamond", serif;
-    font-weight: 500;
-    font-size: 20px;
+    padding: 10px 18px;
 
-    margin: 0;
-    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
 
-    background-color: ${({ active }) =>
+    background: ${({ active }) =>
         active ? ACTIVE_COLOR : "transparent"};
 
     color: ${({ active, theme }) =>
         active ? "white" : theme.colors.text};
 
+    font-family: "Cormorant Garamond", serif;
+    font-size: 20px;
+    font-weight: 600;
+
+    cursor: pointer;
+
     transition:
-        background-color ${({ theme }) => theme.transition.fast},
-        color ${({ theme }) => theme.transition.fast};
+        background-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
 
     &:hover {
-        background-color: #2e2e2e;
-        color: white;
-        cursor: pointer;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0,0,0,.12);
+
+        background: ${({ active }) =>
+            active ? ACTIVE_COLOR : "#ececec"};
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+
+    @media (max-width: 768px) {
+        padding: 8px 12px;
+        font-size: 16px;
+        gap: 6px;
     }
 `;
 
+const Check = styled(FaCheck)`
+    font-size: 12px;
+`;
 
-
-function Navigatio({ active }) {
-
+function Navigatio({ active, completed }) {
     const navigate = useNavigate();
-
 
     const links = [
         {
@@ -78,33 +92,22 @@ function Navigatio({ active }) {
         },
     ];
 
-
     return (
         <OuterWrapper>
-
-            <Wrapper>
-
-                <NavigationDiv>
-
-                    {links.map((link) => (
-
-                        <Navigation
-                            key={link.id}
-                            active={active === link.id}
-                            onClick={() => navigate(link.path)}
-                        >
-                            {link.label}
-                        </Navigation>
-
-                    ))}
-
-                </NavigationDiv>
-
-            </Wrapper>
-
+            <NavigationDiv>
+                {links.map((link, index) => (
+                    <Navigation
+                        key={link.id}
+                        active={active === link.id}
+                        onClick={() => navigate(link.path)}
+                    >
+                        {completed.includes(link.id) && <Check />}
+                        {link.label}
+                    </Navigation>
+                ))}
+            </NavigationDiv>
         </OuterWrapper>
     );
 }
-
 
 export default Navigatio;

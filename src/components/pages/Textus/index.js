@@ -149,9 +149,10 @@ Marcus multa aedificia videt.
 
     return (
         <LessonLayout
-            active="textus"
-            progress={progress}
-        >
+                active="textus"
+                completed={[]}
+                progress={progress}
+            >
             <UnderWrapper ref={wrapperRef}>
                 <ContentWrapper>
                     <TextDiv>
