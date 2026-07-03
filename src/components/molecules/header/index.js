@@ -12,7 +12,7 @@ const Wrapper = styled.div`
     justify-content: space-between;
     align-items: center;
 
-    padding: 10px 30px;
+    padding: 10px 20px;
 
     z-index: 1000;
 `;
@@ -20,6 +20,9 @@ const Wrapper = styled.div`
 const HeadLine = styled.h1`
     font-size: 25px;
     letter-spacing: 5px;
+
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 800;
 
     cursor: pointer;
     color: inherit;
@@ -69,7 +72,7 @@ function Header() {
         <Wrapper>
 
             <StyledLink to="/">
-                <HeadLine>i</HeadLine>
+                <HeadLine>I</HeadLine>
             </StyledLink>
 
 

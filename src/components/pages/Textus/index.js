@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import ProgressBar from "../../atoms/ProgressBar";
 import ArrowButton from "../../atoms/ArrowButton";
 import LessonLayout from "../../layout/LessonLayout";
 import ClickableText from "../../atoms/ClickableText";
@@ -12,105 +11,125 @@ const UnderWrapper = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: calc(100vh - 400px);
-    position: relative;
-    box-sizing: border-box;
-`;
-
-const ProgressWrapper = styled.div`
-    width: 100%;
-    margin-bottom: 20px;
+    flex: 1;
 `;
 
 const ContentWrapper = styled.div`
     flex: 1;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
-`;
 
-const ArrowDiv = styled.div`
-    position: fixed;
-    bottom: 45px;
-    left: 0;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    gap: 35px;
-    z-index: 10;
+    padding: 1rem 0 7rem;
 `;
 
 const TextDiv = styled.div`
-    max-width: 1000px;
-    text-align: center;
+    width: min(760px, 100%);
 `;
 
 const FirstText = styled.p`
-    font-size: clamp(28px, 3.5vw, 50px);
-    text-align: center;
-    line-height: 1.4;
+    font-size: clamp(30px, 3vw, 50px);
+    line-height: 1.7;
+    text-align: left;
     margin: 0;
+    white-space: pre-line;
 
     &::first-letter {
         color: red;
         font-size: 1.8em;
         font-weight: bold;
     }
-`;
 
-const Text = styled.div`
-    font-size: clamp(24px, 3vw, 45px);
-    text-align: center;
-    line-height: 1.4;
-
-    p {
-        margin: 5px 0;
+    @media (max-width: 768px) {
+        font-size: clamp(24px, 6vw, 34px);
+        line-height: 1.6;
     }
 `;
 
-function Textus () {
+const Text = styled.div`
+    font-size: clamp(28px, 2.8vw, 44px);
+    line-height: 1.7;
+    text-align: left;
+    white-space: pre-line;
 
-    // const sentences2 = [
-    //     "Rōma in Italiā est. Italia in Eurōpā est.",
-    //     "Graecia in Eurōpā est. Italia et Graecia in Eurōpā sunt. Hispānia quoque in Eurōpā est. Hispānia et Italia et Graecia in Eurōpā sunt.",
-    //     "Aegyptus in Eurōpā nōn est, Aegyptus in Āfricā est. Gallia nōn in Āfricā est, Gallia est in Eurōpā.",
-    //     "Syria nōn est in Eurōpā, sed in Asiā. Arabia quoque in Asiā est. Syria et Arabia in Asiā sunt.",
-    //     "Germānia nōn in Asiā, sed in Eurōpā est. Britannia quoque in Eurōpā est.",
-    //     "Estne Gallia in Eurōpā? Gallia in Eurōpā est. Estne Rōma in Galliā? Rōma in Galliā nōn est.",
-    //     "Ubi est Rōma? Rōma est in Italiā. Ubi est Italia? Italia in Eurōpā est.",
-    //     "Ubi sunt Gallia et Hispānia? Gallia et Hispānia in Eurōpā sunt.",
-    //     "Estne Nīlus in Eurōpā? Nīlus in Eurōpā nōn est. Ubi est Nīlus? Nīlus in Āfricā est.",
-    //     "Rhēnus ubi est? Rhēnus est in Germāniā.",
-    //     "Nīlus fluvius est. Rhēnus fluvius est. Nīlus et Rhēnus fluviī sunt.",
-    //     "Rhēnus et Dānuvius sunt fluviī in Germāniā. Tiberis fluvius in Italiā est.",
-    //     "Tiberis nōn est fluvius magnus, Tiberis fluvius parvus est.",
-    //     "Nīlus et Rhēnus nōn fluviī parvī, sed fluviī magnī sunt.",
-    //     "Corsica īnsula est. Corsica et Sardinia et Sicilia īnsulae sunt.",
-    //     "Sicilia īnsula magna est. Melita est īnsula parva.",
-    //     "Sicilia et Sardinia nōn īnsulae parvae, sed īnsulae magnae sunt.",
-    //     "Brundisium oppidum est. Brundisium et Tūsculum oppida sunt.",
-    //     "Brundisium est oppidum magnum. Tūsculum oppidum parvum est.",
-    //     "Delphī quoque oppidum parvum est.",
-    //     "Ubi est Sparta? Sparta est in Graeciā.",
-    //     "Sparta et Delphī oppida Graeca sunt.",
-    //     "Tūsculum et Brundisium sunt oppida Rōmāna.",
-    //     "Crēta, Rhodus, Naxus, Samos, Chios, Lesbos sunt īnsulae Graecae.",
-    //     "In Italiā et in Graeciā sunt multa oppida."
-    // ];
+    @media (max-width: 768px) {
+        font-size: clamp(22px, 5.5vw, 32px);
+        line-height: 1.6;
+    }
+`;
 
+const ArrowDiv = styled.div`
+    position: fixed;
+    left: 50%;
+    bottom: 30px;
+    transform: translateX(-50%);
+
+    display: flex;
+    gap: 28px;
+
+    z-index: 20;
+`;
+
+function Textus() {
     const sentences = [
-        "Rōma in Italiā est. Italia pulchra est.",
-        "Rōma magna urbs est. Multī virī et multae fēminae in Rōmā habitant. Rōma caput est.",
-        "In Italiā multī fluviī sunt. Padus fluvius longus est. Tiberis quoque fluvius longus est.",
-        "Italia in Eurōpā est. Germania quoque in Eurōpā est. Syria non in Eurōpā est.",
-        "In Italiā multae urbes sunt. Rōma urbs antiqua est. Italia terra magna est.",
-        "Populus Rōmānus magnus est. Rōmānī Italiam amant. Rōma pulchra et clara est."
+`Ubi est Rōma?
+
+Rōma in Italiā est. Italia in Eurōpā est.
+
+Rōma urbs est. Rōma magna et pulchra est.`,
+
+`Rōma urbs antiqua est.
+
+Multī hominēs in Rōmā habitant. Multī virī et multae fēminae in urbe habitant.
+
+Multī puerī et multae puellae quoque in Rōmā habitant.`,
+
+`Marcus puer Rōmānus est. Marcus in Rōmā habitat.
+
+Marcus in viā ambulat.
+
+"Rōma pulchra est," Marcus dīcit.`,
+
+`In Italiā multī fluviī sunt.
+
+Padus fluvius longus est. Tiberis quoque fluvius longus est.
+
+Tiberis per Rōmam fluit.`,
+
+`In Italiā paucae īnsulae sunt.
+
+Sicilia īnsula magna est. Capreae īnsula parva est.`,
+
+`Rōma caput imperiī Rōmānī est.
+
+Imperium Rōmānum magnum est.
+
+Multī hominēs in imperiō Rōmānō habitant.`,
+
+`In Rōmā sunt multa aedificia.
+
+In aedificiīs multī virī et multae fēminae habitant.
+
+Multī puerī et multae puellae quoque in aedificiīs habitant.`,
+
+`Aedificia magna sunt.
+
+Marcus multa aedificia videt.
+
+"Rōma magna est," Marcus dīcit.`
     ];
 
     const [index, setIndex] = useState(0);
 
     const navigate = useNavigate();
+    const wrapperRef = useRef(null);
+
+    const {
+        popup,
+        entry,
+        lookupWord,
+        closePopup,
+    } = useDictionaryLookup();
 
     const nextSentence = () => {
         if (index < sentences.length - 1) {
@@ -121,60 +140,38 @@ function Textus () {
     };
 
     const previousSentence = () => {
-        if (index !== 0) {
+        if (index > 0) {
             setIndex(index - 1);
         }
     };
 
-    const wrapperRef = useRef(null);
-
-    const {
-        popup,
-        entry,
-        lookupWord,
-        closePopup,
-    } = useDictionaryLookup();
-
     const progress = (index / (sentences.length - 1)) * 100;
 
-
     return (
-        <LessonLayout active={"textus"}>
-
+        <LessonLayout
+            active="textus"
+            progress={progress}
+        >
             <UnderWrapper ref={wrapperRef}>
-
-                <ProgressWrapper>
-                    <ProgressBar progress={progress}/>
-                </ProgressWrapper>
-
                 <ContentWrapper>
-
                     <TextDiv>
-
-                        {progress === 0 ? (
+                        {index === 0 ? (
                             <FirstText>
                                 <ClickableText
                                     text={sentences[index]}
-                                    onWordClick={(word,e)=>
-                                        lookupWord(word,e,wrapperRef)
+                                    onWordClick={(word, e) =>
+                                        lookupWord(word, e, wrapperRef)
                                     }
                                 />
                             </FirstText>
                         ) : (
                             <Text>
-                                {sentences[index]
-                                    .split(".  ")
-                                    .map((sentence,index)=>
-                                        sentence.trim() &&
-                                        <p key={index}>
-                                            <ClickableText
-                                                text={sentence}
-                                                onWordClick={(word,e)=>
-                                                    lookupWord(word,e,wrapperRef)
-                                                }
-                                            />
-                                        </p>
-                                    )}
+                                <ClickableText
+                                    text={sentences[index]}
+                                    onWordClick={(word, e) =>
+                                        lookupWord(word, e, wrapperRef)
+                                    }
+                                />
                             </Text>
                         )}
 
@@ -183,13 +180,9 @@ function Textus () {
                             entry={entry}
                             onClose={closePopup}
                         />
-
                     </TextDiv>
-
                 </ContentWrapper>
-
             </UnderWrapper>
-
 
             <ArrowDiv>
                 <ArrowButton onClick={previousSentence}>
@@ -200,7 +193,6 @@ function Textus () {
                     {">"}
                 </ArrowButton>
             </ArrowDiv>
-
         </LessonLayout>
     );
 }
