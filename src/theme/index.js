@@ -63,9 +63,9 @@ export const lightTheme = {
         card: "#FFFFFF",
         accent: "#B89B5E",
 
-        text: "#1F2937",
+        text: "#000000",
         opposite: "#F9FAFB",
-        textSecondary: "#a3a3a398",
+        textSecondary: "#3d3d3d98",
 
         primary: "#4F46E5",
         primaryHover: "#4338CA",
@@ -95,7 +95,7 @@ export const darkTheme = {
 
         text: "#F9FAFB",
         opposite: "#1F2937",
-        textSecondary: "#dbdcdd8e",
+        textSecondary: "#d8d8d88e",
 
         primary: "#6366F1",
         primaryHover: "#818CF8",
