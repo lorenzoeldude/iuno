@@ -78,7 +78,7 @@ const Link = styled.button`
     }
 
     &:active {
-        color: ${({ theme }) => theme.colors.primaryHover};
+        color: ${({ theme }) => theme.colors.primary};
     }
 
     @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {

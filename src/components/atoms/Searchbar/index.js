@@ -7,28 +7,29 @@ const Wrapper = styled.div`
     position: relative;
     width: 100%;
     max-width: 350px;
-    flex: 1;
 
     @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
         max-width: 180px;
     }
 `;
+
 const Input = styled.input`
-    height: 30px;
     width: 100%;
+    height: 30px;
 
     padding: 5px;
 
     border: 1px solid ${({ theme }) => theme.colors.border};
-    border-radius: 0px;
+    border-radius: 0;
 
     background: ${({ theme }) => theme.colors.background};
     color: ${({ theme }) => theme.colors.text};
 
     text-align: center;
 
-    transition: border ${({ theme }) => theme.transition.normal},
-                background ${({ theme }) => theme.transition.normal};
+    transition:
+        border ${({ theme }) => theme.transition.normal},
+        background ${({ theme }) => theme.transition.normal};
 
     &::placeholder {
         color: ${({ theme }) => theme.colors.textSecondary};
@@ -42,13 +43,11 @@ const Input = styled.input`
 
 const Dropdown = styled.div`
     position: absolute;
-
     top: calc(100% + 6px);
     left: 0;
     right: 0;
 
     background: ${({ theme }) => theme.colors.card};
-
     color: ${({ theme }) => theme.colors.text};
 
     border: 1px solid ${({ theme }) => theme.colors.border};
@@ -82,6 +81,7 @@ function Searchbar({ className }) {
     // =====================================================
     // SEARCH (debounced)
     // =====================================================
+
     useEffect(() => {
         if (!query.trim()) {
             setResults([]);
@@ -120,9 +120,8 @@ function Searchbar({ className }) {
     };
 
     return (
-        <Wrapper>
+        <Wrapper className={className}>
             <Input
-                className={className}
                 type="text"
                 placeholder="search word"
                 value={query}
@@ -131,7 +130,9 @@ function Searchbar({ className }) {
                     setOpen(true);
                 }}
                 onFocus={() => {
-                    if (results.length > 0) setOpen(true);
+                    if (results.length > 0) {
+                        setOpen(true);
+                    }
                 }}
                 onBlur={() => {
                     setTimeout(() => setOpen(false), 150);
@@ -150,12 +151,9 @@ function Searchbar({ className }) {
                                 )
                             }
                         >
-                            <strong>{item.form}</strong>
-                            {": "}
-                            {item.lemma}
+                            <strong>{item.form}</strong>: {item.lemma}
                             <br />
-                            {item.grammatical_case || item.tense} -{" "}
-                            {item.meaning}
+                            {item.grammatical_case || item.tense} - {item.meaning}
                         </Item>
                     ))}
                 </Dropdown>

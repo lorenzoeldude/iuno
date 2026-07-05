@@ -83,7 +83,7 @@ const StyledSearch = styled(Searchbar)`
     height: 50px;
     width: 300px;
 
-    border: 1px solid ${({ theme }) => theme.colors.border};
+    // border: 1px solid ${({ theme }) => theme.colors.border};
 
     text-align: center;
 

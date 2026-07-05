@@ -13,8 +13,17 @@ const Wrapper = styled.div`
     align-items: center;
 
     padding: 10px 20px;
+    gap: 20px;
 
     z-index: 1000;
+`;
+
+const StyledLink = styled(Link)`
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
 `;
 
 const HeadLine = styled.h1`
@@ -29,38 +38,47 @@ const HeadLine = styled.h1`
     text-decoration: none;
     margin: 0;
     line-height: 1;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        font-size: 22px;
+        letter-spacing: 3px;
+    }
 `;
 
-const StyledLink = styled(Link)`
-    text-decoration: none;
-    color: inherit;
+const SearchWrapper = styled.div`
+    flex: 1;
+
     display: flex;
-    align-items: center;
+    justify-content: center;
+
+    min-width: 0;
 `;
 
 const Right = styled.div`
     display: flex;
     align-items: center;
     gap: 15px;
+
+    flex-shrink: 0;
 `;
 
 const Button = styled.button`
     padding: 4px 8px;
-    border: 0.5px solid rgba(0,0,0,0.2);
+    border: 0.5px solid rgba(0, 0, 0, 0.2);
     background: none;
     color: ${({ theme }) => theme.colors.text};
     cursor: pointer;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        font-size: 14px;
+        padding: 4px 6px;
+    }
 `;
 
-
-
 function Header() {
-
     const navigate = useNavigate();
 
-    const user = JSON.parse(
-        localStorage.getItem("user")
-    );
+    const user = JSON.parse(localStorage.getItem("user"));
 
     function logout() {
         localStorage.removeItem("token");
@@ -74,16 +92,15 @@ function Header() {
 
     return (
         <Wrapper>
-
             <StyledLink to="/">
                 <HeadLine>I</HeadLine>
             </StyledLink>
 
-
-            <Searchbar />
+            <SearchWrapper>
+                <Searchbar />
+            </SearchWrapper>
 
             <Right>
-
                 {user ? (
                     <Button onClick={logout}>
                         Logout
@@ -93,9 +110,7 @@ function Header() {
                         Login
                     </Button>
                 )}
-
             </Right>
-
         </Wrapper>
     );
 }

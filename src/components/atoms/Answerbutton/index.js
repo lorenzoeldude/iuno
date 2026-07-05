@@ -1,10 +1,5 @@
 import styled from "styled-components";
-
-const correctSound = new Audio("/sounds/correct.mp3");
-const wrongSound = new Audio("/sounds/wrong.mp3");
-
-correctSound.volume = 0.3;
-wrongSound.volume = 0.3;
+import useSoundEffects from "../../../hooks/useSoundEffects";
 
 const Button = styled.div`
     display: flex;
@@ -23,7 +18,7 @@ const Button = styled.div`
     background-color: ${(props) => {
         if (props.state === 1) return "green";
         if (props.state === 2) return "red";
-        return `${({ theme }) => theme.colors.background}`;
+        return props.theme.colors.background;
     }};
 
     &:hover {
@@ -36,31 +31,31 @@ function AnswerButton({
     index,
     correct,
     selected,
-    setSelected
+    setSelected,
 }) {
+    const {
+        playCorrect,
+        playWrong,
+    } = useSoundEffects();
 
     function handleClick() {
+        if (selected !== null) return;
 
-        if(selected !== null) return;
+        if (index === correct) {
+            playCorrect();
+        } else {
+            playWrong();
+        }
 
         setSelected(index);
-
-        if(index === correct) {
-            correctSound.currentTime = 0;
-            correctSound.play();
-        } else {
-            wrongSound.currentTime = 0;
-            wrongSound.play();
-        }
     }
 
     function getState() {
+        if (selected === null) return 0;
 
-        if(selected === null) return 0;
+        if (index === correct) return 1;
 
-        if(index === correct) return 1;
-
-        if(index === selected) return 2;
+        if (index === selected) return 2;
 
         return 0;
     }
