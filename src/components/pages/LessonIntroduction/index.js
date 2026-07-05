@@ -95,9 +95,11 @@ export default function LessonIntroduction() {
                 <Description>
                     Welcome to your first Latin lesson! In this chapter, you'll
                     take your first steps into the ancient world by exploring the
-                    city of Rome. You'll read a short Latin text, learn your first
-                    words, discover singular and plural, and finish
-                    with a quiz to reinforce what you've learned.
+                    city of Rome. You'll start by reading a short text in Latin. 
+                    Click on any word to get a translation, or add the word to your word list,
+                    so that you can train them later. 
+                    You will then learn your first vocabulary, discover singular and plural rules , 
+                    and finish with a quiz to reinforce what you've learned.
                 </Description>
 
                 {/* <Divider />
