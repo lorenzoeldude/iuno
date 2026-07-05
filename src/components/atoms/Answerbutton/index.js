@@ -18,7 +18,7 @@ const Button = styled.div`
     font-size: 30px;
     color: ${({ theme }) => theme.colors.text};
     cursor: pointer;
-    border: 2px solid white;
+    border: 2px solid ${({ theme }) => theme.colors.text};
 
     background-color: ${(props) => {
         if (props.state === 1) return "green";
@@ -27,7 +27,7 @@ const Button = styled.div`
     }};
 
     &:hover {
-        border: 2px solid #2f2f2f;
+        border: 2px solid #8a8a8a;
     }
 `;
 
