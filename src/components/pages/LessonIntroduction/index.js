@@ -7,78 +7,98 @@ const Container = styled.div`
     display: flex;
     justify-content: center;
     width: 100%;
-    padding: 0rem 1.5rem;
+    padding: 0 1.5rem;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        padding: 0 0.75rem;
+    }
 `;
 
 const Card = styled.div`
     width: 100%;
     max-width: 800px;
+
     background: ${({ theme }) => theme.colors.backgroundSecondary};
     border: 1px solid ${({ theme }) => theme.colors.border};
-    // border-radius: 16px;
+
     padding: 3rem;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+        padding: 2.25rem;
+    }
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        padding: 1.75rem;
+    }
 `;
 
 const HeroImage = styled.img`
     width: 100%;
-    height: 280px;
+    height: 320px;
     object-fit: cover;
-    // border-radius: 14px;
     margin-bottom: 2rem;
 
-    @media (max-width: 768px) {
-        height: 180px;
+    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+        height: 260px;
+    }
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        height: 220px;
+        margin-bottom: 1.5rem;
     }
 `;
 
 const LessonNumber = styled.p`
     margin: 0;
+
     font-size: 0.9rem;
     font-weight: 600;
     letter-spacing: 2px;
     text-transform: uppercase;
+
     color: ${({ theme }) => theme.colors.textSecondary};
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        font-size: 0.8rem;
+    }
 `;
 
 const Title = styled.h1`
     margin: 0.5rem 0 1rem;
-    font-size: 2.5rem;
+
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    line-height: 1.1;
+
     color: ${({ theme }) => theme.colors.text};
 `;
 
 const Description = styled.p`
-    margin: 0;
-    font-size: 1.1rem;
+    margin: 0 0 2rem;
+
+    font-size: clamp(1rem, 2vw, 1.1rem);
     line-height: 1.8;
+
     color: ${({ theme }) => theme.colors.text};
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        line-height: 1.7;
+    }
 `;
 
-// const Divider = styled.div`
-//     height: 1px;
-//     background: ${({ theme }) => theme.colors.border};
-//     margin: 2rem 0;
-// `;
+const ButtonWrapper = styled.div`
+    margin-top: 2rem;
 
-// const Subtitle = styled.h2`
-//     margin: 0 0 1rem;
-//     font-size: 1.2rem;
-//     color: ${({ theme }) => theme.colors.text};
-// `;
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        width: 100%;
 
-// const List = styled.ul`
-//     margin: 0;
-//     padding-left: 1.5rem;
-//     display: flex;
-//     flex-direction: column;
-//     gap: 0.8rem;
-// `;
+        button {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+`;
 
-// const ListItem = styled.li`
-//     color: ${({ theme }) => theme.colors.text};
-//     line-height: 1.6;
-// `;
-
-export default function LessonIntroduction() {
+function LessonIntroduction() {
     const navigate = useNavigate();
 
     return (
@@ -88,37 +108,38 @@ export default function LessonIntroduction() {
                     src="/rome1.jpg"
                     alt="Rome"
                 />
-                <LessonNumber>Lesson I</LessonNumber>
 
-                <Title>Roma</Title>
+                <LessonNumber>
+                    Lesson I
+                </LessonNumber>
+
+                <Title>
+                    Roma
+                </Title>
 
                 <Description>
-                    Welcome to your first Latin lesson! In this chapter, you'll
-                    take your first steps into the ancient world by exploring the
-                    city of Rome. You'll start by reading a short text in Latin. 
-                    Click on any word to get a translation, or add the word to your word list,
-                    so that you can train them later. 
-                    You will then learn your first vocabulary, discover singular and plural rules , 
-                    and finish with a quiz to reinforce what you've learned.
+                    Welcome to your first Latin lesson! In this chapter,
+                    you'll explore the city of Rome through a short Latin
+                    text. Click any word to see its meaning or save it to
+                    your personal vocabulary list for later practice.
+                    You'll then learn your first vocabulary, discover the
+                    basics of singular and plural forms, and finish with a
+                    quiz to reinforce what you've learned.
                 </Description>
 
-                {/* <Divider />
-
-                <Subtitle>In this lesson you will...</Subtitle>
-
-                <List>
-                    <ListItem>📖 Read your first short Latin text.</ListItem>
-                    <ListItem>🏛️ Learn about the city of Rome.</ListItem>
-                    <ListItem>📝 Master your first Latin vocabulary.</ListItem>
-                    <ListItem>📚 Understand your first grammar concepts.</ListItem>
-                    <ListItem>✅ Complete a short quiz to test your knowledge.</ListItem>
-                </List> */}
-
-                <NavigationButton onClick={() => navigate("/lesson/1/textus")}>
-                    Start Lesson
-                    <FaArrowRight />
-                </NavigationButton>
+                <ButtonWrapper>
+                    <NavigationButton
+                        onClick={() =>
+                            navigate("/lesson/1/textus")
+                        }
+                    >
+                        Start Lesson
+                        <FaArrowRight />
+                    </NavigationButton>
+                </ButtonWrapper>
             </Card>
         </Container>
     );
 }
+
+export default LessonIntroduction;
