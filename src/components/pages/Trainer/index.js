@@ -12,33 +12,64 @@ import { API_URL } from "../../../config";
 
 
 const Page = styled.div`
-    width: 70%;
+    width: min(90%, 1200px);
+
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 80px;
-    position: relative;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 80px;
+
+    margin: 0 auto;
+    padding: 80px 0;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+        width: 94%;
+        flex-direction: column;
+        align-items: center;
+        gap: 40px;
+        padding-top: 40px;
+    }
 `;
 
 
 const InfoPanel = styled.div`
+    width: 100%;
+    max-width: 450px;
+
     padding: 25px;
 
-    opacity: ${(props) => (props.visible ? 1 : 0)};
+    opacity: ${({ visible }) => (visible ? 1 : 0)};
 
-    transform: ${(props) =>
-        props.visible
+    transform: ${({ visible }) =>
+        visible
             ? "translateX(0)"
             : "translateX(10px)"};
 
     transition:
         opacity 0.4s ease,
         transform 0.4s ease;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+        max-width: 100%;
+        padding: 0;
+
+        transform: none;
+
+        max-height: ${({ visible }) =>
+            visible ? "1000px" : "0"};
+
+        overflow: hidden;
+
+        transition:
+            max-height 0.35s ease,
+            opacity 0.35s ease;
+    }
 `;
 
 
 const PanelTitle = styled.h6`
     margin-bottom: 12px;
+    font-size: 18px;
 `;
 
 
@@ -46,12 +77,21 @@ const Definition = styled.p`
     font-size: 25px;
     line-height: 1.5;
     margin-bottom: 30px;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        font-size: 21px;
+    }
 `;
 
 
 const Example = styled.p`
     line-height: 1.6;
     margin-bottom: 12px;
+    font-size: 25px;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        font-size: 21px;
+    }
 `;
 
 
@@ -67,7 +107,17 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-right: 100px;
+
+    flex-shrink: 0;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+        width: 100%;
+        margin-right: 0;
+    }
+
+    @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
+        margin-right: 60px;
+    }
 `;
 
 
@@ -82,6 +132,11 @@ const Verbum = styled.p`
     &:hover {
         opacity: ${(props) =>
             props.clickable ? 0.7 : 1};
+    }
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        font-size: 40px;
+        text-align: center;
     }
 `;
 

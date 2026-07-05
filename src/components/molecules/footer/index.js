@@ -8,7 +8,7 @@ const Wrapper = styled.footer`
     display: flex;
     justify-content: center;
 
-    font-size: 12px;
+    font-size: 10px;
     color: ${({ theme }) => theme.colors.textSecondary};
 `;
 

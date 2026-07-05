@@ -68,6 +68,10 @@ function Header() {
         navigate("/login");
     }
 
+    function login() {
+        navigate("/login");
+    }
+
     return (
         <Wrapper>
 
@@ -85,8 +89,9 @@ function Header() {
                         Logout
                     </Button>
                 ) : (
-                    <>
-                    </>
+                    <Button onClick={login}>
+                        Login
+                    </Button>
                 )}
 
             </Right>

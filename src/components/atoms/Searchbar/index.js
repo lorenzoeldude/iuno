@@ -7,8 +7,12 @@ const Wrapper = styled.div`
     position: relative;
     width: 100%;
     max-width: 350px;
-`;
+    flex: 1;
 
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        max-width: 180px;
+    }
+`;
 const Input = styled.input`
     height: 30px;
     width: 100%;

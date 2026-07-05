@@ -57,7 +57,7 @@ const ExitButton = styled.button`
     border: none;
     border-radius: 50%;
 
-    background: ${({ theme }) => theme.colors.background};
+    background: none;
     color: ${({ theme }) => theme.colors.text};
 
     font-size: 40px;
@@ -65,12 +65,10 @@ const ExitButton = styled.button`
 
     transition: transform 0.15s ease, box-shadow 0.15s ease;
 
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
     z-index: 300;
 
     &:hover {
         transform: scale(1.05);
-        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
     }
 
     @media (max-width: 768px) {

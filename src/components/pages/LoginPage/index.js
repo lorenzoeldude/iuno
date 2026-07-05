@@ -15,7 +15,6 @@ const Card = styled.div`
     max-width: 420px;
     padding: 40px;
     border: 1px solid rgba(0,0,0,0.1);
-    border-radius: 16px;
     background: white;
     color: black;
 `;
