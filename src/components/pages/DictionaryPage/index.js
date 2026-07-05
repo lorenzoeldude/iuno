@@ -197,6 +197,45 @@ const Loading = styled.p`
     font-size: 28px;
 `;
 
+const Overlay = styled.div`
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 1000;
+`;
+
+const Popup = styled.div`
+    background: ${({ theme }) => theme.colors.background};
+    color: ${({ theme }) => theme.colors.text};
+
+    padding: 32px;
+    border-radius: 18px;
+    max-width: 420px;
+    width: 90%;
+
+    text-align: center;
+`;
+
+const PopupTitle = styled.h2`
+    margin-top: 0;
+`;
+
+const PopupButton = styled.button`
+    margin-top: 24px;
+    padding: 10px 24px;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+
+    background: ${({ theme }) => theme.colors.text};
+    color: ${({ theme }) => theme.colors.opposite};
+`;
+
 // ===================== component =====================
 
 function DictionaryPage() {
@@ -228,6 +267,8 @@ function DictionaryPage() {
     const isAuthed = !!token;
 
     const [isAdmin, setIsAdmin] = useState(false);
+
+    const [showLoginPopup, setShowLoginPopup] = useState(false);
     
     useEffect(() => {
 
@@ -431,10 +472,17 @@ function DictionaryPage() {
                     </WordHeader>
 
                     <SaveButton
-                        disabled={!isAuthed || saving}
-                        onClick={() => toggleList(wordInfo.id)}
+                        disabled={saving}
+                        onClick={() => {
+                            if (!isAuthed) {
+                                setShowLoginPopup(true);
+                                return;
+                            }
+
+                            toggleList(wordInfo.id);
+                        }}
                     >
-                        {saved ? <FaCheckCircle/> : <>+</>}
+                        {saved ? <FaCheckCircle /> : "+"}
                     </SaveButton>
 
                     {isAdmin && (
@@ -546,6 +594,26 @@ function DictionaryPage() {
                 entry={entry}
                 onClose={closePopup}
             />
+            {showLoginPopup && (
+                <Overlay onClick={() => setShowLoginPopup(false)}>
+                    <Popup onClick={(e) => e.stopPropagation()}>
+                        <PopupTitle>Log in required</PopupTitle>
+
+                        <p>
+                            Log in to add words to your personal vocabulary list.
+                        </p>
+
+                        <PopupButton
+                            onClick={() => {
+                                setShowLoginPopup(false);
+                                navigate("/login");
+                            }}
+                        >
+                            Log In
+                        </PopupButton>
+                    </Popup>
+                </Overlay>
+            )}
         </Wrapper>
     );
 }
