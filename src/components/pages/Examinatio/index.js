@@ -1,9 +1,11 @@
 import styled from "styled-components";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import ArrowButton from "../../atoms/ArrowButton";
 import AnswerButton from "../../atoms/Answerbutton";
 import LessonLayout from "../../layout/LessonLayout";
+import NavigationButton from "../../atoms/NavigationButton";
 
 const Wrapper = styled.div`
     width: 100%;
@@ -63,133 +65,134 @@ const ArrowDiv = styled.div`
 `;
 
 function Examinatio() {
+    const navigate = useNavigate();
     const questions = [
         {
             type: "vocab",
+            question: "Quid est urbs?",
+            options: ["city", "river", "island"],
+            correct: "city"
+        },
+        {
+            type: "vocab",
             question: "Quid est fluvius?",
-            options: ["river", "moon", "road"],
+            options: ["river", "mountain", "road"],
             correct: "river"
         },
         {
             type: "vocab",
-            question: "Quid est puella?",
-            options: ["girl", "boy", "city"],
-            correct: "girl"
+            question: "Quid est īnsula?",
+            options: ["island", "city", "woman"],
+            correct: "island"
         },
         {
             type: "vocab",
-            question: "Quid est via?",
-            options: ["road", "water", "sun"],
-            correct: "road"
+            question: "Quid est aedificium?",
+            options: ["building", "road", "boy"],
+            correct: "building"
         },
         {
             type: "vocab",
-            question: "Quid est luna?",
-            options: ["moon", "river", "house"],
-            correct: "moon"
-        },
-        {
-            type: "vocab",
-            question: "Quid est vir?",
-            options: ["woman", "man", "child"],
-            correct: "man"
+            question: "Quid est imperium?",
+            options: ["empire", "river", "house"],
+            correct: "empire"
         },
         {
             type: "grammar",
-            before: "Fluviī magn",
-            after: " sunt.",
-            options: ["us", "ī"],
+            before: "Multī puer",
+            after: " in Rōmā habitant.",
+            options: ["ī", "us"],
             correct: "ī"
         },
         {
             type: "grammar",
-            before: "Via long",
-            after: " est.",
-            options: ["a", "ae"],
-            correct: "a"
+            before: "Multae puell",
+            after: " in Rōmā habitant.",
+            options: ["ae", "a"],
+            correct: "ae"
         },
         {
             type: "grammar",
-            before: "Oppida magn",
-            after: " sunt.",
+            before: "Aedifici",
+            after: " magna sunt.",
             options: ["a", "um"],
             correct: "a"
         },
         {
             type: "grammar",
-            before: "Servus bon",
-            after: " est.",
-            options: ["us", "ī"],
-            correct: "us"
-        },
-        {
-            type: "grammar",
-            before: "Viae long",
-            after: " sunt.",
-            options: ["a", "ae"],
-            correct: "ae"
-        },
-        {
-            type: "text",
-            question: "Quis per viam ambulat?",
-            options: ["Marcus", "Nīlus", "Puella"],
-            correct: "Marcus"
-        },
-        {
-            type: "text",
-            question: "Ubi habitat Marcus?",
-            options: ["In Italiā", "In Rōmā", "In Graeciā"],
-            correct: "In Rōmā"
-        },
-        {
-            type: "text",
-            question: "Quid Marcus videt?",
-            options: ["Mālum", "Canem", "Equum"],
-            correct: "Mālum"
-        },
-        {
-            type: "text",
-            question: "Quāle est mālum?",
-            options: ["Rubrum", "Nigrum", "Parvum"],
-            correct: "Rubrum"
-        },
-        {
-            type: "text",
-            question: "Quid in caelō est?",
-            options: ["Lūna", "Sōl", "Aqua"],
-            correct: "Sōl"
-        },
-        {
-            type: "grammar",
-            before: "Puer",
-            after: " sunt.",
-            options: ["ī", "us"],
-            correct: "ī"
-        },
-        {
-            type: "vocab",
-            question: "Quid est oppidum?",
-            options: ["city", "river", "moon"],
-            correct: "city"
-        },
-        {
-            type: "text",
-            question: "Estne Rōma calida?",
-            options: ["Ita", "Nōn"],
-            correct: "Ita"
-        },
-        {
-            type: "grammar",
-            before: "Oppidum magn",
+            before: "Imperium Rōmānum magn",
             after: " est.",
             options: ["um", "a"],
             correct: "um"
         },
         {
+            type: "grammar",
+            before: "Multī fluvi",
+            after: " in Italiā sunt.",
+            options: ["ī", "us"],
+            correct: "ī"
+        },
+        {
             type: "text",
-            question: "Estne Marcus fessus?",
-            options: ["Ita", "Nōn"],
-            correct: "Ita"
+            question: "Ubi est Rōma?",
+            options: ["In Italiā", "In Graeciā", "In Aegyptō"],
+            correct: "In Italiā"
+        },
+        {
+            type: "text",
+            question: "Quis in via ambulat?",
+            options: ["Marcus", "Padus", "Tiberis"],
+            correct: "Marcus"
+        },
+        {
+            type: "text",
+            question: "Quid est caput imperiī Rōmānī?",
+            options: ["Rōma", "Graecia", "Sicilia"],
+            correct: "Rōma"
+        },
+        {
+            type: "text",
+            question: "Quae īnsula magna est?",
+            options: ["Sicilia", "Italia", "Europa"],
+            correct: "Sicilia"
+        },
+        {
+            type: "text",
+            question: "Ubi est Nilus?",
+            options: ["In Aegyptō", "In Italiā", "In Hispāniā"],
+            correct: "In Aegyptō"
+        },
+        {
+            type: "grammar",
+            before: "Tiberis fluvius long",
+            after: " est.",
+            options: ["us", "a"],
+            correct: "us"
+        },
+        {
+            type: "vocab",
+            question: "Quid est femina?",
+            options: ["woman", "man", "girl"],
+            correct: "woman"
+        },
+        {
+            type: "text",
+            question: "Quid Marcus videt?",
+            options: ["Multa aedificia", "Multās īnsulās", "Nilum"],
+            correct: "Multa aedificia"
+        },
+        {
+            type: "grammar",
+            before: "Multae urb",
+            after: " in imperiō Rōmānō sunt.",
+            options: ["ēs", "is"],
+            correct: "ēs"
+        },
+        {
+            type: "text",
+            question: "Estne Aegyptus in Eurōpā?",
+            options: ["Nōn", "Ita"],
+            correct: "Nōn"
         }
     ];
 
@@ -210,13 +213,13 @@ function Examinatio() {
         setSelected(null);
     }
 
-    function getRank() {
-        if (score >= 18) return "Magister";
-        if (score >= 14) return "Discipulus";
-        if (score >= 10) return "Tiro";
+    // function getRank() {
+    //     if (score >= 18) return "Magister";
+    //     if (score >= 14) return "Discipulus";
+    //     if (score >= 10) return "Tiro";
 
-        return "Novicius";
-    }
+    //     return "Novicius";
+    // }
 
     if (step >= questions.length) {
         return (
@@ -232,9 +235,15 @@ function Examinatio() {
                             Puncta: {score} / {questions.length}
                         </ResultText>
 
-                        <ResultText>
+                        {/* <ResultText>
                             Gradus: {getRank()}
-                        </ResultText>
+                        </ResultText> */}
+
+                        <div style={{ marginTop: "40px" }}>
+                            <NavigationButton onClick={() => navigate("/lesson")}>
+                                Finish Lesson
+                            </NavigationButton>
+                        </div>
                     </Content>
                 </Wrapper>
             </LessonLayout>
@@ -291,7 +300,7 @@ function Examinatio() {
                 <ArrowDiv>
                     <ArrowButton onClick={nextQuestion}>
                         {step === questions.length - 1
-                            ? "Perfice"
+                            ? "Finish"
                             : ">"}
                     </ArrowButton>
                 </ArrowDiv>

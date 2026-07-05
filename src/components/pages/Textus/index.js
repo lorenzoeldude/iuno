@@ -76,29 +76,29 @@ function Textus() {
 
 Rōma in Italiā est. Italia in Eurōpā est.
 
-Rōma urbs est. Rōma magna et pulchra est.`,
+Rōma urbs est.`,
 
 `Rōma urbs antiqua est.
 
-Multī hominēs in Rōmā habitant. Multī virī et multae fēminae in urbe habitant.
+Rōma magna et pulchra est.
+
+Multī hominēs in Rōmā habitant.`,
+
+`Multī virī et multae fēminae in Rōmā habitant.
 
 Multī puerī et multae puellae quoque in Rōmā habitant.`,
 
-`Marcus puer Rōmānus est. Marcus in Rōmā habitat.
+`Marcus puer Rōmānus est.
 
-Marcus in viā ambulat.
+Marcus in Rōmā habitat.
+
+Marcus in viā ambulat.`,
+
+`Quis in viā ambulat?
+
+Marcus in viā ambulat!
 
 "Rōma pulchra est," Marcus dīcit.`,
-
-`In Italiā multī fluviī sunt.
-
-Padus fluvius longus est. Tiberis quoque fluvius longus est.
-
-Tiberis per Rōmam fluit.`,
-
-`In Italiā paucae īnsulae sunt.
-
-Sicilia īnsula magna est. Capreae īnsula parva est.`,
 
 `Rōma caput imperiī Rōmānī est.
 
@@ -106,18 +106,66 @@ Imperium Rōmānum magnum est.
 
 Multī hominēs in imperiō Rōmānō habitant.`,
 
-`In Rōmā sunt multa aedificia.
+`Multae urbēs in imperiō Rōmānō sunt.
 
-In aedificiīs multī virī et multae fēminae habitant.
+Multī virī et multae fēminae in imperiō Rōmānō ambulant.`,
 
-Multī puerī et multae puellae quoque in aedificiīs habitant.`,
+`Ubi est Italia?
 
-`Aedificia magna sunt.
+Italia in imperiō Rōmānō est.
 
-Marcus multa aedificia videt.
+Graecia quoque in imperiō Rōmānō est.`,
 
-"Rōma magna est," Marcus dīcit.`
-    ];
+`Ubi est Hispānia?
+
+Hispānia quoque in imperiō Rōmānō est.
+
+Gallia quoque in imperiō Rōmānō est.`,
+
+`Imperium Rōmānum magnum est.
+
+In imperiō Rōmānō multae īnsulae sunt.
+
+Sicilia īnsula magna est.`,
+
+`Sardinia quoque īnsula magna est.
+
+Multī hominēs in Siciliā habitant.
+
+Multī hominēs in Sardiniā quoque habitant.`,
+
+`In Italiā multī fluviī sunt.
+
+Padus fluvius longus est.
+
+Tiberis quoque fluvius longus est.`,
+
+`Tiberis in Rōmā est.
+
+Tiberis pulcher est.
+
+Nīlus quoque fluvius est.`,
+
+`Nīlus in Italiā est?
+
+Nīlus nōn in Italiā, sed in Aegyptō est.
+
+Aegyptus nōn in Eurōpā, sed in Āfricā est.`,
+
+`Nīlus fluvius longus est.
+
+In Rōmā sunt multa aedificia.
+
+In aedificiīs multī virī et multae fēminae habitant.`,
+
+`Multī puerī et multae puellae quoque in aedificiīs habitant.
+
+Aedificia magna sunt.
+
+Marcus multa aedificia videt.`,
+
+`"Rōma magna est," Marcus dīcit.`
+];
 
     const [index, setIndex] = useState(0);
 

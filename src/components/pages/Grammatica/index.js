@@ -20,8 +20,6 @@ const Content = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-
-    padding: 2rem 0 100px;
 `;
 
 const Title = styled.h1`
@@ -34,6 +32,14 @@ const Title = styled.h1`
 `;
 
 const Text = styled.p`
+    font-size: clamp(26px, 3vw, 38px);
+    line-height: 1.3;
+    font-size: 30px;
+    text-align: left;
+    margin: 12px 0;
+`;
+
+const Question = styled.p`
     font-size: clamp(26px, 3vw, 38px);
     line-height: 1.6;
     text-align: left;
@@ -63,79 +69,95 @@ function Grammatica() {
     const navigate = useNavigate();
 
     const slides = [
-        {
-            type: "explanation",
-            title: "Singulāris et Plūrālis",
-            text: [
-                "Nīlus fluvius magnus est.",
-                "Nīlus et Rhēnus fluviī magnī sunt.",
-                "Fluvius singulāris est. Fluviī plūrālēs sunt.",
-                "Singulāris: -us. Plūrālis: -ī."
-            ]
-        },
-        {
-            type: "quiz",
-            sentenceBefore: "Fluviī parv",
-            correct: "ī",
-            options: ["us", "ī"],
-            ending: "sunt."
-        },
-        {
-            type: "quiz",
-            sentenceBefore: "Servus bon",
-            correct: "us",
-            options: ["us", "ī"],
-            ending: "est."
-        },
-        {
-            type: "explanation",
-            title: "Fēminīnum",
-            text: [
-                "Via longa est.",
-                "Viae longae sunt.",
-                "Via singulāris est. Viae plūrālēs sunt.",
-                "Singulāris: -a. Plūrālis: -ae."
-            ]
-        },
-        {
-            type: "quiz",
-            sentenceBefore: "Via long",
-            correct: "a",
-            options: ["a", "ae"],
-            ending: "est."
-        },
-        {
-            type: "quiz",
-            sentenceBefore: "Viae long",
-            correct: "ae",
-            options: ["a", "ae"],
-            ending: "sunt."
-        },
-        {
-            type: "explanation",
-            title: "Neutrum",
-            text: [
-                "Oppidum magnum est.",
-                "Oppida magna sunt.",
-                "Oppidum singulāre est. Oppida plūrālia sunt.",
-                "Singulāris: -um. Plūrālis: -a."
-            ]
-        },
-        {
-            type: "quiz",
-            sentenceBefore: "Oppidum magn",
-            correct: "um",
-            options: ["um", "a"],
-            ending: "est."
-        },
-        {
-            type: "quiz",
-            sentenceBefore: "Oppida magn",
-            correct: "a",
-            options: ["um", "a"],
-            ending: "sunt."
-        }
-    ];
+    {
+        type: "explanation",
+        title: "Singulāris et Plūrālis",
+        text: [
+            "Latin nouns can be singular or plural, which is indicated by the ending of the noun.",
+            "Singular: fluvius -> Plural: fluviī.",
+            "Singular: puella -> Plural: puellae.",
+            "Singular: imperium -> Plural: imperia.",
+        ]
+    },
+
+    {
+        type: "explanation",
+        title: "Masculine",
+        text: [
+            "For masculine nouns the singular ending is -us, and the Plural ending is -ī",
+            "Fluvius magnus est = The river is big.",
+            "Fluviī magnī sunt = The rivers are big.",
+        ]
+    },
+
+    {
+        type: "quiz",
+        sentenceBefore: "Fluvi",
+        correct: "ī",
+        options: ["us", "ī"],
+        ending: "magnī sunt (The rivers are big)."
+    },
+
+    {
+        type: "quiz",
+        sentenceBefore: "Vir bon",
+        correct: "us",
+        options: ["us", "ī"],
+        ending: "est (The man is good)."
+    },
+
+    {
+        type: "explanation",
+        title: "Feminine",
+        text: [
+            "For feminine nouns the singular ending is -a, and the Plural ending is -ae",
+            "Via longa est. = The road is long",
+            "Viae longae sunt. = The roads are long",
+        ]
+    },
+
+    {
+        type: "quiz",
+        sentenceBefore: "Via long",
+        correct: "a",
+        options: ["a", "ae"],
+        ending: "est (The road is long)."
+    },
+
+    {
+        type: "quiz",
+        sentenceBefore: "Puellae bon",
+        correct: "ae",
+        options: ["a", "ae"],
+        ending: "sunt (The girls are good)."
+    },
+
+    {
+        type: "explanation",
+        title: "Neuter",
+        text: [
+            "For neuter nouns the singular ending is -um, and the Plural ending is -a",
+            "Oppidum magnum est. = The town is big",
+            "Oppida magna sunt. = The towns are big",
+        ]
+    },
+
+    {
+        type: "quiz",
+        sentenceBefore: "Oppida magn",
+        correct: "a",
+        options: ["um", "a"],
+        ending: "sunt (The towns are big)."
+    },
+
+    {
+        type: "quiz",
+        sentenceBefore: "Imperi",
+        correct: "um",
+        options: ["um", "a"],
+        ending: "magnum est (The empire is big)."
+    },
+];
 
     const [step, setStep] = useState(0);
     const [selected, setSelected] = useState(null);
@@ -180,7 +202,7 @@ function Grammatica() {
 
                     {current.type === "quiz" && (
                         <>
-                            <Text>
+                            <Question>
                                 {current.sentenceBefore}
 
                                 <span
@@ -194,7 +216,7 @@ function Grammatica() {
                                 </span>{" "}
 
                                 {current.ending}
-                            </Text>
+                            </Question>
 
                             <QuizOptions>
                                 {current.options.map((option) => (

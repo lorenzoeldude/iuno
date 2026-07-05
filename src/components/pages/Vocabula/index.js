@@ -56,28 +56,97 @@ const ArrowDiv = styled.div`
 
 function Vocabula() {
     const vocabulas = [
-        "Fluvius",
-        "Luna",
-        "Via",
-        "Oppidum",
-        "Ōsculum",
-        "Puella",
-        "Vir",
-        "Puer"
-    ];
+    "Rōma",
+    "Italia",
+    "Eurōpa",
+    "urbs",
+    "antīqua",
+    "magnus",
+    "pulcher",
+    "habitāre",
+    "vir",
+    "fēmina",
+    "puer",
+    "puella",
+    "ambulāre",
+    "caput",
+    "imperium",
+    "urbs",
+    "īnsula",
+    "Sicilia",
+    "Sardinia",
+    "fluvius",
+    "Padus",
+    "Tiberis",
+    "Nīlus",
+    "Aegyptus",
+    "Āfrica",
+    "aedificium",
+    "vidēre",
+    "dīcere"
+];
 
-    const answers = [
-        ["moon", "river", "forest"],
-        ["head", "car", "moon"],
-        ["hand", "road", "arm"],
-        ["city", "star", "river"],
-        ["sword", "kiss", "forest"],
-        ["girl", "river", "forest"],
-        ["boy", "river", "man"],
-        ["boy", "river", "forest"],
-    ];
+const answers = [
+    ["river", "Rome", "island"],           // Rōma
+    ["Italy", "Africa", "Greece"],         // Italia
+    ["city", "empire", "Europe"],          // Eurōpa
+    ["river", "city", "building"],         // urbs
+    ["ancient", "beautiful", "large"],     // antīqua
+    ["small", "ancient", "large"],         // magnus
+    ["Roman", "beautiful", "old"],         // pulcher
+    ["to live", "to walk", "to see"],      // habitāre
+    ["boy", "woman", "man"],               // vir
+    ["city", "woman", "girl"],             // fēmina
+    ["boy", "man", "girl"],                // puer
+    ["woman", "island", "girl"],           // puella
+    ["to live", "to walk", "to say"],      // ambulāre
+    ["head", "building", "capital"],       // caput
+    ["city", "country", "empire"],         // imperium
+    ["island", "city", "river"],           // urbs
+    ["island", "building", "road"],        // īnsula
+    ["Spain", "Gaul", "Sicily"],           // Sicilia
+    ["Italy", "Sardinia", "Greece"],       // Sardinia
+    ["river", "building", "road"],         // fluvius
+    ["Nile", "Tiber", "Po River"],         // Padus
+    ["Po River", "Tiber", "Nile"],         // Tiberis
+    ["Nile", "Tiber", "Po River"],         // Nīlus
+    ["Africa", "Italy", "Egypt"],          // Aegyptus
+    ["Europe", "Asia", "Africa"],          // Āfrica
+    ["building", "city", "island"],        // aedificium
+    ["to walk", "to say", "to see"],       // vidēre
+    ["to live", "to say", "to see"]        // dīcere
+];
 
-    const correctAnswer = [1, 2, 1, 0, 1, 0, 2, 0];
+const correctAnswer = [
+    1, // Rōma
+    0, // Italia
+    2, // Eurōpa
+    1, // Urbs
+    0, // Antīqua
+    2, // Magnus
+    1, // Pulcher
+    0, // Habitō
+    2, // Vir
+    1, // Fēmina
+    0, // Puer
+    2, // Puella
+    1, // Ambulō
+    2, // Caput
+    2, // Imperium
+    1, // Urbs
+    0, // Īnsula
+    2, // Sicilia
+    1, // Sardinia
+    0, // Fluvius
+    2, // Padus
+    1, // Tiberis
+    0, // Nīlus
+    2, // Aegyptus
+    2, // Āfrica
+    0, // Aedificium
+    2, // Videō
+    1  // Dīcō
+];
 
     const [selected, setSelected] = useState(null);
     const [step, setStep] = useState(0);
