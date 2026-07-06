@@ -188,20 +188,27 @@ function VerbTable({ forms, highlightedForm }) {
 
     useEffect(() => {
 
-    if (!highlightedData) return;
+        if (!highlightedData) return;
 
-    // normal finite verbs
-    if (
-        highlightedData.voice &&
-        highlightedData.mood &&
-        highlightedData.tense
-    ) {
-        setVoice(highlightedData.voice);
-        setMood(highlightedData.mood);
-    }
+        // infinitives
+        if (highlightedData.mood === "infinitive") {
+            setVoice(highlightedData.voice);
+            setMood("indicative"); // keep Indicative selected
+            return;
+        }
 
-    // participles
-    if (highlightedData.mood === "participle") {
+        // normal finite verbs
+        if (
+            highlightedData.voice &&
+            highlightedData.mood &&
+            highlightedData.tense
+        ) {
+            setVoice(highlightedData.voice);
+            setMood(highlightedData.mood);
+        }
+
+        // participles
+        if (highlightedData.mood === "participle") {
             setVoice("participle");
 
             if (
