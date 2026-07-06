@@ -143,8 +143,8 @@ function StartPage() {
                     title="Lessons"
                     onClick={() => navigate("/lesson")}
                 >
-                    Master Latin step by step through structured lessons
-                    covering grammar, vocabulary, and reading.
+                    Master Latin step by step through our lessons
+                    covering reading, vocabulary and grammar.
                 </Card>
 
 
@@ -152,8 +152,7 @@ function StartPage() {
                     title="Trainer"
                     onClick={() => navigate("/trainer")}
                 >
-                    Train vocabulary, add words to your list and use our built-in
-                    algorithm for spaced repetition.
+                    Train random words, or create your own list of words to repeat.
                 </Card>
 
 
