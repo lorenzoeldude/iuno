@@ -61,12 +61,20 @@ const TextArea = styled.textarea`
     padding: 12px;
     font-size: 15px;
     margin-bottom: 15px;
-    // border: 1px solid rgba(201, 201, 201, 0.2);
     border: none;
     min-height: 20px;
     resize: none;
     outline: none;
+
+    background-color: ${({ theme }) => theme.colors.background};
+    color: ${({ theme }) => theme.colors.text};
+
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    &::placeholder {
+        color: ${({ theme }) => theme.colors.text};
+        opacity: 0.6;
+    }
 
     &:focus {
         outline: none;
@@ -79,8 +87,15 @@ const Select = styled.select`
     padding: 12px;
     font-size: 18px;
     margin-bottom: 15px;
-    border: 1px solid rgba(142, 142, 142, 0.1);
-    background: white;
+
+    background-color: ${({ theme }) => theme.colors.background};
+    color: ${({ theme }) => theme.colors.text};
+
+    border: 1px solid rgba(142, 142, 142, 0.2);
+
+    &:focus {
+        outline: none;
+    }
 `;
 
 const Button = styled.button`

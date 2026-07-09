@@ -1,5 +1,22 @@
 import { useState } from "react";
 import { API_URL } from "../../../config";
+import styled from "styled-components";
+
+const TextArea = styled.textarea`
+    width: 100%;
+    font-family: monospace;
+    font-size: 13px;
+    padding: 10px;
+    box-sizing: border-box;
+
+    background-color: ${({ theme }) => theme.colors.background};
+    color: ${({ theme }) => theme.colors.text};
+    border: 1px solid ${({ theme }) => theme.colors.text};
+
+    &:focus {
+        outline: none;
+    }
+`;
 
 export default function BulkImportPage() {
     const [jsonText, setJsonText] = useState("");
@@ -159,7 +176,7 @@ export default function BulkImportPage() {
             <br />
             <br />
 
-            <textarea
+            <TextArea
                 value={jsonText}
                 onChange={(e) => {
                     setJsonText(e.target.value);
