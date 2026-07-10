@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { API_URL } from "../../../config";
 
@@ -76,6 +76,8 @@ function Searchbar({ className }) {
     const [results, setResults] = useState([]);
     const [open, setOpen] = useState(false);
 
+    const latestQuery = useRef("");
+
     const navigate = useNavigate();
 
     // =====================================================
@@ -89,20 +91,47 @@ function Searchbar({ className }) {
             return;
         }
 
+        latestQuery.current = query;
+
+        const controller = new AbortController();
+
         const timeout = setTimeout(() => {
-            fetch(`${API_URL}/api/search?q=${query}`)
-                .then((res) => res.json())
+            fetch(
+                `${API_URL}/api/search?q=${encodeURIComponent(query)}`,
+                {
+                    signal: controller.signal,
+                }
+            )
+                .then((res) => {
+                    if (!res.ok) {
+                        throw new Error("Search request failed");
+                    }
+
+                    return res.json();
+                })
                 .then((data) => {
+                    // Ignore outdated responses
+                    if (latestQuery.current !== query) {
+                        return;
+                    }
+
                     setResults(data || []);
                     setOpen(true);
                 })
-                .catch(() => {
+                .catch((err) => {
+                    if (err.name === "AbortError") {
+                        return;
+                    }
+
                     setResults([]);
                     setOpen(false);
                 });
         }, 200);
 
-        return () => clearTimeout(timeout);
+        return () => {
+            clearTimeout(timeout);
+            controller.abort();
+        };
     }, [query]);
 
     // =====================================================
@@ -143,7 +172,7 @@ function Searchbar({ className }) {
                 <Dropdown>
                     {results.map((item) => (
                         <Item
-                            key={item.lemma}
+                            key={`${item.lemma_normalized}-${item.form}`}
                             onMouseDown={() =>
                                 handleSelect(
                                     item.lemma_normalized,
@@ -153,7 +182,15 @@ function Searchbar({ className }) {
                         >
                             <strong>{item.form}</strong>: {item.lemma}
                             <br />
-                            {item.grammatical_case || item.tense} - {item.meaning}
+
+                            {item.grammatical_case || item.tense ? (
+                                <>
+                                    {item.grammatical_case || item.tense} —{" "}
+                                    {item.meaning}
+                                </>
+                            ) : (
+                                item.meaning
+                            )}
                         </Item>
                     ))}
                 </Dropdown>
