@@ -2,14 +2,10 @@ import { useState } from "react";
 import { API_URL } from "../config";
 
 function normalizeLatin(word) {
-    const result = word
+    return word
         .toLowerCase()
         .normalize("NFD")
         .replace(/\p{Diacritic}/gu, "");
-
-    console.log(word, "→", result);
-
-    return result;
 }
 
 export default function useDictionaryLookup() {
@@ -32,7 +28,7 @@ export default function useDictionaryLookup() {
             const normalized = normalizeLatin(word);
 
             const response = await fetch(
-                `${API_URL}/api/search?q=${encodeURIComponent(
+                `${API_URL}/api/lookup?form=${encodeURIComponent(
                     normalized
                 )}`
             );
