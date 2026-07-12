@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 
 export default function useSoundEffects() {
     const audioContext = useRef(null);
@@ -6,52 +6,79 @@ export default function useSoundEffects() {
     const correctBuffer = useRef(null);
     const wrongBuffer = useRef(null);
 
-    useEffect(() => {
-        const AudioContext =
-            window.AudioContext || window.webkitAudioContext;
+    const loadingPromise = useRef(null);
 
-        const context = new AudioContext();
-
-        audioContext.current = context;
-
-        async function loadSound(url) {
-            const response = await fetch(url);
-            const arrayBuffer = await response.arrayBuffer();
-
-            return await context.decodeAudioData(arrayBuffer);
+    async function ensureLoaded() {
+        if (loadingPromise.current) {
+            return loadingPromise.current;
         }
 
-        async function load() {
+        loadingPromise.current = (async () => {
+            const AudioContext =
+                window.AudioContext || window.webkitAudioContext;
+
+            if (!audioContext.current) {
+                audioContext.current = new AudioContext();
+            }
+
+            if (audioContext.current.state === "suspended") {
+                await audioContext.current.resume();
+            }
+
+            async function loadSound(url) {
+                const response = await fetch(url);
+
+                if (!response.ok) {
+                    throw new Error(`Failed to load ${url}`);
+                }
+
+                const arrayBuffer = await response.arrayBuffer();
+
+                return await audioContext.current.decodeAudioData(arrayBuffer);
+            }
+
             correctBuffer.current = await loadSound("/sounds/correct.ogg");
             wrongBuffer.current = await loadSound("/sounds/wrong.ogg");
+        })();
+
+        return loadingPromise.current;
+    }
+
+    async function play(type) {
+        try {
+            await ensureLoaded();
+
+            const buffer =
+                type === "correct"
+                    ? correctBuffer.current
+                    : wrongBuffer.current;
+
+            if (!buffer) {
+                console.warn("Sound buffer not loaded.");
+                return;
+            }
+
+            if (audioContext.current.state === "suspended") {
+                await audioContext.current.resume();
+            }
+
+            const source = audioContext.current.createBufferSource();
+            source.buffer = buffer;
+
+            const gain = audioContext.current.createGain();
+            gain.gain.value = 0.3;
+
+            source.connect(gain);
+            gain.connect(audioContext.current.destination);
+
+            source.start(0);
+        } catch (err) {
+            console.error("Sound playback failed:", err);
         }
-
-        load();
-    }, []);
-
-    async function play(buffer) {
-        if (!audioContext.current || !buffer) return;
-
-        // Safari sometimes starts suspended
-        if (audioContext.current.state === "suspended") {
-            await audioContext.current.resume();
-        }
-
-        const source = audioContext.current.createBufferSource();
-
-        source.buffer = buffer;
-
-        const gain = audioContext.current.createGain();
-        gain.gain.value = 0.3;
-
-        source.connect(gain);
-        gain.connect(audioContext.current.destination);
-
-        source.start();
     }
 
     return {
-        playCorrect: () => play(correctBuffer.current),
-        playWrong: () => play(wrongBuffer.current),
+        playCorrect: () => play("correct"),
+        playWrong: () => play("wrong"),
     };
 }
