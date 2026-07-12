@@ -22,8 +22,8 @@ export default function useSoundEffects() {
         }
 
         async function load() {
-            correctBuffer.current = await loadSound("/sounds/correct.wav");
-            wrongBuffer.current = await loadSound("/sounds/wrong.wav");
+            correctBuffer.current = await loadSound("/sounds/correct.ogg");
+            wrongBuffer.current = await loadSound("/sounds/wrong.ogg");
         }
 
         load();
