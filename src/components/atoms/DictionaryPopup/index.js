@@ -33,7 +33,7 @@ const Entry = styled.div`
 const Lemma = styled.div`
     font-weight: bold;
     cursor: pointer;
-    margin-bottom: 6px;
+    margin-bottom: 3px;
 
     &:hover {
         text-decoration: underline;
@@ -62,7 +62,8 @@ const Form = styled.div`
 `;
 
 const Meaning = styled.div`
-    font-size: 0.95rem;
+    font-size: 1rem;
+    margin-bottom: 10px;
 `;
 
 function normalizeLatin(word) {
@@ -203,7 +204,7 @@ function DictionaryPopup({ popup, entry, onClose }) {
                         >
                             {e.form} ({e.lemma})
                         </Lemma>
-                        
+
                         <Meaning>{e.meaning}</Meaning>
 
                         <Morphology>
