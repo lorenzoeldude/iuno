@@ -29,19 +29,33 @@ const Description = styled.p`
 `;
 
 const Sections = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+    margin-top: 40px;
+    border-top: 1px solid ${({ theme }) => theme.colors.border};
 `;
 
 const SectionLink = styled(Link)`
-    font-size: 24px;
-    text-decoration: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 18px 0;
+
+    border-bottom: 0.2px solid ${({ theme }) => theme.colors.border};
+
     color: inherit;
+    text-decoration: none;
+
+    transition: color 0.15s ease;
 
     &:hover {
-        text-decoration: underline;
+        color: ${({ theme }) => theme.colors.primary};
     }
+`;
+
+const SectionTitle = styled.span`
+    font-family: "Cormorant Garamond", serif;
+    font-size: 30px;
+    letter-spacing: 0.02em;
 `;
 
 function Text() {
@@ -52,7 +66,6 @@ function Text() {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-
         setLoading(true);
         setError(null);
 
@@ -102,7 +115,7 @@ function Text() {
             )}
 
             <Sections>
-                {text.sections.map(section => (
+                {text.sections.map((section, index) => (
                     <SectionLink
                         key={section.id}
                         to={`/read/${encodeURIComponent(
@@ -111,7 +124,9 @@ function Text() {
                             text.title
                         )}/${section.position}`}
                     >
-                        {section.title}
+                        <SectionTitle>
+                            {section.title}
+                        </SectionTitle>
                     </SectionLink>
                 ))}
             </Sections>
