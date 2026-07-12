@@ -8,6 +8,8 @@ import ClickableText from "../../atoms/ClickableText";
 import DictionaryPopup from "../../atoms/DictionaryPopup";
 import useDictionaryLookup from "../../../hooks/useDictionaryLookups";
 
+import useSoundEffects from "../../../hooks/useSoundEffects";
+
 import { API_URL } from "../../../config";
 
 
@@ -169,6 +171,8 @@ function Trainer({ mode = "all" }) {
         closePopup,
     } = useDictionaryLookup();
 
+    const sounds = useSoundEffects();
+
 
 
     // =====================================================
@@ -291,6 +295,8 @@ function Trainer({ mode = "all" }) {
                             selected={selected}
 
                             setSelected={setSelected}
+                            
+                            sounds={sounds}
 
                         >
 

@@ -6,6 +6,9 @@ import ArrowButton from "../../atoms/ArrowButton";
 import AnswerButton from "../../atoms/Answerbutton";
 import LessonLayout from "../../layout/LessonLayout";
 
+import useSoundEffects from "../../../hooks/useSoundEffects";
+
+
 const Wrapper = styled.div`
     width: 100%;
     max-width: 700px;
@@ -153,6 +156,8 @@ const correctAnswer = [
 
     const navigate = useNavigate();
 
+    const sounds = useSoundEffects();
+
     function Next() {
         if (step < vocabulas.length - 1) {
             setStep(step + 1);
@@ -192,6 +197,7 @@ const correctAnswer = [
                                 correct={correctAnswer[step]}
                                 selected={selected}
                                 setSelected={setSelected}
+                                sounds={sounds}
                             >
                                 {answer}
                             </AnswerButton>

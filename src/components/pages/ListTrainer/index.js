@@ -4,6 +4,9 @@ import { useState, useEffect, useCallback } from "react";
 import ArrowButton from "../../atoms/ArrowButton";
 import AnswerButton from "../../atoms/Answerbutton";
 
+import useSoundEffects from "../../../hooks/useSoundEffects";
+
+
 import { API_URL } from "../../../config";
 
 const Wrapper = styled.div`
@@ -37,6 +40,8 @@ function ListTrainer() {
     const [question, setQuestion] = useState(null);
     const [selected, setSelected] = useState(null);
     const [loading, setLoading] = useState(true);
+
+    const sounds = useSoundEffects();
 
     // =====================================================
     // FETCH QUESTION (FROM USER LIST)
@@ -106,6 +111,7 @@ function ListTrainer() {
                     correct={question.correct}
                     selected={selected}
                     setSelected={setSelected}
+                    sounds={sounds}
                 >
                     {answer}
                 </AnswerButton>

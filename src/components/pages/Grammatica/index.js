@@ -6,6 +6,8 @@ import ArrowButton from "../../atoms/ArrowButton";
 import AnswerButton from "../../atoms/Answerbutton";
 import LessonLayout from "../../layout/LessonLayout";
 
+import useSoundEffects from "../../../hooks/useSoundEffects";
+
 const Wrapper = styled.div`
     width: 100%;
     max-width: 800px;
@@ -67,6 +69,8 @@ const ArrowDiv = styled.div`
 
 function Grammatica() {
     const navigate = useNavigate();
+
+    const sounds = useSoundEffects();
 
     const slides = [
     {
@@ -226,6 +230,7 @@ function Grammatica() {
                                         correct={current.correct}
                                         selected={selected}
                                         setSelected={setSelected}
+                                        sounds={sounds}
                                     >
                                         -{option}
                                     </AnswerButton>

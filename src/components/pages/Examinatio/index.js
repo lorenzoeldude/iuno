@@ -6,6 +6,7 @@ import ArrowButton from "../../atoms/ArrowButton";
 import AnswerButton from "../../atoms/Answerbutton";
 import LessonLayout from "../../layout/LessonLayout";
 import NavigationButton from "../../atoms/NavigationButton";
+import useSoundEffects from "../../../hooks/useSoundEffects";
 
 const Wrapper = styled.div`
     width: 100%;
@@ -66,6 +67,7 @@ const ArrowDiv = styled.div`
 
 function Examinatio() {
     const navigate = useNavigate();
+    const sounds = useSoundEffects();
     const questions = [
         {
             type: "vocab",
@@ -288,6 +290,7 @@ function Examinatio() {
                                 correct={current.correct}
                                 selected={selected}
                                 setSelected={setSelected}
+                                sounds={sounds}
                             >
                                 {option}
                             </AnswerButton>

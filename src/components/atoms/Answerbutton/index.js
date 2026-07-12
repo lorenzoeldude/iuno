@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import useSoundEffects from "../../../hooks/useSoundEffects";
 
 const Button = styled.div`
     display: flex;
@@ -32,19 +31,15 @@ function AnswerButton({
     correct,
     selected,
     setSelected,
+    sounds,
 }) {
-    const {
-        playCorrect,
-        playWrong,
-    } = useSoundEffects();
-
     function handleClick() {
         if (selected !== null) return;
 
         if (index === correct) {
-            playCorrect();
+            sounds.playCorrect();
         } else {
-            playWrong();
+            sounds.playWrong();
         }
 
         setSelected(index);
