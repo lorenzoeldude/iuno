@@ -126,7 +126,7 @@ function StartPage() {
 
 
             <Subtitle>
-                Bringing Latin to life
+                Where Latin comes alive
             </Subtitle>
 
 
