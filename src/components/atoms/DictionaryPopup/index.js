@@ -61,10 +61,29 @@ const Form = styled.div`
     margin-left: 8px;
 `;
 
-const Meaning = styled.div`
-    font-size: 1rem;
+const Meanings = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
     margin-bottom: 10px;
 `;
+
+const MeaningItem = styled.span`
+    background: rgb(255, 205, 205);
+    color: black;
+    font-size: 0.9rem;
+    padding: 3px 7px;
+    // border-radius: 4px;
+`;
+
+const FORM_PARTS_OF_SPEECH = new Set([
+    "noun",
+    "verb",
+    "adjective",
+    "pronoun",
+    "numeral",
+    "participle",
+]);
 
 function normalizeLatin(word) {
     return word
@@ -128,7 +147,7 @@ function groupEntries(entries) {
     const groups = new Map();
 
     for (const e of entries) {
-        const key = `${e.lemma}|${e.part_of_speech}|${e.meaning}`;
+        const key = `${e.lemma}|${e.part_of_speech}`;
 
         if (!groups.has(key)) {
             groups.set(key, {
@@ -189,43 +208,56 @@ function DictionaryPopup({ popup, entry, onClose }) {
             {entry === null ? (
                 <p>Loading...</p>
             ) : grouped.length > 0 ? (
-                grouped.map((e, index) => (
-                    <Entry key={index}>
-                        <Lemma
-                            onClick={() =>
-                                navigate(
-                                    `/dictionary/${normalizeLatin(
-                                        e.lemma
-                                    )}?form=${encodeURIComponent(
-                                        e.form
-                                    )}`
-                                )
-                            }
-                        >
-                            {e.form} ({e.lemma})
-                        </Lemma>
+                grouped.map((e, index) => {
+                    const shouldShowForms =
+                        FORM_PARTS_OF_SPEECH.has(e.part_of_speech) &&
+                        e.forms.length > 0;
 
-                        <Meaning>{e.meaning}</Meaning>
+                    return (
+                        <Entry key={index}>
+                            <Lemma
+                                onClick={() =>
+                                    navigate(
+                                        `/dictionary/${normalizeLatin(
+                                            e.lemma
+                                        )}?form=${encodeURIComponent(
+                                            e.form
+                                        )}`
+                                    )
+                                }
+                            >
+                                {e.form} ({e.lemma})
+                            </Lemma>
 
-                        <Morphology>
-                            {capitalize(e.part_of_speech)}
-                        </Morphology>
-                        
-                        {e.forms.length === 1 ? (
-                            <Morphology>{e.forms[0]}</Morphology>
-                        ) : (
-                            <PossibleForms>
-                                <PossibleTitle>
-                                    Possible forms:
-                                </PossibleTitle>
-
-                                {e.forms.map((form, i) => (
-                                    <Form key={i}>{form}</Form>
+                            <Meanings>
+                                {e.meanings?.map((meaning, index) => (
+                                    <MeaningItem key={index}>
+                                        {meaning}
+                                    </MeaningItem>
                                 ))}
-                            </PossibleForms>
-                        )}
-                    </Entry>
-                ))
+                            </Meanings>
+
+                            <Morphology>
+                                {capitalize(e.part_of_speech)}
+                            </Morphology>
+
+                            {shouldShowForms &&
+                                (e.forms.length === 1 ? (
+                                    <Morphology>{e.forms[0]}</Morphology>
+                                ) : (
+                                    <PossibleForms>
+                                        <PossibleTitle>
+                                            Possible forms:
+                                        </PossibleTitle>
+
+                                        {e.forms.map((form, i) => (
+                                            <Form key={i}>{form}</Form>
+                                        ))}
+                                    </PossibleForms>
+                                ))}
+                        </Entry>
+                    );
+                })
             ) : (
                 <p>Not found.</p>
             )}
