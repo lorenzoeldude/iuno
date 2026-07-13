@@ -71,6 +71,20 @@ const Item = styled.div`
     }
 `;
 
+const Meanings = styled.div`
+    margin-top: 2px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+`;
+
+const MeaningTag = styled.span`
+    background: rgb(255, 205, 205);
+    color: black;
+    font-size: 13px;
+    padding: 2px 6px;
+`;
+
 function Searchbar({ className }) {
     const [query, setQuery] = useState("");
     const [results, setResults] = useState([]);
@@ -183,14 +197,19 @@ function Searchbar({ className }) {
                             <strong>{item.form}</strong>: {item.lemma}
                             <br />
 
-                            {item.grammatical_case || item.tense ? (
-                                <>
-                                    {item.grammatical_case || item.tense} —{" "}
-                                    {item.meaning}
-                                </>
-                            ) : (
-                                item.meaning
-                            )}
+                            <>
+                                <Meanings>
+                                    {item.meanings?.map((meaning, index) => (
+                                        <MeaningTag key={index}>
+                                            {meaning}
+                                        </MeaningTag>
+                                    ))}
+                                </Meanings>
+
+                                {item.grammatical_case || item.tense ? (
+                                    <div>{item.grammatical_case || item.tense}</div>
+                                ) : null}
+                            </>
                         </Item>
                     ))}
                 </Dropdown>
