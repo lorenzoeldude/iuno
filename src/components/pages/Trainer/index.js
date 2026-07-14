@@ -29,7 +29,7 @@ const Page = styled.div`
         flex-direction: column;
         align-items: center;
         gap: 40px;
-        padding-top: 40px;
+        padding: 20px 0;
     }
 `;
 

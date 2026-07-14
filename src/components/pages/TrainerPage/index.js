@@ -16,6 +16,10 @@ const Controls = styled.div`
     flex-direction: column;
     align-items: center;
     margin-top: 40px;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        margin-top: 0px;
+    }
 `;
 
 const SwitchWrapper = styled.div`
@@ -83,7 +87,7 @@ function TrainerPage() {
                     >
                         Book
                     </Button>
-                    
+
                     <Button
                         active={mode === "list"}
                         onClick={() => {
