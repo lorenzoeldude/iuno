@@ -15,6 +15,7 @@ import NominalTable from "../../morphology/NominalTable/index.js";
 import VerbTable from "../../morphology/VerbTable.js/index.js";
 import AdjectiveTable from "../../morphology/AdjectiveTable/index.js";
 import PronounTable from "../../morphology/PronounTable/index.js";
+import LoginRequiredPopup from "../../atoms/LoginRequiredPopup/index.js";
 
 
 const Wrapper = styled.div`
@@ -207,33 +208,6 @@ const Overlay = styled.div`
     align-items: center;
 
     z-index: 1000;
-`;
-
-const Popup = styled.div`
-    background: ${({ theme }) => theme.colors.background};
-    color: ${({ theme }) => theme.colors.text};
-
-    padding: 32px;
-    border-radius: 18px;
-    max-width: 420px;
-    width: 90%;
-
-    text-align: center;
-`;
-
-const PopupTitle = styled.h2`
-    margin-top: 0;
-`;
-
-const PopupButton = styled.button`
-    margin-top: 24px;
-    padding: 10px 24px;
-    border: none;
-    border-radius: 999px;
-    cursor: pointer;
-
-    background: ${({ theme }) => theme.colors.text};
-    color: ${({ theme }) => theme.colors.opposite};
 `;
 
 // ===================== component =====================
@@ -596,22 +570,12 @@ function DictionaryPage() {
             />
             {showLoginPopup && (
                 <Overlay onClick={() => setShowLoginPopup(false)}>
-                    <Popup onClick={(e) => e.stopPropagation()}>
-                        <PopupTitle>Log in required</PopupTitle>
-
-                        <p>
-                            Log in to add words to your personal vocabulary list.
-                        </p>
-
-                        <PopupButton
-                            onClick={() => {
-                                setShowLoginPopup(false);
-                                navigate("/login");
-                            }}
-                        >
-                            Log In
-                        </PopupButton>
-                    </Popup>
+                    <LoginRequiredPopup
+                        open={showLoginPopup}
+                        onClose={() => setShowLoginPopup(false)}
+                        title="Login Required"
+                        message="Log in to create a word list and add this word."
+                    />
                 </Overlay>
             )}
         </Wrapper>

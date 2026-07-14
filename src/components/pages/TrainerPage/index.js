@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useState } from "react";
 
 import Trainer from "../Trainer";
-
+import LoginRequiredPopup from "../../atoms/LoginRequiredPopup";
 
 const Wrapper = styled.div`
     width: 100%;
@@ -46,7 +46,7 @@ function TrainerPage() {
 
     const [mode, setMode] = useState("all");
 
-
+    const [showLoginPopup, setShowLoginPopup] = useState(false);
 
     return (
 
@@ -75,7 +75,16 @@ function TrainerPage() {
 
                     active={mode === "list"}
 
-                    onClick={() => setMode("list")}
+                    onClick={() => {
+                        const token = localStorage.getItem("token");
+
+                        if (!token) {
+                            setShowLoginPopup(true);
+                            return;
+                        }
+
+                        setMode("list");
+                    }}
 
                 >
 
@@ -95,7 +104,17 @@ function TrainerPage() {
 
             />
 
+        {/* <LoginRequiredPopup
+            open={showLoginPopup}
+            onClose={() => setShowLoginPopup(false)}
+        /> */}
 
+        <LoginRequiredPopup
+            open={showLoginPopup}
+            onClose={() => setShowLoginPopup(false)}
+            title="Login Required"
+            message="Log in to train words from your word list."
+        />
         </Wrapper>
 
     );
