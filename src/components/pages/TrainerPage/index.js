@@ -11,13 +11,17 @@ const Wrapper = styled.div`
     align-items: center;
 `;
 
+const Controls = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 40px;
+`;
 
 const SwitchWrapper = styled.div`
     display: flex;
     gap: 15px;
-    margin-top: 40px;
 `;
-
 
 const Button = styled.button`
     padding: 10px 20px;
@@ -39,87 +43,93 @@ const Button = styled.button`
     }
 `;
 
+const BookSelect = styled.select`
+    margin-top: 16px;
+    padding: 10px 14px;
 
+    border-radius: 8px;
+    border: 1px solid #ccc;
+
+    font-size: 16px;
+    cursor: pointer;
+`;
 
 function TrainerPage() {
-
-
     const [mode, setMode] = useState("all");
+    const [bookListId, setBookListId] = useState(null);
 
     const [showLoginPopup, setShowLoginPopup] = useState(false);
 
     return (
-
         <Wrapper>
+            <Controls>
+                <SwitchWrapper>
+                    <Button
+                        active={mode === "all"}
+                        onClick={() => {
+                            setMode("all");
+                            setBookListId(null);
+                        }}
+                    >
+                        Random
+                    </Button>
 
+                    <Button
+                        active={mode === "list"}
+                        onClick={() => {
+                            const token = localStorage.getItem("token");
 
-            <SwitchWrapper>
+                            if (!token) {
+                                setShowLoginPopup(true);
+                                return;
+                            }
 
+                            setMode("list");
+                            setBookListId(null);
+                        }}
+                    >
+                        My List
+                    </Button>
 
-                <Button
+                    <Button
+                        active={mode === "book"}
+                        onClick={() => {
+                            setMode("book");
+                            setBookListId(null);
+                        }}
+                    >
+                        Book
+                    </Button>
+                </SwitchWrapper>
 
-                    active={mode === "all"}
-
-                    onClick={() => setMode("all")}
-
-                >
-
-                    Random
-
-                </Button>
-
-
-
-
-                <Button
-
-                    active={mode === "list"}
-
-                    onClick={() => {
-                        const token = localStorage.getItem("token");
-
-                        if (!token) {
-                            setShowLoginPopup(true);
-                            return;
+                {mode === "book" && (
+                    <BookSelect
+                        value={bookListId ?? ""}
+                        onChange={(e) =>
+                            setBookListId(Number(e.target.value))
                         }
-
-                        setMode("list");
-                    }}
-
-                >
-
-                    My List
-
-                </Button>
-
-
-            </SwitchWrapper>
-
-
-
+                    >
+                        <option value="">Choose a book...</option>
+                        <option value={15}>
+                            Fabulae Faciles – I. Perseus
+                        </option>
+                    </BookSelect>
+                )}
+            </Controls>
 
             <Trainer
-
                 mode={mode}
-
+                listId={bookListId}
             />
 
-        {/* <LoginRequiredPopup
-            open={showLoginPopup}
-            onClose={() => setShowLoginPopup(false)}
-        /> */}
-
-        <LoginRequiredPopup
-            open={showLoginPopup}
-            onClose={() => setShowLoginPopup(false)}
-            title="Login Required"
-            message="Log in to train words from your word list."
-        />
+            <LoginRequiredPopup
+                open={showLoginPopup}
+                onClose={() => setShowLoginPopup(false)}
+                title="Login Required"
+                message="Log in to train words from your word list."
+            />
         </Wrapper>
-
     );
-
 }
-
 
 export default TrainerPage;

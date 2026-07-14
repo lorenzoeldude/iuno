@@ -151,7 +151,7 @@ const ArrowDiv = styled.div`
 
 
 
-function Trainer({ mode = "all" }) {
+function Trainer({ mode = "all", listId = null }) {
 
 
     const [question, setQuestion] = useState(null);
@@ -186,11 +186,17 @@ function Trainer({ mode = "all" }) {
         console.log("api_url: ", API_URL);
 
         try {
-            const url =
-                mode === "list"
-                    ? `${API_URL}/api/trainer/list/random`
-                    : `${API_URL}/api/trainer/random`;
+            let url;
 
+            if (mode === "all") {
+                url = `${API_URL}/api/trainer/random`;
+            } else {
+                url = `${API_URL}/api/trainer/list/random`;
+
+                if (listId) {
+                    url += `?list_id=${encodeURIComponent(listId)}`;
+                }
+            }
             const res = await fetch(url, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -209,7 +215,7 @@ function Trainer({ mode = "all" }) {
         }
 
         setLoading(false);
-    }, [mode]);
+    }, [mode, listId]);
 
 
 
@@ -295,7 +301,7 @@ function Trainer({ mode = "all" }) {
                             selected={selected}
 
                             setSelected={setSelected}
-                            
+
                             sounds={sounds}
 
                         >
