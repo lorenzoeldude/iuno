@@ -34,13 +34,20 @@ const Button = styled.button`
     border: none;
     border-radius: 8px;
 
-    background: ${(props) =>
-        props.active ? "black" : "#ddd"};
+    background: ${({ theme, active }) =>
+        active
+            ? theme.colors.text
+            : theme.colors.surface};
 
-    color: ${(props) =>
-        props.active ? "white" : "black"};
+    color: ${({ theme, active }) =>
+        active
+            ? theme.colors.opposite
+            : theme.colors.text};
 
-    transition: 0.2s;
+    transition:
+        background ${({ theme }) => theme.transition.normal},
+        color ${({ theme }) => theme.transition.normal},
+        opacity ${({ theme }) => theme.transition.normal};
 
     &:hover {
         opacity: 0.8;
@@ -48,14 +55,37 @@ const Button = styled.button`
 `;
 
 const BookSelect = styled.select`
-    margin-top: 16px;
-    padding: 10px 14px;
+    margin-top: ${({ theme }) => theme.spacing.md};
 
-    border-radius: 8px;
-    border: 1px solid #ccc;
+    padding: 12px 40px 12px 16px;
 
-    font-size: 16px;
+    border: 0.1px solid ${({ theme }) => theme.colors.border};
+
+    background: ${({ theme }) => theme.colors.surface};
+    color: ${({ theme }) => theme.colors.text};
+
+    font-family: ${({ theme }) => theme.fonts.body};
+    font-size: ${({ theme }) => theme.fontSizes.lg};
+
     cursor: pointer;
+
+    appearance: none;
+
+
+    transition:
+        border-color ${({ theme }) => theme.transition.fast},
+        background ${({ theme }) => theme.transition.fast};
+
+    &:focus {
+        outline: none;
+        border-color: ${({ theme }) => theme.colors.accent};
+        box-shadow: 0 0 0 3px ${({ theme }) => theme.colors.accent}33;
+    }
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        font-size: ${({ theme }) => theme.fontSizes.md};
+        padding: 10px 36px 10px 14px;
+    }
 `;
 
 function TrainerPage() {
