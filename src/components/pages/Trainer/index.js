@@ -22,7 +22,7 @@ const Page = styled.div`
     gap: 80px;
 
     margin: 0 auto;
-    padding: 80px 0;
+    padding: 40px 0;
 
     @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
         width: 94%;
