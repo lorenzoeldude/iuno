@@ -75,6 +75,16 @@ function TrainerPage() {
                     </Button>
 
                     <Button
+                        active={mode === "book"}
+                        onClick={() => {
+                            setMode("book");
+                            setBookListId(null);
+                        }}
+                    >
+                        Book
+                    </Button>
+                    
+                    <Button
                         active={mode === "list"}
                         onClick={() => {
                             const token = localStorage.getItem("token");
@@ -91,15 +101,6 @@ function TrainerPage() {
                         My List
                     </Button>
 
-                    <Button
-                        active={mode === "book"}
-                        onClick={() => {
-                            setMode("book");
-                            setBookListId(null);
-                        }}
-                    >
-                        Book
-                    </Button>
                 </SwitchWrapper>
 
                 {mode === "book" && (
@@ -117,10 +118,12 @@ function TrainerPage() {
                 )}
             </Controls>
 
-            <Trainer
-                mode={mode}
-                listId={bookListId}
-            />
+            {(mode !== "book" || bookListId !== null) && (
+                <Trainer
+                    mode={mode}
+                    listId={bookListId}
+                />
+            )}
 
             <LoginRequiredPopup
                 open={showLoginPopup}

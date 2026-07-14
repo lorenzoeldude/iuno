@@ -190,18 +190,20 @@ function Trainer({ mode = "all", listId = null }) {
 
             if (mode === "all") {
                 url = `${API_URL}/api/trainer/random`;
-            } else {
+            } else if (mode === "list") {
                 url = `${API_URL}/api/trainer/list/random`;
-
-                if (listId) {
-                    url += `?list_id=${encodeURIComponent(listId)}`;
-                }
+            } else if (mode === "book") {
+                url = `${API_URL}/api/trainer/book/random?list_id=${encodeURIComponent(listId)}`;
             }
-            const res = await fetch(url, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
-                },
-            });
+            
+            const token = localStorage.getItem("token");
+            const headers = {};
+
+            if (mode === "list" && token) {
+                headers.Authorization = `Bearer ${token}`;
+            }
+
+            const res = await fetch(url, { headers });
 
             if (!res.ok) {
                 throw new Error("Failed to fetch trainer question");
