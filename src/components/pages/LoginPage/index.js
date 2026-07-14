@@ -164,7 +164,7 @@ function LoginPage() {
                 <Title>Login</Title>
 
                 <Subtitle>
-                    Welcome back to IUNO.
+                    Welcome back to IUNONI.
                 </Subtitle>
 
                 <Input

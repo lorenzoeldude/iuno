@@ -131,7 +131,7 @@ function RegisterPage() {
                         <Title>Register</Title>
 
                         <Subtitle>
-                            Create your IUNO account.
+                            Create your IUNONI account.
                         </Subtitle>
 
                         <Input
