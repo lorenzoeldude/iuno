@@ -13,44 +13,75 @@ const Wrapper = styled.div`
 const Card = styled.div`
     width: 100%;
     max-width: 420px;
-    padding: 40px;
-    border: 1px solid rgba(0,0,0,0.1);
-    background: white;
-    color: black;
+    padding: ${({ theme }) => theme.spacing.xl};
+
+    background: ${({ theme }) => theme.colors.card};
+    color: ${({ theme }) => theme.colors.text};
+
+    border: 1px solid ${({ theme }) => theme.colors.border};
+
+    box-shadow: 0 8px 24px ${({ theme }) => theme.colors.shadow};
 `;
 
 const Title = styled.h1`
-    font-size: 42px;
-    margin-bottom: 10px;
+    font-size: ${({ theme }) => theme.fontSizes.xxxl};
+    font-weight: ${({ theme }) => theme.fontWeights.bold};
+    margin-bottom: ${({ theme }) => theme.spacing.sm};
     text-align: center;
 `;
 
 const Subtitle = styled.p`
     text-align: center;
-    margin-bottom: 35px;
-    opacity: 0.7;
+    margin-bottom: ${({ theme }) => theme.spacing.xl};
+    color: ${({ theme }) => theme.colors.textSecondary};
 `;
 
 const Input = styled.input`
     width: 100%;
-    padding: 14px;
-    font-size: 18px;
-    margin-bottom: 16px;
-    border: 1px solid rgba(0,0,0,0.15);
-    border-radius: 10px;
     box-sizing: border-box;
+
+    padding: 14px;
+    margin-bottom: ${({ theme }) => theme.spacing.md};
+
+    font-size: ${({ theme }) => theme.fontSizes.lg};
+    font-family: ${({ theme }) => theme.fonts.body};
+
+    color: ${({ theme }) => theme.colors.text};
+    background: ${({ theme }) => theme.colors.surface};
+
+    border: 1px solid ${({ theme }) => theme.colors.border};
+
+    transition: border-color ${({ theme }) => theme.transition.fast};
+
+    &::placeholder {
+        color: ${({ theme }) => theme.colors.textSecondary};
+    }
+
+    &:focus {
+        outline: none;
+        border-color: ${({ theme }) => theme.colors.primary};
+    }
 `;
 
 const Button = styled.button`
     width: 100%;
     padding: 14px;
-    font-size: 18px;
+
+    font-size: ${({ theme }) => theme.fontSizes.lg};
+    font-weight: ${({ theme }) => theme.fontWeights.semibold};
+
     border: none;
-    border-radius: 10px;
+
     cursor: pointer;
 
-    background: black;
-    color: white;
+    background: ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => theme.colors.opposite};
+
+    transition: background ${({ theme }) => theme.transition.fast};
+
+    &:hover:not(:disabled) {
+        background: ${({ theme }) => theme.colors.primaryHover};
+    }
 
     &:disabled {
         opacity: 0.5;
@@ -59,17 +90,24 @@ const Button = styled.button`
 `;
 
 const Status = styled.p`
-    margin-top: 20px;
+    margin-top: ${({ theme }) => theme.spacing.lg};
     text-align: center;
+    color: ${({ theme }) => theme.colors.textSecondary};
 `;
 
 const BottomText = styled.p`
-    margin-top: 25px;
+    margin-top: ${({ theme }) => theme.spacing.xl};
     text-align: center;
 `;
 
 const StyledLink = styled(Link)`
-    color: black;
+    color: ${({ theme }) => theme.colors.primary};
+    text-decoration: none;
+    transition: color ${({ theme }) => theme.transition.fast};
+
+    &:hover {
+        color: ${({ theme }) => theme.colors.primaryHover};
+    }
 `;
 
 function LoginPage() {
