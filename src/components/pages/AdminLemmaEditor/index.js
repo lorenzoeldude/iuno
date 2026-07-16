@@ -15,23 +15,40 @@ const Wrapper = styled.div`
     align-items: center;
     width: 80%;
     margin: 0 auto;
+
+    @media (max-width: 900px) {
+        width: 95%;
+    }
 `;
 
 const TopDiv = styled.div`
     width: 50%;
-`; 
+
+    @media (max-width: 900px) {
+        width: 100%;
+    }
+`;
 
 const BelowDiv = styled.div`
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 80px;
     align-items: start;
+
+    @media (max-width: 900px) {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
 `;
 
 const RowDiv = styled.div`
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 10px;
+
+    @media (max-width: 900px) {
+        grid-template-columns: 1fr;
+    }
 `;
 
 const Left = styled.div`
@@ -54,6 +71,10 @@ const Lemma = styled(Input)`
     font-weight: 700;
     box-shadow: none;
     text-align: center;
+
+    @media (max-width: 900px) {
+        font-size: 34px;
+    }
 `;
 
 const TextArea = styled.textarea`

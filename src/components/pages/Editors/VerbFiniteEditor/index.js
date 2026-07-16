@@ -13,6 +13,7 @@ const TH = styled.th`
 
 const TD = styled.td`
     padding: 10px;
+    font-size: 15px;
 `;
 
 const SwitchRow = styled.div`
@@ -38,9 +39,9 @@ const PERSON_ORDER = [
     { person: 1, number: "singular", label: "1st Sing." },
     { person: 2, number: "singular", label: "2nd Sing." },
     { person: 3, number: "singular", label: "3rd Sing." },
-    { person: 1, number: "plural", label: "1st Plur." },
-    { person: 2, number: "plural", label: "2nd Plur." },
-    { person: 3, number: "plural", label: "3rd Plur." },
+    { person: 1, number: "plural", label: "1st Pl." },
+    { person: 2, number: "plural", label: "2nd Pl." },
+    { person: 3, number: "plural", label: "3rd P." },
 ];
 
 const TENSES = [
@@ -115,23 +116,6 @@ function VerbFiniteEditor({
 
     return (
         <>
-            {/* <SwitchRow>
-
-                <SwitchButton
-                    $active={voice === "active"}
-                    onClick={() => setVoice("active")}
-                >
-                    Active
-                </SwitchButton>
-
-                <SwitchButton
-                    $active={voice === "passive"}
-                    onClick={() => setVoice("passive")}
-                >
-                    Passive
-                </SwitchButton>
-
-            </SwitchRow> */}
 
             <SwitchRow>
 

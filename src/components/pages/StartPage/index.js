@@ -134,7 +134,7 @@ function StartPage() {
             <StyledSearch />
 
             <BetaText>
-                Currently in beta
+                Work in Progress
             </BetaText>
 
             <BlockDiv>
