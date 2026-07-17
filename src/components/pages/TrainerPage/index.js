@@ -71,7 +71,6 @@ const BookSelect = styled.select`
 
     appearance: none;
 
-
     transition:
         border-color ${({ theme }) => theme.transition.fast},
         background ${({ theme }) => theme.transition.fast};
@@ -90,7 +89,8 @@ const BookSelect = styled.select`
 
 function TrainerPage() {
     const [mode, setMode] = useState("all");
-    const [bookListId, setBookListId] = useState(null);
+    const [bookCategory, setBookCategory] = useState("book");
+    const [selectedListId, setSelectedListId] = useState(null);
 
     const [showLoginPopup, setShowLoginPopup] = useState(false);
 
@@ -102,20 +102,32 @@ function TrainerPage() {
                         active={mode === "all"}
                         onClick={() => {
                             setMode("all");
-                            setBookListId(null);
+                            setSelectedListId(null);
                         }}
                     >
                         Random
                     </Button>
 
                     <Button
-                        active={mode === "book"}
+                        active={mode === "book" && bookCategory === "book"}
                         onClick={() => {
                             setMode("book");
-                            setBookListId(null);
+                            setBookCategory("book");
+                            setSelectedListId(null);
                         }}
                     >
                         Book
+                    </Button>
+
+                    <Button
+                        active={mode === "book" && bookCategory === "lists"}
+                        onClick={() => {
+                            setMode("book");
+                            setBookCategory("lists");
+                            setSelectedListId(null);
+                        }}
+                    >
+                        Lists
                     </Button>
 
                     <Button
@@ -129,33 +141,43 @@ function TrainerPage() {
                             }
 
                             setMode("list");
-                            setBookListId(null);
+                            setSelectedListId(null);
                         }}
                     >
                         My List
                     </Button>
-
                 </SwitchWrapper>
 
                 {mode === "book" && (
                     <BookSelect
-                        value={bookListId ?? ""}
+                        value={selectedListId ?? ""}
                         onChange={(e) =>
-                            setBookListId(Number(e.target.value))
+                            setSelectedListId(Number(e.target.value))
                         }
                     >
-                        <option value="">Choose a book...</option>
-                        <option value={15}>
-                            Fabulae Faciles – I. Perseus
-                        </option>
+                        {bookCategory === "book" ? (
+                            <>
+                                <option value="">Choose a book...</option>
+                                <option value={15}>
+                                    Fabulae Faciles – I. Perseus
+                                </option>
+                            </>
+                        ) : (
+                            <>
+                                <option value="">Choose a list...</option>
+                                <option value={16}>
+                                    First 100 Words
+                                </option>
+                            </>
+                        )}
                     </BookSelect>
                 )}
             </Controls>
 
-            {(mode !== "book" || bookListId !== null) && (
+            {(mode !== "book" || selectedListId !== null) && (
                 <Trainer
                     mode={mode}
-                    listId={bookListId}
+                    listId={selectedListId}
                 />
             )}
 
