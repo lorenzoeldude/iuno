@@ -12,14 +12,13 @@ export default function useDictionaryLookup() {
     const [popup, setPopup] = useState(null);
     const [entry, setEntry] = useState(null);
 
-    async function lookupWord(word, event, wrapperRef) {
+    async function lookupWord(word, event) {
         const wordRect = event.currentTarget.getBoundingClientRect();
-        const wrapperRect = wrapperRef.current.getBoundingClientRect();
 
         setPopup({
             word,
-            x: wordRect.left - wrapperRect.left,
-            y: wordRect.bottom - wrapperRect.top + 6,
+            x: wordRect.left + wordRect.width / 2,
+            y: wordRect.bottom + 6,
         });
 
         setEntry(null);
@@ -28,9 +27,7 @@ export default function useDictionaryLookup() {
             const normalized = normalizeLatin(word);
 
             const response = await fetch(
-                `${API_URL}/api/lookup?form=${encodeURIComponent(
-                    normalized
-                )}`
+                `${API_URL}/api/lookup?form=${encodeURIComponent(normalized)}`
             );
 
             if (!response.ok) {

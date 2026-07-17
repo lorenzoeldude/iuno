@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 
 const Popup = styled.div`
-    position: absolute;
+    position: fixed;
     z-index: 1000;
     background: ${({ theme }) => theme.colors.background};
     border: 1px solid ${({ theme }) => theme.colors.border};
@@ -191,18 +191,34 @@ function DictionaryPopup({ popup, entry, onClose }) {
             );
     }, [onClose]);
 
+    useLayoutEffect(() => {
+        if (!popupRef.current || !popup) return;
+
+        const popupRect = popupRef.current.getBoundingClientRect();
+
+        let left = popup.x - popupRect.width / 2;
+        let top = popup.y;
+
+        // Prevent it from going off the screen
+        left = Math.max(
+            10,
+            Math.min(left, window.innerWidth - popupRect.width - 10)
+        );
+
+        if (top + popupRect.height > window.innerHeight - 10) {
+            top = window.innerHeight - popupRect.height - 10;
+        }
+
+        popupRef.current.style.left = `${left}px`;
+        popupRef.current.style.top = `${top}px`;
+    }, [popup, entry]);
+
     if (!popup) return null;
 
     const grouped = entry ? groupEntries(entry) : [];
 
     return (
-        <Popup
-            ref={popupRef}
-            style={{
-                left: popup.x,
-                top: popup.y,
-            }}
-        >
+        <Popup ref={popupRef}>
             <CloseButton onClick={onClose}>×</CloseButton>
 
             {entry === null ? (
