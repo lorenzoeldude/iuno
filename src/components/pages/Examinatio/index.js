@@ -78,7 +78,7 @@ function Examinatio() {
         {
             type: "vocab",
             question: "Quid est fluvius?",
-            options: ["river", "mountain", "road"],
+            options: ["mountain", "river", "road"],
             correct: "river"
         },
         {
@@ -90,13 +90,13 @@ function Examinatio() {
         {
             type: "vocab",
             question: "Quid est aedificium?",
-            options: ["building", "road", "boy"],
+            options: ["road", "boy", "building"],
             correct: "building"
         },
         {
             type: "vocab",
             question: "Quid est imperium?",
-            options: ["empire", "river", "house"],
+            options: ["river", "empire", "house"],
             correct: "empire"
         },
         {
@@ -117,7 +117,7 @@ function Examinatio() {
             type: "grammar",
             before: "Aedifici",
             after: " magna sunt.",
-            options: ["a", "um"],
+            options: ["um", "a"],
             correct: "a"
         },
         {
@@ -137,13 +137,13 @@ function Examinatio() {
         {
             type: "text",
             question: "Ubi est Rōma?",
-            options: ["In Italiā", "In Graeciā", "In Aegyptō"],
+            options: ["In Graeciā", "In Aegyptō", "In Italiā"],
             correct: "In Italiā"
         },
         {
             type: "text",
             question: "Quis in via ambulat?",
-            options: ["Marcus", "Padus", "Tiberis"],
+            options: ["Padus", "Marcus", "Tiberis"],
             correct: "Marcus"
         },
         {
@@ -174,20 +174,20 @@ function Examinatio() {
         {
             type: "vocab",
             question: "Quid est femina?",
-            options: ["woman", "man", "girl"],
+            options: ["man", "girl", "woman"],
             correct: "woman"
         },
         {
             type: "text",
             question: "Quid Marcus videt?",
-            options: ["Multa aedificia", "Multās īnsulās", "Nilum"],
+            options: ["Multās īnsulās", "Multa aedificia", "Nilum"],
             correct: "Multa aedificia"
         },
         {
             type: "grammar",
             before: "Multae urb",
             after: " in imperiō Rōmānō sunt.",
-            options: ["ēs", "is"],
+            options: ["is", "ēs"],
             correct: "ēs"
         },
         {
