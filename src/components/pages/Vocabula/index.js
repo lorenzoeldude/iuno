@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 import ArrowButton from "../../atoms/ArrowButton";
 import AnswerButton from "../../atoms/Answerbutton";
@@ -47,7 +47,6 @@ const Answers = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 18px;
 `;
 
 const ArrowDiv = styled.div`
@@ -58,98 +57,10 @@ const ArrowDiv = styled.div`
 `;
 
 function Vocabula() {
-    const vocabulas = [
-    "Rōma",
-    "Italia",
-    "Eurōpa",
-    "urbs",
-    "antīqua",
-    "magnus",
-    "pulcher",
-    "habitāre",
-    "vir",
-    "fēmina",
-    "puer",
-    "puella",
-    "ambulāre",
-    "caput",
-    "imperium",
-    "urbs",
-    "īnsula",
-    "Sicilia",
-    "Sardinia",
-    "fluvius",
-    "Padus",
-    "Tiberis",
-    "Nīlus",
-    "Aegyptus",
-    "Āfrica",
-    "aedificium",
-    "vidēre",
-    "dīcere"
-];
 
-const answers = [
-    ["river", "Rome", "island"],           // Rōma
-    ["Italy", "Africa", "Greece"],         // Italia
-    ["city", "empire", "Europe"],          // Eurōpa
-    ["river", "city", "building"],         // urbs
-    ["ancient", "beautiful", "large"],     // antīqua
-    ["small", "ancient", "large"],         // magnus
-    ["Roman", "beautiful", "old"],         // pulcher
-    ["to live", "to walk", "to see"],      // habitāre
-    ["boy", "woman", "man"],               // vir
-    ["city", "woman", "girl"],             // fēmina
-    ["boy", "man", "girl"],                // puer
-    ["woman", "island", "girl"],           // puella
-    ["to live", "to walk", "to say"],      // ambulāre
-    ["head", "building", "capital"],       // caput
-    ["city", "country", "empire"],         // imperium
-    ["island", "city", "river"],           // urbs
-    ["island", "building", "road"],        // īnsula
-    ["Spain", "Gaul", "Sicily"],           // Sicilia
-    ["Italy", "Sardinia", "Greece"],       // Sardinia
-    ["river", "building", "road"],         // fluvius
-    ["Nile", "Tiber", "Po River"],         // Padus
-    ["Po River", "Tiber", "Nile"],         // Tiberis
-    ["Nile", "Tiber", "Po River"],         // Nīlus
-    ["Africa", "Italy", "Egypt"],          // Aegyptus
-    ["Europe", "Asia", "Africa"],          // Āfrica
-    ["building", "city", "island"],        // aedificium
-    ["to walk", "to say", "to see"],       // vidēre
-    ["to live", "to say", "to see"]        // dīcere
-];
+    const { id } = useParams();
 
-const correctAnswer = [
-    1, // Rōma
-    0, // Italia
-    2, // Eurōpa
-    1, // Urbs
-    0, // Antīqua
-    2, // Magnus
-    1, // Pulcher
-    0, // Habitō
-    2, // Vir
-    1, // Fēmina
-    0, // Puer
-    2, // Puella
-    1, // Ambulō
-    2, // Caput
-    2, // Imperium
-    1, // Urbs
-    0, // Īnsula
-    2, // Sicilia
-    1, // Sardinia
-    0, // Fluvius
-    2, // Padus
-    1, // Tiberis
-    0, // Nīlus
-    2, // Aegyptus
-    2, // Āfrica
-    0, // Aedificium
-    2, // Videō
-    1  // Dīcō
-];
+    const [questions, setQuestions] = useState([]);
 
     const [selected, setSelected] = useState(null);
     const [step, setStep] = useState(0);
@@ -158,16 +69,37 @@ const correctAnswer = [
 
     const sounds = useSoundEffects();
 
+    useEffect(() => {
+        fetch(`${process.env.REACT_APP_API_URL}/api/lessons/${id}/vocabulary`)
+            .then((res) => res.json())
+            .then((data) => setQuestions(data))
+            .catch(console.error);
+    }, [id]);
+
     function Next() {
-        if (step < vocabulas.length - 1) {
+        if (step < questions.length - 1) {
             setStep(step + 1);
             setSelected(null);
         } else {
-            navigate("/lesson/1/grammatica");
+            navigate(`/lessons/${id}/grammatica`);
         }
     }
 
-    const progress = (step / (vocabulas.length - 1)) * 100;
+    const progress = questions.length > 1 ? (step / (questions.length - 1)) * 100 : 0;
+
+    if (questions.length === 0) {
+        return (
+            <LessonLayout
+                active="vocabula"
+                completed={["textus"]}
+                progress={0}
+            >
+                Loading...
+            </LessonLayout>
+        );
+    }
+
+    const correctAnswer = questions[step].answers.indexOf(questions[step].correct);
 
     return (
         <LessonLayout
@@ -180,21 +112,21 @@ const correctAnswer = [
                     <Verbum
                         state={
                             selected !== null
-                                ? selected === correctAnswer[step]
+                                ? selected === correctAnswer
                                     ? 1
                                     : 2
                                 : 0
                         }
                     >
-                        {vocabulas[step]}
+                        {questions[step].lemma}
                     </Verbum>
 
                     <Answers>
-                        {answers[step].map((answer, index) => (
+                        {questions[step].answers.map((answer, index) => (
                             <AnswerButton
                                 key={index}
                                 index={index}
-                                correct={correctAnswer[step]}
+                                correct={correctAnswer}
                                 selected={selected}
                                 setSelected={setSelected}
                                 sounds={sounds}
@@ -211,7 +143,7 @@ const correctAnswer = [
                     <ArrowButton
                         onClick={Next}
                         state={
-                            selected === correctAnswer[step]
+                            selected === correctAnswer
                                 ? 1
                                 : 2
                         }

@@ -96,7 +96,7 @@ function Sidebar() {
         <Wrapper>
             <List>
                 <ListItem>
-                    <Link onClick={() => navigate("/lesson")}>
+                    <Link onClick={() => navigate("/lessons")}>
                         <FaBook />
                     </Link>
                 </ListItem>

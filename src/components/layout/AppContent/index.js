@@ -30,6 +30,7 @@ import ReadPage from "../../pages/ReadPage";
 import DictionaryPage from "../../pages/DictionaryPage";
 import VerifyEmail from "../../pages/VerifyEmail";
 import LessonIntroduction from "../../pages/LessonIntroduction";
+import AdminLessonEditor from "../../pages/AdminLessonEditor";
 
 const Body = styled.div`
     display: flex;
@@ -61,7 +62,7 @@ function AppContent() {
     const location = useLocation();
 
     const isStartPage = location.pathname === "/";
-    const isLessonPage = location.pathname.startsWith("/lesson/1/");
+    const isLessonPage = location.pathname.startsWith("/lessons/1/");
 
     return (
         <AppWrapper>
@@ -102,6 +103,14 @@ function AppContent() {
                             }
                         />
                         <Route
+                          path="/admin/lessons/:id?"
+                          element={
+                              <AdminRoute>
+                                  <AdminLessonEditor />
+                              </AdminRoute>
+                        }
+                        />
+                        <Route
                             path="/admin/bulk"
                             element={
                                 <AdminRoute>
@@ -113,12 +122,12 @@ function AppContent() {
                         <Route path="/trainer" element={<TrainerPage />} />
                         <Route path="/dictionary/:word" element={<DictionaryPage />} />
 
-                        <Route path="/lesson" element={<Lessons />} />
-                        <Route path="/lesson/1" element={<LessonIntroduction />} />
-                        <Route path="/lesson/1/textus" element={<Textus />} />
-                        <Route path="/lesson/1/grammatica" element={<Grammatica />} />
-                        <Route path="/lesson/1/vocabula" element={<Vocabula />} />
-                        <Route path="/lesson/1/examinatio" element={<Examinatio />} />
+                        <Route path="/lessons" element={<Lessons />} />
+                        <Route path="/lessons/:id" element={<LessonIntroduction />} />
+                        <Route path="/lessons/:id/textus" element={<Textus />} />
+                        <Route path="/lessons/:id/grammatica" element={<Grammatica />} />
+                        <Route path="/lessons/:id/vocabula" element={<Vocabula />} />
+                        <Route path="/lessons/:id/examinatio" element={<Examinatio />} />
 
                         <Route path="/quiz" element={<Quiz />} />
 

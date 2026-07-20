@@ -173,6 +173,16 @@ function AdminPage() {
 
                     </Card>
                 </Grid>
+
+                <Grid>
+                    <Card>
+
+                        <AdminButton to="/admin/lessons">
+                            Lesson Editor
+                        </AdminButton>
+
+                    </Card>
+                </Grid>
             </Container>
 
         </Wrapper>

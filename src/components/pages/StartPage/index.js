@@ -141,7 +141,7 @@ function StartPage() {
 
                 <Card
                     title="Lessons"
-                    onClick={() => navigate("/lesson")}
+                    onClick={() => navigate("/lessons")}
                 >
                     Master Latin step by step through our lessons
                     covering reading, vocabulary and grammar.

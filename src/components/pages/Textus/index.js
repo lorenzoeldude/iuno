@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useRef, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import ArrowButton from "../../atoms/ArrowButton";
 import LessonLayout from "../../layout/LessonLayout";
 import ClickableText from "../../atoms/ClickableText";
@@ -71,106 +71,12 @@ const ArrowDiv = styled.div`
 `;
 
 function Textus() {
-    const sentences = [
-`Ubi est Rōma?
-
-Rōma in Italiā est. Italia in Eurōpā est.
-
-Rōma urbs est.`,
-
-`Rōma urbs antiqua est.
-
-Rōma magna et pulchra est.
-
-Multī hominēs in Rōmā habitant.`,
-
-`Multī virī et multae fēminae in Rōmā habitant.
-
-Multī puerī et multae puellae quoque in Rōmā habitant.`,
-
-`Marcus puer Rōmānus est.
-
-Marcus in Rōmā habitat.
-
-Marcus in viā ambulat.`,
-
-`Quis in viā ambulat?
-
-Marcus in viā ambulat!
-
-"Rōma pulchra est," Marcus dīcit.`,
-
-`Rōma caput imperiī Rōmānī est.
-
-Imperium Rōmānum magnum est.
-
-Multī hominēs in imperiō Rōmānō habitant.`,
-
-`Multae urbēs in imperiō Rōmānō sunt.
-
-Multī virī et multae fēminae in imperiō Rōmānō ambulant.`,
-
-`Ubi est Italia?
-
-Italia in imperiō Rōmānō est.
-
-Graecia quoque in imperiō Rōmānō est.`,
-
-`Ubi est Hispānia?
-
-Hispānia quoque in imperiō Rōmānō est.
-
-Gallia quoque in imperiō Rōmānō est.`,
-
-`Imperium Rōmānum magnum est.
-
-In imperiō Rōmānō multae īnsulae sunt.
-
-Sicilia īnsula magna est.`,
-
-`Sardinia quoque īnsula magna est.
-
-Multī hominēs in Siciliā habitant.
-
-Multī hominēs in Sardiniā quoque habitant.`,
-
-`In Italiā multī fluviī sunt.
-
-Padus fluvius longus est.
-
-Tiberis quoque fluvius longus est.`,
-
-`Tiberis in Rōmā est.
-
-Tiberis pulcher est.
-
-Nīlus quoque fluvius est.`,
-
-`Nīlus in Italiā est?
-
-Nīlus nōn in Italiā, sed in Aegyptō est.
-
-Aegyptus nōn in Eurōpā, sed in Āfricā est.`,
-
-`Nīlus fluvius longus est.
-
-In Rōmā sunt multa aedificia.
-
-In aedificiīs multī virī et multae fēminae habitant.`,
-
-`Multī puerī et multae puellae quoque in aedificiīs habitant.
-
-Aedificia magna sunt.
-
-Marcus multa aedificia videt.`,
-
-`"Rōma magna est," Marcus dīcit.`
-];
-
-    const [index, setIndex] = useState(0);
-
+    const { id } = useParams();
     const navigate = useNavigate();
     const wrapperRef = useRef(null);
+
+    const [sentences, setSentences] = useState([]);
+    const [index, setIndex] = useState(0);
 
     const {
         popup,
@@ -179,11 +85,44 @@ Marcus multa aedificia videt.`,
         closePopup,
     } = useDictionaryLookup();
 
+    useEffect(() => {
+        async function fetchLesson() {
+            try {
+                const response = await fetch(
+                    `${process.env.REACT_APP_API_URL}/api/lessons/${id}`
+                );
+
+                if (!response.ok) {
+                    throw new Error("Failed to fetch lesson");
+                }
+
+                const lesson = await response.json();
+                setSentences(lesson.text || []);
+            } catch (err) {
+                console.error("Error loading lesson:", err);
+            }
+        }
+
+        fetchLesson();
+    }, [id]);
+
+    if (sentences.length === 0) {
+        return (
+            <LessonLayout
+                active="textus"
+                completed={[]}
+                progress={0}
+            >
+                Loading...
+            </LessonLayout>
+        );
+    }
+
     const nextSentence = () => {
         if (index < sentences.length - 1) {
             setIndex(index + 1);
         } else {
-            navigate("/lesson/1/vocabula");
+            navigate(`/lessons/${id}/vocabula`);
         }
     };
 
@@ -193,21 +132,24 @@ Marcus multa aedificia videt.`,
         }
     };
 
-    const progress = (index / (sentences.length - 1)) * 100;
+    const progress =
+        sentences.length > 1
+            ? (index / (sentences.length - 1)) * 100
+            : 100;
 
     return (
         <LessonLayout
-                active="textus"
-                completed={[]}
-                progress={progress}
-            >
+            active="textus"
+            completed={[]}
+            progress={progress}
+        >
             <UnderWrapper ref={wrapperRef}>
                 <ContentWrapper>
                     <TextDiv>
                         {index === 0 ? (
                             <FirstText>
                                 <ClickableText
-                                    text={sentences[index]}
+                                    text={sentences[index].text}
                                     onWordClick={(word, e) =>
                                         lookupWord(word, e, wrapperRef)
                                     }
@@ -216,7 +158,7 @@ Marcus multa aedificia videt.`,
                         ) : (
                             <Text>
                                 <ClickableText
-                                    text={sentences[index]}
+                                    text={sentences[index].text}
                                     onWordClick={(word, e) =>
                                         lookupWord(word, e, wrapperRef)
                                     }

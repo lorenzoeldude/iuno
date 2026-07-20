@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 import ArrowButton from "../../atoms/ArrowButton";
 import AnswerButton from "../../atoms/Answerbutton";
@@ -68,114 +68,63 @@ const ArrowDiv = styled.div`
 `;
 
 function Grammatica() {
+
+    const { id } = useParams();
+
     const navigate = useNavigate();
 
     const sounds = useSoundEffects();
 
-    const slides = [
-    {
-        type: "explanation",
-        title: "Singulāris et Plūrālis",
-        text: [
-            "Latin nouns can be singular or plural, which is indicated by the ending of the noun.",
-            "Singular: fluvius -> Plural: fluviī.",
-            "Singular: puella -> Plural: puellae.",
-            "Singular: imperium -> Plural: imperia.",
-        ]
-    },
-
-    {
-        type: "explanation",
-        title: "Masculine",
-        text: [
-            "For masculine nouns the singular ending is -us, and the Plural ending is -ī",
-            "Fluvius magnus est = The river is big.",
-            "Fluviī magnī sunt = The rivers are big.",
-        ]
-    },
-
-    {
-        type: "quiz",
-        sentenceBefore: "Fluvi",
-        correct: "ī",
-        options: ["us", "ī"],
-        ending: "magnī sunt (The rivers are big)."
-    },
-
-    {
-        type: "quiz",
-        sentenceBefore: "Vir bon",
-        correct: "us",
-        options: ["us", "ī"],
-        ending: "est (The man is good)."
-    },
-
-    {
-        type: "explanation",
-        title: "Feminine",
-        text: [
-            "For feminine nouns the singular ending is -a, and the Plural ending is -ae",
-            "Via longa est. = The road is long",
-            "Viae longae sunt. = The roads are long",
-        ]
-    },
-
-    {
-        type: "quiz",
-        sentenceBefore: "Via long",
-        correct: "a",
-        options: ["a", "ae"],
-        ending: "est (The road is long)."
-    },
-
-    {
-        type: "quiz",
-        sentenceBefore: "Puellae bon",
-        correct: "ae",
-        options: ["a", "ae"],
-        ending: "sunt (The girls are good)."
-    },
-
-    {
-        type: "explanation",
-        title: "Neuter",
-        text: [
-            "For neuter nouns the singular ending is -um, and the Plural ending is -a",
-            "Oppidum magnum est. = The town is big",
-            "Oppida magna sunt. = The towns are big",
-        ]
-    },
-
-    {
-        type: "quiz",
-        sentenceBefore: "Oppida magn",
-        correct: "a",
-        options: ["um", "a"],
-        ending: "sunt (The towns are big)."
-    },
-
-    {
-        type: "quiz",
-        sentenceBefore: "Imperi",
-        correct: "um",
-        options: ["um", "a"],
-        ending: "magnum est (The empire is big)."
-    },
-];
-
+    const [slides, setSlides] = useState([]);
     const [step, setStep] = useState(0);
     const [selected, setSelected] = useState(null);
 
+    useEffect(() => {
+        async function fetchLesson() {
+            try {
+                const response = await fetch(
+                    `${process.env.REACT_APP_API_URL}/api/lessons/${id}`
+                );
+
+                if (!response.ok) {
+                    throw new Error("Failed to fetch lesson");
+                }
+
+                const lesson = await response.json();
+                setSlides(lesson.grammar || []);
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        fetchLesson();
+    }, [id]);
+
+    if (slides.length === 0) {
+        return (
+            <LessonLayout
+                active="grammatica"
+                completed={["textus", "vocabula"]}
+                progress={0}
+            >
+                Loading...
+            </LessonLayout>
+        );
+    }
+
     const current = slides[step];
 
-    const progress = (step / (slides.length - 1)) * 100;
+    const progress =
+        slides.length > 1
+            ? (step / (slides.length - 1)) * 100
+            : 100;
 
     function Next() {
         if (step < slides.length - 1) {
             setStep(step + 1);
             setSelected(null);
         } else {
-            navigate("/lesson/1/examinatio");
+            navigate(`/lessons/${id}/examinatio`);
         }
     }
 

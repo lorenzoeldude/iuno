@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 import ArrowButton from "../../atoms/ArrowButton";
 import AnswerButton from "../../atoms/Answerbutton";
@@ -27,14 +27,6 @@ const Content = styled.div`
     padding: 2rem 0 100px;
 `;
 
-const Title = styled.h1`
-    font-family: "Cormorant Garamond", serif;
-    font-size: clamp(28px, 4vw, 42px);
-    text-decoration: underline;
-    text-align: center;
-    margin-bottom: 30px;
-`;
-
 const Question = styled.p`
     font-size: clamp(28px, 4vw, 42px);
     text-align: center;
@@ -49,7 +41,6 @@ const Answers = styled.div`
     flex-direction: column;
     align-items: center;
 
-    gap: 18px;
 `;
 
 const ResultText = styled.p`
@@ -66,141 +57,50 @@ const ArrowDiv = styled.div`
 `;
 
 function Examinatio() {
+    const { id } = useParams();
+
     const navigate = useNavigate();
     const sounds = useSoundEffects();
-    const questions = [
-        {
-            type: "vocab",
-            question: "Quid est urbs?",
-            options: ["city", "river", "island"],
-            correct: "city"
-        },
-        {
-            type: "vocab",
-            question: "Quid est fluvius?",
-            options: ["mountain", "river", "road"],
-            correct: "river"
-        },
-        {
-            type: "vocab",
-            question: "Quid est īnsula?",
-            options: ["island", "city", "woman"],
-            correct: "island"
-        },
-        {
-            type: "vocab",
-            question: "Quid est aedificium?",
-            options: ["road", "boy", "building"],
-            correct: "building"
-        },
-        {
-            type: "vocab",
-            question: "Quid est imperium?",
-            options: ["river", "empire", "house"],
-            correct: "empire"
-        },
-        {
-            type: "grammar",
-            before: "Multī puer",
-            after: " in Rōmā habitant.",
-            options: ["ī", "us"],
-            correct: "ī"
-        },
-        {
-            type: "grammar",
-            before: "Multae puell",
-            after: " in Rōmā habitant.",
-            options: ["ae", "a"],
-            correct: "ae"
-        },
-        {
-            type: "grammar",
-            before: "Aedifici",
-            after: " magna sunt.",
-            options: ["um", "a"],
-            correct: "a"
-        },
-        {
-            type: "grammar",
-            before: "Imperium Rōmānum magn",
-            after: " est.",
-            options: ["um", "a"],
-            correct: "um"
-        },
-        {
-            type: "grammar",
-            before: "Multī fluvi",
-            after: " in Italiā sunt.",
-            options: ["ī", "us"],
-            correct: "ī"
-        },
-        {
-            type: "text",
-            question: "Ubi est Rōma?",
-            options: ["In Graeciā", "In Aegyptō", "In Italiā"],
-            correct: "In Italiā"
-        },
-        {
-            type: "text",
-            question: "Quis in via ambulat?",
-            options: ["Padus", "Marcus", "Tiberis"],
-            correct: "Marcus"
-        },
-        {
-            type: "text",
-            question: "Quid est caput imperiī Rōmānī?",
-            options: ["Rōma", "Graecia", "Sicilia"],
-            correct: "Rōma"
-        },
-        {
-            type: "text",
-            question: "Quae īnsula magna est?",
-            options: ["Sicilia", "Italia", "Europa"],
-            correct: "Sicilia"
-        },
-        {
-            type: "text",
-            question: "Ubi est Nilus?",
-            options: ["In Aegyptō", "In Italiā", "In Hispāniā"],
-            correct: "In Aegyptō"
-        },
-        {
-            type: "grammar",
-            before: "Tiberis fluvius long",
-            after: " est.",
-            options: ["us", "a"],
-            correct: "us"
-        },
-        {
-            type: "vocab",
-            question: "Quid est femina?",
-            options: ["man", "girl", "woman"],
-            correct: "woman"
-        },
-        {
-            type: "text",
-            question: "Quid Marcus videt?",
-            options: ["Multās īnsulās", "Multa aedificia", "Nilum"],
-            correct: "Multa aedificia"
-        },
-        {
-            type: "grammar",
-            before: "Multae urb",
-            after: " in imperiō Rōmānō sunt.",
-            options: ["is", "ēs"],
-            correct: "ēs"
-        },
-        {
-            type: "text",
-            question: "Estne Aegyptus in Eurōpā?",
-            options: ["Nōn", "Ita"],
-            correct: "Nōn"
+
+    const [questions, setQuestions] = useState([]);
+
+    useEffect(() => {
+        async function fetchLesson() {
+            try {
+                const response = await fetch(
+                    `${process.env.REACT_APP_API_URL}/api/lessons/${id}`
+                );
+
+                if (!response.ok) {
+                    throw new Error("Failed to fetch lesson");
+                }
+
+                const lesson = await response.json();
+                setQuestions(lesson.exam || []);
+            } catch (err) {
+                console.error(err);
+            }
         }
-    ];
+
+        fetchLesson();
+    }, [id]);
 
     const [step, setStep] = useState(0);
     const [selected, setSelected] = useState(null);
     const [score, setScore] = useState(0);
+
+    if (questions.length === 0) {
+        return (
+            <LessonLayout
+                active="examinatio"
+                completed={["textus", "vocabula", "grammatica"]}
+                progress={0}
+            >
+                Loading...
+            </LessonLayout>
+        );
+    }
+
 
     const current = questions[step];
 
@@ -215,13 +115,6 @@ function Examinatio() {
         setSelected(null);
     }
 
-    // function getRank() {
-    //     if (score >= 18) return "Magister";
-    //     if (score >= 14) return "Discipulus";
-    //     if (score >= 10) return "Tiro";
-
-    //     return "Novicius";
-    // }
 
     if (step >= questions.length) {
         return (
@@ -231,18 +124,12 @@ function Examinatio() {
             >
                 <Wrapper>
                     <Content>
-                        <Title>Exāminātiō Perfecta</Title>
-
                         <ResultText>
-                            Puncta: {score} / {questions.length}
+                            Correct: {score} / {questions.length}
                         </ResultText>
 
-                        {/* <ResultText>
-                            Gradus: {getRank()}
-                        </ResultText> */}
-
                         <div style={{ marginTop: "40px" }}>
-                            <NavigationButton onClick={() => navigate("/lesson")}>
+                            <NavigationButton onClick={() => navigate("/lessons")}>
                                 Finish Lesson
                             </NavigationButton>
                         </div>

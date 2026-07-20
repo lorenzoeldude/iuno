@@ -73,22 +73,22 @@ function Navigatio({ active, completed }) {
         {
             id: "textus",
             label: "Text",
-            path: "/lesson/1/textus",
+            path: "/lessons/1/textus",
         },
         {
             id: "vocabula",
             label: "Vocabulary",
-            path: "/lesson/1/vocabula",
+            path: "/lessons/1/vocabula",
         },
         {
             id: "grammatica",
             label: "Grammar",
-            path: "/lesson/1/grammatica",
+            path: "/lessons/1/grammatica",
         },
         {
             id: "examinatio",
             label: "Quiz",
-            path: "/lesson/1/examinatio",
+            path: "/lessons/1/examinatio",
         },
     ];
 

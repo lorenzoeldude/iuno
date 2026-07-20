@@ -1,6 +1,7 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { FaArrowRight } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import NavigationButton from "../../atoms/NavigationButton";
 
 const Container = styled.div`
@@ -29,22 +30,6 @@ const Card = styled.div`
 
     @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
         padding: 1.75rem;
-    }
-`;
-
-const HeroImage = styled.img`
-    width: 100%;
-    height: 320px;
-    object-fit: cover;
-    margin-bottom: 2rem;
-
-    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-        height: 260px;
-    }
-
-    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-        height: 220px;
-        margin-bottom: 1.5rem;
     }
 `;
 
@@ -99,38 +84,60 @@ const ButtonWrapper = styled.div`
 `;
 
 function LessonIntroduction() {
+    const { id } = useParams();
     const navigate = useNavigate();
+
+    const [lesson, setLesson] = useState(null);
+
+    useEffect(() => {
+        async function fetchLesson() {
+            try {
+                const response = await fetch(
+                    `${process.env.REACT_APP_API_URL}/api/lessons/${id}`
+                );
+
+                if (!response.ok) {
+                    throw new Error("Failed to fetch lesson");
+                }
+
+                const data = await response.json();
+                setLesson(data);
+            } catch (err) {
+                console.error("Error loading lesson:", err);
+            }
+        }
+
+        fetchLesson();
+    }, [id]);
+
+    if (!lesson) {
+        return <Container>Loading...</Container>;
+    }
 
     return (
         <Container>
             <Card>
-                <HeroImage
-                    src="/rome1.jpg"
-                    alt="Rome"
-                />
+                {/* <HeroImage
+                    src={lesson.hero_image}
+                    alt={lesson.title}
+                /> */}
 
                 <LessonNumber>
-                    Lesson I
+                    Lesson {lesson.id}
                 </LessonNumber>
 
                 <Title>
-                    Roma
+                    {lesson.title}
                 </Title>
 
                 <Description>
-                    Welcome to your first Latin lesson! In this chapter,
-                    you'll explore the city of Rome through a short Latin
-                    text. Click any word to see its meaning or save it to
-                    your personal vocabulary list for later practice.
-                    You'll then learn your first vocabulary, discover the
-                    basics of singular and plural forms, and finish with a
-                    quiz to reinforce what you've learned.
+                    {lesson.introduction}
                 </Description>
 
                 <ButtonWrapper>
                     <NavigationButton
                         onClick={() =>
-                            navigate("/lesson/1/textus")
+                            navigate(`/lessons/${lesson.id}/textus`)
                         }
                     >
                         Start Lesson
