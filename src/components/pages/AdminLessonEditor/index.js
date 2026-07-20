@@ -247,7 +247,7 @@ function AdminLessonEditor() {
 			const response = await fetch(
 				id
 					? `${process.env.REACT_APP_API_URL}/api/admin/lessons/${id}`
-					: `${process.env.REACT_APP_API_URL}/api/admin/lessons`,
+					: `${process.env.REACT_APP_API_URL}/api/admin/lessons/`,
 				{
 					method: id ? "PUT" : "POST",
 					headers: {
