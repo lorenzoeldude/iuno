@@ -18,13 +18,17 @@ const Controls = styled.div`
     margin-top: 40px;
 
     @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-        margin-top: 0px;
+        margin-top: 0;
     }
 `;
 
 const SwitchWrapper = styled.div`
     display: flex;
     gap: 15px;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        gap: 4px;
+    }
 `;
 
 const Button = styled.button`
@@ -52,6 +56,12 @@ const Button = styled.button`
     &:hover {
         opacity: 0.8;
     }
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        padding: 6px 8px;
+        font-size: ${({ theme }) => theme.fontSizes.sm};
+        border-radius: 6px;
+    }
 `;
 
 const BookSelect = styled.select`
@@ -68,7 +78,6 @@ const BookSelect = styled.select`
     font-size: ${({ theme }) => theme.fontSizes.lg};
 
     cursor: pointer;
-
     appearance: none;
 
     transition:
@@ -82,8 +91,9 @@ const BookSelect = styled.select`
     }
 
     @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-        font-size: ${({ theme }) => theme.fontSizes.md};
-        padding: 10px 36px 10px 14px;
+        margin-top: 8px;
+        padding: 8px 32px 8px 12px;
+        font-size: ${({ theme }) => theme.fontSizes.sm};
     }
 `;
 

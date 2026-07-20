@@ -2,11 +2,11 @@ import styled from "styled-components";
 
 const ArrowButton = styled.button`
     font-size: 50px;
-    padding: 10px 16px;
+    // padding: 0px 16px;
     cursor: pointer;
     background: none;
     border: none;
-    opacity: 50%;
+    opacity: 70%;
 
     &:hover {
         opacity: 100%;

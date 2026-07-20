@@ -28,11 +28,10 @@ const Page = styled.div`
         width: 94%;
         flex-direction: column;
         align-items: center;
-        gap: 40px;
-        padding: 20px 0;
+        gap: 24px;
+        padding: 12px 0;
     }
 `;
-
 
 const InfoPanel = styled.div`
     width: 100%;
@@ -147,6 +146,10 @@ const ArrowDiv = styled.div`
     display: flex;
     justify-content: center;
     margin-top: 30px;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        margin-top: 10px;
+    }
 `;
 
 
