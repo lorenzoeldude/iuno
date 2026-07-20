@@ -90,7 +90,7 @@ const BookSelect = styled.select`
 function TrainerPage() {
     const [mode, setMode] = useState("all");
     const [bookCategory, setBookCategory] = useState("book");
-    const [selectedListId, setSelectedListId] = useState(null);
+    const [selectedSourceId, setSelectedSourceId] = useState(null);
 
     const [showLoginPopup, setShowLoginPopup] = useState(false);
 
@@ -102,7 +102,7 @@ function TrainerPage() {
                         active={mode === "all"}
                         onClick={() => {
                             setMode("all");
-                            setSelectedListId(null);
+                            setSelectedSourceId(null);
                         }}
                     >
                         Random
@@ -113,7 +113,7 @@ function TrainerPage() {
                         onClick={() => {
                             setMode("book");
                             setBookCategory("book");
-                            setSelectedListId(null);
+                            setSelectedSourceId(null);
                         }}
                     >
                         Book
@@ -124,10 +124,20 @@ function TrainerPage() {
                         onClick={() => {
                             setMode("book");
                             setBookCategory("lists");
-                            setSelectedListId(null);
+                            setSelectedSourceId(null);
                         }}
                     >
                         Lists
+                    </Button>
+
+                    <Button
+                        active={mode === "lesson"}
+                        onClick={() => {
+                            setMode("lesson");
+                            setSelectedSourceId(null);
+                        }}
+                    >
+                        Lessons
                     </Button>
 
                     <Button
@@ -141,21 +151,26 @@ function TrainerPage() {
                             }
 
                             setMode("list");
-                            setSelectedListId(null);
+                            setSelectedSourceId(null);
                         }}
                     >
                         My List
                     </Button>
                 </SwitchWrapper>
 
-                {mode === "book" && (
+                {(mode === "book" || mode === "lesson") && (
                     <BookSelect
-                        value={selectedListId ?? ""}
+                        value={selectedSourceId ?? ""}
                         onChange={(e) =>
-                            setSelectedListId(Number(e.target.value))
+                            setSelectedSourceId(Number(e.target.value))
                         }
                     >
-                        {bookCategory === "book" ? (
+                        {mode === "lesson" ? (
+                            <>
+                                <option value="">Choose a lesson...</option>
+                                <option value={1}>I. Roma</option>
+                            </>
+                        ) : bookCategory === "book" ? (
                             <>
                                 <option value="">Choose a book...</option>
                                 <option value={15}>
@@ -174,10 +189,11 @@ function TrainerPage() {
                 )}
             </Controls>
 
-            {(mode !== "book" || selectedListId !== null) && (
+            {((mode !== "book" && mode !== "lesson") ||
+                selectedSourceId !== null) && (
                 <Trainer
                     mode={mode}
-                    listId={selectedListId}
+                    listId={selectedSourceId}
                 />
             )}
 

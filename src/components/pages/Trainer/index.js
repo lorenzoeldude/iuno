@@ -189,11 +189,21 @@ function Trainer({ mode = "all", listId = null }) {
             let url;
 
             if (mode === "all") {
+
                 url = `${API_URL}/api/trainer/random`;
+
             } else if (mode === "list") {
+
                 url = `${API_URL}/api/trainer/list/random`;
+
             } else if (mode === "book") {
+
                 url = `${API_URL}/api/trainer/book/random?list_id=${encodeURIComponent(listId)}`;
+
+            } else if (mode === "lesson") {
+
+                url = `${API_URL}/api/lessons/${listId}/trainer/random`;
+
             }
             
             const token = localStorage.getItem("token");
