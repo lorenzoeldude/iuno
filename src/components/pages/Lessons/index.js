@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { FaLock, FaArrowDown } from "react-icons/fa";
@@ -70,29 +70,58 @@ const Title = styled.h1`
 function Lessons() {
     const navigate = useNavigate();
 
+    const [lessons, setLessons] = useState([]);
+
     const unlockedLesson = 1;
 
-    const lessons = [
-        { title: "Roma" },
-        { title: "Coming Soon" },
-        { title: "Coming Soon" },
-        { title: "Coming Soon" },
-        { title: "Coming Soon" },
-        { title: "Coming Soon" },
-        { title: "Coming Soon" },
-        { title: "Coming Soon" },
-        { title: "Coming Soon" },
+    useEffect(() => {
+        async function fetchLessons() {
+            try {
+                const response = await fetch(
+                    `${process.env.REACT_APP_API_URL}/api/lessons`
+                );
+
+                if (!response.ok) {
+                    throw new Error("Failed to load lessons");
+                }
+
+                const data = await response.json();
+                setLessons(data);
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        fetchLessons();
+    }, []);
+
+    if (lessons.length === 0) {
+        return (
+            <Wrapper>
+                <Container>Loading...</Container>
+            </Wrapper>
+        );
+    }
+
+    const displayedLessons = [
+        ...lessons,
+        {
+            id: lessons.length + 1,
+            title: "Coming Soon",
+            comingSoon: true,
+        },
     ];
 
     return (
         <Wrapper>
             <Container>
-                {lessons.map((lesson, index) => {
-                    const lessonNumber = index + 1;
-                    const locked = lessonNumber > unlockedLesson;
+                {displayedLessons.map((lesson, index) => {
+                    const lessonNumber = lesson.id;
+                    const locked =
+                        lesson.comingSoon || lessonNumber > unlockedLesson;
 
                     return (
-                        <Fragment key={lessonNumber}>
+                        <Fragment key={lesson.id}>
                             <CardWrapper>
                                 <LockedCardWrapper locked={locked}>
                                     {locked && <LockIcon />}
@@ -103,7 +132,7 @@ function Lessons() {
                                         onClick={() => {
                                             if (!locked) {
                                                 navigate(
-                                                    `/lessons/${lessonNumber}`
+                                                    `/lessons/${lesson.id}`
                                                 );
                                             }
                                         }}
@@ -113,7 +142,7 @@ function Lessons() {
                                 </LockedCardWrapper>
                             </CardWrapper>
 
-                            {lessonNumber < lessons.length && (
+                            {index < displayedLessons.length - 1 && (
                                 <ArrowWrapper>
                                     <FaArrowDown />
                                 </ArrowWrapper>
