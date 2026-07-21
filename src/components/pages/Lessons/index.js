@@ -56,15 +56,8 @@ const Title = styled.h1`
     text-align: center;
     line-height: 1.05;
 
-    ${({ children }) => {
-        const len = String(children).length;
+    font-size: 34px;
 
-        if (len > 20) return "font-size:22px;";
-        if (len > 14) return "font-size:26px;";
-        if (len > 8) return "font-size:32px;";
-
-        return "font-size:40px;";
-    }}
 `;
 
 function Lessons() {
@@ -72,7 +65,7 @@ function Lessons() {
 
     const [lessons, setLessons] = useState([]);
 
-    const unlockedLesson = 1;
+    // const unlockedLesson = 1;
 
     useEffect(() => {
         async function fetchLessons() {
@@ -117,8 +110,7 @@ function Lessons() {
             <Container>
                 {displayedLessons.map((lesson, index) => {
                     const lessonNumber = lesson.id;
-                    const locked =
-                        lesson.comingSoon || lessonNumber > unlockedLesson;
+                    const locked = lesson.comingSoon || !lesson.is_published;
 
                     return (
                         <Fragment key={lesson.id}>

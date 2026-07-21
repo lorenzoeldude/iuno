@@ -106,6 +106,8 @@ function TrainerPage() {
 
     const [showLoginPopup, setShowLoginPopup] = useState(false);
 
+    const [lessons, setLessons] = useState([]);
+
     useEffect(() => {
         if (urlMode === "lesson") {
             setMode("lesson");
@@ -119,6 +121,28 @@ function TrainerPage() {
             setSelectedSourceId(null);
         }
     }, [urlMode, id]);
+
+    useEffect(() => {
+        async function fetchLessons() {
+            try {
+                const response = await fetch(
+                    `${process.env.REACT_APP_API_URL}/api/lessons`
+                );
+
+                if (!response.ok) {
+                    throw new Error("Failed to fetch lessons");
+                }
+
+                const data = await response.json();
+
+                setLessons(data.filter((lesson) => lesson.is_published));
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        fetchLessons();
+    }, []);
 
     return (
         <Wrapper>
@@ -194,7 +218,15 @@ function TrainerPage() {
                         {mode === "lesson" ? (
                             <>
                                 <option value="">Choose a lesson...</option>
-                                <option value={1}>I. Roma</option>
+
+                                {lessons.map((lesson) => (
+                                    <option
+                                        key={lesson.id}
+                                        value={lesson.id}
+                                    >
+                                        {lesson.id}. {lesson.title}
+                                    </option>
+                                ))}
                             </>
                         ) : bookCategory === "book" ? (
                             <>

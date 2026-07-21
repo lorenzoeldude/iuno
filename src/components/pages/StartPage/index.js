@@ -59,6 +59,8 @@ const Title = styled.h1`
     font-size: 50px;
     letter-spacing: 8px;
     color: ${({ theme }) => theme.colors.text};
+    // color: #8B1E2D;
+    // color: #23395B;
 
     @media (max-width: ${({ theme }) => theme.breakpoints.mobile}px) {
         font-size: 45px;

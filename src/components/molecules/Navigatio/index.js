@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { FaCheck } from "react-icons/fa";
 
 const ACTIVE_COLOR = "#454545";
@@ -45,7 +45,7 @@ const Navigation = styled.button`
 
     &:hover {
         transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(0,0,0,.12);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 
         background: ${({ active }) =>
             active ? ACTIVE_COLOR : "#ececec"};
@@ -68,34 +68,35 @@ const Check = styled(FaCheck)`
 
 function Navigatio({ active, completed }) {
     const navigate = useNavigate();
+    const { id } = useParams();
 
     const links = [
         {
             id: "textus",
             label: "Text",
-            path: "/lessons/1/textus",
+            path: `/lessons/${id}/textus`,
         },
         {
             id: "vocabula",
             label: "Vocabulary",
-            path: "/lessons/1/vocabula",
+            path: `/lessons/${id}/vocabula`,
         },
         {
             id: "grammatica",
             label: "Grammar",
-            path: "/lessons/1/grammatica",
+            path: `/lessons/${id}/grammatica`,
         },
         {
             id: "examinatio",
             label: "Quiz",
-            path: "/lessons/1/examinatio",
+            path: `/lessons/${id}/examinatio`,
         },
     ];
 
     return (
         <OuterWrapper>
             <NavigationDiv>
-                {links.map((link, index) => (
+                {links.map((link) => (
                     <Navigation
                         key={link.id}
                         active={active === link.id}

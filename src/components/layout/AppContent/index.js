@@ -62,7 +62,7 @@ function AppContent() {
     const location = useLocation();
 
     const isStartPage = location.pathname === "/";
-    const isLessonPage = location.pathname.startsWith("/lessons/1/");
+    const isLessonPage = /^\/lessons\/\d+\/.+/.test(location.pathname);
 
     return (
         <AppWrapper>
