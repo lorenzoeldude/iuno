@@ -55,7 +55,6 @@ const ExitButton = styled.button`
     justify-content: center;
 
     border: none;
-    border-radius: 50%;
 
     background: none;
     color: ${({ theme }) => theme.colors.text};

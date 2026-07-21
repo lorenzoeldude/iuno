@@ -23,7 +23,7 @@ const Navigation = styled.button`
     padding: 10px 18px;
 
     border: none;
-    border-radius: 10px;
+    border-radius: 5px;
 
     background: ${({ active }) =>
         active ? ACTIVE_COLOR : "transparent"};

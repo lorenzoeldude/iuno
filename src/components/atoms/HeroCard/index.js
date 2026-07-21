@@ -3,7 +3,6 @@ import styled from "styled-components";
 export const HeroCard = styled.div`
     width: 100%;
     padding: 50px;
-    border-radius: 0px;
     margin-bottom: 20px;
     cursor: pointer;
     transition: 0.15s ease;

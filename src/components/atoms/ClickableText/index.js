@@ -2,7 +2,6 @@ import styled from "styled-components";
 
 const Word = styled.span`
     cursor: pointer;
-    border-radius: 4px;
     transition: background-color 0.15s;
 
     &:hover {

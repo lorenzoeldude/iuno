@@ -7,7 +7,6 @@ const Popup = styled.div`
     z-index: 1000;
     background: ${({ theme }) => theme.colors.background};
     border: 1px solid ${({ theme }) => theme.colors.border};
-    border-radius: 4px;
     padding: 12px;
     min-width: 280px;
     max-width: 360px;
@@ -73,7 +72,6 @@ const MeaningItem = styled.span`
     color: black;
     font-size: 0.9rem;
     padding: 3px 7px;
-    // border-radius: 4px;
 `;
 
 const FORM_PARTS_OF_SPEECH = new Set([

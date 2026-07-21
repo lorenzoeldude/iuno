@@ -37,7 +37,6 @@ const Button = styled.button`
     cursor: pointer;
 
     border: none;
-    border-radius: 8px;
 
     background: ${({ theme, active }) =>
         active

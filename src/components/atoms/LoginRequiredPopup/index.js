@@ -30,7 +30,6 @@ const PopupButton = styled.button`
     margin-top: 24px;
     padding: 10px 24px;
     border: none;
-    border-radius: 5px;
     cursor: pointer;
 
     background: ${({ theme }) => theme.colors.text};

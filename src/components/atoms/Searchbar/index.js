@@ -20,7 +20,6 @@ const Input = styled.input`
     padding: 5px;
 
     border: 1px solid ${({ theme }) => theme.colors.border};
-    border-radius: 0;
 
     background: ${({ theme }) => theme.colors.background};
     color: ${({ theme }) => theme.colors.text};
