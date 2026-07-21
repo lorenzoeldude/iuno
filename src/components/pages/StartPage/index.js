@@ -47,8 +47,12 @@ const BlockDiv = styled.div`
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
 
     gap: 20px;
-
     margin-top: 35px;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}px) {
+        grid-template-columns: 1fr;
+        justify-items: center;
+    }
 `;
 
 const Title = styled.h1`
