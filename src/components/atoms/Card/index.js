@@ -79,7 +79,7 @@ const StyledCard = styled.div`
 
 const CardTitle = styled.h2`
     font-size: 30px;
-    margin: 0 0 10px 0;
+    margin-bottom: 10px;
 
     @media (max-width: ${({ theme }) => theme.breakpoints.mobile}px) {
         font-size: 26px;

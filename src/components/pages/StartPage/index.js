@@ -29,7 +29,6 @@ const Wrapper = styled.div`
 
     text-align: center;
 
-    padding: 40px 20px;
     box-sizing: border-box;
 
     animation: ${fadeIn} 1.5s ease-out;
