@@ -86,18 +86,10 @@ const Subtitle = styled.p`
 `;
 
 const StyledSearch = styled(Searchbar)`
-    height: 50px;
-    width: 300px;
-
-    // border: 1px solid ${({ theme }) => theme.colors.border};
-
-    text-align: center;
-
     margin: 20px 0;
 
     @media (max-width: ${({ theme }) => theme.breakpoints.mobile}px) {
         width: 100%;
-        max-width: 300px;
     }
 `;
 
@@ -137,7 +129,7 @@ function StartPage() {
 
 
 
-            <StyledSearch />
+            <StyledSearch variant="large" />
 
             <BetaText>
                 Work in Progress

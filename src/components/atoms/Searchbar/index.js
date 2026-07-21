@@ -6,16 +6,19 @@ import { API_URL } from "../../../config";
 const Wrapper = styled.div`
     position: relative;
     width: 100%;
-    max-width: 350px;
+    max-width: ${({ variant }) =>
+        variant === "large" ? "500px" : "350px"};
 
     @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-        max-width: 180px;
+        max-width: ${({ variant }) =>
+            variant === "large" ? "90%" : "180px"};
     }
 `;
 
 const Input = styled.input`
     width: 100%;
-    height: 30px;
+    height: ${({ variant }) =>
+        variant === "large" ? "45px" : "30px"};
 
     padding: 5px;
 
@@ -84,7 +87,7 @@ const MeaningTag = styled.span`
     padding: 2px 6px;
 `;
 
-function Searchbar({ className }) {
+function Searchbar({ className, variant }) {
     const [query, setQuery] = useState("");
     const [results, setResults] = useState([]);
     const [open, setOpen] = useState(false);
@@ -164,6 +167,7 @@ function Searchbar({ className }) {
     return (
         <Wrapper className={className}>
             <Input
+                variant={variant}
                 type="text"
                 placeholder="search word"
                 value={query}
