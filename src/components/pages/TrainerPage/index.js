@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 import Trainer from "../Trainer";
 import LoginRequiredPopup from "../../atoms/LoginRequiredPopup";
@@ -98,11 +99,27 @@ const BookSelect = styled.select`
 `;
 
 function TrainerPage() {
+    const { mode: urlMode, id } = useParams();
+
     const [mode, setMode] = useState("all");
     const [bookCategory, setBookCategory] = useState("book");
     const [selectedSourceId, setSelectedSourceId] = useState(null);
 
     const [showLoginPopup, setShowLoginPopup] = useState(false);
+
+    useEffect(() => {
+        if (urlMode === "lesson") {
+            setMode("lesson");
+            setSelectedSourceId(id ? Number(id) : null);
+        } else if (urlMode === "book") {
+            setMode("book");
+            setBookCategory("book");
+            setSelectedSourceId(id ? Number(id) : null);
+        } else {
+            setMode("all");
+            setSelectedSourceId(null);
+        }
+    }, [urlMode, id]);
 
     return (
         <Wrapper>

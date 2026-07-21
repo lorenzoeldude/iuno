@@ -63,7 +63,7 @@ const Title = styled.h1`
     @media (max-width: ${({ theme }) => theme.breakpoints.mobile}px) {
         font-size: 45px;
         letter-spacing: 5px;
-        margin-top: 20px;
+        margin-top: 40px;
     }
 `;
 

@@ -70,10 +70,35 @@ const Description = styled.p`
     }
 `;
 
+const SecondaryButton = styled(NavigationButton)`
+    margin-left: auto;
+
+    font-size: 0.9rem;
+
+    background: ${({ theme }) => theme.colors.background};
+    color: ${({ theme }) => theme.colors.textSecondary};
+
+    padding: 0.7rem 1rem;
+
+    svg {
+        font-size: 0.8rem;
+    }
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        margin-left: 0;
+        width: 100%;
+        justify-content: center;
+    }
+`;
+
 const ButtonWrapper = styled.div`
+    display: flex;
+    gap: 1rem;
+
     margin-top: 2rem;
 
     @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        flex-direction: column;
         width: 100%;
 
         button {
@@ -143,6 +168,15 @@ function LessonIntroduction() {
                         Start Lesson
                         <FaArrowRight />
                     </NavigationButton>
+
+                    <SecondaryButton
+                        onClick={() =>
+                            navigate(`/trainer/lesson/${lesson.id}`)
+                        }
+                    >
+                        Train Lesson Vocabulary
+                        <FaArrowRight />
+                    </SecondaryButton>
                 </ButtonWrapper>
             </Card>
         </Container>

@@ -34,28 +34,48 @@ const Sections = styled.div`
 `;
 
 const SectionLink = styled(Link)`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    padding: 18px 0;
-
-    border-bottom: 0.2px solid ${({ theme }) => theme.colors.border};
-
     color: inherit;
     text-decoration: none;
-
-    transition: color 0.15s ease;
 
     &:hover {
         color: ${({ theme }) => theme.colors.primary};
     }
 `;
 
+const Section = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    padding: 18px 0;
+
+    border-bottom: 0.2px solid ${({ theme }) => theme.colors.border};
+`;
+
 const SectionTitle = styled.span`
     font-family: "Cormorant Garamond", serif;
     font-size: 30px;
     letter-spacing: 0.02em;
+`;
+
+const TrainButton = styled(Link)`
+    margin-left: auto;
+
+    padding: 0.45rem 0.9rem;
+
+    border-radius: 8px;
+
+    background: ${({ theme }) => theme.colors.surface};
+    color: ${({ theme }) => theme.colors.textSecondary};
+
+    font-size: 0.9rem;
+    text-decoration: none;
+
+    transition: opacity 0.15s ease;
+
+    &:hover {
+        opacity: 0.8;
+    }
 `;
 
 function Text() {
@@ -115,19 +135,28 @@ function Text() {
             )}
 
             <Sections>
-                {text.sections.map((section, index) => (
-                    <SectionLink
-                        key={section.id}
-                        to={`/read/${encodeURIComponent(
-                            text.author
-                        )}/${encodeURIComponent(
-                            text.title
-                        )}/${section.position}`}
-                    >
-                        <SectionTitle>
-                            {section.title}
-                        </SectionTitle>
-                    </SectionLink>
+                {text.sections.map((section) => (
+                    <Section key={section.id}>
+                        <SectionLink
+                            to={`/read/${encodeURIComponent(
+                                text.author
+                            )}/${encodeURIComponent(
+                                text.title
+                            )}/${section.position}`}
+                        >
+                            <SectionTitle>
+                                {section.title}
+                            </SectionTitle>
+                        </SectionLink>
+
+                        {section.word_list_id != null && (
+                            <TrainButton
+                                to={`/trainer/book/${section.word_list_id}`}
+                            >
+                                Train Vocabulary
+                            </TrainButton>
+                        )}
+                    </Section>
                 ))}
             </Sections>
         </Wrapper>

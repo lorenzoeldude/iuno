@@ -119,7 +119,10 @@ function AppContent() {
                             }
                         />
 
-                        <Route path="/trainer" element={<TrainerPage />} />
+                        <Route
+                            path="/trainer/:mode?/:id?"
+                            element={<TrainerPage />}
+                        />
                         <Route path="/dictionary/:word" element={<DictionaryPage />} />
 
                         <Route path="/lessons" element={<Lessons />} />
