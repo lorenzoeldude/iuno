@@ -116,7 +116,7 @@ function LessonLayout({
 
             <Inner>
                 <TopBar>
-                    <ExitButton onClick={() => navigate("/lessons/1")}>
+                    <ExitButton onClick={() => navigate("/lessons")}>
                         ×
                     </ExitButton>
 
