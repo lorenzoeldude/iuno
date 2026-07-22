@@ -65,6 +65,8 @@ const Description = styled.p`
 
     color: ${({ theme }) => theme.colors.text};
 
+    white-space: pre-line;
+
     @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
         line-height: 1.7;
     }
