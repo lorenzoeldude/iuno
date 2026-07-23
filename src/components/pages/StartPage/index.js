@@ -323,11 +323,11 @@ function StartPage() {
                     </Card>
 
                     <Card
-                        // title="📚 Dictionary"
-                        title="Dictionary"
+                        // title="🎯 Trainer"
+                        title="Trainer"
+                        onClick={() => navigate("/trainer")}
                     >
-                        Search Latin words and get its meaning, Latin definitions,
-                        morphology, english derivatives and example sentences to make it stick.
+                        Practice vocabulary using your own word list, words from a lesson, or a book.
                     </Card>
 
                     <Card
@@ -341,11 +341,12 @@ function StartPage() {
                     </Card>
 
                     <Card
-                        // title="🎯 Trainer"
-                        title="Trainer"
-                        onClick={() => navigate("/trainer")}
+                        // title="📚 Dictionary"
+                        title="Dictionary"
+                        onClick={() => navigate("/dictionary/stella")}
                     >
-                        Practice vocabulary using your own word list, words from a lesson, or a book.
+                        Search Latin words and get its meaning, Latin definitions,
+                        morphology, english derivatives and example sentences to make it stick.
                     </Card>
                 </Grid>
             </Section>
