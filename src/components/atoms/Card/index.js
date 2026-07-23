@@ -31,7 +31,7 @@ const StyledCard = styled.div`
     position: relative;
     overflow: hidden;
 
-    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}px) {
+    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
         padding: ${({ size }) =>
             size === "small"
                 ? "30px"
@@ -40,7 +40,7 @@ const StyledCard = styled.div`
                 : "50px"};
     }
 
-    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}px) {
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
         padding: 30px 24px;
         min-height: auto;
     }
@@ -81,7 +81,7 @@ const CardTitle = styled.h2`
     font-size: 30px;
     margin-bottom: 10px;
 
-    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}px) {
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
         font-size: 26px;
     }
 `;
@@ -91,7 +91,7 @@ const CardText = styled.p`
     line-height: 1.6;
     color: ${({ theme }) => theme.colors.text};
 
-    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}px) {
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
         font-size: 18px;
     }
 `;

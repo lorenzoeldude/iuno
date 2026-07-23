@@ -44,7 +44,7 @@ const TH = styled.th`
     font-weight: 600;
     text-decoration: underline;
 
-    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}px) {
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
         padding: 10px 8px;
         font-size: 15px;
     }
@@ -55,7 +55,7 @@ const TD = styled.td`
     border-bottom: 1px solid rgba(0,0,0,0.06);
     font-size: 21px;
 
-    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}px) {
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
         padding: 10px 8px;
         font-size: 17px;
     }
