@@ -16,6 +16,10 @@ const Wrapper = styled.div`
 `;
 
 const Input = styled.input`
+    appearance: none;
+    -webkit-appearance: none;
+    border-radius: 0;
+
     width: 100%;
     height: ${({ variant }) =>
         variant === "large" ? "45px" : "30px"};
@@ -54,6 +58,8 @@ const Dropdown = styled.div`
 
     border: 1px solid ${({ theme }) => theme.colors.border};
 
+    text-align: left;
+
     z-index: 999;
 
     box-shadow: 0 10px 25px ${({ theme }) => theme.colors.shadow};
@@ -78,6 +84,8 @@ const Meanings = styled.div`
     display: flex;
     flex-wrap: wrap;
     gap: 4px;
+
+    justify-content: flex-start;
 `;
 
 const MeaningTag = styled.span`
