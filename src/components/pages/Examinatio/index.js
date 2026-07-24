@@ -40,7 +40,6 @@ const Answers = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-
 `;
 
 const ResultText = styled.p`
@@ -101,9 +100,7 @@ function Examinatio() {
         );
     }
 
-
     const current = questions[step];
-
     const progress = (step / questions.length) * 100;
 
     function nextQuestion() {
@@ -114,7 +111,6 @@ function Examinatio() {
         setStep(step + 1);
         setSelected(null);
     }
-
 
     if (step >= questions.length) {
         return (
@@ -139,6 +135,9 @@ function Examinatio() {
         );
     }
 
+    const isFillQuestion =
+        current.type === "word" || current.type === "ending";
+
     return (
         <LessonLayout
             active="examinatio"
@@ -148,19 +147,21 @@ function Examinatio() {
             <Wrapper>
                 <Content>
                     <Question>
-                        {current.type === "grammar" ? (
+                        {isFillQuestion ? (
                             <>
                                 {current.before}
+
+                                {current.type === "word" && " "}
 
                                 <span
                                     style={{
                                         textDecoration: "underline",
                                     }}
                                 >
-                                    {selected !== null
-                                        ? current.correct
-                                        : "_"}
+                                    {selected !== null ? current.correct : "_"}
                                 </span>
+
+                                {" "}
 
                                 {current.after}
                             </>

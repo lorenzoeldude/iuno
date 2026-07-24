@@ -590,17 +590,44 @@ function AdminLessonEditor() {
 				<div key={index}>
 					<Label>Question {index + 1}</Label>
 
-					<Input
+					<select
 						value={question.type}
 						onChange={(e) => {
 							const updated = [...exam];
+
 							updated[index].type = e.target.value;
+
+							if (e.target.value === "question") {
+								updated[index] = {
+									type: "question",
+									question: "",
+									correct: "",
+									optionsText: "",
+								};
+							}
+
+							if (
+								e.target.value === "word" ||
+								e.target.value === "ending"
+							) {
+								updated[index] = {
+									type: e.target.value,
+									before: "",
+									after: "",
+									correct: "",
+									optionsText: "",
+								};
+							}
+
 							setExam(updated);
 						}}
-						placeholder="vocab, grammar or text"
-					/>
+					>
+						<option value="question">Question</option>
+						<option value="word">Word</option>
+						<option value="ending">Ending</option>
+					</select>
 
-					{question.type === "grammar" ? (
+					{question.type === "word" || question.type === "ending" ? (
 						<>
 							<Input
 								value={question.before || ""}
@@ -675,9 +702,9 @@ function AdminLessonEditor() {
 					setExam([
 						...exam,
 						{
-							type: "vocab",
+							type: "question",
 							question: "",
-							options: [],
+							optionsText: "",
 							correct: "",
 						},
 					])
