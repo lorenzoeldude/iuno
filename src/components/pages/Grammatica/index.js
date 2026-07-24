@@ -148,15 +148,20 @@ function Grammatica() {
                             <Title>{current.title}</Title>
 
                             {current.text.map((line, index) => (
-                                <Text key={index}>{line}</Text>
+                                <Text
+                                    key={index}
+                                    dangerouslySetInnerHTML={{ __html: line }}
+                                />
                             ))}
                         </>
                     )}
 
-                    {current.type === "quiz" && (
+                    {(current.type === "quizEnding" || current.type === "quizWord") && (
                         <>
                             <Question>
                                 {current.sentenceBefore}
+
+                                {current.type === "quizWord" && " "}
 
                                 <span
                                     style={{
@@ -166,7 +171,9 @@ function Grammatica() {
                                     {selected === null
                                         ? "_"
                                         : current.correct}
-                                </span>{" "}
+                                </span>
+
+                                {" "}
 
                                 {current.ending}
                             </Question>
@@ -181,7 +188,9 @@ function Grammatica() {
                                         setSelected={setSelected}
                                         sounds={sounds}
                                     >
-                                        -{option}
+                                        {current.type === "quizEnding"
+                                            ? `-${option}`
+                                            : option}
                                     </AnswerButton>
                                 ))}
                             </QuizOptions>

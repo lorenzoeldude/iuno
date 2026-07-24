@@ -307,6 +307,19 @@ function AdminLessonEditor() {
 		setLoading(false);
 	};
 
+	const insertGrammarBlock = (index) => {
+		const newBlock = {
+			type: "explanation",
+			title: "",
+			text: [""],
+		};
+
+		const updated = [...grammar];
+		updated.splice(index + 1, 0, newBlock);
+
+		setGrammar(updated);
+	};
+
 	return (
 		<Page>
 			<Heading>
@@ -411,9 +424,12 @@ function AdminLessonEditor() {
 								};
 							}
 
-							if (e.target.value === "quiz") {
+							if (
+								e.target.value === "quizEnding" ||
+								e.target.value === "quizWord"
+							) {
 								updated[index] = {
-									type: "quiz",
+									type: e.target.value,
 									sentenceBefore: "",
 									correct: "",
 									options: ["", ""],
@@ -428,8 +444,12 @@ function AdminLessonEditor() {
 							Explanation
 						</option>
 
-						<option value="quiz">
-							Quiz
+						<option value="quizEnding">
+							Ending Quiz
+						</option>
+
+						<option value="quizWord">
+							Word Quiz
 						</option>
 					</select>
 
@@ -466,7 +486,7 @@ function AdminLessonEditor() {
 					)}
 
 
-					{block.type === "quiz" && (
+					{(block.type === "quiz" || block.type === "quizEnding" || block.type === "quizWord") && (
 						<>
 							<Label>Sentence Before</Label>
 
@@ -524,6 +544,12 @@ function AdminLessonEditor() {
 						</>
 					)}
 
+					<Button
+						type="button"
+						onClick={() => insertGrammarBlock(index)}
+					>
+						Add Block Below
+					</Button>
 
 					<Button
 						type="button"
