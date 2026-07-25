@@ -384,6 +384,8 @@ function DictionaryPage() {
 
     const wordInfo = wordData.lemma;
 
+    const partOfSpeechLabel = wordInfo.part_of_speech === "noun" && wordInfo.is_proper ? "proper noun" : wordInfo.part_of_speech;
+
     // =====================================================
     // MORPHOLOGY
     // =====================================================
@@ -482,7 +484,7 @@ function DictionaryPage() {
                     ))}
                 </Meaning>
                 <Meta>
-                    <Tag>{wordInfo.part_of_speech}</Tag>
+                    <Tag>{partOfSpeechLabel}</Tag>
 
                     {wordInfo.gender && <Tag>{wordInfo.gender}</Tag>}
                     {wordInfo.declension > 0 && (
