@@ -190,6 +190,8 @@ function AdminLemmaEditor() {
     const [feminine, setFeminine] = useState("");
     const [neuter, setNeuter] = useState("");
 
+    const [isProper, setIsProper] = useState(false);
+
     const [loading, setLoading] = useState(false);
     const [status, setStatus] = useState("");
 
@@ -246,6 +248,8 @@ function AdminLemmaEditor() {
 
         setFeminine(data.lemma.feminine || "");
         setNeuter(data.lemma.neuter || "");
+
+        setIsProper(data.lemma.is_proper || false);
 
         setIrregular(data.lemma.irregular);
 
@@ -305,6 +309,7 @@ function AdminLemmaEditor() {
                             part_of_speech: partOfSpeech,
                             gender,
                             irregular,
+                            is_proper: (isNoun || isAdjective) ? isProper : false,
 
                             declension:
                                 (isNoun || isAdjective) && declension !== ""
@@ -471,6 +476,15 @@ function AdminLemmaEditor() {
                         )}
                     </Select>
                 </>
+            )}
+            {(isNoun || isAdjective) && (
+                <Select
+                    value={isProper ? "true" : "false"}
+                    onChange={(e) => setIsProper(e.target.value === "true")}
+                >
+                    <option value="false">common noun</option>
+                    <option value="true">proper noun</option>
+                </Select>
             )}
             {isVerb && (
                 <>
