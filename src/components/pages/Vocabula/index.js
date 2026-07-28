@@ -99,6 +99,10 @@ function Vocabula() {
         );
     }
 
+    const current = questions[step];
+
+    const displayWord = current.infinitive || current.lemma;
+
     const correctAnswer = questions[step].answers.indexOf(questions[step].correct);
 
     return (
@@ -118,7 +122,7 @@ function Vocabula() {
                                 : 0
                         }
                     >
-                        {questions[step].lemma}
+                        {displayWord}
                     </Verbum>
 
                     <Answers>
