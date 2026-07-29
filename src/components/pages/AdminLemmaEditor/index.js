@@ -190,6 +190,8 @@ function AdminLemmaEditor() {
     const [feminine, setFeminine] = useState("");
     const [neuter, setNeuter] = useState("");
 
+    const [comparable, setComparable] = useState(true);
+
     const [isProper, setIsProper] = useState(false);
 
     const [loading, setLoading] = useState(false);
@@ -248,6 +250,12 @@ function AdminLemmaEditor() {
 
         setFeminine(data.lemma.feminine || "");
         setNeuter(data.lemma.neuter || "");
+
+        setComparable(
+            data.lemma.comparable === null
+                ? true
+                : data.lemma.comparable
+        );
 
         setIsProper(data.lemma.is_proper || false);
 
@@ -328,6 +336,7 @@ function AdminLemmaEditor() {
 
                             feminine: isAdjective ? feminine : "",
                             neuter: isAdjective ? neuter : "",
+                            comparable: isAdjective ? comparable : null,
                             pronoun_type: isPronoun ? pronounType : "",
                         },
 
@@ -484,6 +493,15 @@ function AdminLemmaEditor() {
                 >
                     <option value="false">common noun</option>
                     <option value="true">proper noun</option>
+                </Select>
+            )}
+            {isAdjective && (
+                <Select
+                    value={comparable ? "true" : "false"}
+                    onChange={(e) => setComparable(e.target.value === "true")}
+                >
+                    <option value="true">comparable</option>
+                    <option value="false">not comparable</option>
                 </Select>
             )}
             {isVerb && (
