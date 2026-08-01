@@ -327,7 +327,7 @@ function StartPage() {
                         title="Trainer"
                         onClick={() => navigate("/trainer")}
                     >
-                        Trainer vocabulary using your own word list, words from a lesson, a specific book,
+                        Practice vocabulary using your own word list, words from a lesson, a specific book,
                         or simply random words from the dictionary.
                     </Card>
 
