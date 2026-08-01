@@ -317,9 +317,9 @@ function StartPage() {
                         title="Lessons"
                         onClick={() => navigate("/lessons")}
                     >
-                        Read Latin texts, practice vocabulary, learn grammar step by step with
+                        Read Latin texts, practice new vocabulary and learn grammar step by step with
                         structured lessons. Each lesson is designed to build on the previous one to take
-                        you from a novice to expert interactively.
+                        you from novice to expert interactively.
                     </Card>
 
                     <Card
@@ -327,7 +327,8 @@ function StartPage() {
                         title="Trainer"
                         onClick={() => navigate("/trainer")}
                     >
-                        Practice vocabulary using your own word list, words from a lesson, or a book.
+                        Trainer vocabulary using your own word list, words from a lesson, a specific book,
+                        or simply random words from the dictionary.
                     </Card>
 
                     <Card
@@ -343,7 +344,7 @@ function StartPage() {
                     <Card
                         // title="📚 Dictionary"
                         title="Dictionary"
-                        onClick={() => navigate("/dictionary/stella")}
+                        onClick={() => navigate("/dictionary/colosseus")}
                     >
                         Search Latin words and get its meaning, Latin definitions,
                         morphology, english derivatives and example sentences to make it stick.
@@ -376,7 +377,7 @@ function StartPage() {
                 <SectionTitle>Ready to start?</SectionTitle>
 
                 <SectionText>
-                    Begin your first lesson or explore the Latin dictionary.
+                    Begin your first lesson or read a book.
                 </SectionText>
 
                 <Button onClick={() => navigate("/lessons")}>
