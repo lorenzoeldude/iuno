@@ -51,7 +51,9 @@ const Input = styled.input`
 
     border: 1px solid
         ${({ theme, $invalid }) =>
-            $invalid ? theme.colors.error : theme.colors.border};
+            $invalid
+                ? theme.colors.danger
+                : theme.colors.border};
 
     transition: border-color ${({ theme }) => theme.transition.fast};
 
@@ -62,7 +64,9 @@ const Input = styled.input`
     &:focus {
         outline: none;
         border-color: ${({ theme, $invalid }) =>
-            $invalid ? theme.colors.error : theme.colors.primary};
+            $invalid
+                ? theme.colors.danger
+                : theme.colors.primary};
     }
 `;
 
@@ -71,7 +75,7 @@ const ValidationText = styled.p`
     margin-bottom: ${({ theme }) => theme.spacing.md};
 
     font-size: ${({ theme }) => theme.fontSizes.sm};
-    color: ${({ theme }) => theme.colors.error};
+    color: ${({ theme }) => theme.colors.danger};
 `;
 
 const Button = styled.button`
@@ -103,7 +107,7 @@ const Button = styled.button`
 const Status = styled.p`
     margin-top: ${({ theme }) => theme.spacing.lg};
     text-align: center;
-    color: ${({ theme }) => theme.colors.textSecondary};
+    color: ${({ theme }) => theme.colors.danger};
 `;
 
 const BottomText = styled.p`
@@ -128,9 +132,15 @@ function RegisterPage() {
 
     const [loading, setLoading] = useState(false);
     const [registered, setRegistered] = useState(false);
+
     const [status, setStatus] = useState("");
 
-    const usernameIsValid = /^[a-zA-Z0-9_]{3,20}$/.test(username);
+    // Server-side duplicate errors
+    const [emailTaken, setEmailTaken] = useState(false);
+    const [usernameTaken, setUsernameTaken] = useState(false);
+
+    const usernameIsValid =
+        /^[a-zA-Z0-9_]{3,20}$/.test(username);
 
     function getUsernameError() {
         if (!username) {
@@ -186,15 +196,48 @@ function RegisterPage() {
             const data = await res.json();
 
             if (!res.ok) {
-                throw new Error(data.error || "Failed to register");
+
+                if (res.status === 409) {
+
+                    if (data.error === "email already exists") {
+                        setEmailTaken(true);
+                        setUsernameTaken(false);
+                        setStatus(
+                            "An account with this email already exists."
+                        );
+                        return;
+                    }
+
+                    if (data.error === "username already exists") {
+                        setUsernameTaken(true);
+                        setEmailTaken(false);
+                        setStatus(
+                            "That username is already taken."
+                        );
+                        return;
+                    }
+                }
+
+                setStatus(
+                    data.error || "Failed to register."
+                );
+
+                return;
             }
 
             setRegistered(true);
-        } catch (err) {
-            setStatus(err.message || "Failed to register.");
-        }
 
-        setLoading(false);
+        } catch (err) {
+
+            console.error("REGISTER ERROR:", err);
+
+            setStatus(
+                "Unable to connect to the server."
+            );
+
+        } finally {
+            setLoading(false);
+        }
     }
 
     return (
@@ -212,8 +255,23 @@ function RegisterPage() {
                             type="email"
                             placeholder="email"
                             value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            $invalid={emailTaken}
+                            onChange={(e) => {
+                                setEmail(e.target.value);
+
+                                // Remove the red border as soon
+                                // as the user changes the email.
+                                setEmailTaken(false);
+
+                                setStatus("");
+                            }}
                         />
+
+                        {emailTaken && (
+                            <ValidationText>
+                                An account with this email already exists.
+                            </ValidationText>
+                        )}
 
                         <Input
                             type="text"
@@ -223,9 +281,17 @@ function RegisterPage() {
                             autoCapitalize="none"
                             autoCorrect="off"
                             spellCheck={false}
-                            $invalid={Boolean(usernameError)}
+                            $invalid={
+                                Boolean(usernameError) ||
+                                usernameTaken
+                            }
                             onChange={(e) => {
                                 setUsername(e.target.value);
+
+                                // Remove the red border as soon
+                                // as the user changes the username.
+                                setUsernameTaken(false);
+
                                 setStatus("");
                             }}
                         />
@@ -236,11 +302,20 @@ function RegisterPage() {
                             </ValidationText>
                         )}
 
+                        {usernameTaken && !usernameError && (
+                            <ValidationText>
+                                That username is already taken.
+                            </ValidationText>
+                        )}
+
                         <Input
                             type="password"
                             placeholder="password"
                             value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            onChange={(e) => {
+                                setPassword(e.target.value);
+                                setStatus("");
+                            }}
                         />
 
                         <Button
@@ -252,11 +327,15 @@ function RegisterPage() {
                                 !password
                             }
                         >
-                            {loading ? "Creating..." : "Create Account"}
+                            {loading
+                                ? "Creating..."
+                                : "Create Account"}
                         </Button>
 
-                        {status && (
-                            <Status>{status}</Status>
+                        {status && !emailTaken && !usernameTaken && (
+                            <Status>
+                                {status}
+                            </Status>
                         )}
 
                         <BottomText>
@@ -268,7 +347,9 @@ function RegisterPage() {
                     </>
                 ) : (
                     <>
-                        <Title>Check your email</Title>
+                        <Title>
+                            Check your email
+                        </Title>
 
                         <Subtitle>
                             We sent a verification link to:
@@ -279,7 +360,8 @@ function RegisterPage() {
                         </Status>
 
                         <Status>
-                            Please click the link in the email to verify your account.
+                            Please click the link in the email
+                            to verify your account.
                         </Status>
                     </>
                 )}
