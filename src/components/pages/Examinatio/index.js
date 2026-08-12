@@ -8,6 +8,8 @@ import LessonLayout from "../../layout/LessonLayout";
 import NavigationButton from "../../atoms/NavigationButton";
 import useSoundEffects from "../../../hooks/useSoundEffects";
 
+import { API_URL } from "../../../config";
+
 const Wrapper = styled.div`
     width: 100%;
     max-width: 800px;
@@ -48,6 +50,12 @@ const ResultText = styled.p`
     margin: 12px 0;
 `;
 
+const ScoreText = styled.p`
+    font-size: clamp(24px, 3vw, 34px);
+    text-align: center;
+    margin: 12px 0;
+`;
+
 const ArrowDiv = styled.div`
     position: fixed;
     left: 50%;
@@ -57,17 +65,26 @@ const ArrowDiv = styled.div`
 
 function Examinatio() {
     const { id } = useParams();
-
     const navigate = useNavigate();
     const sounds = useSoundEffects();
 
     const [questions, setQuestions] = useState([]);
 
+    const [step, setStep] = useState(0);
+    const [selected, setSelected] = useState(null);
+    const [score, setScore] = useState(0);
+
+    const [saving, setSaving] = useState(false);
+
+    // =====================================================
+    // FETCH LESSON
+    // =====================================================
+
     useEffect(() => {
         async function fetchLesson() {
             try {
                 const response = await fetch(
-                    `${process.env.REACT_APP_API_URL}/api/lessons/${id}`
+                    `${API_URL}/api/lessons/${id}`
                 );
 
                 if (!response.ok) {
@@ -75,6 +92,7 @@ function Examinatio() {
                 }
 
                 const lesson = await response.json();
+
                 setQuestions(lesson.exam || []);
             } catch (err) {
                 console.error(err);
@@ -84,15 +102,68 @@ function Examinatio() {
         fetchLesson();
     }, [id]);
 
-    const [step, setStep] = useState(0);
-    const [selected, setSelected] = useState(null);
-    const [score, setScore] = useState(0);
+    // =====================================================
+    // SAVE LESSON COMPLETION
+    // =====================================================
+
+    async function completeLesson(finalCorrect) {
+        const token = localStorage.getItem("token");
+
+        if (!token || saving) {
+            return;
+        }
+
+        setSaving(true);
+
+        const percentage = Math.round(
+            (finalCorrect / questions.length) * 100
+        );
+
+        try {
+            const response = await fetch(
+                `${API_URL}/api/lessons/${id}/progress`,
+                {
+                    method: "PUT",
+
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+
+                    body: JSON.stringify({
+                        section: "examinatio",
+                        score: percentage,
+                    }),
+                }
+            );
+
+            if (!response.ok) {
+                console.error(
+                    "Failed to save lesson progress:",
+                    response.status
+                );
+            }
+        } catch (err) {
+            console.error(
+                "LESSON COMPLETION ERROR:",
+                err
+            );
+        }
+    }
+
+    // =====================================================
+    // LOADING
+    // =====================================================
 
     if (questions.length === 0) {
         return (
             <LessonLayout
                 active="examinatio"
-                completed={["textus", "vocabula", "grammatica"]}
+                completed={[
+                    "textus",
+                    "vocabula",
+                    "grammatica",
+                ]}
                 progress={0}
             >
                 Loading...
@@ -100,22 +171,24 @@ function Examinatio() {
         );
     }
 
-    const current = questions[step];
-    const progress = (step / questions.length) * 100;
-
-    function nextQuestion() {
-        if (selected === current.correct) {
-            setScore(score + 1);
-        }
-
-        setStep(step + 1);
-        setSelected(null);
-    }
+    // =====================================================
+    // FINISHED
+    // =====================================================
 
     if (step >= questions.length) {
+        const percentage = Math.round(
+            (score / questions.length) * 100
+        );
+
         return (
             <LessonLayout
                 active="examinatio"
+                completed={[
+                    "textus",
+                    "vocabula",
+                    "grammatica",
+                    "examinatio",
+                ]}
                 progress={100}
             >
                 <Wrapper>
@@ -124,8 +197,16 @@ function Examinatio() {
                             Correct: {score} / {questions.length}
                         </ResultText>
 
+                        <ScoreText>
+                            Score: {percentage}%
+                        </ScoreText>
+
                         <div style={{ marginTop: "40px" }}>
-                            <NavigationButton onClick={() => navigate("/lessons")}>
+                            <NavigationButton
+                                onClick={() =>
+                                    navigate("/lessons")
+                                }
+                            >
                                 Finish Lesson
                             </NavigationButton>
                         </div>
@@ -135,13 +216,57 @@ function Examinatio() {
         );
     }
 
+    const current = questions[step];
+
+    const progress =
+        (step / questions.length) * 100;
+
     const isFillQuestion =
-        current.type === "word" || current.type === "ending";
+        current.type === "word" ||
+        current.type === "ending";
+
+    // =====================================================
+    // NEXT QUESTION
+    // =====================================================
+
+    async function nextQuestion() {
+        const isCorrect =
+            selected === current.correct;
+
+        const newScore =
+            isCorrect
+                ? score + 1
+                : score;
+
+        // Last question
+        if (step === questions.length - 1) {
+            setScore(newScore);
+
+            await completeLesson(newScore);
+
+            setStep(step + 1);
+            setSelected(null);
+
+            return;
+        }
+
+        setScore(newScore);
+        setStep(step + 1);
+        setSelected(null);
+    }
+
+    // =====================================================
+    // RENDER
+    // =====================================================
 
     return (
         <LessonLayout
             active="examinatio"
-            completed={["textus", "vocabula", "grammatica"]}
+            completed={[
+                "textus",
+                "vocabula",
+                "grammatica",
+            ]}
             progress={progress}
         >
             <Wrapper>
@@ -151,14 +276,18 @@ function Examinatio() {
                             <>
                                 {current.before}
 
-                                {current.type === "word" && " "}
+                                {current.type === "word" &&
+                                    " "}
 
                                 <span
                                     style={{
-                                        textDecoration: "underline",
+                                        textDecoration:
+                                            "underline",
                                     }}
                                 >
-                                    {selected !== null ? current.correct : "_"}
+                                    {selected !== null
+                                        ? current.correct
+                                        : "_"}
                                 </span>
 
                                 {" "}
@@ -171,26 +300,41 @@ function Examinatio() {
                     </Question>
 
                     <Answers>
-                        {current.options.map((option) => (
-                            <AnswerButton
-                                key={option}
-                                index={option}
-                                correct={current.correct}
-                                selected={selected}
-                                setSelected={setSelected}
-                                sounds={sounds}
-                            >
-                                {option}
-                            </AnswerButton>
-                        ))}
+                        {current.options.map(
+                            (option) => (
+                                <AnswerButton
+                                    key={option}
+                                    index={option}
+                                    correct={
+                                        current.correct
+                                    }
+                                    selected={selected}
+                                    setSelected={
+                                        setSelected
+                                    }
+                                    sounds={sounds}
+                                >
+                                    {option}
+                                </AnswerButton>
+                            )
+                        )}
                     </Answers>
                 </Content>
             </Wrapper>
 
             {selected !== null && (
                 <ArrowDiv>
-                    <ArrowButton onClick={nextQuestion}>
-                        {step === questions.length - 1
+                    <ArrowButton
+                        onClick={nextQuestion}
+                        state={
+                            selected ===
+                            current.correct
+                                ? 1
+                                : 2
+                        }
+                    >
+                        {step ===
+                        questions.length - 1
                             ? "Finish"
                             : ">"}
                     </ArrowButton>

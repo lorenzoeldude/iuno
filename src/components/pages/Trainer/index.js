@@ -12,7 +12,6 @@ import useSoundEffects from "../../../hooks/useSoundEffects";
 
 import { API_URL } from "../../../config";
 
-
 const Page = styled.div`
     width: min(90%, 1200px);
 
@@ -67,12 +66,10 @@ const InfoPanel = styled.div`
     }
 `;
 
-
 const PanelTitle = styled.h6`
     margin-bottom: 12px;
     font-size: 18px;
 `;
-
 
 const Definition = styled.p`
     font-size: 25px;
@@ -84,7 +81,6 @@ const Definition = styled.p`
     }
 `;
 
-
 const Example = styled.p`
     line-height: 1.6;
     margin-bottom: 12px;
@@ -95,14 +91,12 @@ const Example = styled.p`
     }
 `;
 
-
 const AnswerWrapper = styled.div`
     transition: opacity 0.3s ease;
 
     opacity: ${(props) =>
         props.fade ? 0.1 : 1};
 `;
-
 
 const Wrapper = styled.div`
     display: flex;
@@ -120,7 +114,6 @@ const Wrapper = styled.div`
         margin-right: 60px;
     }
 `;
-
 
 const Verbum = styled.p`
     font-size: 50px;
@@ -141,7 +134,6 @@ const Verbum = styled.p`
     }
 `;
 
-
 const ArrowDiv = styled.div`
     display: flex;
     justify-content: center;
@@ -152,20 +144,15 @@ const ArrowDiv = styled.div`
     }
 `;
 
-
-
 function Trainer({ mode = "all", listId = null }) {
-
 
     const [question, setQuestion] = useState(null);
     const [selected, setSelected] = useState(null);
     const [loading, setLoading] = useState(true);
 
-
     const navigate = useNavigate();
 
     const wrapperRef = useRef(null);
-
 
     const {
         popup,
@@ -176,19 +163,19 @@ function Trainer({ mode = "all", listId = null }) {
 
     const sounds = useSoundEffects();
 
-
-
     // =====================================================
     // FETCH QUESTION
     // =====================================================
 
     const fetchQuestion = useCallback(async () => {
+
         setLoading(true);
         setSelected(null);
 
         console.log("api_url: ", API_URL);
 
         try {
+
             let url;
 
             if (mode === "all") {
@@ -208,8 +195,9 @@ function Trainer({ mode = "all", listId = null }) {
                 url = `${API_URL}/api/lessons/${listId}/trainer/random`;
 
             }
-            
+
             const token = localStorage.getItem("token");
+
             const headers = {};
 
             if (mode === "list" && token) {
@@ -225,24 +213,103 @@ function Trainer({ mode = "all", listId = null }) {
             const data = await res.json();
 
             setQuestion(data);
+
         } catch (err) {
+
             console.error(err);
+
         }
 
         setLoading(false);
+
     }, [mode, listId]);
 
+    // =====================================================
+    // RECORD TRAINING ATTEMPT
+    // =====================================================
 
+    const recordTrainingAttempt = useCallback(
+        async (answer) => {
+
+            const token = localStorage.getItem("token");
+
+            if (!token) {
+                return;
+            }
+
+            const correct = answer === question.correct;
+
+            try {
+
+                const response = await fetch(
+                    `${API_URL}/api/training/attempt`,
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${token}`,
+                        },
+
+                        body: JSON.stringify({
+                            lemmaId: question.lemma_id ?? null,
+                            correct,
+                        }),
+                    }
+                );
+
+                if (!response.ok) {
+
+                    console.error(
+                        "Failed to record training attempt:",
+                        response.status
+                    );
+
+                }
+
+            } catch (err) {
+
+                console.error(
+                    "TRAINING ATTEMPT ERROR:",
+                    err
+                );
+
+            }
+
+        },
+        [question]
+    );
+
+    // =====================================================
+    // ANSWER SELECTION
+    // =====================================================
+
+    const handleAnswer = useCallback(
+        (answer) => {
+
+            // Prevent another answer from being recorded
+            // after the user has already answered.
+            if (selected !== null) {
+                return;
+            }
+
+            setSelected(answer);
+
+            recordTrainingAttempt(answer);
+
+        },
+        [selected, recordTrainingAttempt]
+    );
 
     // =====================================================
     // RELOAD WHEN MODE CHANGES
     // =====================================================
 
     useEffect(() => {
+
         fetchQuestion();
+
     }, [fetchQuestion]);
-
-
 
     // =====================================================
     // LOADING
@@ -254,22 +321,14 @@ function Trainer({ mode = "all", listId = null }) {
 
     }
 
-
-
     return (
 
         <Page ref={wrapperRef}>
 
-
             <Wrapper>
 
-
-
                 <Verbum
-
                     clickable={selected !== null}
-
-
                     onClick={() => {
 
                         if (selected !== null) {
@@ -281,121 +340,75 @@ function Trainer({ mode = "all", listId = null }) {
                         }
 
                     }}
-
                 >
 
                     {question.infinitive || question.lemma}
 
-
                 </Verbum>
-
-
-
 
                 {question.answers.map((answer, index) => (
 
-
                     <AnswerWrapper
-
                         key={index}
-
                         fade={
                             selected === question.correct &&
                             answer !== question.correct
                         }
-
                     >
 
-
                         <AnswerButton
-
                             index={answer}
-
                             correct={question.correct}
-
                             selected={selected}
-
-                            setSelected={setSelected}
-
+                            setSelected={handleAnswer}
                             sounds={sounds}
-
                         >
 
                             {answer}
 
-
                         </AnswerButton>
-
 
                     </AnswerWrapper>
 
-
                 ))}
-
-
-
-
 
                 {selected !== null && (
 
-
                     <ArrowDiv>
 
-
                         <ArrowButton
-
                             onClick={fetchQuestion}
-
-
                             state={
                                 selected === question.correct
                                     ? 1
                                     : 2
                             }
-
                         >
 
                             {">"}
 
-
                         </ArrowButton>
-
 
                     </ArrowDiv>
 
-
                 )}
-
-
 
             </Wrapper>
 
-
-
-
-
             <InfoPanel visible={selected !== null}>
-
 
                 {selected !== null && (
 
-
                     <>
-
 
                         <PanelTitle>
                             Definition
                         </PanelTitle>
 
-
-
                         <Definition>
 
-
                             <ClickableText
-
                                 text={question.definition}
-
                                 onWordClick={(word, e) =>
                                     lookupWord(
                                         word,
@@ -403,37 +416,23 @@ function Trainer({ mode = "all", listId = null }) {
                                         wrapperRef
                                     )
                                 }
-
                             />
 
-
                         </Definition>
-
-
-
 
                         <PanelTitle>
                             Examples
                         </PanelTitle>
 
-
-
-
                         {question.examples?.slice(0, 3).map(
                             (example, index) => (
 
-
                                 <Example key={index}>
-
 
                                     {index + 1}.{" "}
 
-
-
                                     <ClickableText
-
                                         text={example}
-
                                         onWordClick={(word, e) =>
                                             lookupWord(
                                                 word,
@@ -441,47 +440,27 @@ function Trainer({ mode = "all", listId = null }) {
                                                 wrapperRef
                                             )
                                         }
-
                                     />
-
 
                                 </Example>
 
-
                             )
                         )}
-
-
 
                     </>
 
                 )}
 
-
-
             </InfoPanel>
 
-
-
-
-
             <DictionaryPopup
-
                 popup={popup}
-
                 entry={entry}
-
                 onClose={closePopup}
-
             />
 
-
-
         </Page>
-
     );
-
 }
-
 
 export default Trainer;

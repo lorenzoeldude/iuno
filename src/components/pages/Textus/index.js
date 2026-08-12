@@ -1,11 +1,14 @@
 import styled from "styled-components";
 import { useState, useRef, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+
 import ArrowButton from "../../atoms/ArrowButton";
 import LessonLayout from "../../layout/LessonLayout";
 import ClickableText from "../../atoms/ClickableText";
 import DictionaryPopup from "../../atoms/DictionaryPopup";
 import useDictionaryLookup from "../../../hooks/useDictionaryLookups";
+
+import { API_URL } from "../../../config";
 
 const UnderWrapper = styled.div`
     display: flex;
@@ -85,11 +88,15 @@ function Textus() {
         closePopup,
     } = useDictionaryLookup();
 
+    // =====================================================
+    // FETCH LESSON
+    // =====================================================
+
     useEffect(() => {
         async function fetchLesson() {
             try {
                 const response = await fetch(
-                    `${process.env.REACT_APP_API_URL}/api/lessons/${id}`
+                    `${API_URL}/api/lessons/${id}`
                 );
 
                 if (!response.ok) {
@@ -97,16 +104,88 @@ function Textus() {
                 }
 
                 const lesson = await response.json();
+
                 setSentences(lesson.text || []);
+
             } catch (err) {
-                console.error("Error loading lesson:", err);
+                console.error(
+                    "Error loading lesson:",
+                    err
+                );
             }
         }
 
         fetchLesson();
     }, [id]);
 
+    // =====================================================
+    // COMPLETE TEXT SECTION
+    // =====================================================
+
+    const completeTextSection = async () => {
+
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+            console.error(
+                "No authentication token found"
+            );
+
+            navigate(`/lessons/${id}/vocabula`);
+
+            return;
+        }
+
+        try {
+
+            const response = await fetch(
+                `${API_URL}/api/lessons/${id}/progress`,
+                {
+                    method: "PUT",
+
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+
+                    body: JSON.stringify({
+                        section: "text",
+                    }),
+                }
+            );
+
+            if (!response.ok) {
+
+                console.error(
+                    "Failed to save text progress:",
+                    response.status
+                );
+
+                return;
+            }
+
+            console.log(
+                "Text section completed"
+            );
+
+            navigate(`/lessons/${id}/vocabula`);
+
+        } catch (err) {
+
+            console.error(
+                "TEXT PROGRESS ERROR:",
+                err
+            );
+
+        }
+    };
+
+    // =====================================================
+    // LOADING
+    // =====================================================
+
     if (sentences.length === 0) {
+
         return (
             <LessonLayout
                 active="textus"
@@ -116,21 +195,43 @@ function Textus() {
                 Loading...
             </LessonLayout>
         );
+
     }
 
+    // =====================================================
+    // NEXT SENTENCE
+    // =====================================================
+
     const nextSentence = () => {
+
         if (index < sentences.length - 1) {
+
             setIndex(index + 1);
+
         } else {
-            navigate(`/lessons/${id}/vocabula`);
+
+            completeTextSection();
+
         }
     };
 
+    // =====================================================
+    // PREVIOUS SENTENCE
+    // =====================================================
+
     const previousSentence = () => {
+
         if (index > 0) {
+
             setIndex(index - 1);
+
         }
+
     };
+
+    // =====================================================
+    // PROGRESS
+    // =====================================================
 
     const progress =
         sentences.length > 1
@@ -138,32 +239,53 @@ function Textus() {
             : 100;
 
     return (
+
         <LessonLayout
             active="textus"
             completed={[]}
             progress={progress}
         >
+
             <UnderWrapper ref={wrapperRef}>
+
                 <ContentWrapper>
+
                     <TextDiv>
+
                         {index === 0 ? (
+
                             <FirstText>
+
                                 <ClickableText
                                     text={sentences[index].text}
                                     onWordClick={(word, e) =>
-                                        lookupWord(word, e, wrapperRef)
+                                        lookupWord(
+                                            word,
+                                            e,
+                                            wrapperRef
+                                        )
                                     }
                                 />
+
                             </FirstText>
+
                         ) : (
+
                             <Text>
+
                                 <ClickableText
                                     text={sentences[index].text}
                                     onWordClick={(word, e) =>
-                                        lookupWord(word, e, wrapperRef)
+                                        lookupWord(
+                                            word,
+                                            e,
+                                            wrapperRef
+                                        )
                                     }
                                 />
+
                             </Text>
+
                         )}
 
                         <DictionaryPopup
@@ -171,19 +293,29 @@ function Textus() {
                             entry={entry}
                             onClose={closePopup}
                         />
+
                     </TextDiv>
+
                 </ContentWrapper>
+
             </UnderWrapper>
 
             <ArrowDiv>
-                <ArrowButton onClick={previousSentence}>
+
+                <ArrowButton
+                    onClick={previousSentence}
+                >
                     {"<"}
                 </ArrowButton>
 
-                <ArrowButton onClick={nextSentence}>
+                <ArrowButton
+                    onClick={nextSentence}
+                >
                     {">"}
                 </ArrowButton>
+
             </ArrowDiv>
+
         </LessonLayout>
     );
 }

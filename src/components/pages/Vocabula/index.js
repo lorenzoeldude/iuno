@@ -8,12 +8,15 @@ import LessonLayout from "../../layout/LessonLayout";
 
 import useSoundEffects from "../../../hooks/useSoundEffects";
 
+import { API_URL } from "../../../config";
 
 const Wrapper = styled.div`
     width: 100%;
     max-width: 700px;
+
     display: flex;
     flex-direction: column;
+
     flex: 1;
 `;
 
@@ -51,43 +54,155 @@ const Answers = styled.div`
 
 const ArrowDiv = styled.div`
     position: fixed;
+
     left: 50%;
     bottom: 30px;
+
     transform: translateX(-50%);
 `;
 
 function Vocabula() {
 
     const { id } = useParams();
+    const navigate = useNavigate();
 
     const [questions, setQuestions] = useState([]);
-
     const [selected, setSelected] = useState(null);
     const [step, setStep] = useState(0);
 
-    const navigate = useNavigate();
-
     const sounds = useSoundEffects();
 
+    // =====================================================
+    // FETCH VOCABULARY QUESTIONS
+    // =====================================================
+
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_API_URL}/api/lessons/${id}/vocabulary`)
-            .then((res) => res.json())
-            .then((data) => setQuestions(data))
-            .catch(console.error);
+
+        async function fetchVocabulary() {
+
+            try {
+
+                const response = await fetch(
+                    `${API_URL}/api/lessons/${id}/vocabulary`
+                );
+
+                if (!response.ok) {
+                    throw new Error(
+                        "Failed to fetch vocabulary"
+                    );
+                }
+
+                const data = await response.json();
+
+                setQuestions(data);
+
+            } catch (error) {
+
+                console.error(
+                    "Error loading vocabulary:",
+                    error
+                );
+
+            }
+
+        }
+
+        fetchVocabulary();
+
     }, [id]);
 
-    function Next() {
-        if (step < questions.length - 1) {
-            setStep(step + 1);
-            setSelected(null);
-        } else {
-            navigate(`/lessons/${id}/grammatica`);
+    // =====================================================
+    // COMPLETE VOCABULARY SECTION
+    // =====================================================
+
+    async function completeVocabulary() {
+
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+            console.warn(
+                "No auth token. Vocabulary progress will not be saved."
+            );
+
+            return;
         }
+
+        try {
+
+            const response = await fetch(
+                `${API_URL}/api/lessons/${id}/progress`,
+                {
+                    method: "PUT",
+
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+
+                    body: JSON.stringify({
+                        section: "vocabulary",
+                    }),
+                }
+            );
+
+            if (!response.ok) {
+
+                console.error(
+                    "Failed to update vocabulary progress:",
+                    response.status
+                );
+
+            }
+
+        } catch (error) {
+
+            console.error(
+                "VOCABULARY PROGRESS ERROR:",
+                error
+            );
+
+        }
+
     }
 
-    const progress = questions.length > 1 ? (step / (questions.length - 1)) * 100 : 0;
+    // =====================================================
+    // NEXT QUESTION
+    // =====================================================
+
+    async function Next() {
+
+        if (step < questions.length - 1) {
+
+            setStep(step + 1);
+            setSelected(null);
+
+            return;
+        }
+
+        // Last vocabulary question completed.
+
+        await completeVocabulary();
+
+        navigate(
+            `/lessons/${id}/grammatica`
+        );
+    }
+
+    // =====================================================
+    // PROGRESS
+    // =====================================================
+
+    const progress =
+        questions.length > 1
+            ? (step / (questions.length - 1)) * 100
+            : 0;
+
+    // =====================================================
+    // LOADING
+    // =====================================================
 
     if (questions.length === 0) {
+
         return (
             <LessonLayout
                 active="vocabula"
@@ -97,22 +212,40 @@ function Vocabula() {
                 Loading...
             </LessonLayout>
         );
+
     }
+
+    // =====================================================
+    // CURRENT QUESTION
+    // =====================================================
 
     const current = questions[step];
 
-    const displayWord = current.infinitive || current.lemma;
+    const displayWord =
+        current.infinitive ||
+        current.lemma;
 
-    const correctAnswer = questions[step].answers.indexOf(questions[step].correct);
+    const correctAnswer =
+        current.answers.indexOf(
+            current.correct
+        );
+
+    // =====================================================
+    // RENDER
+    // =====================================================
 
     return (
+
         <LessonLayout
             active="vocabula"
             completed={["textus"]}
             progress={progress}
         >
+
             <Wrapper>
+
                 <Content>
+
                     <Verbum
                         state={
                             selected !== null
@@ -122,28 +255,42 @@ function Vocabula() {
                                 : 0
                         }
                     >
+
                         {displayWord}
+
                     </Verbum>
 
                     <Answers>
-                        {questions[step].answers.map((answer, index) => (
-                            <AnswerButton
-                                key={index}
-                                index={index}
-                                correct={correctAnswer}
-                                selected={selected}
-                                setSelected={setSelected}
-                                sounds={sounds}
-                            >
-                                {answer}
-                            </AnswerButton>
-                        ))}
+
+                        {current.answers.map(
+                            (answer, index) => (
+
+                                <AnswerButton
+                                    key={index}
+                                    index={index}
+                                    correct={correctAnswer}
+                                    selected={selected}
+                                    setSelected={setSelected}
+                                    sounds={sounds}
+                                >
+
+                                    {answer}
+
+                                </AnswerButton>
+
+                            )
+                        )}
+
                     </Answers>
+
                 </Content>
+
             </Wrapper>
 
             {selected !== null && (
+
                 <ArrowDiv>
+
                     <ArrowButton
                         onClick={Next}
                         state={
@@ -152,11 +299,17 @@ function Vocabula() {
                                 : 2
                         }
                     >
+
                         {">"}
+
                     </ArrowButton>
+
                 </ArrowDiv>
+
             )}
+
         </LessonLayout>
+
     );
 }
 

@@ -8,11 +8,15 @@ import LessonLayout from "../../layout/LessonLayout";
 
 import useSoundEffects from "../../../hooks/useSoundEffects";
 
+import { API_URL } from "../../../config";
+
 const Wrapper = styled.div`
     width: 100%;
     max-width: 800px;
+
     display: flex;
     flex-direction: column;
+
     flex: 1;
 `;
 
@@ -34,9 +38,8 @@ const Title = styled.h1`
 `;
 
 const Text = styled.p`
-    font-size: clamp(26px, 3vw, 38px);
-    line-height: 1.3;
     font-size: 30px;
+    line-height: 1.3;
     text-align: left;
     margin: 12px 0;
 `;
@@ -53,14 +56,17 @@ const QuizOptions = styled.div`
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
+
     gap: 20px;
     margin-top: 30px;
 `;
 
 const ArrowDiv = styled.div`
     position: fixed;
+
     left: 50%;
     bottom: 30px;
+
     transform: translateX(-50%);
 
     display: flex;
@@ -70,7 +76,6 @@ const ArrowDiv = styled.div`
 function Grammatica() {
 
     const { id } = useParams();
-
     const navigate = useNavigate();
 
     const sounds = useSoundEffects();
@@ -79,38 +84,166 @@ function Grammatica() {
     const [step, setStep] = useState(0);
     const [selected, setSelected] = useState(null);
 
+    // =====================================================
+    // FETCH LESSON
+    // =====================================================
+
     useEffect(() => {
+
         async function fetchLesson() {
+
             try {
+
                 const response = await fetch(
-                    `${process.env.REACT_APP_API_URL}/api/lessons/${id}`
+                    `${API_URL}/api/lessons/${id}`
                 );
 
                 if (!response.ok) {
-                    throw new Error("Failed to fetch lesson");
+                    throw new Error(
+                        "Failed to fetch lesson"
+                    );
                 }
 
                 const lesson = await response.json();
-                setSlides(lesson.grammar || []);
-            } catch (err) {
-                console.error(err);
+
+                setSlides(
+                    lesson.grammar || []
+                );
+
+            } catch (error) {
+
+                console.error(
+                    "Error loading grammar:",
+                    error
+                );
+
             }
+
         }
 
         fetchLesson();
+
     }, [id]);
 
+    // =====================================================
+    // COMPLETE GRAMMAR SECTION
+    // =====================================================
+
+    async function completeGrammar() {
+
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+
+            console.warn(
+                "No auth token. Grammar progress will not be saved."
+            );
+
+            return;
+        }
+
+        try {
+
+            const response = await fetch(
+                `${API_URL}/api/lessons/${id}/progress`,
+                {
+                    method: "PUT",
+
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+
+                    body: JSON.stringify({
+                        section: "grammar",
+                    }),
+                }
+            );
+
+            if (!response.ok) {
+
+                console.error(
+                    "Failed to update grammar progress:",
+                    response.status
+                );
+
+            }
+
+        } catch (error) {
+
+            console.error(
+                "GRAMMAR PROGRESS ERROR:",
+                error
+            );
+
+        }
+
+    }
+
+    // =====================================================
+    // NEXT
+    // =====================================================
+
+    async function Next() {
+
+        if (step < slides.length - 1) {
+
+            setStep(step + 1);
+            setSelected(null);
+
+            return;
+        }
+
+        // =================================================
+        // LAST GRAMMAR SLIDE
+        // =================================================
+
+        await completeGrammar();
+
+        navigate(
+            `/lessons/${id}/examinatio`
+        );
+    }
+
+    // =====================================================
+    // BACK
+    // =====================================================
+
+    function Back() {
+
+        if (step > 0) {
+
+            setStep(step - 1);
+            setSelected(null);
+
+        }
+
+    }
+
+    // =====================================================
+    // LOADING
+    // =====================================================
+
     if (slides.length === 0) {
+
         return (
             <LessonLayout
                 active="grammatica"
-                completed={["textus", "vocabula"]}
+                completed={[
+                    "textus",
+                    "vocabula",
+                ]}
                 progress={0}
             >
                 Loading...
             </LessonLayout>
         );
+
     }
+
+    // =====================================================
+    // CURRENT SLIDE
+    // =====================================================
 
     const current = slides[step];
 
@@ -119,100 +252,147 @@ function Grammatica() {
             ? (step / (slides.length - 1)) * 100
             : 100;
 
-    function Next() {
-        if (step < slides.length - 1) {
-            setStep(step + 1);
-            setSelected(null);
-        } else {
-            navigate(`/lessons/${id}/examinatio`);
-        }
-    }
-
-    function Back() {
-        if (step > 0) {
-            setStep(step - 1);
-            setSelected(null);
-        }
-    }
+    // =====================================================
+    // RENDER
+    // =====================================================
 
     return (
+
         <LessonLayout
             active="grammatica"
-            completed={["textus", "vocabula"]}
+            completed={[
+                "textus",
+                "vocabula",
+            ]}
             progress={progress}
         >
-            <Wrapper>
-                <Content>
-                    {current.type === "explanation" && (
-                        <>
-                            <Title>{current.title}</Title>
 
-                            {current.text.map((line, index) => (
-                                <Text
-                                    key={index}
-                                    dangerouslySetInnerHTML={{ __html: line }}
-                                />
-                            ))}
+            <Wrapper>
+
+                <Content>
+
+                    {current.type === "explanation" && (
+
+                        <>
+                            <Title>
+                                {current.title}
+                            </Title>
+
+                            {current.text.map(
+                                (line, index) => (
+
+                                    <Text
+                                        key={index}
+                                        dangerouslySetInnerHTML={{
+                                            __html: line,
+                                        }}
+                                    />
+
+                                )
+                            )}
+
                         </>
+
                     )}
 
-                    {(current.type === "quizEnding" || current.type === "quizWord") && (
+                    {(current.type === "quizEnding" ||
+                        current.type === "quizWord") && (
+
                         <>
+
                             <Question>
+
                                 {current.sentenceBefore}
 
-                                {current.type === "quizWord" && " "}
+                                {current.type === "quizWord" &&
+                                    " "}
 
                                 <span
                                     style={{
-                                        textDecoration: "underline",
+                                        textDecoration:
+                                            "underline",
                                     }}
                                 >
+
                                     {selected === null
                                         ? "_"
                                         : current.correct}
+
                                 </span>
 
                                 {" "}
 
                                 {current.ending}
+
                             </Question>
 
                             <QuizOptions>
-                                {current.options.map((option) => (
-                                    <AnswerButton
-                                        key={option}
-                                        index={option}
-                                        correct={current.correct}
-                                        selected={selected}
-                                        setSelected={setSelected}
-                                        sounds={sounds}
-                                    >
-                                        {current.type === "quizEnding"
-                                            ? `-${option}`
-                                            : option}
-                                    </AnswerButton>
-                                ))}
+
+                                {current.options.map(
+                                    (option) => (
+
+                                        <AnswerButton
+                                            key={option}
+                                            index={option}
+                                            correct={
+                                                current.correct
+                                            }
+                                            selected={
+                                                selected
+                                            }
+                                            setSelected={
+                                                setSelected
+                                            }
+                                            sounds={sounds}
+                                        >
+
+                                            {current.type ===
+                                            "quizEnding"
+                                                ? `-${option}`
+                                                : option}
+
+                                        </AnswerButton>
+
+                                    )
+                                )}
+
                             </QuizOptions>
+
                         </>
+
                     )}
+
                 </Content>
+
             </Wrapper>
 
-            {(current.type === "explanation" || selected !== null) && (
+            {(current.type === "explanation" ||
+                selected !== null) && (
+
                 <ArrowDiv>
+
                     {step > 0 && (
-                        <ArrowButton onClick={Back}>
+
+                        <ArrowButton
+                            onClick={Back}
+                        >
                             {"<"}
                         </ArrowButton>
+
                     )}
 
-                    <ArrowButton onClick={Next}>
+                    <ArrowButton
+                        onClick={Next}
+                    >
                         {">"}
                     </ArrowButton>
+
                 </ArrowDiv>
+
             )}
+
         </LessonLayout>
+
     );
 }
 

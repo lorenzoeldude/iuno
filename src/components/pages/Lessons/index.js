@@ -29,7 +29,8 @@ const LockedCardWrapper = styled.div`
     position: relative;
     width: 100%;
     opacity: ${({ locked }) => (locked ? 0.5 : 1)};
-    cursor: ${({ locked }) => (locked ? "not-allowed" : "pointer")};
+    cursor: ${({ locked }) =>
+        locked ? "not-allowed" : "pointer"};
 `;
 
 const LockIcon = styled(FaLock)`
@@ -57,15 +58,28 @@ const Title = styled.h1`
     line-height: 1.05;
 
     font-size: 34px;
+`;
 
+const Status = styled.div`
+    margin-top: 10px;
+
+    font-family: "Cormorant Garamond", serif;
+    font-size: 17px;
+    text-align: center;
+
+    opacity: ${({ completed }) =>
+        completed ? 0.65 : 0.5};
 `;
 
 function Lessons() {
     const navigate = useNavigate();
 
     const [lessons, setLessons] = useState([]);
+    const [lessonProgress, setLessonProgress] = useState({});
 
-    // const unlockedLesson = 1;
+    // =====================================================
+    // FETCH LESSONS
+    // =====================================================
 
     useEffect(() => {
         async function fetchLessons() {
@@ -75,26 +89,116 @@ function Lessons() {
                 );
 
                 if (!response.ok) {
-                    throw new Error("Failed to load lessons");
+                    throw new Error(
+                        `Failed to load lessons: ${response.status}`
+                    );
                 }
 
                 const data = await response.json();
+
                 setLessons(data);
             } catch (err) {
-                console.error(err);
+                console.error(
+                    "LESSONS FETCH ERROR:",
+                    err
+                );
             }
         }
 
         fetchLessons();
     }, []);
 
+    // =====================================================
+    // FETCH USER LESSON PROGRESS
+    // =====================================================
+
+    useEffect(() => {
+        if (lessons.length === 0) {
+            return;
+        }
+
+        async function fetchLessonProgress() {
+            const token =
+                localStorage.getItem("token");
+
+            if (!token) {
+                return;
+            }
+
+            const publishedLessons =
+                lessons.filter(
+                    (lesson) =>
+                        lesson.is_published
+                );
+
+            const progressMap = {};
+
+            await Promise.all(
+                publishedLessons.map(
+                    async (lesson) => {
+                        try {
+                            const response =
+                                await fetch(
+                                    `${process.env.REACT_APP_API_URL}/api/lessons/${lesson.id}/progress`,
+                                    {
+                                        headers: {
+                                            Authorization:
+                                                `Bearer ${token}`,
+                                        },
+                                    }
+                                );
+
+                            if (!response.ok) {
+                                console.error(
+                                    `Failed to fetch progress for lesson ${lesson.id}: ${response.status}`
+                                );
+
+                                return;
+                            }
+
+                            const progress =
+                                await response.json();
+
+                            console.log(
+                                `LESSON ${lesson.id} PROGRESS:`,
+                                progress
+                            );
+
+                            progressMap[lesson.id] =
+                                progress;
+                        } catch (err) {
+                            console.error(
+                                `LESSON ${lesson.id} PROGRESS ERROR:`,
+                                err
+                            );
+                        }
+                    }
+                )
+            );
+
+            setLessonProgress(progressMap);
+        }
+
+        fetchLessonProgress();
+    }, [lessons]);
+
+    // =====================================================
+    // LOADING
+    // =====================================================
+
     if (lessons.length === 0) {
         return (
             <Wrapper>
-                <Container>Loading...</Container>
+                <Container>
+                    Loading...
+                </Container>
             </Wrapper>
         );
     }
+
+    // =====================================================
+    // DISPLAYED LESSONS
+    // =====================================================
 
     const displayedLessons = [
         ...lessons,
@@ -105,43 +209,141 @@ function Lessons() {
         },
     ];
 
+    // =====================================================
+    // LESSON STATUS
+    // =====================================================
+
+    function getLessonStatus(lesson) {
+        const progress =
+            lessonProgress[lesson.id];
+
+        if (!progress) {
+            return {
+                started: false,
+                completed: false,
+                percentage: 0,
+            };
+        }
+
+        let completedSteps = 0;
+
+        if (progress.textCompleted) {
+            completedSteps++;
+        }
+
+        if (progress.vocabularyCompleted) {
+            completedSteps++;
+        }
+
+        if (progress.grammarCompleted) {
+            completedSteps++;
+        }
+
+        if (progress.examinatioCompleted) {
+            completedSteps++;
+        }
+
+        const percentage = Math.round(
+            (completedSteps / 4) * 100
+        );
+
+        const completed =
+            progress.examinatioCompleted === true;
+
+        const started =
+            completedSteps > 0 ||
+            Boolean(progress.startedAt);
+
+        return {
+            started,
+            completed,
+            percentage,
+        };
+    }
+
+    // =====================================================
+    // RENDER
+    // =====================================================
+
     return (
         <Wrapper>
             <Container>
-                {displayedLessons.map((lesson, index) => {
-                    const lessonNumber = lesson.id;
-                    const locked = lesson.comingSoon || !lesson.is_published;
+                {displayedLessons.map(
+                    (lesson, index) => {
+                        const lessonNumber =
+                            lesson.id;
 
-                    return (
-                        <Fragment key={lesson.id}>
-                            <CardWrapper>
-                                <LockedCardWrapper locked={locked}>
-                                    {locked && <LockIcon />}
+                        const locked =
+                            lesson.comingSoon ||
+                            !lesson.is_published;
 
-                                    <Card
-                                        title={lessonNumber}
-                                        size="small"
-                                        onClick={() => {
-                                            if (!locked) {
-                                                navigate(
-                                                    `/lessons/${lesson.id}`
-                                                );
-                                            }
-                                        }}
+                        const status =
+                            getLessonStatus(
+                                lesson
+                            );
+
+                        return (
+                            <Fragment
+                                key={lesson.id}
+                            >
+                                <CardWrapper>
+                                    <LockedCardWrapper
+                                        locked={
+                                            locked
+                                        }
                                     >
-                                        <Title>{lesson.title}</Title>
-                                    </Card>
-                                </LockedCardWrapper>
-                            </CardWrapper>
+                                        {locked && (
+                                            <LockIcon />
+                                        )}
 
-                            {index < displayedLessons.length - 1 && (
-                                <ArrowWrapper>
-                                    <FaArrowDown />
-                                </ArrowWrapper>
-                            )}
-                        </Fragment>
-                    );
-                })}
+                                        <Card
+                                            title={
+                                                lessonNumber
+                                            }
+                                            size="small"
+                                            onClick={() => {
+                                                if (
+                                                    !locked
+                                                ) {
+                                                    navigate(
+                                                        `/lessons/${lesson.id}`
+                                                    );
+                                                }
+                                            }}
+                                        >
+                                            <Title>
+                                                {
+                                                    lesson.title
+                                                }
+                                            </Title>
+
+                                            {!locked &&
+                                                status.started && (
+                                                    <Status
+                                                        completed={
+                                                            status.completed
+                                                        }
+                                                    >
+                                                        {status.completed
+                                                            ? "✓ Completed"
+                                                            : `In progress · ${status.percentage}%`}
+                                                    </Status>
+                                                )}
+                                        </Card>
+                                    </LockedCardWrapper>
+                                </CardWrapper>
+
+                                {index <
+                                    displayedLessons.length -
+                                        1 && (
+                                    <ArrowWrapper>
+                                        <FaArrowDown />
+                                    </ArrowWrapper>
+                                )}
+                            </Fragment>
+                        );
+                    }
+                )}
             </Container>
         </Wrapper>
     );
