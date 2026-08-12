@@ -49,7 +49,9 @@ const Input = styled.input`
     color: ${({ theme }) => theme.colors.text};
     background: ${({ theme }) => theme.colors.surface};
 
-    border: 1px solid ${({ theme }) => theme.colors.border};
+    border: 1px solid
+        ${({ theme, $invalid }) =>
+            $invalid ? theme.colors.error : theme.colors.border};
 
     transition: border-color ${({ theme }) => theme.transition.fast};
 
@@ -59,8 +61,17 @@ const Input = styled.input`
 
     &:focus {
         outline: none;
-        border-color: ${({ theme }) => theme.colors.primary};
+        border-color: ${({ theme, $invalid }) =>
+            $invalid ? theme.colors.error : theme.colors.primary};
     }
+`;
+
+const ValidationText = styled.p`
+    margin-top: -${({ theme }) => theme.spacing.sm};
+    margin-bottom: ${({ theme }) => theme.spacing.md};
+
+    font-size: ${({ theme }) => theme.fontSizes.sm};
+    color: ${({ theme }) => theme.colors.error};
 `;
 
 const Button = styled.button`
@@ -111,7 +122,6 @@ const StyledLink = styled(Link)`
 `;
 
 function RegisterPage() {
-
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -120,13 +130,44 @@ function RegisterPage() {
     const [registered, setRegistered] = useState(false);
     const [status, setStatus] = useState("");
 
+    const usernameIsValid = /^[a-zA-Z0-9_]{3,20}$/.test(username);
+
+    function getUsernameError() {
+        if (!username) {
+            return "";
+        }
+
+        if (/\s/.test(username)) {
+            return "No spaces allowed.";
+        }
+
+        if (username.length < 3) {
+            return "Username must be at least 3 characters.";
+        }
+
+        if (username.length > 20) {
+            return "Username must be at most 20 characters.";
+        }
+
+        if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+            return "Username can only contain letters, numbers, and underscores.";
+        }
+
+        return "";
+    }
+
+    const usernameError = getUsernameError();
+
     async function handleRegister() {
+        if (!usernameIsValid) {
+            setStatus("Please choose a valid username.");
+            return;
+        }
 
         setLoading(true);
         setStatus("");
 
         try {
-
             const res = await fetch(
                 `${API_URL}/api/auth/register`,
                 {
@@ -135,8 +176,8 @@ function RegisterPage() {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
-                        email,
-                        username,
+                        email: email.trim(),
+                        username: username.trim().toLowerCase(),
                         password,
                     }),
                 }
@@ -149,11 +190,8 @@ function RegisterPage() {
             }
 
             setRegistered(true);
-
         } catch (err) {
-
-            setStatus("Failed to register.");
-
+            setStatus(err.message || "Failed to register.");
         }
 
         setLoading(false);
@@ -161,9 +199,7 @@ function RegisterPage() {
 
     return (
         <Wrapper>
-
             <Card>
-
                 {!registered ? (
                     <>
                         <Title>Register</Title>
@@ -183,8 +219,22 @@ function RegisterPage() {
                             type="text"
                             placeholder="username"
                             value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            maxLength={20}
+                            autoCapitalize="none"
+                            autoCorrect="off"
+                            spellCheck={false}
+                            $invalid={Boolean(usernameError)}
+                            onChange={(e) => {
+                                setUsername(e.target.value);
+                                setStatus("");
+                            }}
                         />
+
+                        {usernameError && (
+                            <ValidationText>
+                                {usernameError}
+                            </ValidationText>
+                        )}
 
                         <Input
                             type="password"
@@ -195,7 +245,12 @@ function RegisterPage() {
 
                         <Button
                             onClick={handleRegister}
-                            disabled={loading}
+                            disabled={
+                                loading ||
+                                !email.trim() ||
+                                !usernameIsValid ||
+                                !password
+                            }
                         >
                             {loading ? "Creating..." : "Create Account"}
                         </Button>
@@ -228,9 +283,7 @@ function RegisterPage() {
                         </Status>
                     </>
                 )}
-
             </Card>
-
         </Wrapper>
     );
 }

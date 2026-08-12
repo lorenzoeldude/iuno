@@ -111,8 +111,7 @@ const StyledLink = styled(Link)`
 `;
 
 function LoginPage() {
-
-    const [email, setEmail] = useState("");
+    const [identifier, setIdentifier] = useState("");
     const [password, setPassword] = useState("");
 
     const [loading, setLoading] = useState(false);
@@ -121,26 +120,25 @@ function LoginPage() {
     const navigate = useNavigate();
 
     async function handleLogin() {
-
         setLoading(true);
         setStatus("");
 
         try {
-
             const res = await fetch(`${API_URL}/api/auth/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    email,
+                    identifier,
                     password,
                 }),
             });
 
             // ================================
-            // SAFE RESPONSE HANDLING (FIX)
+            // SAFE RESPONSE HANDLING
             // ================================
+
             const text = await res.text();
 
             if (!text) {
@@ -158,12 +156,15 @@ function LoginPage() {
             console.log("LOGIN RESPONSE:", data);
 
             if (!res.ok) {
-                throw new Error(data.error || `Login failed (${res.status})`);
+                throw new Error(
+                    data.error || `Login failed (${res.status})`
+                );
             }
 
             // ================================
-            // TOKEN EXTRACTION (ROBUST)
+            // TOKEN EXTRACTION
             // ================================
+
             const token =
                 data.token ||
                 data.access_token ||
@@ -177,18 +178,24 @@ function LoginPage() {
             localStorage.setItem("token", token);
 
             if (data.user) {
-                localStorage.setItem("user", JSON.stringify(data.user));
+                localStorage.setItem(
+                    "user",
+                    JSON.stringify(data.user)
+                );
             }
 
             setStatus("Logged in.");
 
             setTimeout(() => {
-                navigate("/");
+                navigate("/user");
             }, 700);
 
         } catch (err) {
             console.error(err);
-            setStatus(err.message || "Invalid email or password.");
+
+            setStatus(
+                err.message || "Invalid email/username or password."
+            );
         }
 
         setLoading(false);
@@ -196,7 +203,6 @@ function LoginPage() {
 
     return (
         <Wrapper>
-
             <Card>
 
                 <Title>Login</Title>
@@ -206,17 +212,26 @@ function LoginPage() {
                 </Subtitle>
 
                 <Input
-                    type="email"
-                    placeholder="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    type="text"
+                    placeholder="email or username"
+                    value={identifier}
+                    autoCapitalize="none"
+                    autoCorrect="off"
+                    spellCheck={false}
+                    onChange={(e) => {
+                        setIdentifier(e.target.value);
+                        setStatus("");
+                    }}
                 />
 
                 <Input
                     type="password"
                     placeholder="password"
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e) => {
+                        setPassword(e.target.value);
+                        setStatus("");
+                    }}
                     onKeyDown={(e) => {
                         if (e.key === "Enter") {
                             handleLogin();
@@ -226,7 +241,11 @@ function LoginPage() {
 
                 <Button
                     onClick={handleLogin}
-                    disabled={loading}
+                    disabled={
+                        loading ||
+                        !identifier.trim() ||
+                        !password
+                    }
                 >
                     {loading ? "Logging in..." : "Login"}
                 </Button>
@@ -243,7 +262,6 @@ function LoginPage() {
                 </BottomText>
 
             </Card>
-
         </Wrapper>
     );
 }

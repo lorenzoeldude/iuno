@@ -31,6 +31,7 @@ import DictionaryPage from "../../pages/DictionaryPage";
 import VerifyEmail from "../../pages/VerifyEmail";
 import LessonIntroduction from "../../pages/LessonIntroduction";
 import AdminLessonEditor from "../../pages/AdminLessonEditor";
+import HomeRoute from "../../../routes/AdminRoutes/HomeRoute";
 
 const Body = styled.div`
     display: flex;
@@ -76,7 +77,14 @@ function AppContent() {
                     isLessonPage={isLessonPage}
                 >
                     <Routes>
-                        <Route path="/" element={<StartPage />} />
+                        <Route
+                            path="/"
+                            element={
+                                <HomeRoute>
+                                    <StartPage />
+                                </HomeRoute>
+                            }
+                        />
 
                         <Route
                             path="/admin"
