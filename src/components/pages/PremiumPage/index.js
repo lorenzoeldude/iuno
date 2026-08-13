@@ -472,8 +472,8 @@ function PremiumPage() {
                             </Check>
 
                             <span>
-                                Unlimited Latin
-                                vocabulary training
+                                Unlimited vocabulary
+                                training
                             </span>
                         </Feature>
 
@@ -484,7 +484,7 @@ function PremiumPage() {
 
                             <span>
                                 Full access to
-                                premium lessons
+                                all lessons
                             </span>
                         </Feature>
 
@@ -494,19 +494,8 @@ function PremiumPage() {
                             </Check>
 
                             <span>
-                                Advanced spaced
-                                repetition training
-                            </span>
-                        </Feature>
-
-                        <Feature>
-                            <Check>
-                                ✓
-                            </Check>
-
-                            <span>
-                                Detailed learning
-                                statistics
+                                Add unlimited words
+                                to your vocabulary list
                             </span>
                         </Feature>
 
