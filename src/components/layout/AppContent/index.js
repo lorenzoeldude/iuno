@@ -32,6 +32,9 @@ import VerifyEmail from "../../pages/VerifyEmail";
 import LessonIntroduction from "../../pages/LessonIntroduction";
 import AdminLessonEditor from "../../pages/AdminLessonEditor";
 import HomeRoute from "../../../routes/AdminRoutes/HomeRoute";
+import PremiumPage from "../../pages/PremiumPage";
+import PaymentSuccessPage from "../../pages/PaymentSuccessPage";
+import PaymentCancel from "../../pages/PaymentCancel";
 
 const Body = styled.div`
     display: flex;
@@ -157,6 +160,16 @@ function AppContent() {
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/user" element={<UserPage />} />
                         <Route path="/user/settings" element={<UserSettings />} />
+
+                        <Route path="/premium" element={<PremiumPage />} />
+                        <Route
+                            path="/payment/success"
+                            element={<PaymentSuccessPage />}
+                        />
+                        <Route
+                            path="/payment/cancel"
+                            element={<PaymentCancel />}
+                        />
 
                         <Route path="/legalnotice" element={<Impressum />} />
                         <Route path="/privacy" element={<PrivacyPolicy />} />

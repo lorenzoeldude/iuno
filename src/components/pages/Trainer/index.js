@@ -144,6 +144,84 @@ const ArrowDiv = styled.div`
     }
 `;
 
+// =====================================================
+// ANONYMOUS LIMIT
+// =====================================================
+
+const LimitWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    max-width: 520px;
+
+    padding: 70px 30px;
+
+    text-align: center;
+`;
+
+const LimitTitle = styled.h2`
+    margin: 0 0 16px;
+
+    font-size: 32px;
+    font-weight: 400;
+    line-height: 1.2;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        font-size: 27px;
+    }
+`;
+
+const LimitText = styled.p`
+    margin: 0;
+
+    max-width: 430px;
+
+    font-size: 21px;
+    line-height: 1.6;
+
+    opacity: 0.75;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        font-size: 19px;
+    }
+`;
+
+const LoginButton = styled.button`
+    margin-top: 28px;
+
+    padding: 11px 30px;
+
+    border: 1px solid currentColor;
+    border-radius: 2px;
+
+    background: transparent;
+
+    color: inherit;
+
+    font-family: inherit;
+    font-size: 19px;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        opacity 0.2s ease;
+
+    &:hover {
+        background: currentColor;
+        color: ${({ theme }) =>
+            theme.colors?.background || "white"};
+    }
+
+    &:active {
+        opacity: 0.7;
+    }
+`;
+
 function Trainer({ mode = "all", listId = null }) {
 
     const [question, setQuestion] = useState(null);
@@ -200,14 +278,32 @@ function Trainer({ mode = "all", listId = null }) {
 
             const headers = {};
 
-            if (mode === "list" && token) {
+            if (token) {
                 headers.Authorization = `Bearer ${token}`;
             }
 
-            const res = await fetch(url, { headers });
+            const res = await fetch(url, {
+                headers,
+                credentials: "include",
+            });
+
+            // =================================================
+            // ANONYMOUS DAILY LIMIT
+            // =================================================
+
+            if (res.status === 429) {
+
+                setQuestion({
+                    limitReached: true,
+                });
+
+                return;
+            }
 
             if (!res.ok) {
-                throw new Error("Failed to fetch trainer question");
+                throw new Error(
+                    "Failed to fetch trainer question"
+                );
             }
 
             const data = await res.json();
@@ -218,9 +314,11 @@ function Trainer({ mode = "all", listId = null }) {
 
             console.error(err);
 
-        }
+        } finally {
 
-        setLoading(false);
+            setLoading(false);
+
+        }
 
     }, [mode, listId]);
 
@@ -319,6 +417,37 @@ function Trainer({ mode = "all", listId = null }) {
 
         return <Wrapper />;
 
+    }
+
+    // =====================================================
+    // ANONYMOUS DAILY LIMIT REACHED
+    // =====================================================
+
+    if (question.limitReached) {
+
+        return (
+
+            <LimitWrapper>
+
+                <LimitTitle>
+                    Daily limit reached
+                </LimitTitle>
+
+                <LimitText>
+                    You've used your 10 free training
+                    questions for today.
+                    Log in to get more questions.
+                </LimitText>
+
+                <LoginButton
+                    onClick={() => navigate("/login")}
+                >
+                    Log in
+                </LoginButton>
+
+            </LimitWrapper>
+
+        );
     }
 
     return (

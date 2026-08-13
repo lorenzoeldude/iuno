@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { API_URL } from "../../../config";
 
 import Card from "../../atoms/Card";
+import StripeTest from "../StripeTest";
 
 const Wrapper = styled.div`
     width: 100%;
@@ -183,6 +184,8 @@ function AdminPage() {
 
                     </Card>
                 </Grid>
+
+            <StripeTest />
             </Container>
 
         </Wrapper>

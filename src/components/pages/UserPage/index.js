@@ -120,6 +120,81 @@ const StatLabel = styled.div`
     opacity: 0.55;
 `;
 
+const PremiumBox = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 24px;
+
+    border-top: 1px solid ${({ theme }) => theme.colors.border};
+    border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+
+    gap: 24px;
+
+    @media (max-width: 650px) {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+`;
+
+const PremiumInfo = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+`;
+
+const PremiumTitle = styled.div`
+    font-size: 22px;
+    font-weight: 600;
+`;
+
+const PremiumStatus = styled.div`
+    font-size: 14px;
+
+    opacity: 0.6;
+`;
+
+const PremiumDescription = styled.div`
+    margin-top: 4px;
+
+    font-size: 14px;
+    line-height: 1.5;
+
+    opacity: 0.7;
+`;
+
+const PremiumButton = styled.button`
+    flex-shrink: 0;
+
+    padding: 11px 20px;
+
+    border: 1px solid ${({ theme }) => theme.colors.border};
+
+    background: ${({ theme }) => theme.colors.card};
+    color: ${({ theme }) => theme.colors.text};
+
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        opacity ${({ theme }) => theme.transition.fast},
+        transform ${({ theme }) => theme.transition.fast};
+
+    &:hover:not(:disabled) {
+        opacity: 0.8;
+        transform: translateY(-1px);
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: default;
+    }
+`;
+
 const Grid = styled.div`
     display: grid;
 
@@ -243,9 +318,18 @@ function UserPage() {
     const [lessons, setLessons] = useState([]);
     const [lessonProgress, setLessonProgress] = useState({});
 
+    const [billing, setBilling] = useState(null);
+    const [billingLoading, setBillingLoading] =
+        useState(true);
+    const [billingError, setBillingError] =
+        useState("");
+    // const [portalLoading, setPortalLoading] =
+    //     useState(false);
+
     useEffect(() => {
         const token = localStorage.getItem("token");
-        const storedUser = localStorage.getItem("user");
+        const storedUser =
+            localStorage.getItem("user");
 
         if (!token || !storedUser) {
             navigate("/login");
@@ -253,7 +337,8 @@ function UserPage() {
         }
 
         try {
-            const parsedUser = JSON.parse(storedUser);
+            const parsedUser =
+                JSON.parse(storedUser);
 
             setUser(parsedUser);
 
@@ -281,7 +366,8 @@ function UserPage() {
                     `${API_URL}/api/training/stats`,
                     {
                         headers: {
-                            Authorization: `Bearer ${token}`,
+                            Authorization:
+                                `Bearer ${token}`,
                         },
                     }
                 );
@@ -292,7 +378,8 @@ function UserPage() {
                     );
                 }
 
-                const data = await response.json();
+                const data =
+                    await response.json();
 
                 setTrainingStats(data);
             } catch (err) {
@@ -309,9 +396,10 @@ function UserPage() {
 
         async function fetchLessonProgress() {
             try {
-                const lessonsResponse = await fetch(
-                    `${API_URL}/api/lessons`
-                );
+                const lessonsResponse =
+                    await fetch(
+                        `${API_URL}/api/lessons`
+                    );
 
                 if (!lessonsResponse.ok) {
                     throw new Error(
@@ -328,7 +416,9 @@ function UserPage() {
                             lesson.is_published
                     );
 
-                setLessons(publishedLessons);
+                setLessons(
+                    publishedLessons
+                );
 
                 const progressResults =
                     await Promise.all(
@@ -346,7 +436,9 @@ function UserPage() {
                                             }
                                         );
 
-                                    if (!response.ok) {
+                                    if (
+                                        !response.ok
+                                    ) {
                                         return [
                                             lesson.id,
                                             null,
@@ -379,12 +471,15 @@ function UserPage() {
 
                 progressResults.forEach(
                     ([lessonId, progress]) => {
-                        progressMap[lessonId] =
-                            progress;
+                        progressMap[
+                            lessonId
+                        ] = progress;
                     }
                 );
 
-                setLessonProgress(progressMap);
+                setLessonProgress(
+                    progressMap
+                );
             } catch (err) {
                 console.error(
                     "LESSON PROGRESS ERROR:",
@@ -393,9 +488,109 @@ function UserPage() {
             }
         }
 
+        // =====================================================
+        // FETCH BILLING STATUS
+        // =====================================================
+
+        async function fetchBillingStatus() {
+            try {
+                const response =
+                    await fetch(
+                        `${API_URL}/api/billing/status`,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ${token}`,
+                            },
+                        }
+                    );
+
+                if (!response.ok) {
+                    throw new Error(
+                        `Failed to fetch billing status: ${response.status}`
+                    );
+                }
+
+                const data =
+                    await response.json();
+
+                setBilling(data);
+            } catch (err) {
+                console.error(
+                    "BILLING STATUS ERROR:",
+                    err
+                );
+
+                setBillingError(
+                    "Unable to load subscription status."
+                );
+            } finally {
+                setBillingLoading(false);
+            }
+        }
+
         fetchTrainingStats();
         fetchLessonProgress();
+        fetchBillingStatus();
     }, [navigate]);
+
+    // =====================================================
+    // CUSTOMER PORTAL
+    // =====================================================
+
+    // async function openCustomerPortal() {
+    //     try {
+    //         setPortalLoading(true);
+    //         setBillingError("");
+
+    //         const token =
+    //             localStorage.getItem("token");
+
+    //         const response = await fetch(
+    //             `${API_URL}/api/stripe/create-portal-session`,
+    //             {
+    //                 method: "POST",
+
+    //                 headers: {
+    //                     Authorization:
+    //                         `Bearer ${token}`,
+    //                 },
+    //             }
+    //         );
+
+    //         const data =
+    //             await response.json();
+
+    //         if (!response.ok) {
+    //             throw new Error(
+    //                 data.error ||
+    //                 data.message ||
+    //                 "Failed to open subscription management."
+    //             );
+    //         }
+
+    //         if (!data.url) {
+    //             throw new Error(
+    //                 "Stripe did not return a portal URL."
+    //             );
+    //         }
+
+    //         window.location.href =
+    //             data.url;
+    //     } catch (err) {
+    //         console.error(
+    //             "CUSTOMER PORTAL ERROR:",
+    //             err
+    //         );
+
+    //         setBillingError(
+    //             err.message ||
+    //             "Unable to open subscription management."
+    //         );
+
+    //         setPortalLoading(false);
+    //     }
+    // }
 
     // =====================================================
     // LOGOUT
@@ -438,12 +633,12 @@ function UserPage() {
     // LESSON STATS
     // =====================================================
 
-    // A lesson is considered completed once
-    // the user has submitted the exam and received a score.
     const completedLessons =
         lessons.filter((lesson) => {
             const score =
-                lessonProgress[lesson.id]?.score;
+                lessonProgress[
+                    lesson.id
+                ]?.score;
 
             return (
                 score !== null &&
@@ -454,8 +649,26 @@ function UserPage() {
     const totalLessons =
         lessons.length;
 
+    // =====================================================
+    // BILLING DISPLAY
+    // =====================================================
+
+    function formatBillingDate(date) {
+        return new Date(
+            date
+        ).toLocaleDateString(
+            undefined,
+            {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+            }
+        );
+    }
+
     return (
         <Wrapper>
+
             <Header>
                 <Title>
                     {username}
@@ -478,6 +691,7 @@ function UserPage() {
                 </SectionHeading>
 
                 <Stats>
+
                     <Stat>
                         <StatValue>
                             🪙 {sestertii}
@@ -519,7 +733,119 @@ function UserPage() {
                             Lessons Completed
                         </StatLabel>
                     </Stat>
+
                 </Stats>
+            </Section>
+
+            {/* =====================================================
+                PREMIUM
+            ===================================================== */}
+
+            <Section>
+
+                <SectionHeading>
+                    Subscription
+                </SectionHeading>
+
+                {billingLoading ? (
+                    <PremiumBox>
+
+                        <PremiumInfo>
+
+                            <PremiumTitle>
+                                Loading...
+                            </PremiumTitle>
+
+                        </PremiumInfo>
+
+                    </PremiumBox>
+                ) : billing?.is_premium ? (
+                    <PremiumBox>
+
+                        <PremiumInfo>
+
+                            <PremiumTitle>
+                                IUNONI Premium
+                            </PremiumTitle>
+
+                            <PremiumStatus>
+                                {billing.status ===
+                                "active"
+                                    ? billing.cancel_at_period_end
+                                        ? "Active · Cancels at end of billing period"
+                                        : "Active"
+                                    : billing.status}
+                            </PremiumStatus>
+
+                            {billing.current_period_end && (
+                                <PremiumDescription>
+                                    {billing.cancel_at_period_end
+                                        ? `Your Premium access remains active until ${formatBillingDate(
+                                            billing.current_period_end
+                                        )}.`
+                                        : `Your subscription renews on ${formatBillingDate(
+                                            billing.current_period_end
+                                        )}.`}
+                                </PremiumDescription>
+                            )}
+
+                        </PremiumInfo>
+
+                        {/* <PremiumButton
+                            onClick={
+                                openCustomerPortal
+                            }
+                            disabled={
+                                portalLoading
+                            }
+                        >
+                            {portalLoading
+                                ? "Opening..."
+                                : "Manage Subscription"}
+                        </PremiumButton> */}
+
+                    </PremiumBox>
+                ) : (
+                    <PremiumBox>
+
+                        <PremiumInfo>
+
+                            <PremiumTitle>
+                                IUNONI Premium
+                            </PremiumTitle>
+
+                            <PremiumStatus>
+                                Not subscribed
+                            </PremiumStatus>
+
+                            <PremiumDescription>
+                                Unlock all of
+                                IUNONI's premium
+                                Latin learning
+                                features.
+                            </PremiumDescription>
+
+                        </PremiumInfo>
+
+                        <PremiumButton
+                            onClick={() =>
+                                navigate(
+                                    "/premium"
+                                )
+                            }
+                        >
+                            Upgrade to Premium
+                        </PremiumButton>
+
+                    </PremiumBox>
+                )}
+
+                {billingError && (
+                    <PremiumDescription>
+                        {billingError}
+                    </PremiumDescription>
+                )}
+
             </Section>
 
             {/* =====================================================
@@ -527,11 +853,13 @@ function UserPage() {
             ===================================================== */}
 
             <Section>
+
                 <SectionHeading>
                     Manage
                 </SectionHeading>
 
                 <Grid>
+
                     <Card
                         title="Account Settings"
                         onClick={() =>
@@ -541,13 +869,16 @@ function UserPage() {
                         }
                     >
                         Manage your account,
-                        authentication and preferences.
+                        authentication and
+                        preferences.
                     </Card>
 
                     <Card
                         title="Word List"
                         onClick={() =>
-                            navigate("/user/list")
+                            navigate(
+                                "/user/list"
+                            )
                         }
                     >
                         View and manage your
@@ -558,14 +889,18 @@ function UserPage() {
                         <Card
                             title="Admin Page"
                             onClick={() =>
-                                navigate("/admin")
+                                navigate(
+                                    "/admin"
+                                )
                             }
                         >
                             Add words and view
                             application statistics.
                         </Card>
                     )}
+
                 </Grid>
+
             </Section>
 
             {/* =====================================================
@@ -573,11 +908,13 @@ function UserPage() {
             ===================================================== */}
 
             <Section>
+
                 <SectionHeading>
                     Appearance
                 </SectionHeading>
 
                 <AppearanceControl>
+
                     <AppearanceButton
                         active={
                             theme === "light"
@@ -610,7 +947,9 @@ function UserPage() {
                     >
                         💻 System
                     </AppearanceButton>
+
                 </AppearanceControl>
+
             </Section>
 
             {/* =====================================================
@@ -618,6 +957,7 @@ function UserPage() {
             ===================================================== */}
 
             <BottomArea>
+
                 <div />
 
                 <LogoutButton
@@ -625,7 +965,9 @@ function UserPage() {
                 >
                     Log out
                 </LogoutButton>
+
             </BottomArea>
+
         </Wrapper>
     );
 }
