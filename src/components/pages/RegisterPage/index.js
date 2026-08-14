@@ -3,6 +3,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { API_URL } from "../../../config";
 
+import Button2 from "../../atoms/Button2";
+
 const Wrapper = styled.div`
     width: 100%;
     display: flex;
@@ -63,6 +65,7 @@ const Input = styled.input`
 
     &:focus {
         outline: none;
+
         border-color: ${({ theme, $invalid }) =>
             $invalid
                 ? theme.colors.danger
@@ -78,46 +81,25 @@ const ValidationText = styled.p`
     color: ${({ theme }) => theme.colors.danger};
 `;
 
-const Button = styled.button`
-    width: 100%;
-    padding: 14px;
-
-    font-size: ${({ theme }) => theme.fontSizes.lg};
-    font-weight: ${({ theme }) => theme.fontWeights.semibold};
-
-    border: none;
-
-    cursor: pointer;
-
-    background: ${({ theme }) => theme.colors.primary};
-    color: ${({ theme }) => theme.colors.opposite};
-
-    transition: background ${({ theme }) => theme.transition.fast};
-
-    &:hover:not(:disabled) {
-        background: ${({ theme }) => theme.colors.primaryHover};
-    }
-
-    &:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-    }
-`;
-
 const Status = styled.p`
     margin-top: ${({ theme }) => theme.spacing.lg};
+
     text-align: center;
+
     color: ${({ theme }) => theme.colors.danger};
 `;
 
 const BottomText = styled.p`
     margin-top: ${({ theme }) => theme.spacing.xl};
+
     text-align: center;
 `;
 
 const StyledLink = styled(Link)`
     color: ${({ theme }) => theme.colors.primary};
+
     text-decoration: none;
+
     transition: color ${({ theme }) => theme.transition.fast};
 
     &:hover {
@@ -182,12 +164,16 @@ function RegisterPage() {
                 `${API_URL}/api/auth/register`,
                 {
                     method: "POST",
+
                     headers: {
                         "Content-Type": "application/json",
                     },
+
                     body: JSON.stringify({
                         email: email.trim(),
-                        username: username.trim().toLowerCase(),
+                        username: username
+                            .trim()
+                            .toLowerCase(),
                         password,
                     }),
                 }
@@ -199,27 +185,38 @@ function RegisterPage() {
 
                 if (res.status === 409) {
 
-                    if (data.error === "email already exists") {
+                    if (
+                        data.error ===
+                        "email already exists"
+                    ) {
                         setEmailTaken(true);
                         setUsernameTaken(false);
+
                         setStatus(
                             "An account with this email already exists."
                         );
+
                         return;
                     }
 
-                    if (data.error === "username already exists") {
+                    if (
+                        data.error ===
+                        "username already exists"
+                    ) {
                         setUsernameTaken(true);
                         setEmailTaken(false);
+
                         setStatus(
                             "That username is already taken."
                         );
+
                         return;
                     }
                 }
 
                 setStatus(
-                    data.error || "Failed to register."
+                    data.error ||
+                    "Failed to register."
                 );
 
                 return;
@@ -229,7 +226,10 @@ function RegisterPage() {
 
         } catch (err) {
 
-            console.error("REGISTER ERROR:", err);
+            console.error(
+                "REGISTER ERROR:",
+                err
+            );
 
             setStatus(
                 "Unable to connect to the server."
@@ -242,10 +242,16 @@ function RegisterPage() {
 
     return (
         <Wrapper>
+
             <Card>
+
                 {!registered ? (
+
                     <>
-                        <Title>Register</Title>
+
+                        <Title>
+                            Register
+                        </Title>
 
                         <Subtitle>
                             Create your IUNONI account.
@@ -257,10 +263,10 @@ function RegisterPage() {
                             value={email}
                             $invalid={emailTaken}
                             onChange={(e) => {
-                                setEmail(e.target.value);
+                                setEmail(
+                                    e.target.value
+                                );
 
-                                // Remove the red border as soon
-                                // as the user changes the email.
                                 setEmailTaken(false);
 
                                 setStatus("");
@@ -269,7 +275,8 @@ function RegisterPage() {
 
                         {emailTaken && (
                             <ValidationText>
-                                An account with this email already exists.
+                                An account with this
+                                email already exists.
                             </ValidationText>
                         )}
 
@@ -282,14 +289,16 @@ function RegisterPage() {
                             autoCorrect="off"
                             spellCheck={false}
                             $invalid={
-                                Boolean(usernameError) ||
+                                Boolean(
+                                    usernameError
+                                ) ||
                                 usernameTaken
                             }
                             onChange={(e) => {
-                                setUsername(e.target.value);
+                                setUsername(
+                                    e.target.value
+                                );
 
-                                // Remove the red border as soon
-                                // as the user changes the username.
                                 setUsernameTaken(false);
 
                                 setStatus("");
@@ -302,23 +311,28 @@ function RegisterPage() {
                             </ValidationText>
                         )}
 
-                        {usernameTaken && !usernameError && (
-                            <ValidationText>
-                                That username is already taken.
-                            </ValidationText>
-                        )}
+                        {usernameTaken &&
+                            !usernameError && (
+                                <ValidationText>
+                                    That username is
+                                    already taken.
+                                </ValidationText>
+                            )}
 
                         <Input
                             type="password"
                             placeholder="password"
                             value={password}
                             onChange={(e) => {
-                                setPassword(e.target.value);
+                                setPassword(
+                                    e.target.value
+                                );
+
                                 setStatus("");
                             }}
                         />
 
-                        <Button
+                        <Button2
                             onClick={handleRegister}
                             disabled={
                                 loading ||
@@ -330,13 +344,15 @@ function RegisterPage() {
                             {loading
                                 ? "Creating..."
                                 : "Create Account"}
-                        </Button>
+                        </Button2>
 
-                        {status && !emailTaken && !usernameTaken && (
-                            <Status>
-                                {status}
-                            </Status>
-                        )}
+                        {status &&
+                            !emailTaken &&
+                            !usernameTaken && (
+                                <Status>
+                                    {status}
+                                </Status>
+                            )}
 
                         <BottomText>
                             Already have an account?{" "}
@@ -344,15 +360,20 @@ function RegisterPage() {
                                 Login
                             </StyledLink>
                         </BottomText>
+
                     </>
+
                 ) : (
+
                     <>
+
                         <Title>
                             Check your email
                         </Title>
 
                         <Subtitle>
-                            We sent a verification link to:
+                            We sent a verification
+                            link to:
                         </Subtitle>
 
                         <Status>
@@ -360,12 +381,17 @@ function RegisterPage() {
                         </Status>
 
                         <Status>
-                            Please click the link in the email
-                            to verify your account.
+                            Please click the link
+                            in the email to verify
+                            your account.
                         </Status>
+
                     </>
+
                 )}
+
             </Card>
+
         </Wrapper>
     );
 }

@@ -1,5 +1,7 @@
 import styled from "styled-components";
 
+import Button2 from "../../atoms/Button2";
+
 /* =====================================================
    STYLES
    ===================================================== */
@@ -7,9 +9,8 @@ import styled from "styled-components";
 const PremiumBox = styled.div`
     padding: 28px;
 
-    border: 1px solid ${({ theme }) => theme.colors.border};
-
-    background: ${({ theme }) => theme.colors.card};
+    border: 1px solid ${({ theme }) =>
+        theme.colors.accent};
 
     box-sizing: border-box;
 
@@ -86,43 +87,12 @@ const PremiumDescription = styled.div`
     opacity: 0.6;
 `;
 
-const PremiumButton = styled.button`
-    flex-shrink: 0;
+const SmallButton = styled(Button2)`
+    width: auto;
 
-    padding: 11px 20px;
+    padding: 8px 14px;
 
-    border: 1px solid ${({ theme }) =>
-        theme.colors.border};
-
-    background: ${({ theme }) =>
-        theme.colors.card};
-
-    color: ${({ theme }) =>
-        theme.colors.text};
-
-    font: inherit;
-    font-size: 14px;
-    font-weight: 600;
-
-    cursor: pointer;
-
-    transition:
-        opacity ${({ theme }) =>
-            theme.transition.fast},
-        transform ${({ theme }) =>
-            theme.transition.fast};
-
-    &:hover:not(:disabled) {
-        opacity: 0.8;
-
-        transform: translateY(-1px);
-    }
-
-    &:disabled {
-        opacity: 0.5;
-
-        cursor: default;
-    }
+    font-size: 13px;
 
     @media (max-width: 650px) {
         width: 100%;
@@ -227,7 +197,6 @@ function PremiumSubscription({
     onManageSubscription,
     onUpgrade,
 }) {
-
     function formatBillingDate(date) {
         return new Date(
             date
@@ -315,7 +284,7 @@ function PremiumSubscription({
 
                     </PremiumInfo>
 
-                    <PremiumButton
+                    <SmallButton
                         onClick={
                             onManageSubscription
                         }
@@ -326,7 +295,7 @@ function PremiumSubscription({
                         {portalLoading
                             ? "Opening..."
                             : "Manage Subscription"}
-                    </PremiumButton>
+                    </SmallButton>
 
                 </PremiumHeader>
 
@@ -432,11 +401,11 @@ function PremiumSubscription({
 
                 </PremiumInfo>
 
-                <PremiumButton
+                <SmallButton
                     onClick={onUpgrade}
                 >
                     Upgrade to Premium
-                </PremiumButton>
+                </SmallButton>
 
             </PremiumHeader>
 

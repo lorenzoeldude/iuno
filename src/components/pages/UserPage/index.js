@@ -6,6 +6,7 @@ import { API_URL } from "../../../config";
 
 import { useTheme } from "../../../context/AppThemeProvider";
 import Card from "../../atoms/Card";
+import Button2 from "../../atoms/Button2";
 import TrainingStats from "../../molecules/TrainingStats";
 import PremiumSubscription from "../../molecules/PremiumSubscription";
 
@@ -72,7 +73,7 @@ const SestertiiIcon = styled.span`
 `;
 
 const Section = styled.section`
-    margin-bottom: 42px;
+    margin-bottom: 50px;
 `;
 
 const SectionHeading = styled.div`
@@ -173,29 +174,6 @@ const BottomArea = styled.div`
         flex-direction: column;
         align-items: flex-start;
         gap: 16px;
-    }
-`;
-
-const LogoutButton = styled.button`
-    padding: 0;
-
-    border: none;
-
-    background: none;
-    color: inherit;
-
-    font: inherit;
-    font-size: 14px;
-
-    opacity: 0.5;
-
-    cursor: pointer;
-
-    transition:
-        opacity ${({ theme }) => theme.transition.fast};
-
-    &:hover {
-        opacity: 0.9;
     }
 `;
 
@@ -725,11 +703,11 @@ function UserPage() {
 
                 <div />
 
-                <LogoutButton
+                <Button2
                     onClick={logout}
                 >
                     Log out
-                </LogoutButton>
+                </Button2>
 
             </BottomArea>
 

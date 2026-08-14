@@ -3,6 +3,8 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { API_URL } from "../../../config";
 
+import Button2 from "../../atoms/Button2";
+
 const Wrapper = styled.div`
     width: 100%;
     display: flex;
@@ -60,32 +62,6 @@ const Input = styled.input`
     &:focus {
         outline: none;
         border-color: ${({ theme }) => theme.colors.primary};
-    }
-`;
-
-const Button = styled.button`
-    width: 100%;
-    padding: 14px;
-
-    font-size: ${({ theme }) => theme.fontSizes.lg};
-    font-weight: ${({ theme }) => theme.fontWeights.semibold};
-
-    border: none;
-
-    cursor: pointer;
-
-    background: ${({ theme }) => theme.colors.primary};
-    color: ${({ theme }) => theme.colors.opposite};
-
-    transition: background ${({ theme }) => theme.transition.fast};
-
-    &:hover:not(:disabled) {
-        background: ${({ theme }) => theme.colors.primaryHover};
-    }
-
-    &:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
     }
 `;
 
@@ -195,7 +171,8 @@ function LoginPage() {
             console.error(err);
 
             setStatus(
-                err.message || "Invalid email/username or password."
+                err.message ||
+                "Invalid email/username or password."
             );
         }
 
@@ -204,9 +181,12 @@ function LoginPage() {
 
     return (
         <Wrapper>
+
             <Card>
 
-                <Title>Login</Title>
+                <Title>
+                    Login
+                </Title>
 
                 <Subtitle>
                     Welcome back to IUNONI.
@@ -240,7 +220,7 @@ function LoginPage() {
                     }}
                 />
 
-                <Button
+                <Button2
                     onClick={handleLogin}
                     disabled={
                         loading ||
@@ -248,11 +228,15 @@ function LoginPage() {
                         !password
                     }
                 >
-                    {loading ? "Logging in..." : "Login"}
-                </Button>
+                    {loading
+                        ? "Logging in..."
+                        : "Login"}
+                </Button2>
 
                 {status && (
-                    <Status>{status}</Status>
+                    <Status>
+                        {status}
+                    </Status>
                 )}
 
                 <BottomText>
@@ -263,6 +247,7 @@ function LoginPage() {
                 </BottomText>
 
             </Card>
+
         </Wrapper>
     );
 }
