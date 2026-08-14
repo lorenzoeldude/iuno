@@ -6,6 +6,8 @@ import { API_URL } from "../../../config";
 
 import { useTheme } from "../../../context/AppThemeProvider";
 import Card from "../../atoms/Card";
+import TrainingStats from "../../molecules/TrainingStats";
+import PremiumSubscription from "../../molecules/PremiumSubscription";
 
 const fadeIn = keyframes`
     from {
@@ -50,6 +52,25 @@ const Title = styled.h1`
     }
 `;
 
+const Sestertii = styled.div`
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+
+    margin-top: 8px;
+
+    font-size: 16px;
+
+    opacity: 0.5;
+`;
+
+const SestertiiIcon = styled.span`
+    font-size: 12px;
+
+    opacity: 0.8;
+`;
+
 const Section = styled.section`
     margin-bottom: 42px;
 `;
@@ -65,135 +86,9 @@ const SectionHeading = styled.div`
     opacity: 0.5;
 `;
 
-const Stats = styled.div`
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-
-    width: 100%;
-
-    border-top: 1px solid ${({ theme }) => theme.colors.border};
-    border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-
-    @media (max-width: 700px) {
-        grid-template-columns: repeat(2, 1fr);
-    }
-`;
-
-const Stat = styled.div`
-    padding: 18px 24px;
-
-    &:not(:last-child) {
-        border-right: 1px solid ${({ theme }) => theme.colors.border};
-    }
-
-    @media (max-width: 700px) {
-        &:nth-child(2) {
-            border-right: none;
-        }
-
-        &:nth-child(-n + 2) {
-            border-bottom: 1px solid ${({ theme }) =>
-                theme.colors.border};
-        }
-    }
-
-    @media (max-width: 450px) {
-        padding: 16px 14px;
-    }
-`;
-
-const StatValue = styled.div`
-    font-size: 27px;
-    font-weight: 600;
-    line-height: 1.2;
-
-    @media (max-width: 450px) {
-        font-size: 24px;
-    }
-`;
-
-const StatLabel = styled.div`
-    margin-top: 6px;
-
-    font-size: 13px;
-
-    opacity: 0.55;
-`;
-
-const PremiumBox = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    padding: 24px;
-
-    border-top: 1px solid ${({ theme }) => theme.colors.border};
-    border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-
-    gap: 24px;
-
-    @media (max-width: 650px) {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-`;
-
-const PremiumInfo = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-`;
-
-const PremiumTitle = styled.div`
-    font-size: 22px;
-    font-weight: 600;
-`;
-
-const PremiumStatus = styled.div`
-    font-size: 14px;
-
-    opacity: 0.6;
-`;
-
-const PremiumDescription = styled.div`
-    margin-top: 4px;
-
-    font-size: 14px;
-    line-height: 1.5;
-
-    opacity: 0.7;
-`;
-
-const PremiumButton = styled.button`
-    flex-shrink: 0;
-
-    padding: 11px 20px;
-
-    border: 1px solid ${({ theme }) => theme.colors.border};
-
-    background: ${({ theme }) => theme.colors.card};
-    color: ${({ theme }) => theme.colors.text};
-
-    font: inherit;
-    font-size: 14px;
-    font-weight: 600;
-
-    cursor: pointer;
-
-    transition:
-        opacity ${({ theme }) => theme.transition.fast},
-        transform ${({ theme }) => theme.transition.fast};
-
-    &:hover:not(:disabled) {
-        opacity: 0.8;
-        transform: translateY(-1px);
-    }
-
-    &:disabled {
-        opacity: 0.5;
-        cursor: default;
-    }
-`;
+/* =====================================================
+   MANAGE
+   ===================================================== */
 
 const Grid = styled.div`
     display: grid;
@@ -206,6 +101,10 @@ const Grid = styled.div`
         grid-template-columns: 1fr;
     }
 `;
+
+/* =====================================================
+   APPEARANCE
+   ===================================================== */
 
 const AppearanceControl = styled.div`
     display: inline-flex;
@@ -259,6 +158,10 @@ const AppearanceButton = styled.button`
     }
 `;
 
+/* =====================================================
+   BOTTOM
+   ===================================================== */
+
 const BottomArea = styled.div`
     display: flex;
     justify-content: space-between;
@@ -305,6 +208,10 @@ const AdminLabel = styled.span`
     opacity: 0.45;
 `;
 
+/* =====================================================
+   USER PAGE
+   ===================================================== */
+
 function UserPage() {
     const navigate = useNavigate();
 
@@ -313,21 +220,29 @@ function UserPage() {
     const [username, setUsername] = useState("User");
     const [user, setUser] = useState(null);
 
-    const [trainingStats, setTrainingStats] = useState(null);
+    const [trainingStats, setTrainingStats] =
+        useState(null);
 
     const [lessons, setLessons] = useState([]);
-    const [lessonProgress, setLessonProgress] = useState({});
+    const [lessonProgress, setLessonProgress] =
+        useState({});
 
     const [billing, setBilling] = useState(null);
     const [billingLoading, setBillingLoading] =
         useState(true);
     const [billingError, setBillingError] =
         useState("");
-    // const [portalLoading, setPortalLoading] =
-    //     useState(false);
+    const [portalLoading, setPortalLoading] =
+        useState(false);
+
+    /* =====================================================
+       INITIAL DATA
+       ===================================================== */
 
     useEffect(() => {
-        const token = localStorage.getItem("token");
+        const token =
+            localStorage.getItem("token");
+
         const storedUser =
             localStorage.getItem("user");
 
@@ -356,9 +271,9 @@ function UserPage() {
             return;
         }
 
-        // =====================================================
-        // FETCH TRAINING STATS
-        // =====================================================
+        /* =================================================
+           FETCH TRAINING STATS
+           ================================================= */
 
         async function fetchTrainingStats() {
             try {
@@ -390,9 +305,9 @@ function UserPage() {
             }
         }
 
-        // =====================================================
-        // FETCH LESSONS + USER PROGRESS
-        // =====================================================
+        /* =================================================
+           FETCH LESSONS + USER PROGRESS
+           ================================================= */
 
         async function fetchLessonProgress() {
             try {
@@ -488,9 +403,9 @@ function UserPage() {
             }
         }
 
-        // =====================================================
-        // FETCH BILLING STATUS
-        // =====================================================
+        /* =================================================
+           FETCH BILLING STATUS
+           ================================================= */
 
         async function fetchBillingStatus() {
             try {
@@ -534,67 +449,67 @@ function UserPage() {
         fetchBillingStatus();
     }, [navigate]);
 
-    // =====================================================
-    // CUSTOMER PORTAL
-    // =====================================================
+    /* =====================================================
+       CUSTOMER PORTAL
+       ===================================================== */
 
-    // async function openCustomerPortal() {
-    //     try {
-    //         setPortalLoading(true);
-    //         setBillingError("");
+    async function openCustomerPortal() {
+        try {
+            setPortalLoading(true);
+            setBillingError("");
 
-    //         const token =
-    //             localStorage.getItem("token");
+            const token =
+                localStorage.getItem("token");
 
-    //         const response = await fetch(
-    //             `${API_URL}/api/stripe/create-portal-session`,
-    //             {
-    //                 method: "POST",
+            const response = await fetch(
+                `${API_URL}/api/stripe/create-portal-session`,
+                {
+                    method: "POST",
 
-    //                 headers: {
-    //                     Authorization:
-    //                         `Bearer ${token}`,
-    //                 },
-    //             }
-    //         );
+                    headers: {
+                        Authorization:
+                            `Bearer ${token}`,
+                    },
+                }
+            );
 
-    //         const data =
-    //             await response.json();
+            const data =
+                await response.json();
 
-    //         if (!response.ok) {
-    //             throw new Error(
-    //                 data.error ||
-    //                 data.message ||
-    //                 "Failed to open subscription management."
-    //             );
-    //         }
+            if (!response.ok) {
+                throw new Error(
+                    data.error ||
+                    data.message ||
+                    "Failed to open subscription management."
+                );
+            }
 
-    //         if (!data.url) {
-    //             throw new Error(
-    //                 "Stripe did not return a portal URL."
-    //             );
-    //         }
+            if (!data.url) {
+                throw new Error(
+                    "Stripe did not return a portal URL."
+                );
+            }
 
-    //         window.location.href =
-    //             data.url;
-    //     } catch (err) {
-    //         console.error(
-    //             "CUSTOMER PORTAL ERROR:",
-    //             err
-    //         );
+            window.location.href =
+                data.url;
+        } catch (err) {
+            console.error(
+                "CUSTOMER PORTAL ERROR:",
+                err
+            );
 
-    //         setBillingError(
-    //             err.message ||
-    //             "Unable to open subscription management."
-    //         );
+            setBillingError(
+                err.message ||
+                "Unable to open subscription management."
+            );
 
-    //         setPortalLoading(false);
-    //     }
-    // }
+            setPortalLoading(false);
+        }
+    }
 
-    // =====================================================
-    // LOGOUT
-    // =====================================================
+    /* =====================================================
+       LOGOUT
+       ===================================================== */
 
     function logout() {
         localStorage.removeItem("token");
@@ -607,70 +522,17 @@ function UserPage() {
         return null;
     }
 
-    // =====================================================
-    // TRAINING STATS
-    // =====================================================
-
-    const questionsAnswered =
-        trainingStats?.questionsAnswered ?? 0;
-
-    const correctAnswers =
-        trainingStats?.correctAnswers ?? 0;
-
-    const sestertii =
-        trainingStats?.sestertii ?? 0;
-
-    const accuracy =
-        questionsAnswered > 0
-            ? Math.round(
-                (correctAnswers /
-                    questionsAnswered) *
-                    100
-            )
-            : 0;
-
-    // =====================================================
-    // LESSON STATS
-    // =====================================================
-
-    const completedLessons =
-        lessons.filter((lesson) => {
-            const score =
-                lessonProgress[
-                    lesson.id
-                ]?.score;
-
-            return (
-                score !== null &&
-                score !== undefined
-            );
-        }).length;
-
-    const totalLessons =
-        lessons.length;
-
-    // =====================================================
-    // BILLING DISPLAY
-    // =====================================================
-
-    function formatBillingDate(date) {
-        return new Date(
-            date
-        ).toLocaleDateString(
-            undefined,
-            {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-            }
-        );
-    }
-
     return (
         <Wrapper>
 
+            {/* =====================================================
+                HEADER
+            ===================================================== */}
+
             <Header>
+
                 <Title>
+
                     {username}
 
                     {user?.is_admin && (
@@ -678,67 +540,54 @@ function UserPage() {
                             Admin
                         </AdminLabel>
                     )}
+
                 </Title>
+
+                <Sestertii>
+
+                    <SestertiiIcon>
+                        ◉
+                    </SestertiiIcon>
+
+                    {trainingStats?.sestertii ?? 0}
+                    {" "}
+                    sestertii
+
+                </Sestertii>
+
             </Header>
 
             {/* =====================================================
-                STATS
+                TRAINING
             ===================================================== */}
 
             <Section>
+
                 <SectionHeading>
                     Stats
                 </SectionHeading>
 
-                <Stats>
+                <TrainingStats
+                    stats={{
+                        ...trainingStats,
 
-                    <Stat>
-                        <StatValue>
-                            🪙 {sestertii}
-                        </StatValue>
+                        lessonsCompleted:
+                            Object.values(
+                                lessonProgress
+                            ).filter(
+                                (progress) =>
+                                    progress?.completed
+                            ).length,
 
-                        <StatLabel>
-                            Sestertii
-                        </StatLabel>
-                    </Stat>
+                        lessonsTotal:
+                            lessons.length,
+                    }}
+                />
 
-                    <Stat>
-                        <StatValue>
-                            {questionsAnswered}
-                        </StatValue>
-
-                        <StatLabel>
-                            Questions
-                        </StatLabel>
-                    </Stat>
-
-                    <Stat>
-                        <StatValue>
-                            {accuracy}%
-                        </StatValue>
-
-                        <StatLabel>
-                            Accuracy
-                        </StatLabel>
-                    </Stat>
-
-                    <Stat>
-                        <StatValue>
-                            {completedLessons}
-                            {" / "}
-                            {totalLessons}
-                        </StatValue>
-
-                        <StatLabel>
-                            Lessons Completed
-                        </StatLabel>
-                    </Stat>
-
-                </Stats>
             </Section>
 
             {/* =====================================================
-                PREMIUM
+                SUBSCRIPTION
             ===================================================== */}
 
             <Section>
@@ -747,104 +596,18 @@ function UserPage() {
                     Subscription
                 </SectionHeading>
 
-                {billingLoading ? (
-                    <PremiumBox>
-
-                        <PremiumInfo>
-
-                            <PremiumTitle>
-                                Loading...
-                            </PremiumTitle>
-
-                        </PremiumInfo>
-
-                    </PremiumBox>
-                ) : billing?.is_premium ? (
-                    <PremiumBox>
-
-                        <PremiumInfo>
-
-                            <PremiumTitle>
-                                IUNONI Premium
-                            </PremiumTitle>
-
-                            <PremiumStatus>
-                                {billing.status ===
-                                "active"
-                                    ? billing.cancel_at_period_end
-                                        ? "Active · Cancels at end of billing period"
-                                        : "Active"
-                                    : billing.status}
-                            </PremiumStatus>
-
-                            {billing.current_period_end && (
-                                <PremiumDescription>
-                                    {billing.cancel_at_period_end
-                                        ? `Your Premium access remains active until ${formatBillingDate(
-                                            billing.current_period_end
-                                        )}.`
-                                        : `Your subscription renews on ${formatBillingDate(
-                                            billing.current_period_end
-                                        )}.`}
-                                </PremiumDescription>
-                            )}
-
-                        </PremiumInfo>
-
-                        {/* <PremiumButton
-                            onClick={
-                                openCustomerPortal
-                            }
-                            disabled={
-                                portalLoading
-                            }
-                        >
-                            {portalLoading
-                                ? "Opening..."
-                                : "Manage Subscription"}
-                        </PremiumButton> */}
-
-                    </PremiumBox>
-                ) : (
-                    <PremiumBox>
-
-                        <PremiumInfo>
-
-                            <PremiumTitle>
-                                IUNONI Premium
-                            </PremiumTitle>
-
-                            <PremiumStatus>
-                                Not subscribed
-                            </PremiumStatus>
-
-                            <PremiumDescription>
-                                Unlock all of
-                                IUNONI's premium
-                                Latin learning
-                                features.
-                            </PremiumDescription>
-
-                        </PremiumInfo>
-
-                        <PremiumButton
-                            onClick={() =>
-                                navigate(
-                                    "/premium"
-                                )
-                            }
-                        >
-                            Upgrade to Premium
-                        </PremiumButton>
-
-                    </PremiumBox>
-                )}
-
-                {billingError && (
-                    <PremiumDescription>
-                        {billingError}
-                    </PremiumDescription>
-                )}
+                <PremiumSubscription
+                    billing={billing}
+                    loading={billingLoading}
+                    error={billingError}
+                    portalLoading={portalLoading}
+                    onManageSubscription={
+                        openCustomerPortal
+                    }
+                    onUpgrade={() =>
+                        navigate("/premium")
+                    }
+                />
 
             </Section>
 
@@ -886,6 +649,7 @@ function UserPage() {
                     </Card>
 
                     {user?.is_admin && (
+
                         <Card
                             title="Admin Page"
                             onClick={() =>
@@ -897,6 +661,7 @@ function UserPage() {
                             Add words and view
                             application statistics.
                         </Card>
+
                     )}
 
                 </Grid>

@@ -60,7 +60,7 @@ export const lightTheme = {
     colors: {
         background: "#FFFFFF",
         surface: "#F8F9FA",
-        card: "#FFFFFF",
+        card: "#eeeeee",
         accent: "#B89B5E",
 
         text: "#000000",
