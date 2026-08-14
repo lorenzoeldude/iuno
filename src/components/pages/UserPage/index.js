@@ -191,25 +191,29 @@ const AdminLabel = styled.span`
    ===================================================== */
 
 function UserPage() {
+
     const navigate = useNavigate();
 
     const { theme, setTheme } = useTheme();
 
-    const [username, setUsername] = useState("User");
-    const [user, setUser] = useState(null);
+    const [username, setUsername] =
+        useState("User");
+
+    const [user, setUser] =
+        useState(null);
 
     const [trainingStats, setTrainingStats] =
         useState(null);
 
-    const [lessons, setLessons] = useState([]);
-    const [lessonProgress, setLessonProgress] =
-        useState({});
+    const [billing, setBilling] =
+        useState(null);
 
-    const [billing, setBilling] = useState(null);
     const [billingLoading, setBillingLoading] =
         useState(true);
+
     const [billingError, setBillingError] =
         useState("");
+
     const [portalLoading, setPortalLoading] =
         useState(false);
 
@@ -218,6 +222,7 @@ function UserPage() {
        ===================================================== */
 
     useEffect(() => {
+
         const token =
             localStorage.getItem("token");
 
@@ -225,21 +230,33 @@ function UserPage() {
             localStorage.getItem("user");
 
         if (!token || !storedUser) {
+
             navigate("/login");
+
             return;
         }
 
         try {
+
             const parsedUser =
                 JSON.parse(storedUser);
 
             setUser(parsedUser);
 
             if (parsedUser?.username) {
-                setUsername(parsedUser.username);
+
+                setUsername(
+                    parsedUser.username
+                );
+
             }
-        } catch (err) {
-            console.error(err);
+
+        } catch (error) {
+
+            console.error(
+                "USER PARSE ERROR:",
+                error
+            );
 
             localStorage.removeItem("token");
             localStorage.removeItem("user");
@@ -254,18 +271,22 @@ function UserPage() {
            ================================================= */
 
         async function fetchTrainingStats() {
+
             try {
-                const response = await fetch(
-                    `${API_URL}/api/training/stats`,
-                    {
-                        headers: {
-                            Authorization:
-                                `Bearer ${token}`,
-                        },
-                    }
-                );
+
+                const response =
+                    await fetch(
+                        `${API_URL}/api/training/stats`,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ${token}`,
+                            },
+                        }
+                    );
 
                 if (!response.ok) {
+
                     throw new Error(
                         `Failed to fetch training stats: ${response.status}`
                     );
@@ -275,109 +296,14 @@ function UserPage() {
                     await response.json();
 
                 setTrainingStats(data);
-            } catch (err) {
+
+            } catch (error) {
+
                 console.error(
                     "TRAINING STATS ERROR:",
-                    err
-                );
-            }
-        }
-
-        /* =================================================
-           FETCH LESSONS + USER PROGRESS
-           ================================================= */
-
-        async function fetchLessonProgress() {
-            try {
-                const lessonsResponse =
-                    await fetch(
-                        `${API_URL}/api/lessons`
-                    );
-
-                if (!lessonsResponse.ok) {
-                    throw new Error(
-                        `Failed to fetch lessons: ${lessonsResponse.status}`
-                    );
-                }
-
-                const lessonsData =
-                    await lessonsResponse.json();
-
-                const publishedLessons =
-                    lessonsData.filter(
-                        (lesson) =>
-                            lesson.is_published
-                    );
-
-                setLessons(
-                    publishedLessons
+                    error
                 );
 
-                const progressResults =
-                    await Promise.all(
-                        publishedLessons.map(
-                            async (lesson) => {
-                                try {
-                                    const response =
-                                        await fetch(
-                                            `${API_URL}/api/lessons/${lesson.id}/progress`,
-                                            {
-                                                headers: {
-                                                    Authorization:
-                                                        `Bearer ${token}`,
-                                                },
-                                            }
-                                        );
-
-                                    if (
-                                        !response.ok
-                                    ) {
-                                        return [
-                                            lesson.id,
-                                            null,
-                                        ];
-                                    }
-
-                                    const data =
-                                        await response.json();
-
-                                    return [
-                                        lesson.id,
-                                        data,
-                                    ];
-                                } catch (err) {
-                                    console.error(
-                                        `LESSON ${lesson.id} PROGRESS ERROR:`,
-                                        err
-                                    );
-
-                                    return [
-                                        lesson.id,
-                                        null,
-                                    ];
-                                }
-                            }
-                        )
-                    );
-
-                const progressMap = {};
-
-                progressResults.forEach(
-                    ([lessonId, progress]) => {
-                        progressMap[
-                            lessonId
-                        ] = progress;
-                    }
-                );
-
-                setLessonProgress(
-                    progressMap
-                );
-            } catch (err) {
-                console.error(
-                    "LESSON PROGRESS ERROR:",
-                    err
-                );
             }
         }
 
@@ -386,7 +312,9 @@ function UserPage() {
            ================================================= */
 
         async function fetchBillingStatus() {
+
             try {
+
                 const response =
                     await fetch(
                         `${API_URL}/api/billing/status`,
@@ -399,6 +327,7 @@ function UserPage() {
                     );
 
                 if (!response.ok) {
+
                     throw new Error(
                         `Failed to fetch billing status: ${response.status}`
                     );
@@ -408,23 +337,28 @@ function UserPage() {
                     await response.json();
 
                 setBilling(data);
-            } catch (err) {
+
+            } catch (error) {
+
                 console.error(
                     "BILLING STATUS ERROR:",
-                    err
+                    error
                 );
 
                 setBillingError(
                     "Unable to load subscription status."
                 );
+
             } finally {
+
                 setBillingLoading(false);
+
             }
         }
 
         fetchTrainingStats();
-        fetchLessonProgress();
         fetchBillingStatus();
+
     }, [navigate]);
 
     /* =====================================================
@@ -432,29 +366,33 @@ function UserPage() {
        ===================================================== */
 
     async function openCustomerPortal() {
+
         try {
+
             setPortalLoading(true);
             setBillingError("");
 
             const token =
                 localStorage.getItem("token");
 
-            const response = await fetch(
-                `${API_URL}/api/stripe/create-portal-session`,
-                {
-                    method: "POST",
+            const response =
+                await fetch(
+                    `${API_URL}/api/stripe/create-portal-session`,
+                    {
+                        method: "POST",
 
-                    headers: {
-                        Authorization:
-                            `Bearer ${token}`,
-                    },
-                }
-            );
+                        headers: {
+                            Authorization:
+                                `Bearer ${token}`,
+                        },
+                    }
+                );
 
             const data =
                 await response.json();
 
             if (!response.ok) {
+
                 throw new Error(
                     data.error ||
                     data.message ||
@@ -463,6 +401,7 @@ function UserPage() {
             }
 
             if (!data.url) {
+
                 throw new Error(
                     "Stripe did not return a portal URL."
                 );
@@ -470,14 +409,16 @@ function UserPage() {
 
             window.location.href =
                 data.url;
-        } catch (err) {
+
+        } catch (error) {
+
             console.error(
                 "CUSTOMER PORTAL ERROR:",
-                err
+                error
             );
 
             setBillingError(
-                err.message ||
+                error.message ||
                 "Unable to open subscription management."
             );
 
@@ -490,6 +431,7 @@ function UserPage() {
        ===================================================== */
 
     function logout() {
+
         localStorage.removeItem("token");
         localStorage.removeItem("user");
 
@@ -514,9 +456,11 @@ function UserPage() {
                     {username}
 
                     {user?.is_admin && (
+
                         <AdminLabel>
                             Admin
                         </AdminLabel>
+
                     )}
 
                 </Title>
@@ -546,20 +490,7 @@ function UserPage() {
                 </SectionHeading>
 
                 <TrainingStats
-                    stats={{
-                        ...trainingStats,
-
-                        lessonsCompleted:
-                            Object.values(
-                                lessonProgress
-                            ).filter(
-                                (progress) =>
-                                    progress?.completed
-                            ).length,
-
-                        lessonsTotal:
-                            lessons.length,
-                    }}
+                    stats={trainingStats}
                 />
 
             </Section>

@@ -101,7 +101,7 @@ const StatsSecondary = styled.div`
    COMPONENT
    ===================================================== */
 
-function TrainingStats({ stats, username }) {
+function TrainingStats({ stats }) {
 
     const questionsAnswered =
         stats?.questionsAnswered ?? 0;
@@ -117,9 +117,6 @@ function TrainingStats({ stats, username }) {
 
     const lessonsCompleted =
         stats?.lessonsCompleted ?? 0;
-
-    const lessonsTotal =
-        stats?.lessonsTotal ?? 0;
 
     const correctAnswers =
         stats?.correctAnswers ?? 0;
@@ -173,7 +170,7 @@ function TrainingStats({ stats, username }) {
                 </StatsCard>
 
                 {/* =================================================
-                    PROGRESS
+                    TOTAL
                     ================================================= */}
 
                 <StatsCard>
@@ -230,13 +227,6 @@ function TrainingStats({ stats, username }) {
 
                         <StatsNumber>
                             {lessonsCompleted}
-
-                            {lessonsTotal > 0 && (
-                                <span>
-                                    {" / "}
-                                    {lessonsTotal}
-                                </span>
-                            )}
                         </StatsNumber>
 
                         <StatsDescription>
