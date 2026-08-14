@@ -63,6 +63,14 @@ const ArrowDiv = styled.div`
     transform: translateX(-50%);
 `;
 
+const RewardText = styled.p`
+    font-size: clamp(22px, 3vw, 30px);
+    text-align: center;
+    margin: 12px 0;
+
+    color: ${({ theme }) => theme.colors.text};
+`;
+
 function Examinatio() {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -200,6 +208,10 @@ function Examinatio() {
                         <ScoreText>
                             Score: {percentage}%
                         </ScoreText>
+
+                        <RewardText>
+                            +100 sestertii
+                        </RewardText>
 
                         <div style={{ marginTop: "40px" }}>
                             <NavigationButton

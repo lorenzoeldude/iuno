@@ -115,6 +115,11 @@ function LessonIntroduction() {
     const navigate = useNavigate();
 
     const [lesson, setLesson] = useState(null);
+    const [progress, setProgress] = useState(null);
+
+    // =====================================================
+    // FETCH LESSON
+    // =====================================================
 
     useEffect(() => {
         async function fetchLesson() {
@@ -137,18 +142,122 @@ function LessonIntroduction() {
         fetchLesson();
     }, [id]);
 
+    // =====================================================
+    // FETCH USER LESSON PROGRESS
+    // =====================================================
+
+    useEffect(() => {
+        async function fetchProgress() {
+            const token =
+                localStorage.getItem("token");
+
+            if (!token) {
+                return;
+            }
+
+            try {
+                const response = await fetch(
+                    `${process.env.REACT_APP_API_URL}/api/lessons/${id}/progress`,
+                    {
+                        headers: {
+                            Authorization:
+                                `Bearer ${token}`,
+                        },
+                    }
+                );
+
+                if (!response.ok) {
+                    throw new Error(
+                        `Failed to fetch progress: ${response.status}`
+                    );
+                }
+
+                const data = await response.json();
+
+                console.log(
+                    `LESSON ${id} PROGRESS:`,
+                    data
+                );
+
+                setProgress(data);
+            } catch (err) {
+                console.error(
+                    "Error loading lesson progress:",
+                    err
+                );
+            }
+        }
+
+        fetchProgress();
+    }, [id]);
+
+    // =====================================================
+    // RESUME ROUTE
+    // =====================================================
+
+    function getLessonRoute() {
+        if (!progress) {
+            return `/lessons/${id}/textus`;
+        }
+
+        if (!progress.textCompleted) {
+            return `/lessons/${id}/textus`;
+        }
+
+        if (!progress.vocabularyCompleted) {
+            return `/lessons/${id}/vocabula`;
+        }
+
+        if (!progress.grammarCompleted) {
+            return `/lessons/${id}/grammatica`;
+        }
+
+        if (!progress.examinatioCompleted) {
+            return `/lessons/${id}/examinatio`;
+        }
+
+        return `/lessons/${id}/textus`;
+    }
+
+    // =====================================================
+    // BUTTON TEXT
+    // =====================================================
+
+    function getPrimaryButtonText() {
+        if (!progress) {
+            return "Start Lesson";
+        }
+
+        if (
+            progress.textCompleted ||
+            progress.vocabularyCompleted ||
+            progress.grammarCompleted
+        ) {
+            if (progress.examinatioCompleted) {
+                return "Review Lesson";
+            }
+
+            return "Resume Lesson";
+        }
+
+        return "Start Lesson";
+    }
+
+    // =====================================================
+    // LOADING
+    // =====================================================
+
     if (!lesson) {
         return <Container>Loading...</Container>;
     }
 
+    // =====================================================
+    // RENDER
+    // =====================================================
+
     return (
         <Container>
             <Card>
-                {/* <HeroImage
-                    src={lesson.hero_image}
-                    alt={lesson.title}
-                /> */}
-
                 <LessonNumber>
                     Lesson {lesson.id}
                 </LessonNumber>
@@ -164,16 +273,20 @@ function LessonIntroduction() {
                 <ButtonWrapper>
                     <NavigationButton
                         onClick={() =>
-                            navigate(`/lessons/${lesson.id}/textus`)
+                            navigate(
+                                getLessonRoute()
+                            )
                         }
                     >
-                        Start Lesson
+                        {getPrimaryButtonText()}
                         <FaArrowRight />
                     </NavigationButton>
 
                     <SecondaryButton
                         onClick={() =>
-                            navigate(`/trainer/lesson/${lesson.id}`)
+                            navigate(
+                                `/trainer/lesson/${lesson.id}`
+                            )
                         }
                     >
                         Train Lesson Vocabulary
