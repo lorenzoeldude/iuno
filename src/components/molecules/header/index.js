@@ -2,6 +2,8 @@ import styled from "styled-components";
 import Searchbar from "../../atoms/Searchbar";
 import { Link, useNavigate } from "react-router-dom";
 
+import Button2 from "../../atoms/Button2";
+
 const Wrapper = styled.div`
     position: fixed;
     top: 0;
@@ -57,41 +59,33 @@ const SearchWrapper = styled.div`
 const Right = styled.div`
     display: flex;
     align-items: center;
-    gap: 15px;
 
     flex-shrink: 0;
 `;
 
-const Button = styled.button`
-    padding: 4px 8px;
-    border: 0.5px solid rgba(0, 0, 0, 0.2);
-    background: none;
-    color: ${({ theme }) => theme.colors.text};
-    cursor: pointer;
+const SmallButton = styled(Button2)`
+    width: auto;
+
+    padding: 8px 14px;
+
+    font-size: 13px;
 
     @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-        font-size: 14px;
-        padding: 4px 6px;
+        padding: 7px 12px;
+        font-size: 13px;
     }
 `;
 
 function Header() {
     const navigate = useNavigate();
 
-    const user = JSON.parse(localStorage.getItem("user"));
-
-    function logout() {
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
-        navigate("/login");
-    }
-
-    function login() {
-        navigate("/login");
-    }
+    const user = JSON.parse(
+        localStorage.getItem("user")
+    );
 
     return (
         <Wrapper>
+
             <StyledLink to="/">
                 <HeadLine>I</HeadLine>
             </StyledLink>
@@ -101,16 +95,19 @@ function Header() {
             </SearchWrapper>
 
             <Right>
-                {user ? (
-                    <Button onClick={logout}>
-                        Logout
-                    </Button>
-                ) : (
-                    <Button onClick={login}>
-                        Login
-                    </Button>
-                )}
+                <SmallButton
+                    onClick={() =>
+                        navigate(
+                            user
+                                ? "/premium"
+                                : "/login"
+                        )
+                    }
+                >
+                    Upgrade
+                </SmallButton>
             </Right>
+
         </Wrapper>
     );
 }

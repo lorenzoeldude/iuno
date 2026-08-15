@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 import { API_URL } from "../../../config";
+import Button2 from "../../atoms/Button2";
 
 const fadeIn = keyframes`
     from {
@@ -88,10 +89,7 @@ const Card = styled.div`
     padding: 34px;
 
     border: 1px solid ${({ theme }) =>
-        theme.colors.border};
-
-    background: ${({ theme }) =>
-        theme.colors.card};
+        theme.colors.accent};
 
     text-align: left;
 
@@ -153,43 +151,71 @@ const Check = styled.span`
     opacity: 0.7;
 `;
 
-const CheckoutButton = styled.button`
+const CheckoutButton = styled(Button2)`
     width: 100%;
+`;
 
-    height: 54px;
+const BillingSwitch = styled.div`
+    display: flex;
+
+    margin-top: 18px;
+
+    padding: 3px;
+
+    border: 1px solid ${({ theme }) =>
+        theme.colors.border};
+
+    background: ${({ theme }) =>
+        theme.colors.card};
+
+    box-sizing: border-box;
+`;
+
+const BillingOption = styled.button`
+    flex: 1;
+
+    padding: 9px 18px;
 
     border: none;
 
-    background: ${({ theme }) =>
-        theme.colors.text};
+    background: ${({ active, theme }) =>
+        active
+            ? theme.colors.accent
+            : "transparent"};
 
-    color: ${({ theme }) =>
-        theme.colors.background};
+    color: ${({ active, theme }) =>
+        active
+            ? theme.colors.background
+            : theme.colors.text};
 
     font: inherit;
 
-    font-size: 16px;
-    font-weight: 600;
+    font-size: 13px;
+    font-weight: ${({ active }) =>
+        active ? 600 : 400};
 
     cursor: pointer;
 
     transition:
-        opacity ${({ theme }) =>
+        background ${({ theme }) =>
             theme.transition.fast},
-        transform ${({ theme }) =>
+        color ${({ theme }) =>
             theme.transition.fast};
 
-    &:hover:not(:disabled) {
-        opacity: 0.85;
-
-        transform: translateY(-1px);
+    &:hover {
+        opacity: 0.9;
     }
+`;
 
-    &:disabled {
-        opacity: 0.5;
+const YearlyNote = styled.div`
+    margin-top: 8px;
 
-        cursor: default;
-    }
+    font-size: 12px;
+
+    color: ${({ theme }) =>
+        theme.colors.text};
+
+    opacity: 0.5;
 `;
 
 const BackButton = styled.button`
@@ -201,7 +227,8 @@ const BackButton = styled.button`
 
     background: none;
 
-    color: inherit;
+    color: ${({ theme }) =>
+        theme.colors.text};
 
     font: inherit;
 
@@ -244,12 +271,18 @@ const ErrorMessage = styled.div`
 const LoadingText = styled.div`
     font-size: 16px;
 
+    color: ${({ theme }) =>
+        theme.colors.text};
+
     opacity: 0.6;
 `;
 
 function PremiumPage() {
 
     const navigate = useNavigate();
+
+    const [billingPeriod, setBillingPeriod] =
+        useState("monthly");
 
     const [loading, setLoading] =
         useState(false);
@@ -259,6 +292,15 @@ function PremiumPage() {
 
     const [error, setError] =
         useState("");
+
+    const isYearly =
+        billingPeriod === "yearly";
+
+    const price =
+        isYearly ? "€99.99" : "€9.99";
+
+    const pricePeriod =
+        isYearly ? "/ year" : "/ month";
 
     useEffect(() => {
 
@@ -294,8 +336,8 @@ function PremiumPage() {
                 const data =
                     await response.json();
 
-                // Already Premium
                 if (data.is_premium) {
+
                     navigate("/user", {
                         replace: true,
                     });
@@ -340,22 +382,16 @@ function PremiumPage() {
                 return;
             }
 
-            /*
-             * This should be your Stripe Price ID.
-             *
-             * Example:
-             *
-             * price_1ABC123...
-             *
-             * Put it in your frontend environment/config.
-             */
-            const priceId =
-                process.env.REACT_APP_STRIPE_PREMIUM_PRICE_ID;
+            const priceId = isYearly
+                ? process.env.REACT_APP_STRIPE_PREMIUM_YEARLY_PRICE_ID
+                : process.env.REACT_APP_STRIPE_PREMIUM_PRICE_ID;
 
             if (!priceId) {
 
                 throw new Error(
-                    "Stripe Premium Price ID is not configured."
+                    isYearly
+                        ? "Stripe Premium yearly Price ID is not configured."
+                        : "Stripe Premium monthly Price ID is not configured."
                 );
             }
 
@@ -398,7 +434,6 @@ function PremiumPage() {
                 );
             }
 
-            // Send the user to Stripe Checkout.
             window.location.href =
                 data.checkout_url;
 
@@ -455,11 +490,11 @@ function PremiumPage() {
                     <PriceArea>
 
                         <Price>
-                            €9.99
+                            {price}
                         </Price>
 
                         <PricePeriod>
-                            / month
+                            {pricePeriod}
                         </PricePeriod>
 
                     </PriceArea>
@@ -512,9 +547,7 @@ function PremiumPage() {
                     </FeatureList>
 
                     <CheckoutButton
-                        onClick={
-                            handleCheckout
-                        }
+                        onClick={handleCheckout}
                         disabled={loading}
                     >
                         {loading
@@ -529,6 +562,36 @@ function PremiumPage() {
                     )}
 
                 </Card>
+
+                <BillingSwitch>
+
+                    <BillingOption
+                        type="button"
+                        active={!isYearly}
+                        onClick={() =>
+                            setBillingPeriod("monthly")
+                        }
+                    >
+                        Monthly
+                    </BillingOption>
+
+                    <BillingOption
+                        type="button"
+                        active={isYearly}
+                        onClick={() =>
+                            setBillingPeriod("yearly")
+                        }
+                    >
+                        Yearly
+                    </BillingOption>
+
+                </BillingSwitch>
+
+                {isYearly && (
+                    <YearlyNote>
+                        Save €19.89 compared with monthly billing
+                    </YearlyNote>
+                )}
 
                 <BackButton
                     onClick={() =>
