@@ -1,8 +1,6 @@
 import styled from "styled-components";
 import Searchbar from "../../atoms/Searchbar";
-import { Link, useNavigate } from "react-router-dom";
-
-import Button2 from "../../atoms/Button2";
+import { Link } from "react-router-dom";
 
 const Wrapper = styled.div`
     position: fixed;
@@ -56,32 +54,8 @@ const SearchWrapper = styled.div`
     min-width: 0;
 `;
 
-const Right = styled.div`
-    display: flex;
-    align-items: center;
-
-    flex-shrink: 0;
-`;
-
-const SmallButton = styled(Button2)`
-    width: auto;
-
-    padding: 8px 14px;
-
-    font-size: 13px;
-
-    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-        padding: 7px 12px;
-        font-size: 13px;
-    }
-`;
 
 function Header() {
-    const navigate = useNavigate();
-
-    const user = JSON.parse(
-        localStorage.getItem("user")
-    );
 
     return (
         <Wrapper>
@@ -93,20 +67,6 @@ function Header() {
             <SearchWrapper>
                 <Searchbar />
             </SearchWrapper>
-
-            <Right>
-                <SmallButton
-                    onClick={() =>
-                        navigate(
-                            user
-                                ? "/premium"
-                                : "/login"
-                        )
-                    }
-                >
-                    Upgrade
-                </SmallButton>
-            </Right>
 
         </Wrapper>
     );

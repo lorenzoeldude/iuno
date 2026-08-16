@@ -12,7 +12,7 @@ const Button2 = styled.button`
     cursor: pointer;
 
     background: ${({ theme }) => theme.colors.primary};
-    color: ${({ theme }) => theme.colors.opposite};
+    color: white;
 
     transition: background ${({ theme }) => theme.transition.fast};
 

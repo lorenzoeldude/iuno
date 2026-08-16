@@ -8,7 +8,6 @@ import { useTheme } from "../../../context/AppThemeProvider";
 import Card from "../../atoms/Card";
 import Button2 from "../../atoms/Button2";
 import TrainingStats from "../../molecules/TrainingStats";
-import PremiumSubscription from "../../molecules/PremiumSubscription";
 
 const fadeIn = keyframes`
     from {
@@ -205,18 +204,6 @@ function UserPage() {
     const [trainingStats, setTrainingStats] =
         useState(null);
 
-    const [billing, setBilling] =
-        useState(null);
-
-    const [billingLoading, setBillingLoading] =
-        useState(true);
-
-    const [billingError, setBillingError] =
-        useState("");
-
-    const [portalLoading, setPortalLoading] =
-        useState(false);
-
     /* =====================================================
        INITIAL DATA
        ===================================================== */
@@ -307,124 +294,9 @@ function UserPage() {
             }
         }
 
-        /* =================================================
-           FETCH BILLING STATUS
-           ================================================= */
-
-        async function fetchBillingStatus() {
-
-            try {
-
-                const response =
-                    await fetch(
-                        `${API_URL}/api/billing/status`,
-                        {
-                            headers: {
-                                Authorization:
-                                    `Bearer ${token}`,
-                            },
-                        }
-                    );
-
-                if (!response.ok) {
-
-                    throw new Error(
-                        `Failed to fetch billing status: ${response.status}`
-                    );
-                }
-
-                const data =
-                    await response.json();
-
-                setBilling(data);
-
-            } catch (error) {
-
-                console.error(
-                    "BILLING STATUS ERROR:",
-                    error
-                );
-
-                setBillingError(
-                    "Unable to load subscription status."
-                );
-
-            } finally {
-
-                setBillingLoading(false);
-
-            }
-        }
-
         fetchTrainingStats();
-        fetchBillingStatus();
 
     }, [navigate]);
-
-    /* =====================================================
-       CUSTOMER PORTAL
-       ===================================================== */
-
-    async function openCustomerPortal() {
-
-        try {
-
-            setPortalLoading(true);
-            setBillingError("");
-
-            const token =
-                localStorage.getItem("token");
-
-            const response =
-                await fetch(
-                    `${API_URL}/api/stripe/create-portal-session`,
-                    {
-                        method: "POST",
-
-                        headers: {
-                            Authorization:
-                                `Bearer ${token}`,
-                        },
-                    }
-                );
-
-            const data =
-                await response.json();
-
-            if (!response.ok) {
-
-                throw new Error(
-                    data.error ||
-                    data.message ||
-                    "Failed to open subscription management."
-                );
-            }
-
-            if (!data.url) {
-
-                throw new Error(
-                    "Stripe did not return a portal URL."
-                );
-            }
-
-            window.location.href =
-                data.url;
-
-        } catch (error) {
-
-            console.error(
-                "CUSTOMER PORTAL ERROR:",
-                error
-            );
-
-            setBillingError(
-                error.message ||
-                "Unable to open subscription management."
-            );
-
-            setPortalLoading(false);
-        }
-    }
 
     /* =====================================================
        LOGOUT
@@ -491,31 +363,6 @@ function UserPage() {
 
                 <TrainingStats
                     stats={trainingStats}
-                />
-
-            </Section>
-
-            {/* =====================================================
-                SUBSCRIPTION
-            ===================================================== */}
-
-            <Section>
-
-                <SectionHeading>
-                    Subscription
-                </SectionHeading>
-
-                <PremiumSubscription
-                    billing={billing}
-                    loading={billingLoading}
-                    error={billingError}
-                    portalLoading={portalLoading}
-                    onManageSubscription={
-                        openCustomerPortal
-                    }
-                    onUpgrade={() =>
-                        navigate("/premium")
-                    }
                 />
 
             </Section>
