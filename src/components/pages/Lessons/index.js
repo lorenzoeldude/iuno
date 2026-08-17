@@ -33,6 +33,13 @@ const LockedCardWrapper = styled.div`
         locked ? "not-allowed" : "pointer"};
 `;
 
+const CompletedCard = styled(Card)`
+    background: ${({ theme }) =>
+        theme.colors.accent
+            ? `${theme.colors.accent}1f`
+            : "rgba(31, 37, 31, 0.12)"};
+`;
+
 const LockIcon = styled(FaLock)`
     position: absolute;
     top: 12px;
@@ -128,7 +135,7 @@ function Lessons() {
             const publishedLessons =
                 lessons.filter(
                     (lesson) =>
-                        lesson.is_published
+                        lesson.is_published === true
                 );
 
             const progressMap = {};
@@ -262,6 +269,55 @@ function Lessons() {
     }
 
     // =====================================================
+    // LOCKING
+    // =====================================================
+
+    function isLessonLocked(lesson) {
+        // Coming Soon is always locked.
+        if (lesson.comingSoon === true) {
+            return true;
+        }
+
+        // Unpublished lessons are locked.
+        if (lesson.is_published !== true) {
+            return true;
+        }
+
+        const publishedLessons =
+            lessons.filter(
+                (item) =>
+                    item.is_published === true
+            );
+
+        const lessonIndex =
+            publishedLessons.findIndex(
+                (item) =>
+                    item.id === lesson.id
+            );
+
+        if (lessonIndex === -1) {
+            return true;
+        }
+
+        // Find the first published lesson that
+        // has not been completed yet.
+        const firstIncompleteIndex =
+            publishedLessons.findIndex(
+                (item) =>
+                    getLessonStatus(item).completed !== true
+            );
+
+        // Everything is completed.
+        if (firstIncompleteIndex === -1) {
+            return false;
+        }
+
+        // Everything after the current lesson
+        // is locked.
+        return lessonIndex > firstIncompleteIndex;
+    }
+
+    // =====================================================
     // RENDER
     // =====================================================
 
@@ -273,14 +329,20 @@ function Lessons() {
                         const lessonNumber =
                             lesson.id;
 
-                        const locked =
-                            lesson.comingSoon ||
-                            !lesson.is_published;
-
                         const status =
                             getLessonStatus(
                                 lesson
                             );
+
+                        const locked =
+                            isLessonLocked(
+                                lesson
+                            );
+
+                        const CardComponent =
+                            status.completed
+                                ? CompletedCard
+                                : Card;
 
                         return (
                             <Fragment
@@ -288,15 +350,13 @@ function Lessons() {
                             >
                                 <CardWrapper>
                                     <LockedCardWrapper
-                                        locked={
-                                            locked
-                                        }
+                                        locked={locked}
                                     >
                                         {locked && (
                                             <LockIcon />
                                         )}
 
-                                        <Card
+                                        <CardComponent
                                             title={
                                                 lessonNumber
                                             }
@@ -329,7 +389,7 @@ function Lessons() {
                                                             : `In progress · ${status.percentage}%`}
                                                     </Status>
                                                 )}
-                                        </Card>
+                                        </CardComponent>
                                     </LockedCardWrapper>
                                 </CardWrapper>
 
