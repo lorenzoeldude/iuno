@@ -34,10 +34,7 @@ const LockedCardWrapper = styled.div`
 `;
 
 const CompletedCard = styled(Card)`
-    background: ${({ theme }) =>
-        theme.colors.accent
-            ? `${theme.colors.accent}1f`
-            : "rgba(31, 37, 31, 0.12)"};
+    background: ${({ theme }) => `${theme.colors.accent}1f`};
 `;
 
 const LockIcon = styled(FaLock)`
