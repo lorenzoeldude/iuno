@@ -1,5 +1,7 @@
 // theme.js
 
+import { createGlobalStyle } from "styled-components";
+
 const shared = {
     fonts: {
         body: "Cormorant Garamond, serif",
@@ -57,6 +59,8 @@ const shared = {
 export const lightTheme = {
     ...shared,
 
+    mode: "light",
+
     colors: {
         background: "#FFFFFF",
         surface: "#F8F9FA",
@@ -87,6 +91,8 @@ export const lightTheme = {
 export const darkTheme = {
     ...shared,
 
+    mode: "dark",
+
     colors: {
         background: "#121212",
         surface: "#1E1E1E",
@@ -100,7 +106,6 @@ export const darkTheme = {
         primary: "#6366F1",
         primaryHover: "#818CF8",
 
-        // highlight: "rgba(255, 0, 0, 0.7)",
         highlight: "rgba(255, 255, 0, 0.2)",
 
         success: "#22C55E",
@@ -114,3 +119,28 @@ export const darkTheme = {
         shadow: "rgba(40, 40, 40, 0.4)",
     },
 };
+
+const GlobalStyles = createGlobalStyle`
+    * {
+        margin: 0;
+        box-sizing: border-box;
+    }
+
+    html,
+    body,
+    #root {
+        width: 100%;
+        min-height: 100%;
+    }
+
+    body {
+        background: ${({ theme }) => theme.colors.background};
+        color: ${({ theme }) => theme.colors.text};
+
+        transition:
+            background ${({ theme }) => theme.transition.normal},
+            color ${({ theme }) => theme.transition.normal};
+    }
+`;
+
+export default GlobalStyles;
