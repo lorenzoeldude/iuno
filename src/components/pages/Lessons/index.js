@@ -28,47 +28,71 @@ const CardWrapper = styled.div`
 const LockedCardWrapper = styled.div`
     position: relative;
     width: 100%;
-    opacity: ${({ locked }) => (locked ? 0.5 : 1)};
+    opacity: ${({ locked }) =>
+        locked ? 0.5 : 1};
+
     cursor: ${({ locked }) =>
         locked ? "not-allowed" : "pointer"};
 `;
 
-const CompletedCard = styled(Card)`
-    background: ${({ theme }) => `${theme.colors.accent}1f`};
+const LessonCard = styled(Card)`
+    background: ${({ completed, theme }) =>
+        completed
+            ? `${theme.colors.accent}0f`
+            : "transparent"};
+
+    border: 1px solid
+        ${({ completed, theme }) =>
+            completed
+                ? theme.colors.accent
+                : `${theme.colors.text}40`};
+
+    box-sizing: border-box;
 `;
 
 const LockIcon = styled(FaLock)`
     position: absolute;
     top: 12px;
     right: 12px;
-    font-size: 20px;
+
+    font-size: 18px;
+
     z-index: 10;
 `;
 
 const ArrowWrapper = styled.div`
     padding: 16px 0;
+
     display: flex;
     justify-content: center;
 
-    font-size: 28px;
+    font-size: 24px;
     opacity: 0.45;
 `;
 
 const Title = styled.h1`
     font-family: "Cormorant Garamond", serif;
     font-weight: 500;
+
     margin: 0;
+
     text-align: center;
     line-height: 1.05;
 
     font-size: 34px;
+
+    padding-top: 30px;
+    padding-bottom: ${({ hasStatus }) =>
+        hasStatus ? "10px" : "30px"};
 `;
 
 const Status = styled.div`
-    margin-top: 10px;
+    margin-top: 0;
+    padding-bottom: 20px;
 
     font-family: "Cormorant Garamond", serif;
     font-size: 17px;
+
     text-align: center;
 
     opacity: ${({ completed }) =>
@@ -270,12 +294,10 @@ function Lessons() {
     // =====================================================
 
     function isLessonLocked(lesson) {
-        // Coming Soon is always locked.
         if (lesson.comingSoon === true) {
             return true;
         }
 
-        // Unpublished lessons are locked.
         if (lesson.is_published !== true) {
             return true;
         }
@@ -296,21 +318,16 @@ function Lessons() {
             return true;
         }
 
-        // Find the first published lesson that
-        // has not been completed yet.
         const firstIncompleteIndex =
             publishedLessons.findIndex(
                 (item) =>
                     getLessonStatus(item).completed !== true
             );
 
-        // Everything is completed.
         if (firstIncompleteIndex === -1) {
             return false;
         }
 
-        // Everything after the current lesson
-        // is locked.
         return lessonIndex > firstIncompleteIndex;
     }
 
@@ -336,10 +353,9 @@ function Lessons() {
                                 lesson
                             );
 
-                        const CardComponent =
-                            status.completed
-                                ? CompletedCard
-                                : Card;
+                        const showStatus =
+                            !locked &&
+                            status.started;
 
                         return (
                             <Fragment
@@ -353,11 +369,14 @@ function Lessons() {
                                             <LockIcon />
                                         )}
 
-                                        <CardComponent
+                                        <LessonCard
                                             title={
                                                 lessonNumber
                                             }
                                             size="small"
+                                            completed={
+                                                status.completed
+                                            }
                                             onClick={() => {
                                                 if (
                                                     !locked
@@ -368,25 +387,28 @@ function Lessons() {
                                                 }
                                             }}
                                         >
-                                            <Title>
+                                            <Title
+                                                hasStatus={
+                                                    showStatus
+                                                }
+                                            >
                                                 {
                                                     lesson.title
                                                 }
                                             </Title>
 
-                                            {!locked &&
-                                                status.started && (
-                                                    <Status
-                                                        completed={
-                                                            status.completed
-                                                        }
-                                                    >
-                                                        {status.completed
-                                                            ? "✓ Completed"
-                                                            : `In progress · ${status.percentage}%`}
-                                                    </Status>
-                                                )}
-                                        </CardComponent>
+                                            {showStatus && (
+                                                <Status
+                                                    completed={
+                                                        status.completed
+                                                    }
+                                                >
+                                                    {status.completed
+                                                        ? "✓ Completed"
+                                                        : `In progress · ${status.percentage}%`}
+                                                </Status>
+                                            )}
+                                        </LessonCard>
                                     </LockedCardWrapper>
                                 </CardWrapper>
 
