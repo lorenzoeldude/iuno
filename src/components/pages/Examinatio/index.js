@@ -13,8 +13,10 @@ import { API_URL } from "../../../config";
 const Wrapper = styled.div`
     width: 100%;
     max-width: 800px;
+
     display: flex;
     flex-direction: column;
+
     flex: 1;
 `;
 
@@ -29,11 +31,28 @@ const Content = styled.div`
     padding: 2rem 0 100px;
 `;
 
-const Question = styled.p`
+const Sentence = styled.p`
+    width: 100%;
+
     font-size: clamp(28px, 4vw, 42px);
     text-align: center;
     line-height: 1.5;
-    margin-bottom: 40px;
+
+    margin: 0 0 12px;
+
+    font-weight: 700;
+`;
+
+const Question = styled.p`
+    width: 100%;
+
+    font-size: clamp(24px, 3.5vw, 36px);
+    text-align: center;
+    line-height: 1;
+
+    margin: 0 0 40px;
+
+    font-weight: 200;
 `;
 
 const Answers = styled.div`
@@ -42,38 +61,46 @@ const Answers = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+
 `;
 
 const ResultText = styled.p`
     font-size: clamp(28px, 4vw, 40px);
     text-align: center;
+
     margin: 12px 0;
 `;
 
 const ScoreText = styled.p`
     font-size: clamp(24px, 3vw, 34px);
     text-align: center;
+
     margin: 12px 0;
 `;
 
 const ArrowDiv = styled.div`
     position: fixed;
+
     left: 50%;
     bottom: 30px;
+
     transform: translateX(-50%);
 `;
 
 const RewardText = styled.p`
     font-size: clamp(22px, 3vw, 30px);
     text-align: center;
+
     margin: 12px 0;
 
     color: ${({ theme }) => theme.colors.text};
 `;
 
 function Examinatio() {
+
     const { id } = useParams();
     const navigate = useNavigate();
+
     const sounds = useSoundEffects();
 
     const [questions, setQuestions] = useState([]);
@@ -89,33 +116,50 @@ function Examinatio() {
     // =====================================================
 
     useEffect(() => {
+
         async function fetchLesson() {
+
             try {
+
                 const response = await fetch(
                     `${API_URL}/api/lessons/${id}`
                 );
 
                 if (!response.ok) {
-                    throw new Error("Failed to fetch lesson");
+                    throw new Error(
+                        "Failed to fetch lesson"
+                    );
                 }
 
-                const lesson = await response.json();
+                const lesson =
+                    await response.json();
 
-                setQuestions(lesson.exam || []);
+                setQuestions(
+                    lesson.exam || []
+                );
+
             } catch (err) {
+
                 console.error(err);
+
             }
+
         }
 
         fetchLesson();
+
     }, [id]);
 
     // =====================================================
     // SAVE LESSON COMPLETION
     // =====================================================
 
-    async function completeLesson(finalCorrect) {
-        const token = localStorage.getItem("token");
+    async function completeLesson(
+        finalCorrect
+    ) {
+
+        const token =
+            localStorage.getItem("token");
 
         if (!token || saving) {
             return;
@@ -123,40 +167,57 @@ function Examinatio() {
 
         setSaving(true);
 
-        const percentage = Math.round(
-            (finalCorrect / questions.length) * 100
-        );
-
-        try {
-            const response = await fetch(
-                `${API_URL}/api/lessons/${id}/progress`,
-                {
-                    method: "PUT",
-
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-
-                    body: JSON.stringify({
-                        section: "examinatio",
-                        score: percentage,
-                    }),
-                }
+        const percentage =
+            Math.round(
+                (finalCorrect /
+                    questions.length) *
+                    100
             );
 
+        try {
+
+            const response =
+                await fetch(
+                    `${API_URL}/api/lessons/${id}/progress`,
+                    {
+                        method: "PUT",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json",
+
+                            Authorization:
+                                `Bearer ${token}`,
+                        },
+
+                        body: JSON.stringify({
+                            section:
+                                "examinatio",
+
+                            score:
+                                percentage,
+                        }),
+                    }
+                );
+
             if (!response.ok) {
+
                 console.error(
                     "Failed to save lesson progress:",
                     response.status
                 );
+
             }
+
         } catch (err) {
+
             console.error(
                 "LESSON COMPLETION ERROR:",
                 err
             );
+
         }
+
     }
 
     // =====================================================
@@ -164,6 +225,7 @@ function Examinatio() {
     // =====================================================
 
     if (questions.length === 0) {
+
         return (
             <LessonLayout
                 active="examinatio"
@@ -177,6 +239,7 @@ function Examinatio() {
                 Loading...
             </LessonLayout>
         );
+
     }
 
     // =====================================================
@@ -184,9 +247,13 @@ function Examinatio() {
     // =====================================================
 
     if (step >= questions.length) {
-        const percentage = Math.round(
-            (score / questions.length) * 100
-        );
+
+        const percentage =
+            Math.round(
+                (score /
+                    questions.length) *
+                    100
+            );
 
         return (
             <LessonLayout
@@ -199,71 +266,125 @@ function Examinatio() {
                 ]}
                 progress={100}
             >
+
                 <Wrapper>
+
                     <Content>
+
                         <ResultText>
-                            Correct: {score} / {questions.length}
+                            Correct:{" "}
+                            {score} /{" "}
+                            {questions.length}
                         </ResultText>
 
                         <ScoreText>
-                            Score: {percentage}%
+                            Score:{" "}
+                            {percentage}%
                         </ScoreText>
 
                         <RewardText>
                             +100 sestertii
                         </RewardText>
 
-                        <div style={{ marginTop: "40px" }}>
+                        <div
+                            style={{
+                                marginTop:
+                                    "40px",
+                            }}
+                        >
+
                             <NavigationButton
                                 onClick={() =>
-                                    navigate("/lessons")
+                                    navigate(
+                                        "/lessons"
+                                    )
                                 }
                             >
                                 Finish Lesson
                             </NavigationButton>
+
                         </div>
+
                     </Content>
+
                 </Wrapper>
+
             </LessonLayout>
         );
+
     }
 
-    const current = questions[step];
+    // =====================================================
+    // CURRENT QUESTION
+    // =====================================================
+
+    const current =
+        questions[step];
 
     const progress =
-        (step / questions.length) * 100;
+        (step /
+            questions.length) *
+        100;
 
     const isFillQuestion =
         current.type === "word" ||
         current.type === "ending";
+
+    const isSentenceQuestion =
+        current.type ===
+        "sentenceQuestion";
 
     // =====================================================
     // NEXT QUESTION
     // =====================================================
 
     async function nextQuestion() {
+
         const isCorrect =
-            selected === current.correct;
+            selected ===
+            current.correct;
 
         const newScore =
             isCorrect
                 ? score + 1
                 : score;
 
-        // Last question
-        if (step === questions.length - 1) {
+        // =================================================
+        // LAST QUESTION
+        // =================================================
+
+        if (
+            step ===
+            questions.length - 1
+        ) {
+
             setScore(newScore);
 
-            await completeLesson(newScore);
+            await completeLesson(
+                newScore
+            );
 
-            setStep(step + 1);
+            setStep(
+                step + 1
+            );
+
             setSelected(null);
 
             return;
         }
 
-        setScore(newScore);
-        setStep(step + 1);
+        // =================================================
+        // NEXT
+        // =================================================
+
+        setScore(
+            newScore
+        );
+
+        setStep(
+            step + 1
+        );
+
         setSelected(null);
     }
 
@@ -272,6 +393,7 @@ function Examinatio() {
     // =====================================================
 
     return (
+
         <LessonLayout
             active="examinatio"
             completed={[
@@ -281,63 +403,124 @@ function Examinatio() {
             ]}
             progress={progress}
         >
+
             <Wrapper>
+
                 <Content>
-                    <Question>
-                        {isFillQuestion ? (
-                            <>
-                                {current.before}
 
-                                {current.type === "word" &&
-                                    " "}
+                    {/* =================================================
+                        SENTENCE QUESTION
+                    ================================================= */}
 
-                                <span
-                                    style={{
-                                        textDecoration:
-                                            "underline",
-                                    }}
-                                >
-                                    {selected !== null
-                                        ? current.correct
-                                        : "_"}
-                                </span>
+                    {isSentenceQuestion ? (
 
-                                {" "}
+                        <>
+                            <Sentence>
+                                {current.sentence}
+                            </Sentence>
 
-                                {current.after}
-                            </>
-                        ) : (
-                            current.question
-                        )}
-                    </Question>
+                            <Question>
+                                {current.question}
+                            </Question>
+                        </>
+
+                    ) : (
+
+                        <Question>
+
+                            {/* =========================================
+                                WORD / ENDING
+                            ========================================= */}
+
+                            {isFillQuestion ? (
+
+                                <>
+                                    {current.before}
+
+                                    {current.type ===
+                                        "word" &&
+                                        " "}
+
+                                    <span
+                                        style={{
+                                            textDecoration:
+                                                "underline",
+                                        }}
+                                    >
+                                        {selected !==
+                                        null
+                                            ? current.correct
+                                            : "_"}
+                                    </span>
+
+                                    {" "}
+
+                                    {current.after}
+                                </>
+
+                            ) : (
+
+                                /* =====================================
+                                   NORMAL QUESTION
+                                ===================================== */
+
+                                current.question
+
+                            )}
+
+                        </Question>
+
+                    )}
+
+                    {/* =================================================
+                        ANSWERS
+                    ================================================= */}
 
                     <Answers>
+
                         {current.options.map(
                             (option) => (
+
                                 <AnswerButton
                                     key={option}
                                     index={option}
                                     correct={
                                         current.correct
                                     }
-                                    selected={selected}
+                                    selected={
+                                        selected
+                                    }
                                     setSelected={
                                         setSelected
                                     }
-                                    sounds={sounds}
+                                    sounds={
+                                        sounds
+                                    }
                                 >
                                     {option}
                                 </AnswerButton>
+
                             )
                         )}
+
                     </Answers>
+
                 </Content>
+
             </Wrapper>
 
+            {/* =====================================================
+                NEXT BUTTON
+            ===================================================== */}
+
             {selected !== null && (
+
                 <ArrowDiv>
+
                     <ArrowButton
-                        onClick={nextQuestion}
+                        onClick={
+                            nextQuestion
+                        }
                         state={
                             selected ===
                             current.correct
@@ -350,8 +533,11 @@ function Examinatio() {
                             ? "Finish"
                             : ">"}
                     </ArrowButton>
+
                 </ArrowDiv>
+
             )}
+
         </LessonLayout>
     );
 }

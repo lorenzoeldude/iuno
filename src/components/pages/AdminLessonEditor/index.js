@@ -24,13 +24,11 @@ const Label = styled.label`
 	margin-top: ${({ theme }) => theme.spacing.xl};
 	margin-bottom: ${({ theme }) => theme.spacing.sm};
 
-	font-family: ${({ theme }) => theme.fonts.body};
+	font-family: ${({ theme }) => theme.fonts.heading};
 	font-size: ${({ theme }) => theme.fontSizes.xxl};
+	font-weight: ${({ theme }) => theme.fontWeights.bold};
 
 	color: ${({ theme }) => theme.colors.text};
-
-	font-family: ${({ theme }) => theme.fonts.heading};
-	font-weight: ${({ theme }) => theme.fontWeights.bold};
 `;
 
 const Input = styled.input`
@@ -149,12 +147,16 @@ function AdminLessonEditor() {
 
 	const [exam, setExam] = useState([
 		{
-			type: "vocab",
+			type: "question",
 			question: "",
 			correct: "",
 			optionsText: "",
 		},
 	]);
+
+	// =====================================================
+	// LOAD LESSON
+	// =====================================================
 
 	useEffect(() => {
 		if (!id) return;
@@ -182,53 +184,73 @@ function AdminLessonEditor() {
 				setTitle(lesson.title || "");
 				setImage(lesson.image || "");
 				setIntroduction(lesson.introduction || "");
-				setIsPublished(lesson.is_published || false);
+				setIsPublished(
+					lesson.is_published || false
+				);
+
 				setTextPages(
-					lesson.text && lesson.text.length > 0
+					lesson.text &&
+						lesson.text.length > 0
 						? lesson.text
 						: [{ text: "" }]
 				);
+
 				setGrammar(
-					lesson.grammar && lesson.grammar.length > 0
+					lesson.grammar &&
+						lesson.grammar.length > 0
 						? lesson.grammar
 						: [
-							{
-								type: "explanation",
-								title: "",
-								text: [""],
-							},
-						]
+								{
+									type: "explanation",
+									title: "",
+									text: [""],
+								},
+							]
 				);
+
 				setExam(
 					(lesson.exam || []).map((q) => ({
 						...q,
-						optionsText: (q.options || []).join("\n"),
+						optionsText: (
+							q.options || []
+						).join("\n"),
 					}))
 				);
-				const vocabResponse = await fetch(
-					`${process.env.REACT_APP_API_URL}/api/admin/lessons/${id}/vocabulary`,
-					{
-						headers: {
-							Authorization: `Bearer ${token}`,
-						},
-					}
-				);
+
+				const vocabResponse =
+					await fetch(
+						`${process.env.REACT_APP_API_URL}/api/admin/lessons/${id}/vocabulary`,
+						{
+							headers: {
+								Authorization: `Bearer ${token}`,
+							},
+						}
+					);
 
 				if (vocabResponse.ok) {
-					const data = await vocabResponse.json();
+					const data =
+						await vocabResponse.json();
 
 					setVocabulary(
-						(data.vocabulary || []).join("\n")
+						(data.vocabulary || []).join(
+							"\n"
+						)
 					);
 				}
 			} catch (err) {
 				console.error(err);
-				setStatus("Failed to load lesson.");
+				setStatus(
+					"Failed to load lesson."
+				);
 			}
 		};
 
 		loadLesson();
 	}, [id]);
+
+	// =====================================================
+	// SAVE LESSON
+	// =====================================================
 
 	const handleSubmit = async () => {
 		setLoading(true);
@@ -244,16 +266,20 @@ function AdminLessonEditor() {
 					.map((o) => o.trim())
 					.filter(Boolean),
 			}));
+
 			const response = await fetch(
 				id
 					? `${process.env.REACT_APP_API_URL}/api/admin/lessons/${id}`
 					: `${process.env.REACT_APP_API_URL}/api/admin/lessons/`,
 				{
 					method: id ? "PUT" : "POST",
+
 					headers: {
-						"Content-Type": "application/json",
+						"Content-Type":
+							"application/json",
 						Authorization: `Bearer ${token}`,
 					},
+
 					body: JSON.stringify({
 						title,
 						image,
@@ -267,7 +293,9 @@ function AdminLessonEditor() {
 			);
 
 			if (!response.ok) {
-				setStatus("Failed to save lesson.");
+				setStatus(
+					"Failed to save lesson."
+				);
 				setLoading(false);
 				return;
 			}
@@ -280,10 +308,13 @@ function AdminLessonEditor() {
 				`${process.env.REACT_APP_API_URL}/api/admin/lessons/${lessonID}/vocabulary`,
 				{
 					method: "PUT",
+
 					headers: {
-						"Content-Type": "application/json",
+						"Content-Type":
+							"application/json",
 						Authorization: `Bearer ${token}`,
 					},
+
 					body: JSON.stringify({
 						vocabulary: vocabulary
 							.split("\n")
@@ -294,18 +325,26 @@ function AdminLessonEditor() {
 			);
 
 			if (!id) {
-				navigate(`/admin/lessons/${lesson.id}`);
+				navigate(
+					`/admin/lessons/${lesson.id}`
+				);
 				return;
 			}
 
 			setStatus("Lesson saved.");
 		} catch (err) {
 			console.error(err);
-			setStatus("Failed to save lesson.");
+			setStatus(
+				"Failed to save lesson."
+			);
 		}
 
 		setLoading(false);
 	};
+
+	// =====================================================
+	// INSERT GRAMMAR BLOCK
+	// =====================================================
 
 	const insertGrammarBlock = (index) => {
 		const newBlock = {
@@ -315,7 +354,12 @@ function AdminLessonEditor() {
 		};
 
 		const updated = [...grammar];
-		updated.splice(index + 1, 0, newBlock);
+
+		updated.splice(
+			index + 1,
+			0,
+			newBlock
+		);
 
 		setGrammar(updated);
 	};
@@ -323,49 +367,88 @@ function AdminLessonEditor() {
 	return (
 		<Page>
 			<Heading>
-				{id ? "Edit Lesson" : "Create Lesson"}
+				{id
+					? "Edit Lesson"
+					: "Create Lesson"}
 			</Heading>
 
+			{/* =====================================================
+				BASIC INFORMATION
+			===================================================== */}
+
 			<Label>Title</Label>
+
 			<Input
 				value={title}
-				onChange={(e) => setTitle(e.target.value)}
+				onChange={(e) =>
+					setTitle(e.target.value)
+				}
 			/>
 
 			<Label>Image</Label>
+
 			<Input
 				value={image}
-				onChange={(e) => setImage(e.target.value)}
+				onChange={(e) =>
+					setImage(e.target.value)
+				}
 				placeholder="/images/lesson1.webp"
 			/>
 
 			<Label>Introduction</Label>
+
 			<TextArea
 				value={introduction}
-				onChange={(e) => setIntroduction(e.target.value)}
+				onChange={(e) =>
+					setIntroduction(
+						e.target.value
+					)
+				}
 				placeholder="Write the lesson introduction..."
 			/>
 
+			{/* =====================================================
+				TEXT
+			===================================================== */}
+
 			{textPages.map((page, index) => (
 				<div key={index}>
-					<Label>Text Page {index + 1}</Label>
+					<Label>
+						Text Page {index + 1}
+					</Label>
 
 					<TextArea
 						value={page.text}
 						onChange={(e) => {
-							const updated = [...textPages];
-							updated[index].text = e.target.value;
-							setTextPages(updated);
+							const updated = [
+								...textPages,
+							];
+
+							updated[index].text =
+								e.target.value;
+
+							setTextPages(
+								updated
+							);
 						}}
 						placeholder="Write the Latin text..."
 					/>
+
 					<Button
 						type="button"
 						onClick={() => {
-							if (textPages.length === 1) return;
+							if (
+								textPages.length ===
+								1
+							)
+								return;
 
 							setTextPages(
-								textPages.filter((_, i) => i !== index)
+								textPages.filter(
+									(_, i) =>
+										i !==
+										index
+								)
 							);
 						}}
 					>
@@ -388,60 +471,159 @@ function AdminLessonEditor() {
 				Add Page
 			</Button>
 
+			{/* =====================================================
+				VOCABULARY
+			===================================================== */}
+
 			<Label>Vocabulary</Label>
 
 			<TextArea
 				value={vocabulary}
-				onChange={(e) => setVocabulary(e.target.value)}
+				onChange={(e) =>
+					setVocabulary(
+						e.target.value
+					)
+				}
 				placeholder={`Rōma
-			Italia
-			urbs
-			vir
-			fēmina`}
+Italia
+urbs
+vir
+fēmina`}
 			/>
+
+			{/* =====================================================
+				GRAMMAR
+			===================================================== */}
 
 			<Label>Grammar</Label>
 
 			{grammar.map((block, index) => (
 				<div key={index}>
-
 					<Label>
-						Grammar Block {index + 1}
+						Grammar Block{" "}
+						{index + 1}
 					</Label>
 
 					<select
 						value={block.type}
 						onChange={(e) => {
-							const updated = [...grammar];
+							const updated = [
+								...grammar,
+							];
 
-							updated[index].type = e.target.value;
-
-							if (e.target.value === "explanation") {
-								updated[index] = {
-									type: "explanation",
-									title: "",
-									text: [""],
-								};
+							if (
+								e.target.value ===
+								"explanation"
+							) {
+								updated[index] =
+									{
+										type: "explanation",
+										title: "",
+										text: [""],
+									};
 							}
 
 							if (
-								e.target.value === "quizEnding" ||
-								e.target.value === "quizWord"
+								e.target.value ===
+								"question"
 							) {
-								updated[index] = {
-									type: e.target.value,
-									sentenceBefore: "",
-									correct: "",
-									options: ["", ""],
-									ending: "",
-								};
+								updated[index] =
+									{
+										type: "question",
+										question:
+											"",
+										correct:
+											"",
+										options: [
+											"",
+											"",
+											"",
+											"",
+										],
+									};
 							}
 
-							setGrammar(updated);
+							if (
+								e.target.value ===
+								"sentenceQuestion"
+							) {
+								updated[index] =
+									{
+										type: "sentenceQuestion",
+										sentence:
+											"",
+										question:
+											"",
+										correct:
+											"",
+										options: [
+											"",
+											"",
+											"",
+											"",
+										],
+									};
+							}
+
+							if (
+								e.target.value ===
+								"quizEnding"
+							) {
+								updated[index] =
+									{
+										type: "quizEnding",
+										sentenceBefore:
+											"",
+										correct:
+											"",
+										options: [
+											"",
+											"",
+											"",
+											"",
+										],
+										ending:
+											"",
+									};
+							}
+
+							if (
+								e.target.value ===
+								"quizWord"
+							) {
+								updated[index] =
+									{
+										type: "quizWord",
+										sentenceBefore:
+											"",
+										correct:
+											"",
+										options: [
+											"",
+											"",
+											"",
+											"",
+										],
+										ending:
+											"",
+									};
+							}
+
+							setGrammar(
+								updated
+							);
 						}}
 					>
 						<option value="explanation">
 							Explanation
+						</option>
+
+						<option value="question">
+							Question
+						</option>
+
+						<option value="sentenceQuestion">
+							Sentence Question
 						</option>
 
 						<option value="quizEnding">
@@ -453,100 +635,456 @@ function AdminLessonEditor() {
 						</option>
 					</select>
 
+					{/* =================================================
+						EXPLANATION
+					================================================= */}
 
-					{block.type === "explanation" && (
+					{block.type ===
+						"explanation" && (
 						<>
-							<Label>Title</Label>
+							<Label>
+								Title
+							</Label>
 
 							<Input
-								value={block.title}
-								onChange={(e) => {
-									const updated = [...grammar];
-									updated[index].title = e.target.value;
-									setGrammar(updated);
+								value={
+									block.title ||
+									""
+								}
+								onChange={(
+									e
+								) => {
+									const updated =
+										[
+											...grammar,
+										];
+
+									updated[
+										index
+									].title =
+										e.target.value;
+
+									setGrammar(
+										updated
+									);
 								}}
 							/>
 
-
-							<Label>Text</Label>
+							<Label>
+								Text
+							</Label>
 
 							<TextArea
-								value={block.text.join("\n")}
-								onChange={(e) => {
-									const updated = [...grammar];
+								value={(
+									block.text ||
+									[]
+								).join(
+									"\n"
+								)}
+								onChange={(
+									e
+								) => {
+									const updated =
+										[
+											...grammar,
+										];
 
-									updated[index].text =
-										e.target.value.split("\n");
+									updated[
+										index
+									].text =
+										e.target.value.split(
+											"\n"
+										);
 
-									setGrammar(updated);
+									setGrammar(
+										updated
+									);
 								}}
 								placeholder="One explanation line per row..."
 							/>
 						</>
 					)}
 
+					{/* =================================================
+						QUESTION
+					================================================= */}
 
-					{(block.type === "quiz" || block.type === "quizEnding" || block.type === "quizWord") && (
+					{block.type ===
+						"question" && (
 						<>
-							<Label>Sentence Before</Label>
+							<Label>
+								Question
+							</Label>
 
 							<Input
-								value={block.sentenceBefore}
-								onChange={(e) => {
-									const updated = [...grammar];
-									updated[index].sentenceBefore =
+								value={
+									block.question ||
+									""
+								}
+								onChange={(
+									e
+								) => {
+									const updated =
+										[
+											...grammar,
+										];
+
+									updated[
+										index
+									].question =
 										e.target.value;
-									setGrammar(updated);
+
+									setGrammar(
+										updated
+									);
+								}}
+								placeholder="Which case receives something?"
+							/>
+
+							<Label>
+								Correct Answer
+							</Label>
+
+							<Input
+								value={
+									block.correct ||
+									""
+								}
+								onChange={(
+									e
+								) => {
+									const updated =
+										[
+											...grammar,
+										];
+
+									updated[
+										index
+									].correct =
+										e.target.value;
+
+									setGrammar(
+										updated
+									);
+								}}
+								placeholder="Dative"
+							/>
+
+							<Label>
+								Options
+							</Label>
+
+							<TextArea
+								value={(
+									block.options ||
+									[]
+								).join(
+									"\n"
+								)}
+								onChange={(
+									e
+								) => {
+									const updated =
+										[
+											...grammar,
+										];
+
+									updated[
+										index
+									].options =
+										e.target.value.split(
+											"\n"
+										);
+
+									setGrammar(
+										updated
+									);
+								}}
+								placeholder={`Nominative
+Genitive
+Dative
+Accusative`}
+							/>
+						</>
+					)}
+
+					{/* =================================================
+						SENTENCE QUESTION
+					================================================= */}
+
+					{block.type ===
+						"sentenceQuestion" && (
+						<>
+							<Label>
+								Sentence
+							</Label>
+
+							<Input
+								value={
+									block.sentence ||
+									""
+								}
+								onChange={(
+									e
+								) => {
+									const updated =
+										[
+											...grammar,
+										];
+
+									updated[
+										index
+									].sentence =
+										e.target.value;
+
+									setGrammar(
+										updated
+									);
+								}}
+								placeholder="Līvia Fidō olīvam dat."
+							/>
+
+							<Label>
+								Question
+							</Label>
+
+							<Input
+								value={
+									block.question ||
+									""
+								}
+								onChange={(
+									e
+								) => {
+									const updated =
+										[
+											...grammar,
+										];
+
+									updated[
+										index
+									].question =
+										e.target.value;
+
+									setGrammar(
+										updated
+									);
+								}}
+								placeholder="Which case is olīvam in?"
+							/>
+
+							<Label>
+								Correct Answer
+							</Label>
+
+							<Input
+								value={
+									block.correct ||
+									""
+								}
+								onChange={(
+									e
+								) => {
+									const updated =
+										[
+											...grammar,
+										];
+
+									updated[
+										index
+									].correct =
+										e.target.value;
+
+									setGrammar(
+										updated
+									);
+								}}
+								placeholder="Accusative"
+							/>
+
+							<Label>
+								Options
+							</Label>
+
+							<TextArea
+								value={(
+									block.options ||
+									[]
+								).join(
+									"\n"
+								)}
+								onChange={(
+									e
+								) => {
+									const updated =
+										[
+											...grammar,
+										];
+
+									updated[
+										index
+									].options =
+										e.target.value.split(
+											"\n"
+										);
+
+									setGrammar(
+										updated
+									);
+								}}
+								placeholder={`Nominative
+Genitive
+Dative
+Accusative`}
+							/>
+						</>
+					)}
+
+					{/* =================================================
+						ENDING / WORD QUIZ
+					================================================= */}
+
+					{(
+						block.type ===
+							"quizEnding" ||
+						block.type ===
+							"quizWord"
+					) && (
+						<>
+							<Label>
+								Sentence
+								Before
+							</Label>
+
+							<Input
+								value={
+									block.sentenceBefore ||
+									""
+								}
+								onChange={(
+									e
+								) => {
+									const updated =
+										[
+											...grammar,
+										];
+
+									updated[
+										index
+									].sentenceBefore =
+										e.target.value;
+
+									setGrammar(
+										updated
+									);
 								}}
 							/>
 
-
-							<Label>Correct Answer</Label>
+							<Label>
+								Correct Answer
+							</Label>
 
 							<Input
-								value={block.correct}
-								onChange={(e) => {
-									const updated = [...grammar];
-									updated[index].correct =
+								value={
+									block.correct ||
+									""
+								}
+								onChange={(
+									e
+								) => {
+									const updated =
+										[
+											...grammar,
+										];
+
+									updated[
+										index
+									].correct =
 										e.target.value;
-									setGrammar(updated);
+
+									setGrammar(
+										updated
+									);
 								}}
 							/>
 
+							<Label>
+								Options
+							</Label>
 
-							<Label>Options</Label>
+							<TextArea
+								value={(
+									block.options ||
+									[]
+								).join(
+									"\n"
+								)}
+								onChange={(
+									e
+								) => {
+									const updated =
+										[
+											...grammar,
+										];
 
-							<Input
-								value={block.options.join(",")}
-								onChange={(e) => {
-									const updated = [...grammar];
+									updated[
+										index
+									].options =
+										e.target.value.split(
+											"\n"
+										);
 
-									updated[index].options =
-										e.target.value
-											.split(",");
-
-									setGrammar(updated);
+									setGrammar(
+										updated
+									);
 								}}
+								placeholder={`Option 1
+Option 2
+Option 3
+Option 4`}
 							/>
 
-
-							<Label>Ending</Label>
+							<Label>
+								Ending
+							</Label>
 
 							<Input
-								value={block.ending}
-								onChange={(e) => {
-									const updated = [...grammar];
-									updated[index].ending =
+								value={
+									block.ending ||
+									""
+								}
+								onChange={(
+									e
+								) => {
+									const updated =
+										[
+											...grammar,
+										];
+
+									updated[
+										index
+									].ending =
 										e.target.value;
-									setGrammar(updated);
+
+									setGrammar(
+										updated
+									);
 								}}
 							/>
 						</>
 					)}
 
+					{/* =================================================
+						GRAMMAR BLOCK BUTTONS
+					================================================= */}
+
 					<Button
 						type="button"
-						onClick={() => insertGrammarBlock(index)}
+						onClick={() =>
+							insertGrammarBlock(
+								index
+							)
+						}
 					>
 						Add Block Below
 					</Button>
@@ -556,17 +1094,17 @@ function AdminLessonEditor() {
 						onClick={() => {
 							setGrammar(
 								grammar.filter(
-									(_, i) => i !== index
+									(_, i) =>
+										i !==
+										index
 								)
 							);
 						}}
 					>
 						Delete Block
 					</Button>
-
 				</div>
 			))}
-
 
 			<Button
 				type="button"
@@ -584,117 +1122,353 @@ function AdminLessonEditor() {
 				Add Grammar Block
 			</Button>
 
+			{/* =====================================================
+				EXAM
+			===================================================== */}
+
 			<Label>Exam</Label>
 
 			{exam.map((question, index) => (
 				<div key={index}>
-					<Label>Question {index + 1}</Label>
+					<Label>
+						Question {index + 1}
+					</Label>
 
 					<select
 						value={question.type}
 						onChange={(e) => {
-							const updated = [...exam];
+							const updated = [
+								...exam,
+							];
 
-							updated[index].type = e.target.value;
-
-							if (e.target.value === "question") {
-								updated[index] = {
-									type: "question",
-									question: "",
-									correct: "",
-									optionsText: "",
-								};
+							if (
+								e.target.value ===
+								"question"
+							) {
+								updated[index] =
+									{
+										type: "question",
+										question:
+											"",
+										correct:
+											"",
+										optionsText:
+											"",
+									};
 							}
 
 							if (
-								e.target.value === "word" ||
-								e.target.value === "ending"
+								e.target.value ===
+								"sentenceQuestion"
 							) {
-								updated[index] = {
-									type: e.target.value,
-									before: "",
-									after: "",
-									correct: "",
-									optionsText: "",
-								};
+								updated[index] =
+									{
+										type: "sentenceQuestion",
+										sentence:
+											"",
+										question:
+											"",
+										correct:
+											"",
+										optionsText:
+											"",
+									};
 							}
 
-							setExam(updated);
+							if (
+								e.target.value ===
+									"word" ||
+								e.target.value ===
+									"ending"
+							) {
+								updated[index] =
+									{
+										type: e
+											.target
+											.value,
+										before:
+											"",
+										after:
+											"",
+										correct:
+											"",
+										optionsText:
+											"",
+									};
+							}
+
+							setExam(
+								updated
+							);
 						}}
 					>
-						<option value="question">Question</option>
-						<option value="word">Word</option>
-						<option value="ending">Ending</option>
+						<option value="question">
+							Question
+						</option>
+
+						<option value="sentenceQuestion">
+							Sentence Question
+						</option>
+
+						<option value="word">
+							Word
+						</option>
+
+						<option value="ending">
+							Ending
+						</option>
 					</select>
 
-					{question.type === "word" || question.type === "ending" ? (
+					{/* =================================================
+						SENTENCE QUESTION
+					================================================= */}
+
+					{question.type ===
+					"sentenceQuestion" ? (
 						<>
+							<Label>
+								Sentence
+							</Label>
+
 							<Input
-								value={question.before || ""}
-								onChange={(e) => {
-									const updated = [...exam];
-									updated[index].before = e.target.value;
-									setExam(updated);
+								value={
+									question.sentence ||
+									""
+								}
+								onChange={(
+									e
+								) => {
+									const updated =
+										[
+											...exam,
+										];
+
+									updated[
+										index
+									].sentence =
+										e.target.value;
+
+									setExam(
+										updated
+									);
+								}}
+								placeholder="Līvia Fidō olīvam dat."
+							/>
+
+							<Label>
+								Question
+							</Label>
+
+							<Input
+								value={
+									question.question ||
+									""
+								}
+								onChange={(
+									e
+								) => {
+									const updated =
+										[
+											...exam,
+										];
+
+									updated[
+										index
+									].question =
+										e.target.value;
+
+									setExam(
+										updated
+									);
+								}}
+								placeholder="Which case is olīvam in?"
+							/>
+						</>
+					) : question.type ===
+							"word" ||
+						question.type ===
+							"ending" ? (
+						<>
+							<Label>
+								Sentence
+								Before
+							</Label>
+
+							<Input
+								value={
+									question.before ||
+									""
+								}
+								onChange={(
+									e
+								) => {
+									const updated =
+										[
+											...exam,
+										];
+
+									updated[
+										index
+									].before =
+										e.target.value;
+
+									setExam(
+										updated
+									);
 								}}
 								placeholder="Sentence before"
 							/>
 
+							<Label>
+								Sentence
+								After
+							</Label>
+
 							<Input
-								value={question.after || ""}
-								onChange={(e) => {
-									const updated = [...exam];
-									updated[index].after = e.target.value;
-									setExam(updated);
+								value={
+									question.after ||
+									""
+								}
+								onChange={(
+									e
+								) => {
+									const updated =
+										[
+											...exam,
+										];
+
+									updated[
+										index
+									].after =
+										e.target.value;
+
+									setExam(
+										updated
+									);
 								}}
 								placeholder="Sentence after"
 							/>
 						</>
 					) : (
-						<Input
-							value={question.question || ""}
-							onChange={(e) => {
-								const updated = [...exam];
-								updated[index].question = e.target.value;
-								setExam(updated);
-							}}
-							placeholder="Question"
-						/>
+						<>
+							<Label>
+								Question
+							</Label>
+
+							<Input
+								value={
+									question.question ||
+									""
+								}
+								onChange={(
+									e
+								) => {
+									const updated =
+										[
+											...exam,
+										];
+
+									updated[
+										index
+									].question =
+										e.target.value;
+
+									setExam(
+										updated
+									);
+								}}
+								placeholder="Question"
+							/>
+						</>
 					)}
 
+					{/* =================================================
+						CORRECT ANSWER
+					================================================= */}
+
+					<Label>
+						Correct Answer
+					</Label>
+
 					<Input
-						value={question.correct || ""}
+						value={
+							question.correct ||
+							""
+						}
 						onChange={(e) => {
-							const updated = [...exam];
-							updated[index].correct = e.target.value;
+							const updated = [
+								...exam,
+							];
+
+							updated[index].correct =
+								e.target.value;
+
 							setExam(updated);
 						}}
 						placeholder="Correct answer"
 					/>
 
+					{/* =================================================
+						OPTIONS
+					================================================= */}
+
+					<Label>
+						Options
+					</Label>
+
 					<TextArea
-						value={question.optionsText || ""}
+						value={
+							question.optionsText ||
+							""
+						}
 						onChange={(e) => {
-							const updated = [...exam];
-							updated[index].optionsText = e.target.value;
+							const updated = [
+								...exam,
+							];
+
+							updated[
+								index
+							].optionsText =
+								e.target.value;
+
 							setExam(updated);
 						}}
 						placeholder={`Option 1
-					Option 2
-					Option 3`}
+Option 2
+Option 3
+Option 4`}
 					/>
+
+					{/* =================================================
+						DELETE EXAM QUESTION
+					================================================= */}
 
 					<Button
 						type="button"
 						onClick={() => {
-							if (exam.length === 1) return;
+							if (
+								exam.length ===
+								1
+							)
+								return;
 
-							setExam(exam.filter((_, i) => i !== index));
+							setExam(
+								exam.filter(
+									(_, i) =>
+										i !==
+										index
+								)
+							);
 						}}
 					>
 						Delete Question
 					</Button>
 				</div>
 			))}
+
+			{/* =====================================================
+				ADD EXAM QUESTION
+			===================================================== */}
 
 			<Button
 				type="button"
@@ -713,14 +1487,27 @@ function AdminLessonEditor() {
 				Add Question
 			</Button>
 
+			{/* =====================================================
+				PUBLISHED
+			===================================================== */}
+
 			<CheckboxRow>
 				<input
 					type="checkbox"
 					checked={isPublished}
-					onChange={(e) => setIsPublished(e.target.checked)}
+					onChange={(e) =>
+						setIsPublished(
+							e.target.checked
+						)
+					}
 				/>
+
 				Published
 			</CheckboxRow>
+
+			{/* =====================================================
+				SAVE
+			===================================================== */}
 
 			<Button
 				onClick={handleSubmit}
@@ -733,7 +1520,11 @@ function AdminLessonEditor() {
 					: "Create Lesson"}
 			</Button>
 
-			{status && <Status>{status}</Status>}
+			{status && (
+				<Status>
+					{status}
+				</Status>
+			)}
 		</Page>
 	);
 }
