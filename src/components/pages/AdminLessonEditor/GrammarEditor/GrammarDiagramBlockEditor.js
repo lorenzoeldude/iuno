@@ -107,6 +107,7 @@ const Button = styled.button`
 `;
 
 const colors = [
+	"text",
 	"blue",
 	"green",
 	"orange",
@@ -145,7 +146,7 @@ function GrammarDiagramBlockEditor({
 				{
 					word: "",
 					case: "",
-					color: "blue",
+					color: "text",
 				},
 			],
 		});
@@ -220,7 +221,7 @@ function GrammarDiagramBlockEditor({
 						<Select
 							value={
 								word.color ||
-								"blue"
+								"text"
 							}
 							onChange={(e) =>
 								updateWord(

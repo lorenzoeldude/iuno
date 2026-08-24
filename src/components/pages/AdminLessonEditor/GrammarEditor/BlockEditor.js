@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 import ParagraphBlockEditor from "./ParagraphBlockEditor";
-import EmphasisBlockEditor from "./EmphasisBlockEditor";
 import GrammarDiagramBlockEditor from "./GrammarDiagramBlockEditor";
 import SentenceBlockEditor from "./SentenceBlockEditor";
 import QuestionBlockEditor from "./QuestionBlockEditor";
@@ -151,10 +150,6 @@ const blockTypes = [
 		label: "Paragraph",
 	},
 	{
-		value: "emphasis",
-		label: "Emphasis",
-	},
-	{
 		value: "grammarDiagram",
 		label: "Grammar Diagram",
 	},
@@ -185,12 +180,6 @@ const createBlock = (type) => {
 		case "paragraph":
 			return {
 				type: "paragraph",
-				text: "",
-			};
-
-		case "emphasis":
-			return {
-				type: "emphasis",
 				text: "",
 			};
 
@@ -364,14 +353,6 @@ function BlockEditor({
 			case "paragraph":
 				return (
 					<ParagraphBlockEditor
-						block={block}
-						onChange={onChange}
-					/>
-				);
-
-			case "emphasis":
-				return (
-					<EmphasisBlockEditor
 						block={block}
 						onChange={onChange}
 					/>
