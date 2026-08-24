@@ -12,7 +12,10 @@ const Page = styled.div`
 	margin-bottom: ${({ theme }) => theme.spacing.xxl};
 	padding: ${({ theme }) => theme.spacing.xl};
 
-	border: 1px solid ${({ theme }) => theme.colors.border};
+	border: 1px solid ${({ theme }) => theme.colors.text};
+
+    // background-color: rgba(116, 116, 116, 0.12);
+
 `;
 
 const PageHeader = styled.div`
@@ -29,7 +32,7 @@ const PageTitle = styled.h2`
 	margin: 0;
 
 	font-family: ${({ theme }) => theme.fonts.heading};
-	font-size: ${({ theme }) => theme.fontSizes.xxl};
+	font-size: ${({ theme }) => theme.fontSizes.xxxl};
 	font-weight: ${({ theme }) => theme.fontWeights.bold};
 
 	color: ${({ theme }) => theme.colors.text};
@@ -424,7 +427,7 @@ function BlockEditor({
 		<Page>
 			<PageHeader>
 				<PageTitle>
-					Grammar Page {pageIndex + 1}
+					#{pageIndex + 1}
 				</PageTitle>
 
 				<ButtonRow>

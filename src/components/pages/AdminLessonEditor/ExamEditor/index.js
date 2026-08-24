@@ -58,6 +58,15 @@ const TextArea = styled.textarea`
 	}
 `;
 
+const QuestionHeader = styled.div`
+	display: flex;
+	align-items: center;
+	gap: ${({ theme }) => theme.spacing.md};
+
+	margin-top: ${({ theme }) => theme.spacing.xl};
+	margin-bottom: ${({ theme }) => theme.spacing.md};
+`;
+
 const Button = styled.button`
 	margin-top: ${({ theme }) => theme.spacing.xs};
 	margin-bottom: ${({ theme }) => theme.spacing.xs};
@@ -83,6 +92,9 @@ const Button = styled.button`
 
 const Block = styled.div`
 	margin-bottom: ${({ theme }) => theme.spacing.xl};
+
+    border: 1px solid ${({ theme }) => theme.colors.text};
+
 `;
 
 const Select = styled.select`
@@ -184,35 +196,37 @@ function ExamEditor({ exam, setExam }) {
 
 			{exam.map((question, index) => (
 				<Block key={index}>
-					<Label>
-						Question {index + 1}
-					</Label>
+					<QuestionHeader>
+                        <Label>
+                            #{index + 1}
+                        </Label>
 
-					<Select
-						value={question.type}
-						onChange={(e) =>
-							changeQuestionType(
-								index,
-								e.target.value
-							)
-						}
-					>
-						<option value="question">
-							Question
-						</option>
+                        <Select
+                            value={question.type}
+                            onChange={(e) =>
+                                changeQuestionType(
+                                    index,
+                                    e.target.value
+                                )
+                            }
+                        >
+                            <option value="question">
+                                Question
+                            </option>
 
-						<option value="sentenceQuestion">
-							Sentence Question
-						</option>
+                            <option value="sentenceQuestion">
+                                Sentence Question
+                            </option>
 
-						<option value="word">
-							Word
-						</option>
+                            <option value="word">
+                                Word
+                            </option>
 
-						<option value="ending">
-							Ending
-						</option>
-					</Select>
+                            <option value="ending">
+                                Ending
+                            </option>
+                        </Select>
+                    </QuestionHeader>
 
 					{/* =================================================
 						SENTENCE QUESTION

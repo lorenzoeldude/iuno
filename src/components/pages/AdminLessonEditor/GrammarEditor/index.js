@@ -5,18 +5,6 @@ const Section = styled.section`
 	width: 100%;
 `;
 
-const Label = styled.label`
-	display: block;
-	margin-top: ${({ theme }) => theme.spacing.xl};
-	margin-bottom: ${({ theme }) => theme.spacing.sm};
-
-	font-family: ${({ theme }) => theme.fonts.heading};
-	font-size: ${({ theme }) => theme.fontSizes.xxl};
-	font-weight: ${({ theme }) => theme.fontWeights.bold};
-
-	color: ${({ theme }) => theme.colors.text};
-`;
-
 const Button = styled.button`
 	margin-top: ${({ theme }) => theme.spacing.xs};
 	margin-bottom: ${({ theme }) => theme.spacing.xs};
@@ -128,7 +116,6 @@ function GrammarEditor({ grammar, setGrammar }) {
 
 	return (
 		<Section>
-			<Label>Grammar</Label>
 
 			{grammar.map((page, pageIndex) => (
 				<BlockEditor
