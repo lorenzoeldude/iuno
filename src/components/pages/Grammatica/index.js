@@ -81,16 +81,17 @@ const Text = styled.div`
 	}
 
 	.grammar {
-		display: flex;
-		flex-direction: row;
-		align-items: flex-end;
-		gap: 10px;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+        justify-content: center;
+        gap: 10px;
 
-		width: 100%;
+        width: 100%;
 
-		font-size: 36px;
-		font-weight: 800;
-	}
+        font-size: 36px;
+        font-weight: 800;
+    }
 
 	.grammar-word {
 		display: flex;
