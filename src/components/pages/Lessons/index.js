@@ -224,18 +224,7 @@ function Lessons() {
         );
     }
 
-    // =====================================================
-    // DISPLAYED LESSONS
-    // =====================================================
-
-    const displayedLessons = [
-        ...lessons,
-        {
-            id: lessons.length + 1,
-            title: "Coming Soon",
-            comingSoon: true,
-        },
-    ];
+    const displayedLessons = lessons;
 
     // =====================================================
     // LESSON STATUS
@@ -294,9 +283,6 @@ function Lessons() {
     // =====================================================
 
     function isLessonLocked(lesson) {
-        if (lesson.comingSoon === true) {
-            return true;
-        }
 
         if (lesson.is_published !== true) {
             return true;
