@@ -34,6 +34,8 @@ import AdminLessonEditor from "../../pages/AdminLessonEditor";
 import HomeRoute from "../../../routes/AdminRoutes/HomeRoute";
 import PaymentSuccessPage from "../../pages/PaymentSuccessPage";
 import PaymentCancel from "../../pages/PaymentCancel";
+import SupportPage from "../../pages/SupportPage";
+import TermsPage from "../../pages/TermsPage";
 
 const Body = styled.div`
     display: flex;
@@ -171,6 +173,8 @@ function AppContent() {
 
                         <Route path="/legalnotice" element={<Impressum />} />
                         <Route path="/privacy" element={<PrivacyPolicy />} />
+                        <Route path="/support" element={<SupportPage />} />
+                        <Route path="/terms" element={<TermsPage />} />
 
                         <Route path="/verify-email" element={<VerifyEmail />} />
                     </Routes>
