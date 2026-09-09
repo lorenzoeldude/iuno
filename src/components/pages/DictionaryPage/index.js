@@ -135,7 +135,7 @@ const Meaning = styled.div`
 `;
 
 const MeaningItem = styled.span`
-    background: ${({ theme }) => theme.colors.accent + "40"};
+    background: ${({ theme }) => theme.colors.accent  + "1F"};
     font-size: 20px;
     padding: 4px 8px;
     color: black;

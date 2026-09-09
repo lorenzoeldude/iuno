@@ -196,7 +196,7 @@ const Meaning = styled.span`
 
     border: 1px solid
         ${({ theme }) =>
-            theme.colors.accent + "40"};
+            theme.colors.accent  + "1F"};
 `;
 
 /* =====================================================
