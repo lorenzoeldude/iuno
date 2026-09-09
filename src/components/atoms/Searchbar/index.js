@@ -1,7 +1,10 @@
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { API_URL } from "../../../config";
+
+import SearchIconLight from "../../../assets/icons/search.svg";
+import SearchIconDark from "../../../assets/icons/search_dark.svg";
 
 const Wrapper = styled.div`
     position: relative;
@@ -11,6 +14,12 @@ const Wrapper = styled.div`
     @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
         width: 100%;
     }
+`;
+
+const InputWrapper = styled.div`
+    position: relative;
+
+    width: 100%;
 `;
 
 const Input = styled.input`
@@ -40,13 +49,40 @@ const Input = styled.input`
         background ${({ theme }) => theme.transition.normal};
 
     &::placeholder {
-        color: ${({ theme }) => theme.colors.textSecondary};
+        color: transparent;
     }
 
     &:focus {
         outline: none;
         border: 1px solid ${({ theme }) => theme.colors.accent};
     }
+`;
+
+const SearchPlaceholder = styled.div`
+    position: absolute;
+
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+
+    color: ${({ theme }) => theme.colors.textSecondary};
+
+    font-family: "Cormorant Garamond", serif;
+    font-size: 16px;
+
+    pointer-events: none;
+`;
+
+const SearchIconImage = styled.img`
+    width: 22px;
+    height: 22px;
+
+    flex-shrink: 0;
+    display: block;
 `;
 
 const Dropdown = styled.div`
@@ -83,17 +119,21 @@ const Item = styled.div`
 
 const Meanings = styled.div`
     margin-top: 2px;
+
     display: flex;
     flex-wrap: wrap;
+
     gap: 4px;
 
     justify-content: flex-start;
 `;
 
 const MeaningTag = styled.span`
-    background: rgb(255, 205, 205);
+    background: ${({ theme }) => theme.colors.accent + "40"};
     color: black;
+
     font-size: 13px;
+
     padding: 2px 6px;
 `;
 
@@ -105,6 +145,9 @@ function Searchbar({ className, variant }) {
     const latestQuery = useRef("");
 
     const navigate = useNavigate();
+    const theme = useTheme();
+
+    const isDark = theme.mode === "dark";
 
     // =====================================================
     // SEARCH (debounced)
@@ -176,24 +219,41 @@ function Searchbar({ className, variant }) {
 
     return (
         <Wrapper className={className}>
-            <Input
-                variant={variant}
-                type="text"
-                placeholder="search word"
-                value={query}
-                onChange={(e) => {
-                    setQuery(e.target.value);
-                    setOpen(true);
-                }}
-                onFocus={() => {
-                    if (results.length > 0) {
+            <InputWrapper>
+                <Input
+                    variant={variant}
+                    type="text"
+                    placeholder=""
+                    value={query}
+                    onChange={(e) => {
+                        setQuery(e.target.value);
                         setOpen(true);
-                    }
-                }}
-                onBlur={() => {
-                    setTimeout(() => setOpen(false), 150);
-                }}
-            />
+                    }}
+                    onFocus={() => {
+                        if (results.length > 0) {
+                            setOpen(true);
+                        }
+                    }}
+                    onBlur={() => {
+                        setTimeout(() => setOpen(false), 150);
+                    }}
+                />
+
+                {!query && (
+                    <SearchPlaceholder>
+                        <SearchIconImage
+                            src={
+                                isDark
+                                    ? SearchIconDark
+                                    : SearchIconLight
+                            }
+                            alt=""
+                        />
+
+                        <span>search the dictionary</span>
+                    </SearchPlaceholder>
+                )}
+            </InputWrapper>
 
             {open && results.length > 0 && (
                 <Dropdown>
@@ -208,21 +268,22 @@ function Searchbar({ className, variant }) {
                             }
                         >
                             <strong>{item.form}</strong>: {item.lemma}
+
                             <br />
 
-                            <>
-                                <Meanings>
-                                    {item.meanings?.map((meaning, index) => (
-                                        <MeaningTag key={index}>
-                                            {meaning}
-                                        </MeaningTag>
-                                    ))}
-                                </Meanings>
+                            <Meanings>
+                                {item.meanings?.map((meaning, index) => (
+                                    <MeaningTag key={index}>
+                                        {meaning}
+                                    </MeaningTag>
+                                ))}
+                            </Meanings>
 
-                                {item.grammatical_case || item.tense ? (
-                                    <div>{item.grammatical_case || item.tense}</div>
-                                ) : null}
-                            </>
+                            {item.grammatical_case || item.tense ? (
+                                <div>
+                                    {item.grammatical_case || item.tense}
+                                </div>
+                            ) : null}
                         </Item>
                     ))}
                 </Dropdown>

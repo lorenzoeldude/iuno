@@ -28,6 +28,7 @@ const Wrapper = styled.div`
         width: 94%;
     }
     margin: 0 auto;
+    margin-top: 50px;
     padding-top: 0px;
     position: relative;
 `;

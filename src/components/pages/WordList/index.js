@@ -6,7 +6,12 @@ import { API_URL } from "../../../config";
 const Wrapper = styled.div`
     width: 40%;
     margin: 0 auto;
-    padding: 20px 0;
+    padding: 50px 0 80px;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        width: 90%;
+        padding: 30px 0 80px;
+    }
 `;
 
 const Title = styled.h1`
@@ -145,7 +150,7 @@ function WordList() {
     if (loading) {
         return (
             <Wrapper>
-                <Title>Your Word List</Title>
+                <Title>Saved Words</Title>
                 <p>Loading...</p>
             </Wrapper>
         );

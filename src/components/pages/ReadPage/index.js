@@ -6,6 +6,11 @@ import { API_URL } from "../../../config";
 
 const Wrapper = styled.div`
     width: 80%;
+    padding-top: 50px;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        padding-top: 30px;
+    }
 `;
 
 const Columns = styled.div`

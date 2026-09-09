@@ -53,8 +53,7 @@ const Content = styled.div`
 
     justify-content: center;
 
-    padding-top: ${({ isStartPage, isLessonPage }) =>
-        isStartPage || isLessonPage ? "0" : "70px"};
+    // padding-top: ${({ isStartPage, isLessonPage }) => isStartPage || isLessonPage ? "0" : "40px"};
 `;
 
 const AppWrapper = styled.div`

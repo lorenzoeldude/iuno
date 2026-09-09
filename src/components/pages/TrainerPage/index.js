@@ -16,10 +16,10 @@ const Controls = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 40px;
+    margin-top: 70px;
 
     @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-        margin-top: 0;
+        margin-top: 20px;
     }
 `;
 

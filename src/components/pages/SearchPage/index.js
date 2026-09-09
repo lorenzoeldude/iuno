@@ -10,7 +10,7 @@ const Wrapper = styled.main`
 
     box-sizing: border-box;
 
-    padding: 32px 40px 80px;
+    padding: 70px 40px 80px;
 
     @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
         width: 100%;
@@ -52,31 +52,31 @@ const Intro = styled.div`
     }
 `;
 
-const IntroTitle = styled.h1`
-    margin: 0 0 12px;
+// const IntroTitle = styled.h1`
+//     margin: 0 0 12px;
 
-    font-family: "Cormorant Garamond", serif;
-    font-size: 40px;
-    font-weight: 600;
-    line-height: 1.1;
+//     font-family: "Cormorant Garamond", serif;
+//     font-size: 40px;
+//     font-weight: 600;
+//     line-height: 1.1;
 
-    color: ${({ theme }) => theme.colors.text};
+//     color: ${({ theme }) => theme.colors.text};
 
-    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-        font-size: 34px;
-    }
-`;
+//     @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+//         font-size: 34px;
+//     }
+// `;
 
-const IntroText = styled.p`
-    margin: 0 auto;
+// const IntroText = styled.p`
+//     margin: 0 auto;
 
-    max-width: 520px;
+//     max-width: 520px;
 
-    font-size: 15px;
-    line-height: 1.6;
+//     font-size: 15px;
+//     line-height: 1.6;
 
-    color: ${({ theme }) => theme.colors.textSecondary};
-`;
+//     color: ${({ theme }) => theme.colors.textSecondary};
+// `;
 
 /* =====================================================
    WORD OF THE DAY
@@ -107,7 +107,7 @@ const WordCard = styled.button`
 
     box-sizing: border-box;
 
-    padding: 28px 4px;
+    padding: 20px 20px;
 
     text-align: left;
 
@@ -134,7 +134,7 @@ const WordHeader = styled.div`
     display: flex;
     align-items: baseline;
 
-    gap: 12px;
+    // gap: 12px;
 `;
 
 const Word = styled.span`
@@ -286,14 +286,14 @@ function SearchPage() {
 
                 <Intro>
 
-                    <IntroTitle>
+                    {/* <IntroTitle>
                         Search the dictionary
-                    </IntroTitle>
+                    </IntroTitle> */}
 
-                    <IntroText>
+                    {/* <IntroText>
                         Look up Latin words, forms, meanings
                         and grammar.
-                    </IntroText>
+                    </IntroText> */}
 
                 </Intro>
 
