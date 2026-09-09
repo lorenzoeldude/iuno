@@ -11,6 +11,7 @@ import { API_URL } from "../../../config";
 const Wrapper = styled.div`
     max-width: 1000px;
     margin: 0 auto;
+    margin-top: 50px;
     position: relative;
 `;
 

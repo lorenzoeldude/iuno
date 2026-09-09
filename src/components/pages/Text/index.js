@@ -7,6 +7,7 @@ const Wrapper = styled.div`
     max-width: 1000px;
     width: 60%;
     margin: 0 auto;
+    margin-top: 50px;
 `;
 
 const Title = styled.h1`
