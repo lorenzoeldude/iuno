@@ -46,6 +46,18 @@ function Footer() {
                 <FooterLink to="/privacy">
                     Privacy Policy
                 </FooterLink>
+
+                <span>|</span>
+
+                <FooterLink to="/terms">
+                    Terms of Use
+                </FooterLink>
+
+                <span>|</span>
+
+                <FooterLink to="/support">
+                    Support
+                </FooterLink>
             </Inner>
         </Wrapper>
     );

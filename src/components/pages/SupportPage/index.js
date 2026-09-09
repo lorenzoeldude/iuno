@@ -95,15 +95,6 @@ const ListItem = styled.li`
   opacity: 0.8;
 `;
 
-const Footer = styled.footer`
-  margin-top: 48px;
-  padding-top: 24px;
-  border-top: 1px solid ${({ theme }) => theme.colors?.border || "#d8d5cd"};
-  font-size: 14px;
-  line-height: 1.6;
-  opacity: 0.55;
-`;
-
 export default function SupportPage() {
   return (
     <Page>
@@ -233,23 +224,6 @@ export default function SupportPage() {
             We will do our best to respond as soon as possible.
           </Text>
         </Section>
-
-
-        <Footer>
-          <div>
-            © {new Date().getFullYear()} IUNONI
-          </div>
-
-          <div>
-            <Link href="/terms">
-              Terms of Use
-            </Link>
-            {" · "}
-            <Link href="/privacy">
-              Privacy Policy
-            </Link>
-          </div>
-        </Footer>
 
       </Container>
     </Page>

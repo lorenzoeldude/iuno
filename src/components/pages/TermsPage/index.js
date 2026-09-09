@@ -375,15 +375,6 @@ export default function TermsPage() {
             Last updated: September 8, 2026
           </div>
 
-          <div>
-            <Link href="/support">
-              Support
-            </Link>
-            {" · "}
-            <Link href="/privacy">
-              Privacy Policy
-            </Link>
-          </div>
         </Footer>
 
       </Container>
