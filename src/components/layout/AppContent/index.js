@@ -1,6 +1,5 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import Header from "./../../../components/molecules/header";
 import Sidebar from "./../../../components/molecules/Sidebar";
 import Textus from "./../../../components/pages/Textus";
 import Lessons from "../../pages/Lessons";
@@ -36,6 +35,7 @@ import PaymentSuccessPage from "../../pages/PaymentSuccessPage";
 import PaymentCancel from "../../pages/PaymentCancel";
 import SupportPage from "../../pages/SupportPage";
 import TermsPage from "../../pages/TermsPage";
+import SearchPage from "../../pages/SearchPage";
 
 const Body = styled.div`
     display: flex;
@@ -71,7 +71,7 @@ function AppContent() {
 
     return (
         <AppWrapper>
-            {!isStartPage && !isLessonPage && <Header />}
+            {/* {!isStartPage && !isLessonPage && <Header />} */}
 
             <Body>
                 {!isStartPage && !isLessonPage && <Sidebar />}
@@ -156,6 +156,8 @@ function AppContent() {
                         <Route path="/vocabulary" element={<Vocabulary />} />
                         <Route path="/user/list" element={<WordList />} />
                         <Route path="/listtrainer" element={<ListTrainer />} />
+
+                        <Route path="/search" element={<SearchPage />} />
 
                         <Route path="/register" element={<RegisterPage />} />
                         <Route path="/login" element={<LoginPage />} />

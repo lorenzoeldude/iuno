@@ -5,13 +5,11 @@ import { API_URL } from "../../../config";
 
 const Wrapper = styled.div`
     position: relative;
+
     width: 100%;
-    max-width: ${({ variant }) =>
-        variant === "large" ? "500px" : "350px"};
 
     @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-        max-width: ${({ variant }) =>
-            variant === "large" ? "90%" : "180px"};
+        width: 100%;
     }
 `;
 
@@ -20,9 +18,13 @@ const Input = styled.input`
     -webkit-appearance: none;
     border-radius: 0;
 
+    display: block;
+
     width: 100%;
     height: ${({ variant }) =>
         variant === "large" ? "45px" : "30px"};
+
+    box-sizing: border-box;
 
     padding: 5px;
 
@@ -53,7 +55,7 @@ const Dropdown = styled.div`
     left: 0;
     right: 0;
 
-    background: ${({ theme }) => theme.colors.card};
+    background: ${({ theme }) => theme.colors.opposite};
     color: ${({ theme }) => theme.colors.text};
 
     border: 1px solid ${({ theme }) => theme.colors.border};

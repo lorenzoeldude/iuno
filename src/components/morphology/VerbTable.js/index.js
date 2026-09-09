@@ -2,9 +2,11 @@ import styled from "styled-components";
 import { useMemo, useState, useEffect } from "react";
 
 const Wrapper = styled.div`
-    // width: 100%;
-    background-color: rgba(178, 178, 178, 0.1);
+    width: 100%;
     padding: 10px;
+    box-sizing: border-box;
+
+    border: 1px solid ${({ theme }) => theme.colors.accent};
 `;
 
 const SwitchRow = styled.div`
@@ -16,16 +18,32 @@ const SwitchRow = styled.div`
 
 const SwitchButton = styled.button`
     border: none;
-    padding: 10px 16px;
+    padding: 8px 16px;
     border-radius: 999px;
     cursor: pointer;
-    font-size: 13px;
 
-    background: ${({ active }) =>
-        active ? "black" : "rgba(0,0,0,0.08)"};
+    font-family: "Cormorant Garamond", serif;
+    font-size: 16px;
+    font-weight: 600;
+
+    background: ${({ theme, active }) =>
+        active
+            ? theme.colors.accent
+            : `${theme.colors.accent}14`};
 
     color: ${({ active }) =>
-        active ? "white" : "black"};
+        active ? "white" : "inherit"};
+
+    transition:
+        background-color 0.15s ease,
+        color 0.15s ease;
+
+    &:hover {
+        background: ${({ theme, active }) =>
+            active
+                ? theme.colors.accent
+                : `${theme.colors.accent}24`};
+    }
 `;
 
 const GerundRow = styled.div`
@@ -37,18 +55,28 @@ const GerundRow = styled.div`
 
 const CaseLabel = styled.div`
     width: 100px;
-    font-size: 15px;
+
+    font-family: "Cormorant Garamond", serif;
+    font-size: 17px;
     font-weight: 600;
 `;
 
 const CaseForm = styled.div`
-    font-size: 20px;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 21px;
+    line-height: 1;
+    white-space: nowrap;
 
     &.highlight {
-        background-color: rgba(255, 215, 0, 0.4);
-        font-weight: bold;
+        background-color: ${({ theme }) =>
+            `${theme.colors.accent}33`};
+        font-weight: 600;
         border-radius: 5px;
-        padding: 2px 6px;
+        padding: 4px 8px;
+    }
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        font-size: 19px;
     }
 `;
 
@@ -62,38 +90,85 @@ const GridRow = styled.div`
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        gap: 14px;
+    }
 `;
 
 const InfinitiveGrid = styled.div`
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
-    margin-top: 0px;
+    margin-top: 0;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        gap: 14px;
+    }
 `;
 
-const Line =styled.hr`
+const Line = styled.hr`
     border: none;
-    height: 0.5px;
-    background-color: black;
-    opacity: 10%;
-    margin: 10px 0;
+    height: 1px;
+
+    background-color: ${({ theme }) =>
+        `${theme.colors.accent}33`};
+
+    margin: 14px 0;
+`;
+
+const GerundiveTableWrapper = styled.div`
+    width: 100%;
+    overflow-x: auto;
+
+    scrollbar-width: thin;
 `;
 
 const GerundiveTable = styled.table`
     width: 100%;
+    min-width: max-content;
+
     border-collapse: collapse;
 `;
 
 const GerundiveTH = styled.th`
     text-align: left;
-    padding: 8px 14px;
-    font-size: 15px;
+    padding: 10px 14px;
+
+    font-family: "Cormorant Garamond", serif;
+    font-size: 18px;
     font-weight: 600;
+
+    white-space: nowrap;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        padding: 8px 10px;
+        font-size: 16px;
+    }
 `;
 
 const GerundiveTD = styled.td`
-    padding: 8px 14px;
-    font-size: 20px;
+    padding: 10px 14px;
+
+    font-family: "Cormorant Garamond", serif;
+    font-size: 21px;
+    line-height: 1;
+
+    white-space: nowrap;
+
+    &.case {
+        font-size: 17px;
+        font-weight: 600;
+    }
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        padding: 8px 10px;
+        font-size: 19px;
+
+        &.case {
+            font-size: 17px;
+        }
+    }
 `;
 
 const InfinitiveBlock = styled.div``;
@@ -101,7 +176,10 @@ const InfinitiveBlock = styled.div``;
 const TenseBlock = styled.div``;
 
 const SectionTitle = styled.h3`
-    font-size: 15px;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 17px;
+    font-weight: 600;
+
     margin-top: 5px;
     margin-bottom: 5px;
 `;
@@ -113,13 +191,23 @@ const FormList = styled.div`
 `;
 
 const FormRow = styled.div`
-    font-size: 20px;
-    padding: 4px 8px;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 21px;
+    line-height: 1;
+
+    padding: 6px 8px;
     border-radius: 5px;
 
+    white-space: nowrap;
+
     &.highlight {
-        background-color: ${({ theme }) => theme.colors.highlight};
-        font-weight: bold;
+        background-color: ${({ theme }) =>
+            `${theme.colors.accent}33`};
+        font-weight: 600;
+    }
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        font-size: 19px;
     }
 `;
 
@@ -160,7 +248,6 @@ const CASE_LABELS = {
 };
 
 function VerbTable({ forms, highlightedForm }) {
-
     const [voice, setVoice] = useState("active");
     const [mood, setMood] = useState("indicative");
     const [participle, setParticiple] = useState("ppp");
@@ -175,25 +262,26 @@ function VerbTable({ forms, highlightedForm }) {
     function isHighlighted(form) {
         return (
             highlightedForm &&
-            normalizeLatin(form) === normalizeLatin(highlightedForm)
+            normalizeLatin(form) ===
+                normalizeLatin(highlightedForm)
         );
     }
 
     const highlightedData = useMemo(() => {
         return forms.find(
-            f =>
-                normalizeLatin(f.form) === normalizeLatin(highlightedForm)
+            (f) =>
+                normalizeLatin(f.form) ===
+                normalizeLatin(highlightedForm)
         );
     }, [forms, highlightedForm]);
 
     useEffect(() => {
-
         if (!highlightedData) return;
 
         // infinitives
         if (highlightedData.mood === "infinitive") {
             setVoice(highlightedData.voice);
-            setMood("indicative"); // keep Indicative selected
+            setMood("indicative");
             return;
         }
 
@@ -232,12 +320,12 @@ function VerbTable({ forms, highlightedForm }) {
                 setParticiple("fap");
             }
         }
-
     }, [highlightedData]);
 
     // =====================================================
     // FINITE FORMS
     // =====================================================
+
     const finiteForms = useMemo(() => {
         return forms.filter((form) => {
             return (
@@ -280,7 +368,9 @@ function VerbTable({ forms, highlightedForm }) {
     }
 
     function getFormsForTense(tense) {
-        return finiteForms.filter((form) => form.tense === tense);
+        return finiteForms.filter(
+            (form) => form.tense === tense
+        );
     }
 
     function renderTenseBlock(tense) {
@@ -291,7 +381,8 @@ function VerbTable({ forms, highlightedForm }) {
         return (
             <TenseBlock>
                 <SectionTitle>
-                    {tense.charAt(0).toUpperCase() + tense.slice(1)}
+                    {tense.charAt(0).toUpperCase() +
+                        tense.slice(1)}
                 </SectionTitle>
 
                 <FormList>
@@ -306,7 +397,8 @@ function VerbTable({ forms, highlightedForm }) {
                             <FormRow
                                 key={`${p.person}-${p.number}`}
                                 className={
-                                    normalizeLatin(form?.form) === normalizeLatin(highlightedForm)
+                                    normalizeLatin(form?.form) ===
+                                    normalizeLatin(highlightedForm)
                                         ? "highlight"
                                         : ""
                                 }
@@ -321,6 +413,7 @@ function VerbTable({ forms, highlightedForm }) {
     }
 
     const tenseRows = [];
+
     for (let i = 0; i < TENSES.length; i += 3) {
         tenseRows.push(TENSES.slice(i, i + 3));
     }
@@ -378,45 +471,43 @@ function VerbTable({ forms, highlightedForm }) {
     }, [forms, participle]);
 
     // GERUNDS
+
     const genitiveGerund =
-        gerunds.find(f => f.grammatical_case === "genitive")?.form;
+        gerunds.find(
+            (f) => f.grammatical_case === "genitive"
+        )?.form;
 
     const dativeGerund =
-        gerunds.find(f => f.grammatical_case === "dative")?.form;
+        gerunds.find(
+            (f) => f.grammatical_case === "dative"
+        )?.form;
 
     const accusativeGerund =
-        gerunds.find(f => f.grammatical_case === "accusative")?.form;
+        gerunds.find(
+            (f) => f.grammatical_case === "accusative"
+        )?.form;
 
     const ablativeGerund =
-        gerunds.find(f => f.grammatical_case === "ablative")?.form;
-
+        gerunds.find(
+            (f) => f.grammatical_case === "ablative"
+        )?.form;
 
     // INFINITIVES
+
     const presentInfinitive =
-        infinitives.find(f => f.tense === "present")?.form;
+        infinitives.find(
+            (f) => f.tense === "present"
+        )?.form;
 
     const perfectInfinitive =
-        infinitives.find(f => f.tense === "perfect")?.form;
+        infinitives.find(
+            (f) => f.tense === "perfect"
+        )?.form;
 
     const futureInfinitive =
-        infinitives.find(f => f.tense === "future")?.form;
-
-
-    // PARTICIPLES
-    // const presentActiveParticiple =
-    //     participles.find(
-    //         f => f.tense === "present" && f.voice === "active"
-    //     )?.form;
-
-    // const perfectPassiveParticiple =
-    //     participles.find(
-    //         f => f.tense === "perfect" && f.voice === "passive"
-    //     )?.form;
-
-    // const futureActiveParticiple =
-    //     participles.find(
-    //         f => f.tense === "future" && f.voice === "active"
-    //     )?.form;
+        infinitives.find(
+            (f) => f.tense === "future"
+        )?.form;
 
     return (
         <Wrapper>
@@ -460,50 +551,71 @@ function VerbTable({ forms, highlightedForm }) {
             </SwitchRow>
 
             {/* MOOD */}
-            {voice !== "gerund" && voice !== "gerundive" && voice !== "participle" && (
-                <SwitchRow>
-                    <SwitchButton
-                        active={mood === "indicative"}
-                        onClick={() => setMood("indicative")}
-                    >
-                        Indicative
-                    </SwitchButton>
+            {voice !== "gerund" &&
+                voice !== "gerundive" &&
+                voice !== "participle" && (
+                    <SwitchRow>
+                        <SwitchButton
+                            active={
+                                mood === "indicative"
+                            }
+                            onClick={() =>
+                                setMood("indicative")
+                            }
+                        >
+                            Indicative
+                        </SwitchButton>
 
-                    <SwitchButton
-                        active={mood === "subjunctive"}
-                        onClick={() => setMood("subjunctive")}
-                    >
-                        Subjunctive
-                    </SwitchButton>
+                        <SwitchButton
+                            active={
+                                mood === "subjunctive"
+                            }
+                            onClick={() =>
+                                setMood("subjunctive")
+                            }
+                        >
+                            Subjunctive
+                        </SwitchButton>
 
-                    <SwitchButton
-                        active={mood === "imperative"}
-                        onClick={() => setMood("imperative")}
-                    >
-                        Imperative
-                    </SwitchButton>
-                </SwitchRow>
-            )}
+                        <SwitchButton
+                            active={
+                                mood === "imperative"
+                            }
+                            onClick={() =>
+                                setMood("imperative")
+                            }
+                        >
+                            Imperative
+                        </SwitchButton>
+                    </SwitchRow>
+                )}
 
+            {/* PARTICIPLE TYPE */}
             {voice === "participle" && (
                 <SwitchRow>
                     <SwitchButton
                         active={participle === "ppp"}
-                        onClick={() => setParticiple("ppp")}
+                        onClick={() =>
+                            setParticiple("ppp")
+                        }
                     >
                         PPP
                     </SwitchButton>
 
                     <SwitchButton
                         active={participle === "pap"}
-                        onClick={() => setParticiple("pap")}
+                        onClick={() =>
+                            setParticiple("pap")
+                        }
                     >
                         PAP
                     </SwitchButton>
 
                     <SwitchButton
                         active={participle === "fap"}
-                        onClick={() => setParticiple("fap")}
+                        onClick={() =>
+                            setParticiple("fap")
+                        }
                     >
                         FAP
                     </SwitchButton>
@@ -512,41 +624,76 @@ function VerbTable({ forms, highlightedForm }) {
 
             {/* GRID */}
             {voice === "gerund" ? (
-
                 <InfinitiveGrid>
 
                     <div>
                         <GerundRow>
-                            <CaseLabel>Genitive</CaseLabel>
+                            <CaseLabel>
+                                Genitive
+                            </CaseLabel>
+
                             <CaseForm
-                                className={isHighlighted(genitiveGerund) ? "highlight" : ""}
+                                className={
+                                    isHighlighted(
+                                        genitiveGerund
+                                    )
+                                        ? "highlight"
+                                        : ""
+                                }
                             >
                                 {genitiveGerund || "—"}
                             </CaseForm>
                         </GerundRow>
 
                         <GerundRow>
-                            <CaseLabel>Dative</CaseLabel>
+                            <CaseLabel>
+                                Dative
+                            </CaseLabel>
+
                             <CaseForm
-                                className={isHighlighted(dativeGerund) ? "highlight" : ""}
+                                className={
+                                    isHighlighted(
+                                        dativeGerund
+                                    )
+                                        ? "highlight"
+                                        : ""
+                                }
                             >
                                 {dativeGerund || "—"}
                             </CaseForm>
                         </GerundRow>
 
                         <GerundRow>
-                            <CaseLabel>Accusative</CaseLabel>
+                            <CaseLabel>
+                                Accusative
+                            </CaseLabel>
+
                             <CaseForm
-                                className={isHighlighted(accusativeGerund) ? "highlight" : ""}
+                                className={
+                                    isHighlighted(
+                                        accusativeGerund
+                                    )
+                                        ? "highlight"
+                                        : ""
+                                }
                             >
                                 {accusativeGerund || "—"}
                             </CaseForm>
                         </GerundRow>
 
                         <GerundRow>
-                            <CaseLabel>Ablative</CaseLabel>
+                            <CaseLabel>
+                                Ablative
+                            </CaseLabel>
+
                             <CaseForm
-                                className={isHighlighted(ablativeGerund) ? "highlight" : ""}
+                                className={
+                                    isHighlighted(
+                                        ablativeGerund
+                                    )
+                                        ? "highlight"
+                                        : ""
+                                }
                             >
                                 {ablativeGerund || "—"}
                             </CaseForm>
@@ -554,250 +701,333 @@ function VerbTable({ forms, highlightedForm }) {
                     </div>
 
                 </InfinitiveGrid>
-
             ) : (
-
                 <>
                     <Grid>
                         {tenseRows.map((row, idx) => (
                             <GridRow key={idx}>
-                                {row.map((tense) => renderTenseBlock(tense))}
+                                {row.map((tense) =>
+                                    renderTenseBlock(tense)
+                                )}
                             </GridRow>
                         ))}
                     </Grid>
-
-                    {/* infinitives */}
                 </>
-
             )}
-            
+
+            {/* GERUNDIVE */}
             {voice === "gerundive" && (
-
-                <GerundiveTable>
-                    <thead>
-                        <tr>
-                            <GerundiveTH></GerundiveTH>
-                            <GerundiveTH></GerundiveTH>
-                            <GerundiveTH>Masc.</GerundiveTH>
-                            <GerundiveTH>Fem.</GerundiveTH>
-                            <GerundiveTH>Neut.</GerundiveTH>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-
-                        {/* SINGULAR */}
-                        {CASE_ORDER.map((caseName, index) => (
-                            <tr key={`sing-${caseName}`}>
-
-                                {index === 0 && (
-                                    <GerundiveTD rowSpan={CASE_ORDER.length}>
-                                        Sing.
-                                    </GerundiveTD>
-                                )}
-
-                                <GerundiveTD>{CASE_LABELS[caseName]}</GerundiveTD>
-
-                                <GerundiveTD>
-                                    {getGerundive(
-                                        caseName,
-                                        "singular",
-                                        "masculine"
-                                    )}
-                                </GerundiveTD>
-
-                                <GerundiveTD>
-                                    {getGerundive(
-                                        caseName,
-                                        "singular",
-                                        "feminine"
-                                    )}
-                                </GerundiveTD>
-
-                                <GerundiveTD>
-                                    {getGerundive(
-                                        caseName,
-                                        "singular",
-                                        "neuter"
-                                    )}
-                                </GerundiveTD>
-
+                <GerundiveTableWrapper>
+                    <GerundiveTable>
+                        <thead>
+                            <tr>
+                                <GerundiveTH></GerundiveTH>
+                                <GerundiveTH></GerundiveTH>
+                                <GerundiveTH>
+                                    Masc.
+                                </GerundiveTH>
+                                <GerundiveTH>
+                                    Fem.
+                                </GerundiveTH>
+                                <GerundiveTH>
+                                    Neut.
+                                </GerundiveTH>
                             </tr>
-                        ))}
+                        </thead>
 
-                        {/* PLURAL */}
-                        {CASE_ORDER.map((caseName, index) => (
-                            <tr key={`plur-${caseName}`}>
+                        <tbody>
 
-                                {index === 0 && (
-                                    <GerundiveTD rowSpan={CASE_ORDER.length}>
-                                        Plur.
-                                    </GerundiveTD>
-                                )}
+                            {/* SINGULAR */}
+                            {CASE_ORDER.map(
+                                (caseName, index) => (
+                                    <tr
+                                        key={`sing-${caseName}`}
+                                    >
+                                        {index === 0 && (
+                                            <GerundiveTD
+                                                rowSpan={
+                                                    CASE_ORDER.length
+                                                }
+                                            >
+                                                Sing.
+                                            </GerundiveTD>
+                                        )}
 
-                                <GerundiveTD>{CASE_LABELS[caseName]}</GerundiveTD>
+                                        <GerundiveTD className="case">
+                                            {
+                                                CASE_LABELS[
+                                                    caseName
+                                                ]
+                                            }
+                                        </GerundiveTD>
 
-                                <GerundiveTD>
-                                    {getGerundive(
-                                        caseName,
-                                        "plural",
-                                        "masculine"
-                                    )}
-                                </GerundiveTD>
+                                        <GerundiveTD>
+                                            {getGerundive(
+                                                caseName,
+                                                "singular",
+                                                "masculine"
+                                            )}
+                                        </GerundiveTD>
 
-                                <GerundiveTD>
-                                    {getGerundive(
-                                        caseName,
-                                        "plural",
-                                        "feminine"
-                                    )}
-                                </GerundiveTD>
+                                        <GerundiveTD>
+                                            {getGerundive(
+                                                caseName,
+                                                "singular",
+                                                "feminine"
+                                            )}
+                                        </GerundiveTD>
 
-                                <GerundiveTD>
-                                    {getGerundive(
-                                        caseName,
-                                        "plural",
-                                        "neuter"
-                                    )}
-                                </GerundiveTD>
+                                        <GerundiveTD>
+                                            {getGerundive(
+                                                caseName,
+                                                "singular",
+                                                "neuter"
+                                            )}
+                                        </GerundiveTD>
+                                    </tr>
+                                )
+                            )}
 
-                            </tr>
-                        ))}
+                            {/* PLURAL */}
+                            {CASE_ORDER.map(
+                                (caseName, index) => (
+                                    <tr
+                                        key={`plur-${caseName}`}
+                                    >
+                                        {index === 0 && (
+                                            <GerundiveTD
+                                                rowSpan={
+                                                    CASE_ORDER.length
+                                                }
+                                            >
+                                                Plur.
+                                            </GerundiveTD>
+                                        )}
 
-                    </tbody>
-                </GerundiveTable>
+                                        <GerundiveTD className="case">
+                                            {
+                                                CASE_LABELS[
+                                                    caseName
+                                                ]
+                                            }
+                                        </GerundiveTD>
 
+                                        <GerundiveTD>
+                                            {getGerundive(
+                                                caseName,
+                                                "plural",
+                                                "masculine"
+                                            )}
+                                        </GerundiveTD>
+
+                                        <GerundiveTD>
+                                            {getGerundive(
+                                                caseName,
+                                                "plural",
+                                                "feminine"
+                                            )}
+                                        </GerundiveTD>
+
+                                        <GerundiveTD>
+                                            {getGerundive(
+                                                caseName,
+                                                "plural",
+                                                "neuter"
+                                            )}
+                                        </GerundiveTD>
+                                    </tr>
+                                )
+                            )}
+
+                        </tbody>
+                    </GerundiveTable>
+                </GerundiveTableWrapper>
             )}
 
+            {/* PARTICIPLE */}
             {voice === "participle" && (
-
-    <GerundiveTable>
-        <thead>
-            <tr>
-                <GerundiveTH></GerundiveTH>
-                <GerundiveTH></GerundiveTH>
-                <GerundiveTH>Masc.</GerundiveTH>
-                <GerundiveTH>Fem.</GerundiveTH>
-                <GerundiveTH>Neut.</GerundiveTH>
-            </tr>
-        </thead>
-
-        <tbody>
-
-            {/* SINGULAR */}
-            {CASE_ORDER.map((caseName, index) => (
-                            <tr key={`sing-${caseName}`}>
-
-                                {index === 0 && (
-                                    <GerundiveTD rowSpan={CASE_ORDER.length}>
-                                        Sing.
-                                    </GerundiveTD>
-                                )}
-
-                                <GerundiveTD>
-                                    {CASE_LABELS[caseName]}
-                                </GerundiveTD>
-
-                                <GerundiveTD>
-                                    {getParticiple(
-                                        caseName,
-                                        "singular",
-                                        "masculine"
-                                    )}
-                                </GerundiveTD>
-
-                                <GerundiveTD>
-                                    {getParticiple(
-                                        caseName,
-                                        "singular",
-                                        "feminine"
-                                    )}
-                                </GerundiveTD>
-
-                                <GerundiveTD>
-                                    {getParticiple(
-                                        caseName,
-                                        "singular",
-                                        "neuter"
-                                    )}
-                                </GerundiveTD>
-
+                <GerundiveTableWrapper>
+                    <GerundiveTable>
+                        <thead>
+                            <tr>
+                                <GerundiveTH></GerundiveTH>
+                                <GerundiveTH></GerundiveTH>
+                                <GerundiveTH>
+                                    Masc.
+                                </GerundiveTH>
+                                <GerundiveTH>
+                                    Fem.
+                                </GerundiveTH>
+                                <GerundiveTH>
+                                    Neut.
+                                </GerundiveTH>
                             </tr>
-                        ))}
+                        </thead>
 
-                        {/* PLURAL */}
-                        {CASE_ORDER.map((caseName, index) => (
-                            <tr key={`plur-${caseName}`}>
+                        <tbody>
 
-                                {index === 0 && (
-                                    <GerundiveTD rowSpan={CASE_ORDER.length}>
-                                        Plur.
-                                    </GerundiveTD>
-                                )}
+                            {/* SINGULAR */}
+                            {CASE_ORDER.map(
+                                (caseName, index) => (
+                                    <tr
+                                        key={`sing-${caseName}`}
+                                    >
+                                        {index === 0 && (
+                                            <GerundiveTD
+                                                rowSpan={
+                                                    CASE_ORDER.length
+                                                }
+                                            >
+                                                Sing.
+                                            </GerundiveTD>
+                                        )}
 
-                                <GerundiveTD>
-                                    {CASE_LABELS[caseName]}
-                                </GerundiveTD>
+                                        <GerundiveTD className="case">
+                                            {
+                                                CASE_LABELS[
+                                                    caseName
+                                                ]
+                                            }
+                                        </GerundiveTD>
 
-                                <GerundiveTD>
-                                    {getParticiple(
-                                        caseName,
-                                        "plural",
-                                        "masculine"
-                                    )}
-                                </GerundiveTD>
+                                        <GerundiveTD>
+                                            {getParticiple(
+                                                caseName,
+                                                "singular",
+                                                "masculine"
+                                            )}
+                                        </GerundiveTD>
 
-                                <GerundiveTD>
-                                    {getParticiple(
-                                        caseName,
-                                        "plural",
-                                        "feminine"
-                                    )}
-                                </GerundiveTD>
+                                        <GerundiveTD>
+                                            {getParticiple(
+                                                caseName,
+                                                "singular",
+                                                "feminine"
+                                            )}
+                                        </GerundiveTD>
 
-                                <GerundiveTD>
-                                    {getParticiple(
-                                        caseName,
-                                        "plural",
-                                        "neuter"
-                                    )}
-                                </GerundiveTD>
+                                        <GerundiveTD>
+                                            {getParticiple(
+                                                caseName,
+                                                "singular",
+                                                "neuter"
+                                            )}
+                                        </GerundiveTD>
+                                    </tr>
+                                )
+                            )}
 
-                            </tr>
-                        ))}
+                            {/* PLURAL */}
+                            {CASE_ORDER.map(
+                                (caseName, index) => (
+                                    <tr
+                                        key={`plur-${caseName}`}
+                                    >
+                                        {index === 0 && (
+                                            <GerundiveTD
+                                                rowSpan={
+                                                    CASE_ORDER.length
+                                                }
+                                            >
+                                                Plur.
+                                            </GerundiveTD>
+                                        )}
 
-                    </tbody>
-                </GerundiveTable>
+                                        <GerundiveTD className="case">
+                                            {
+                                                CASE_LABELS[
+                                                    caseName
+                                                ]
+                                            }
+                                        </GerundiveTD>
 
+                                        <GerundiveTD>
+                                            {getParticiple(
+                                                caseName,
+                                                "plural",
+                                                "masculine"
+                                            )}
+                                        </GerundiveTD>
+
+                                        <GerundiveTD>
+                                            {getParticiple(
+                                                caseName,
+                                                "plural",
+                                                "feminine"
+                                            )}
+                                        </GerundiveTD>
+
+                                        <GerundiveTD>
+                                            {getParticiple(
+                                                caseName,
+                                                "plural",
+                                                "neuter"
+                                            )}
+                                        </GerundiveTD>
+                                    </tr>
+                                )
+                            )}
+
+                        </tbody>
+                    </GerundiveTable>
+                </GerundiveTableWrapper>
             )}
 
             <Line />
 
+            {/* INFINITIVES */}
             {infinitives.length > 0 && (
                 <InfinitiveGrid>
 
                     <InfinitiveBlock>
-                        <SectionTitle>Infinitive Present</SectionTitle>
+                        <SectionTitle>
+                            Infinitive Present
+                        </SectionTitle>
+
                         <FormRow
-                            className={isHighlighted(presentInfinitive) ? "highlight" : ""}
+                            className={
+                                isHighlighted(
+                                    presentInfinitive
+                                )
+                                    ? "highlight"
+                                    : ""
+                            }
                         >
                             {presentInfinitive || "—"}
                         </FormRow>
                     </InfinitiveBlock>
 
                     <InfinitiveBlock>
-                        <SectionTitle>Infinitive Perfect</SectionTitle>
+                        <SectionTitle>
+                            Infinitive Perfect
+                        </SectionTitle>
+
                         <FormRow
-                            className={isHighlighted(perfectInfinitive) ? "highlight" : ""}
+                            className={
+                                isHighlighted(
+                                    perfectInfinitive
+                                )
+                                    ? "highlight"
+                                    : ""
+                            }
                         >
                             {perfectInfinitive || "—"}
                         </FormRow>
                     </InfinitiveBlock>
 
                     <InfinitiveBlock>
-                        <SectionTitle>Infinitive Future</SectionTitle>
+                        <SectionTitle>
+                            Infinitive Future
+                        </SectionTitle>
+
                         <FormRow
-                            className={isHighlighted(futureInfinitive) ? "highlight" : ""}
+                            className={
+                                isHighlighted(
+                                    futureInfinitive
+                                )
+                                    ? "highlight"
+                                    : ""
+                            }
                         >
                             {futureInfinitive || "—"}
                         </FormRow>

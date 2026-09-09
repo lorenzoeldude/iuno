@@ -2,67 +2,133 @@ import styled from "styled-components";
 import { useState } from "react";
 
 const Wrapper = styled.div`
-    background-color: rgba(178, 178, 178, 0.1);
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+
+    border: 1px solid ${({ theme }) => theme.colors.accent};
 `;
 
 const SwitchRow = styled.div`
     display: flex;
     gap: 10px;
-    padding: 10px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
 `;
 
 const SwitchButton = styled.button`
+    flex-shrink: 0;
+
     border: none;
-    padding: 10px 16px;
+    padding: 8px 16px;
     border-radius: 999px;
     cursor: pointer;
-    font-size: 15px;
 
-    background: ${({ active }) =>
-        active ? "black" : "rgba(0,0,0,0.08)"};
+    font-family: "Cormorant Garamond", serif;
+    font-size: 16px;
+    font-weight: 400;
+
+    background: ${({ active, theme }) =>
+        active
+            ? theme.colors.accent
+            : `${theme.colors.accent}14`};
 
     color: ${({ active }) =>
-        active ? "white" : "black"};
+        active ? "white" : "inherit"};
 `;
 
 const TableWrapper = styled.div`
     width: 100%;
     overflow-x: auto;
+
+    scrollbar-width: thin;
 `;
 
 const Table = styled.table`
-    width: 100%;
+    width: max-content;
+    min-width: 100%;
+
     border-collapse: collapse;
+    table-layout: fixed;
 `;
 
-
 const TH = styled.th`
-    text-align: left;
-    padding: 14px;
-    border-bottom: 1px solid rgba(0,0,0,0.1);
-    font-size: 17px;
-    font-weight: 600;
-    text-decoration: underline;
+    width: 100px;
 
-    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-        padding: 10px 8px;
-        font-size: 15px;
-    }
+    text-align: left;
+
+    padding: 8px;
+
+    font-family: "Cormorant Garamond", serif;
+    font-size: 18px;
+    font-weight: 600;
+
+    white-space: nowrap;
+`;
+
+const CaseTH = styled.th`
+    width: 55px;
+
+    text-align: left;
+
+    padding: 8px 0;
+
+    font-family: "Cormorant Garamond", serif;
+    font-size: 18px;
+    font-weight: 600;
+
+    white-space: nowrap;
 `;
 
 const TD = styled.td`
-    padding: 14px;
-    border-bottom: 1px solid rgba(0,0,0,0.06);
-    font-size: 21px;
+    padding: 8px;
 
-    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-        padding: 10px 8px;
-        font-size: 17px;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 20px;
+    line-height: 1;
+
+    text-align: left;
+    white-space: nowrap;
+
+    min-width: 100px;
+
+    &.case {
+        width: 55px;
+        min-width: 55px;
+
+        padding-left: 0;
+
+        font-size: 16px;
+        font-weight: 600;
     }
 
     &.highlight {
-        background-color: ${({ theme }) => theme.colors.highlight};
-        font-weight: bold;
+        background-color: ${({ theme }) =>
+            `${theme.colors.accent}33`};
+    }
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        padding: 8px;
+        font-size: 19px;
+
+        &.case {
+            padding-left: 0;
+            font-size: 16px;
+        }
+    }
+`;
+
+const SectionRow = styled.tr`
+    ${TH},
+    ${CaseTH} {
+        padding-top: 8px;
+        padding-bottom: 8px;
     }
 `;
 
@@ -85,7 +151,6 @@ const CASE_LABELS = {
 };
 
 function FormCell({ form, highlightedForm }) {
-
     function normalizeLatin(word) {
         return word
             ?.normalize("NFD")
@@ -96,7 +161,7 @@ function FormCell({ form, highlightedForm }) {
     const highlighted =
         highlightedForm &&
         normalizeLatin(form?.form) ===
-        normalizeLatin(highlightedForm);
+            normalizeLatin(highlightedForm);
 
     return (
         <TD className={highlighted ? "highlight" : ""}>
@@ -106,17 +171,18 @@ function FormCell({ form, highlightedForm }) {
 }
 
 function AdjectiveTable({ forms, highlightedForm }) {
-
     const [degree, setDegree] = useState("positive");
 
     const adjectiveForms = forms.filter((form) => {
-
         if (!form.grammatical_case) {
             return false;
         }
 
         if (degree === "positive") {
-            return !form.degree || form.degree === "positive";
+            return (
+                !form.degree ||
+                form.degree === "positive"
+            );
         }
 
         return form.degree === degree;
@@ -127,7 +193,10 @@ function AdjectiveTable({ forms, highlightedForm }) {
             form.form_type === "adverb" &&
             (
                 degree === "positive"
-                    ? (!form.degree || form.degree === "positive")
+                    ? (
+                        !form.degree ||
+                        form.degree === "positive"
+                    )
                     : form.degree === degree
             )
     );
@@ -151,7 +220,7 @@ function AdjectiveTable({ forms, highlightedForm }) {
     const adverbHighlighted =
         highlightedForm &&
         normalizeLatin(adverbObj?.form) ===
-        normalizeLatin(highlightedForm);
+            normalizeLatin(highlightedForm);
 
     return (
         <Wrapper>
@@ -182,88 +251,168 @@ function AdjectiveTable({ forms, highlightedForm }) {
             </SwitchRow>
 
             <TableWrapper>
-            <Table>
 
-                <thead>
-                    <tr>
-                        <TH><strong>Singular</strong></TH>
-                        <TH>Masculine</TH>
-                        <TH>Feminine</TH>
-                        <TH>Neuter</TH>
-                    </tr>
-                </thead>
+                <Table>
 
-                <tbody>
+                    <thead>
+                        <SectionRow>
 
-                    {CASE_ORDER.map((caseName) => (
-                        <tr key={`singular-${caseName}`}>
+                            <CaseTH>
+                                Sing.
+                            </CaseTH>
 
-                            <TD>{CASE_LABELS[caseName]}</TD>
+                            <TH>
+                                Masc.
+                            </TH>
 
-                            <FormCell
-                                form={getForm(caseName, "singular", "masculine")}
-                                highlightedForm={highlightedForm}
-                            />
+                            <TH>
+                                Fem.
+                            </TH>
 
-                            <FormCell
-                                form={getForm(caseName, "singular", "feminine")}
-                                highlightedForm={highlightedForm}
-                            />
+                            <TH>
+                                Neut.
+                            </TH>
 
-                            <FormCell
-                                form={getForm(caseName, "singular", "neuter")}
-                                highlightedForm={highlightedForm}
-                            />
+                        </SectionRow>
+                    </thead>
 
-                        </tr>
-                    ))}
+                    <tbody>
 
-                    <tr>
-                        <TH><strong>Plural</strong></TH>
-                        <TH>Masculine</TH>
-                        <TH>Feminine</TH>
-                        <TH>Neuter</TH>
-                    </tr>
-
-                    {CASE_ORDER.map((caseName) => (
-                        <tr key={`plural-${caseName}`}>
-
-                            <TD>{CASE_LABELS[caseName]}</TD>
-
-                            <FormCell
-                                form={getForm(caseName, "plural", "masculine")}
-                                highlightedForm={highlightedForm}
-                            />
-
-                            <FormCell
-                                form={getForm(caseName, "plural", "feminine")}
-                                highlightedForm={highlightedForm}
-                            />
-
-                            <FormCell
-                                form={getForm(caseName, "plural", "neuter")}
-                                highlightedForm={highlightedForm}
-                            />
-
-                        </tr>
-                    ))}
-
-                    {adverbObj && (
-                        <tr>
-                            <TH><strong>Adverb</strong></TH>
-
-                            <TD
-                                colSpan={3}
-                                className={adverbHighlighted ? "highlight" : ""}
+                        {CASE_ORDER.map((caseName) => (
+                            <tr
+                                key={`singular-${caseName}`}
                             >
-                                {adverbObj.form}
-                            </TD>
-                        </tr>
-                    )}
 
-                </tbody>
+                                <TD className="case">
+                                    {CASE_LABELS[caseName]}
+                                </TD>
 
-            </Table>
+                                <FormCell
+                                    form={getForm(
+                                        caseName,
+                                        "singular",
+                                        "masculine"
+                                    )}
+                                    highlightedForm={
+                                        highlightedForm
+                                    }
+                                />
+
+                                <FormCell
+                                    form={getForm(
+                                        caseName,
+                                        "singular",
+                                        "feminine"
+                                    )}
+                                    highlightedForm={
+                                        highlightedForm
+                                    }
+                                />
+
+                                <FormCell
+                                    form={getForm(
+                                        caseName,
+                                        "singular",
+                                        "neuter"
+                                    )}
+                                    highlightedForm={
+                                        highlightedForm
+                                    }
+                                />
+
+                            </tr>
+                        ))}
+
+                        <SectionRow>
+
+                            <CaseTH>
+                                Plur.
+                            </CaseTH>
+
+                            <TH>
+                                Masc.
+                            </TH>
+
+                            <TH>
+                                Fem.
+                            </TH>
+
+                            <TH>
+                                Neut.
+                            </TH>
+
+                        </SectionRow>
+
+                        {CASE_ORDER.map((caseName) => (
+                            <tr
+                                key={`plural-${caseName}`}
+                            >
+
+                                <TD className="case">
+                                    {CASE_LABELS[caseName]}
+                                </TD>
+
+                                <FormCell
+                                    form={getForm(
+                                        caseName,
+                                        "plural",
+                                        "masculine"
+                                    )}
+                                    highlightedForm={
+                                        highlightedForm
+                                    }
+                                />
+
+                                <FormCell
+                                    form={getForm(
+                                        caseName,
+                                        "plural",
+                                        "feminine"
+                                    )}
+                                    highlightedForm={
+                                        highlightedForm
+                                    }
+                                />
+
+                                <FormCell
+                                    form={getForm(
+                                        caseName,
+                                        "plural",
+                                        "neuter"
+                                    )}
+                                    highlightedForm={
+                                        highlightedForm
+                                    }
+                                />
+
+                            </tr>
+                        ))}
+
+                        {adverbObj && (
+                            <tr>
+
+                                <CaseTH>
+                                    Adverb
+                                </CaseTH>
+
+                                <TD
+                                    colSpan={3}
+                                    className={
+                                        adverbHighlighted
+                                            ? "highlight"
+                                            : ""
+                                    }
+                                >
+                                    {adverbObj.form}
+                                </TD>
+
+                            </tr>
+                        )}
+
+                    </tbody>
+
+                </Table>
+
             </TableWrapper>
 
         </Wrapper>

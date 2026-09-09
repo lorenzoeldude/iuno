@@ -68,7 +68,7 @@ const Meanings = styled.div`
 `;
 
 const MeaningItem = styled.span`
-    background: rgb(255, 205, 205);
+    background-color: ${({ theme }) => theme.colors.accent + "40"};
     color: black;
     font-size: 0.9rem;
     padding: 3px 7px;

@@ -1,6 +1,9 @@
 import styled, { useTheme } from "styled-components";
 import { useNavigate } from "react-router-dom";
 
+import searchIcon from "../../../assets/icons/search.svg";
+import searchDarkIcon from "../../../assets/icons/search_dark.svg";
+
 import lessonIcon from "../../../assets/icons/lesson.svg";
 import lessonDarkIcon from "../../../assets/icons/lesson_dark.svg";
 
@@ -15,45 +18,95 @@ import profileDarkIcon from "../../../assets/icons/profile_dark.svg";
 
 const Wrapper = styled.div`
     position: fixed;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
+    left: 0;
+    top: 0;
+    bottom: 0;
+
+    width: 68px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding: 14px 0;
+
+    z-index: 1000;
 
     @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
         left: 0;
         right: 0;
         bottom: 0;
         top: auto;
-        transform: none;
+
+        width: auto;
+
+        flex-direction: row;
+        justify-content: center;
 
         background: ${({ theme }) => theme.colors.background};
         border-top: 1px solid ${({ theme }) => theme.colors.border};
+
         padding: 8px 0;
-        z-index: 1000;
     }
 `;
 
-const List = styled.ul`
+const Logo = styled.button`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 48px;
+    height: 48px;
+
+    padding: 0;
+    border: none;
+    background: none;
+
+    font-family: "Cormorant Garamond", serif;
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: 4px;
+
+    color: inherit;
+
+    cursor: pointer;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        display: none;
+    }
+`;
+
+const Navigation = styled.ul`
     list-style: none;
     margin: 0;
     padding: 0;
 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    flex: 1;
+
     @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-        display: flex;
+        flex: none;
+
+        flex-direction: row;
         justify-content: space-evenly;
-        align-items: center;
+
+        width: 100%;
     }
 `;
 
 const ListItem = styled.li`
-    margin: 8px 0;
+    margin: 4px 0;
 
     @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
         margin: 0;
     }
 `;
 
-const Link = styled.button`
+const NavButton = styled.button`
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -88,43 +141,62 @@ function Sidebar() {
 
     return (
         <Wrapper>
-            <List>
+
+            {/* Logo */}
+            <Logo onClick={() => navigate("/")}>
+                I
+            </Logo>
+
+            {/* Navigation */}
+            <Navigation>
+
                 <ListItem>
-                    <Link onClick={() => navigate("/lessons")}>
+                    <NavButton onClick={() => navigate("/lessons")}>
                         <img
                             src={isDark ? lessonDarkIcon : lessonIcon}
                             alt="Lessons"
                         />
-                    </Link>
+                    </NavButton>
                 </ListItem>
 
                 <ListItem>
-                    <Link onClick={() => navigate("/trainer")}>
+                    <NavButton onClick={() => navigate("/trainer")}>
                         <img
                             src={isDark ? trainerDarkIcon : trainerIcon}
                             alt="Trainer"
                         />
-                    </Link>
+                    </NavButton>
                 </ListItem>
 
                 <ListItem>
-                    <Link onClick={() => navigate("/read")}>
+                    <NavButton onClick={() => navigate("/search")}>
+                        <img
+                            src={isDark ? searchDarkIcon : searchIcon}
+                            alt="Search"
+                        />
+                    </NavButton>
+                </ListItem>
+
+                <ListItem>
+                    <NavButton onClick={() => navigate("/read")}>
                         <img
                             src={isDark ? readDarkIcon : readIcon}
                             alt="Read"
                         />
-                    </Link>
+                    </NavButton>
                 </ListItem>
 
                 <ListItem>
-                    <Link onClick={() => navigate("/user")}>
+                    <NavButton onClick={() => navigate("/user")}>
                         <img
                             src={isDark ? profileDarkIcon : profileIcon}
                             alt="Profile"
                         />
-                    </Link>
+                    </NavButton>
                 </ListItem>
-            </List>
+
+            </Navigation>
+
         </Wrapper>
     );
 }
