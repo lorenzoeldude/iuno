@@ -44,8 +44,7 @@ const Content = styled.div`
 const Intro = styled.div`
     text-align: center;
 
-    margin-top: 48px;
-    margin-bottom: 70px;
+    margin-top: 40px;
 
     @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
         margin-top: 42px;
@@ -184,7 +183,7 @@ const TopWordsSection = styled.section`
     width: 100%;
     max-width: 680px;
 
-    margin: 48px auto 0;
+    margin: 40px auto 0;
 `;
 
 const TopWordsContainer = styled.div`
