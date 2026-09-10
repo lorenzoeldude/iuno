@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-// import { useNavigate } from "react-router-dom";
 
 import Searchbar from "../../atoms/Searchbar";
 import { useLocation, useNavigate } from "react-router-dom";
+
 
 const Wrapper = styled.main`
     width: 50vw;
@@ -53,34 +53,8 @@ const Intro = styled.div`
     }
 `;
 
-// const IntroTitle = styled.h1`
-//     margin: 0 0 12px;
-
-//     font-family: "Cormorant Garamond", serif;
-//     font-size: 40px;
-//     font-weight: 600;
-//     line-height: 1.1;
-
-//     color: ${({ theme }) => theme.colors.text};
-
-//     @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-//         font-size: 34px;
-//     }
-// `;
-
-// const IntroText = styled.p`
-//     margin: 0 auto;
-
-//     max-width: 520px;
-
-//     font-size: 15px;
-//     line-height: 1.6;
-
-//     color: ${({ theme }) => theme.colors.textSecondary};
-// `;
-
 /* =====================================================
-   WORD OF THE DAY
+   WORD SECTIONS
 ===================================================== */
 
 const WordSection = styled.section`
@@ -100,6 +74,10 @@ const SectionTitle = styled.div`
 
     color: ${({ theme }) => theme.colors.textSecondary};
 `;
+
+/* =====================================================
+   WORD OF THE DAY
+===================================================== */
 
 const WordCard = styled.button`
     display: block;
@@ -134,8 +112,6 @@ const WordCard = styled.button`
 const WordHeader = styled.div`
     display: flex;
     align-items: baseline;
-
-    // gap: 12px;
 `;
 
 const Word = styled.span`
@@ -197,7 +173,136 @@ const Meaning = styled.span`
 
     border: 1px solid
         ${({ theme }) =>
-            theme.colors.accent  + "1F"};
+            theme.colors.accent + "1F"};
+`;
+
+/* =====================================================
+   MOST SEARCHED THIS WEEK
+===================================================== */
+
+const TopWordsSection = styled.section`
+    width: 100%;
+    max-width: 680px;
+
+    margin: 48px auto 0;
+`;
+
+const TopWordsContainer = styled.div`
+    width: 100%;
+
+    box-sizing: border-box;
+
+    border: 1px solid ${({ theme }) => theme.colors.border};
+
+    background: transparent;
+`;
+
+const TopWords = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
+
+const TopWord = styled.button`
+    display: grid;
+
+    grid-template-columns: 32px auto 1fr;
+
+    align-items: center;
+
+    column-gap: 14px;
+
+    width: 100%;
+
+    padding: 16px 20px;
+
+    box-sizing: border-box;
+
+    text-align: left;
+
+    border: none;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    &:hover {
+        .top-word {
+            text-decoration: underline;
+        }
+    }
+
+    &:focus-visible {
+        outline: 2px solid ${({ theme }) => theme.colors.accent};
+        outline-offset: -3px;
+    }
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        grid-template-columns: 28px auto 1fr;
+
+        column-gap: 10px;
+
+        padding: 14px 14px;
+    }
+`;
+
+const Rank = styled.span`
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: 18px;
+    font-weight: 600;
+
+    line-height: 1;
+
+    color: ${({ theme }) =>
+        theme.colors.textSecondary};
+`;
+
+const TopWordLemma = styled.span`
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: 28px;
+    font-weight: 600;
+
+    line-height: 1.1;
+
+    color: ${({ theme }) => theme.colors.text};
+
+    white-space: nowrap;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        font-size: 24px;
+    }
+`;
+
+const TopWordMeaning = styled.span`
+    justify-self: start;
+
+    padding: 5px 9px;
+
+    font-size: 13px;
+    line-height: 1.2;
+
+    color: ${({ theme }) => theme.colors.text};
+
+    background: ${({ theme }) =>
+        theme.colors.accent + "1F"};
+
+    border: 1px solid
+        ${({ theme }) =>
+            theme.colors.accent + "1F"};
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    max-width: 100%;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        font-size: 12px;
+        padding: 5px 8px;
+    }
 `;
 
 /* =====================================================
@@ -228,20 +333,37 @@ const Loading = styled.div`
 ===================================================== */
 
 function SearchPage() {
+
     const location = useLocation();
     const navigate = useNavigate();
 
-    const autoFocus = location.state?.autoFocus === true;
+    const autoFocus =
+        location.state?.autoFocus === true;
 
-    const [wordOfTheDay, setWordOfTheDay] = useState(null);
-    const [loadingWord, setLoadingWord] = useState(true);
+    const [wordOfTheDay, setWordOfTheDay] =
+        useState(null);
+
+    const [loadingWord, setLoadingWord] =
+        useState(true);
+
+    const [topWords, setTopWords] =
+        useState([]);
+
+    const [loadingTopWords, setLoadingTopWords] =
+        useState(true);
+
+    // =====================================================
+    // LOAD WORD OF THE DAY
+    // =====================================================
 
     useEffect(() => {
         loadWordOfTheDay();
     }, []);
 
     async function loadWordOfTheDay() {
+
         try {
+
             const response = await fetch(
                 `${process.env.REACT_APP_API_URL}/api/word-of-the-day`
             );
@@ -252,23 +374,112 @@ function SearchPage() {
                 );
             }
 
-            const data = await response.json();
+            const data =
+                await response.json();
 
             setWordOfTheDay(data);
+
         } catch (error) {
+
             console.error(
                 "Word of the day error:",
                 error
             );
+
         } finally {
+
             setLoadingWord(false);
         }
     }
 
+    // =====================================================
+    // LOAD MOST SEARCHED WORDS
+    // =====================================================
+
+    useEffect(() => {
+        loadTopWords();
+    }, []);
+
+    async function loadTopWords() {
+
+        try {
+
+            const response = await fetch(
+                `${process.env.REACT_APP_API_URL}/api/word-lookups/top`
+            );
+
+            if (!response.ok) {
+                throw new Error(
+                    "Failed to load top word lookups"
+                );
+            }
+
+            const data =
+                await response.json();
+
+            setTopWords(
+                Array.isArray(data)
+                    ? data
+                    : []
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Top word lookups error:",
+                error
+            );
+
+        } finally {
+
+            setLoadingTopWords(false);
+        }
+    }
+
+    // =====================================================
+    // OPEN WORD
+    // =====================================================
+
     function openWord(word) {
+
         navigate(
             `/dictionary/${word.lemma_normalized}`
         );
+    }
+
+    function openTopWord(word) {
+
+        navigate(
+            `/dictionary/${word.lemma.toLowerCase()}`
+        );
+    }
+
+    // =====================================================
+    // ROMAN RANK
+    // =====================================================
+
+    function romanRank(rank) {
+
+        switch (rank) {
+
+            case 1:
+                return "I";
+
+            case 2:
+                return "II";
+
+            case 3:
+                return "III";
+
+            case 4:
+                return "IV";
+
+            case 5:
+                return "V";
+
+            default:
+                return rank;
+        }
     }
 
     return (
@@ -279,10 +490,12 @@ function SearchPage() {
             ===================================================== */}
 
             <SearchWrapper>
+
                 <Searchbar
                     variant="large"
                     autoFocus={autoFocus}
                 />
+
             </SearchWrapper>
 
             {/* =====================================================
@@ -292,16 +505,6 @@ function SearchPage() {
             <Content>
 
                 <Intro>
-
-                    {/* <IntroTitle>
-                        Search the dictionary
-                    </IntroTitle> */}
-
-                    {/* <IntroText>
-                        Look up Latin words, forms, meanings
-                        and grammar.
-                    </IntroText> */}
-
                 </Intro>
 
                 {/* =====================================================
@@ -324,14 +527,19 @@ function SearchPage() {
 
                         <WordCard
                             onClick={() =>
-                                openWord(wordOfTheDay)
+                                openWord(
+                                    wordOfTheDay
+                                )
                             }
                         >
 
                             <WordHeader>
 
                                 <Word>
-                                    {wordOfTheDay.lemma}
+                                    {
+                                        wordOfTheDay
+                                            .lemma
+                                    }
                                 </Word>
 
                                 <Arrow>
@@ -340,29 +548,132 @@ function SearchPage() {
 
                             </WordHeader>
 
-                            {wordOfTheDay.meanings?.length > 0 && (
+                            {
+                                wordOfTheDay
+                                    .meanings
+                                    ?.length > 0 && (
 
-                                <Meanings>
+                                    <Meanings>
 
-                                    {wordOfTheDay.meanings.map(
-                                        (meaning) => (
-                                            <Meaning
-                                                key={meaning}
-                                            >
-                                                {meaning}
-                                            </Meaning>
-                                        )
-                                    )}
+                                        {
+                                            wordOfTheDay
+                                                .meanings
+                                                .map(
+                                                    meaning => (
 
-                                </Meanings>
+                                                        <Meaning
+                                                            key={
+                                                                meaning
+                                                            }
+                                                        >
+                                                            {
+                                                                meaning
+                                                            }
+                                                        </Meaning>
 
-                            )}
+                                                    )
+                                                )
+                                        }
+
+                                    </Meanings>
+
+                                )}
 
                         </WordCard>
 
                     ) : null}
 
                 </WordSection>
+
+                {/* =====================================================
+                    MOST SEARCHED THIS WEEK
+                ===================================================== */}
+
+                {!loadingTopWords &&
+                    topWords.length > 0 && (
+
+                        <TopWordsSection>
+
+                            <SectionTitle>
+                                Most searched this week
+                            </SectionTitle>
+
+                            <TopWordsContainer>
+
+                                <TopWords>
+
+                                    {
+                                        topWords.map(
+                                            (word, index) => (
+
+                                                <TopWord
+                                                    key={
+                                                        word.id
+                                                    }
+                                                    onClick={() =>
+                                                        openTopWord(
+                                                            word
+                                                        )
+                                                    }
+                                                >
+
+                                                    <Rank>
+                                                        {
+                                                            romanRank(
+                                                                index + 1
+                                                            )
+                                                        }
+                                                    </Rank>
+
+                                                    <TopWordLemma
+                                                        className="top-word"
+                                                    >
+                                                        {
+                                                            word.lemma
+                                                        }
+                                                    </TopWordLemma>
+
+                                                    {
+                                                        word.meaning && (
+
+                                                            <TopWordMeaning>
+                                                                {
+                                                                    word.meaning
+                                                                }
+                                                            </TopWordMeaning>
+
+                                                        )
+                                                    }
+
+                                                </TopWord>
+
+                                            )
+                                        )
+                                    }
+
+                                </TopWords>
+
+                            </TopWordsContainer>
+
+                        </TopWordsSection>
+
+                    )}
+
+                {loadingTopWords && (
+
+                    <TopWordsSection>
+
+                        <SectionTitle>
+                            Most searched this week
+                        </SectionTitle>
+
+                        <Loading>
+                            Loading...
+                        </Loading>
+
+                    </TopWordsSection>
+
+                )}
 
             </Content>
 

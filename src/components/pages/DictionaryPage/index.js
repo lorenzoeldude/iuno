@@ -1,5 +1,9 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import {
+    useCallback,
+    useEffect,
+    useState,
+} from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import { FaCheckCircle } from "react-icons/fa";
 
@@ -27,6 +31,7 @@ const Wrapper = styled.div`
     @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
         width: 94%;
     }
+
     margin: 0 auto;
     margin-top: 50px;
     padding-top: 0px;
@@ -135,7 +140,7 @@ const Meaning = styled.div`
 `;
 
 const MeaningItem = styled.span`
-    background: ${({ theme }) => theme.colors.accent  + "1F"};
+    background: ${({ theme }) => theme.colors.accent + "1F"};
     font-size: 20px;
     padding: 4px 8px;
     color: black;
@@ -214,6 +219,7 @@ const Overlay = styled.div`
 // ===================== component =====================
 
 function DictionaryPage() {
+
     const wrapperRef = useRef(null);
     const navigate = useNavigate();
 
@@ -227,96 +233,250 @@ function DictionaryPage() {
     const { word } = useParams();
     const [searchParams] = useSearchParams();
 
-    const highlightedForm = searchParams.get("form");
+    const highlightedForm =
+        searchParams.get("form");
 
-    const [wordData, setWordData] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [wordData, setWordData] =
+        useState(null);
+
+    const [loading, setLoading] =
+        useState(true);
+
+    const [error, setError] =
+        useState(null);
 
     console.log("wordData: ", wordData);
 
-    const [saved, setSaved] = useState(false);
-    const [saving, setSaving] = useState(false);
+    const [saved, setSaved] =
+        useState(false);
 
-    const [token] = useState(() => localStorage.getItem("token"));
+    const [saving, setSaving] =
+        useState(false);
+
+    const [token] = useState(
+        () => localStorage.getItem("token")
+    );
+
     const isAuthed = !!token;
 
-    const [isAdmin, setIsAdmin] = useState(false);
+    const [isAdmin, setIsAdmin] =
+        useState(false);
 
-    const [showLoginPopup, setShowLoginPopup] = useState(false);
-    
+    const [showLoginPopup, setShowLoginPopup] =
+        useState(false);
+
     useEffect(() => {
 
         if (!token) return;
 
         try {
+
             const payload = JSON.parse(
                 atob(token.split(".")[1])
             );
 
-            setIsAdmin(payload.is_admin === true);
+            setIsAdmin(
+                payload.is_admin === true
+            );
 
         } catch (err) {
+
             console.error("Invalid JWT");
         }
 
     }, [token]);
 
     // =====================================================
+    // RECORD WORD LOOKUP
+    // =====================================================
+
+    const recordWordLookup = useCallback(
+        async (lemmaId) => {
+
+            try {
+
+                const headers = {
+                    "Content-Type":
+                        "application/json",
+                    "Accept":
+                        "application/json",
+                };
+
+                if (token) {
+
+                    headers.Authorization =
+                        `Bearer ${token}`;
+
+                } else {
+
+                    const storageKey =
+                        "webAnonymousLookupID";
+
+                    let anonymousID =
+                        localStorage.getItem(
+                            storageKey
+                        );
+
+                    if (!anonymousID) {
+
+                        anonymousID =
+                            crypto.randomUUID();
+
+                        localStorage.setItem(
+                            storageKey,
+                            anonymousID
+                        );
+                    }
+
+                    headers[
+                        "X-Anonymous-ID"
+                    ] = anonymousID;
+                }
+
+                const res = await fetch(
+                    `${API_URL}/api/word-lookups`,
+                    {
+                        method: "POST",
+                        headers,
+                        body: JSON.stringify({
+                            lemmaId: lemmaId,
+                        }),
+                    }
+                );
+
+                if (!res.ok) {
+
+                    console.error(
+                        "Word lookup failed:",
+                        res.status
+                    );
+
+                    return;
+                }
+
+                console.log(
+                    "📊 Word lookup recorded:",
+                    lemmaId
+                );
+
+            } catch (err) {
+
+                // Tracking should never interfere
+                // with the dictionary.
+                console.error(
+                    "Word lookup error:",
+                    err
+                );
+            }
+        },
+        [token]
+    );
+
+    // =====================================================
     // FETCH WORD DATA
     // =====================================================
+
     useEffect(() => {
 
         setLoading(true);
         setError(null);
 
-        fetch(`${API_URL}/api/word/${word}`)
+        fetch(
+            `${API_URL}/api/word/${word}`
+        )
             .then(res => {
-                if (!res.ok) throw new Error("Word not found");
+
+                if (!res.ok) {
+                    throw new Error(
+                        "Word not found"
+                    );
+                }
+
                 return res.json();
             })
             .then(data => {
+
                 setWordData(data);
                 setLoading(false);
+
+                // Record only after the dictionary
+                // entry was successfully fetched.
+                if (data?.lemma?.id) {
+
+                    recordWordLookup(
+                        data.lemma.id
+                    );
+                }
             })
             .catch(err => {
+
                 setError(err.message);
                 setLoading(false);
             });
 
-    }, [word]);
+    }, [
+        word,
+        recordWordLookup,
+    ]);
 
     // =====================================================
     // CHECK SAVED STATE
     // =====================================================
+
     useEffect(() => {
 
-        if (!isAuthed || !wordData?.lemma?.id) return;
+        if (
+            !isAuthed ||
+            !wordData?.lemma?.id
+        ) {
+            return;
+        }
 
-        const lemmaId = wordData.lemma.id;
+        const lemmaId =
+            wordData.lemma.id;
 
-        fetch(`${API_URL}/api/word-lists/lemma/${lemmaId}`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        })
+        fetch(
+            `${API_URL}/api/word-lists/lemma/${lemmaId}`,
+            {
+                headers: {
+                    Authorization:
+                        `Bearer ${token}`,
+                },
+            }
+        )
             .then(res => {
-                if (!res.ok) throw new Error("check failed");
+
+                if (!res.ok) {
+                    throw new Error(
+                        "check failed"
+                    );
+                }
+
                 return res.json();
             })
             .then(data => {
-                setSaved(!!data.saved);
+
+                setSaved(
+                    !!data.saved
+                );
             })
             .catch(console.error);
 
-    }, [isAuthed, token, wordData?.lemma?.id]);
+    }, [
+        isAuthed,
+        token,
+        wordData?.lemma?.id,
+    ]);
 
     // =====================================================
     // TOGGLE SAVE / UNSAVE
     // =====================================================
+
     async function toggleList(lemmaId) {
 
-        if (!token || saving) return;
+        if (!token || saving) {
+            return;
+        }
 
         setSaving(true);
 
@@ -329,14 +489,22 @@ function DictionaryPage() {
                     {
                         method: "POST",
                         headers: {
-                            "Content-Type": "application/json",
-                            Authorization: `Bearer ${token}`,
+                            "Content-Type":
+                                "application/json",
+                            Authorization:
+                                `Bearer ${token}`,
                         },
-                        body: JSON.stringify({ lemma_id: lemmaId }),
+                        body: JSON.stringify({
+                            lemma_id: lemmaId,
+                        }),
                     }
                 );
 
-                if (!res.ok) throw new Error("add failed");
+                if (!res.ok) {
+                    throw new Error(
+                        "add failed"
+                    );
+                }
 
                 setSaved(true);
 
@@ -347,19 +515,29 @@ function DictionaryPage() {
                     {
                         method: "DELETE",
                         headers: {
-                            Authorization: `Bearer ${token}`,
+                            Authorization:
+                                `Bearer ${token}`,
                         },
                     }
                 );
 
-                if (!res.ok) throw new Error("delete failed");
+                if (!res.ok) {
+                    throw new Error(
+                        "delete failed"
+                    );
+                }
 
                 setSaved(false);
             }
 
         } catch (err) {
-            setError(err.message);
+
+            setError(
+                err.message
+            );
+
         } finally {
+
             setSaving(false);
         }
     }
@@ -367,47 +545,104 @@ function DictionaryPage() {
     // =====================================================
     // LOADING
     // =====================================================
+
     if (loading) {
+
         return (
             <Wrapper>
-                <Loading>Loading...</Loading>
+                <Loading>
+                    Loading...
+                </Loading>
             </Wrapper>
         );
     }
 
     if (error || !wordData) {
+
         return (
             <Wrapper>
-                <Loading>Error: {error || "Unknown error"}</Loading>
+                <Loading>
+                    Error:{" "}
+                    {error ||
+                        "Unknown error"}
+                </Loading>
             </Wrapper>
         );
     }
 
-    const wordInfo = wordData.lemma;
+    const wordInfo =
+        wordData.lemma;
 
-    const partOfSpeechLabel = wordInfo.part_of_speech === "noun" && wordInfo.is_proper ? "proper noun" : wordInfo.part_of_speech;
+    const partOfSpeechLabel =
+        wordInfo.part_of_speech === "noun" &&
+        wordInfo.is_proper
+            ? "proper noun"
+            : wordInfo.part_of_speech;
 
     // =====================================================
     // MORPHOLOGY
     // =====================================================
+
     function renderMorphology() {
 
-        if (wordInfo.part_of_speech === "verb") {
-            return <VerbTable forms={wordData.forms} highlightedForm={highlightedForm}/>;
+        if (
+            wordInfo.part_of_speech ===
+            "verb"
+        ) {
+
+            return (
+                <VerbTable
+                    forms={wordData.forms}
+                    highlightedForm={
+                        highlightedForm
+                    }
+                />
+            );
         }
 
         if (
-            wordInfo.part_of_speech === "noun"
+            wordInfo.part_of_speech ===
+            "noun"
         ) {
-            return <NominalTable forms={wordData.forms} highlightedForm={highlightedForm}/>;
+
+            return (
+                <NominalTable
+                    forms={wordData.forms}
+                    highlightedForm={
+                        highlightedForm
+                    }
+                />
+            );
         }
 
-        if (wordInfo.part_of_speech === "adjective") {
-            return <AdjectiveTable forms={wordData.forms} highlightedForm={highlightedForm}/>;
+        if (
+            wordInfo.part_of_speech ===
+            "adjective"
+        ) {
+
+            return (
+                <AdjectiveTable
+                    forms={wordData.forms}
+                    highlightedForm={
+                        highlightedForm
+                    }
+                />
+            );
         }
 
-        if (wordInfo.part_of_speech === "pronoun") {
-            return <PronounTable forms={wordData.forms} highlightedForm={highlightedForm}/>;
+        if (
+            wordInfo.part_of_speech ===
+            "pronoun"
+        ) {
+
+            return (
+                <PronounTable
+                    forms={wordData.forms}
+                    highlightedForm={
+                        highlightedForm
+                    }
+                />
+            );
         }
 
         return (
@@ -419,53 +654,133 @@ function DictionaryPage() {
 
     return (
         <Wrapper ref={wrapperRef}>
+
             <HeaderDiv>
+
                 <FirstLine>
+
                     <WordHeader>
-                        {wordInfo.part_of_speech === "verb" && (
+
+                        {wordInfo.part_of_speech ===
+                            "verb" && (
+
                             <Headline>
-                                {wordInfo.lemma}, <BigWord>{wordInfo.infinitive}</BigWord>, {wordInfo.perfect}, {wordInfo.supine}
+                                {wordInfo.lemma},{" "}
+                                <BigWord>
+                                    {
+                                        wordInfo
+                                            .infinitive
+                                    }
+                                </BigWord>
+                                ,{" "}
+                                {
+                                    wordInfo
+                                        .perfect
+                                }
+                                ,{" "}
+                                {
+                                    wordInfo
+                                        .supine
+                                }
                             </Headline>
                         )}
 
-                        {wordInfo.part_of_speech === "adjective" && (
+                        {wordInfo.part_of_speech ===
+                            "adjective" && (
+
                             <Headline>
-                                <BigWord>{wordInfo.lemma}</BigWord>, {wordInfo.feminine}, {wordInfo.neuter}
+                                <BigWord>
+                                    {
+                                        wordInfo
+                                            .lemma
+                                    }
+                                </BigWord>
+                                ,{" "}
+                                {
+                                    wordInfo
+                                        .feminine
+                                }
+                                ,{" "}
+                                {
+                                    wordInfo
+                                        .neuter
+                                }
                             </Headline>
                         )}
 
-                        {wordInfo.part_of_speech === "noun" && (
+                        {wordInfo.part_of_speech ===
+                            "noun" && (
+
                             <Headline>
-                                <BigWord>{wordInfo.lemma}</BigWord>, {wordInfo.genitive}
+                                <BigWord>
+                                    {
+                                        wordInfo
+                                            .lemma
+                                    }
+                                </BigWord>
+                                ,{" "}
+                                {
+                                    wordInfo
+                                        .genitive
+                                }
                             </Headline>
                         )}
 
-                        {(wordInfo.part_of_speech === "pronoun" || wordInfo.part_of_speech === "preposition" || wordInfo.part_of_speech === "conjunction" || wordInfo.part_of_speech === "adverb") && (
+                        {(
+                            wordInfo.part_of_speech ===
+                                "pronoun" ||
+                            wordInfo.part_of_speech ===
+                                "preposition" ||
+                            wordInfo.part_of_speech ===
+                                "conjunction" ||
+                            wordInfo.part_of_speech ===
+                                "adverb"
+                        ) && (
+
                             <Headline>
-                                <BigWord>{wordInfo.lemma}</BigWord>
+                                <BigWord>
+                                    {
+                                        wordInfo
+                                            .lemma
+                                    }
+                                </BigWord>
                             </Headline>
                         )}
-                        
+
                     </WordHeader>
 
                     <SaveButton
                         disabled={saving}
                         onClick={() => {
+
                             if (!isAuthed) {
-                                setShowLoginPopup(true);
+
+                                setShowLoginPopup(
+                                    true
+                                );
+
                                 return;
                             }
 
-                            toggleList(wordInfo.id);
+                            toggleList(
+                                wordInfo.id
+                            );
                         }}
                     >
-                        {saved ? <FaCheckCircle /> : "+"}
+                        {saved ? (
+                            <FaCheckCircle />
+                        ) : (
+                            "+"
+                        )}
                     </SaveButton>
 
                     {isAdmin && (
+
                         <EditButton
                             onClick={() =>
-                                navigate(`/admin/editor/${wordInfo.id}`)
+                                navigate(
+                                    `/admin/editor/${wordInfo.id}`
+                                )
                             }
                         >
                             Edit
@@ -473,114 +788,243 @@ function DictionaryPage() {
                     )}
 
                 </FirstLine>
+
                 <Meaning>
-                    {wordData.meanings?.map((m, index) => (
-                        <>
-                            <MeaningItem key={m.id}>
-                                {m.governs_case ? `+${m.governs_case}: ` : ""}
-                                {m.meaning}
-                            </MeaningItem>
-                            {index < wordData.meanings.length - 1 ? " · " : ""}
-                        </>
-                    ))}
+
+                    {wordData.meanings?.map(
+                        (m, index) => (
+
+                            <>
+                                <MeaningItem
+                                    key={m.id}
+                                >
+                                    {m.governs_case
+                                        ? `+${m.governs_case}: `
+                                        : ""}
+                                    {m.meaning}
+                                </MeaningItem>
+
+                                {index <
+                                    wordData
+                                        .meanings
+                                        .length - 1
+                                    ? " · "
+                                    : ""}
+                            </>
+                        )
+                    )}
+
                 </Meaning>
+
                 <Meta>
-                    <Tag>{partOfSpeechLabel}</Tag>
 
-                    {wordInfo.gender && <Tag>{wordInfo.gender}</Tag>}
-                    {wordInfo.declension > 0 && (
+                    <Tag>
+                        {partOfSpeechLabel}
+                    </Tag>
+
+                    {wordInfo.gender && (
                         <Tag>
-                            {[1, 2, 12].includes(wordInfo.declension) && "1st/2nd declension"}
-
-                            {[3, 31, 32, 33].includes(wordInfo.declension) && "3rd declension"}
-
-                            {wordInfo.declension === 4 && "4th declension"}
-
-                            {wordInfo.declension === 5 && "5th declension"}
+                            {wordInfo.gender}
                         </Tag>
                     )}
-                    {wordInfo.conjugation > 0 && (
-                        <Tag>{wordInfo.conjugation}. conjugation</Tag>
+
+                    {wordInfo.declension > 0 && (
+
+                        <Tag>
+
+                            {[1, 2, 12].includes(
+                                wordInfo.declension
+                            ) &&
+                                "1st/2nd declension"}
+
+                            {[3, 31, 32, 33].includes(
+                                wordInfo.declension
+                            ) &&
+                                "3rd declension"}
+
+                            {wordInfo.declension === 4 &&
+                                "4th declension"}
+
+                            {wordInfo.declension === 5 &&
+                                "5th declension"}
+
+                        </Tag>
                     )}
+
+                    {wordInfo.conjugation > 0 && (
+
+                        <Tag>
+                            {wordInfo.conjugation}
+                            . conjugation
+                        </Tag>
+                    )}
+
                 </Meta>
+
             </HeaderDiv>
 
-
             <Line />
+
             <Content>
+
                 <Main>
+
                     <Section>
-                        <SectionTitle>Definition</SectionTitle>
+
+                        <SectionTitle>
+                            Definition
+                        </SectionTitle>
+
                         <Definition>
+
                             <ClickableText
-                                text={wordData.definitions?.[0]?.definition || ""}
-                                onWordClick={(word, e) =>
+                                text={
+                                    wordData
+                                        .definitions?.[0]
+                                        ?.definition ||
+                                    ""
+                                }
+                                onWordClick={(
+                                    word,
+                                    e
+                                ) =>
                                     lookupWord(
                                         word,
                                         e,
-                                        wrapperRef,
+                                        wrapperRef
                                     )
                                 }
                             />
+
                         </Definition>
+
                     </Section>
 
-                    {wordData.examples?.length > 0 && (
+                    {wordData.examples?.length >
+                        0 && (
+
                         <Section>
-                            <SectionTitle>Examples</SectionTitle>
-                            {wordData.examples.map((example) => (
-                                <Example key={example.id}>
-                                    -{" "}
-                                    <ClickableText
-                                        text={example.latin}
-                                        onWordClick={(word, e) =>
-                                            lookupWord(
-                                                word,
-                                                e,
-                                                wrapperRef,
-                                            )
+
+                            <SectionTitle>
+                                Examples
+                            </SectionTitle>
+
+                            {wordData.examples.map(
+                                example => (
+
+                                    <Example
+                                        key={
+                                            example.id
                                         }
-                                    />
-                                </Example>
-                            ))}
+                                    >
+                                        -{" "}
+
+                                        <ClickableText
+                                            text={
+                                                example.latin
+                                            }
+                                            onWordClick={(
+                                                word,
+                                                e
+                                            ) =>
+                                                lookupWord(
+                                                    word,
+                                                    e,
+                                                    wrapperRef
+                                                )
+                                            }
+                                        />
+
+                                    </Example>
+                                )
+                            )}
+
                         </Section>
                     )}
 
-                    {wordData.derivatives?.length > 0 && (
+                    {wordData.derivatives?.length >
+                        0 && (
+
                         <Section>
-                            <SectionTitle>English Derivatives</SectionTitle>
-                            {wordData.derivatives.map((derivative, index) => (
-                                <span key={derivative.id}>
-                                    {derivative.derivative}
-                                    {index < wordData.derivatives.length - 1 ? " · " : ""}
-                                </span>
-                            ))}
+
+                            <SectionTitle>
+                                English Derivatives
+                            </SectionTitle>
+
+                            {wordData.derivatives.map(
+                                (
+                                    derivative,
+                                    index
+                                ) => (
+
+                                    <span
+                                        key={
+                                            derivative.id
+                                        }
+                                    >
+                                        {
+                                            derivative
+                                                .derivative
+                                        }
+
+                                        {index <
+                                            wordData
+                                                .derivatives
+                                                .length -
+                                                1
+                                            ? " · "
+                                            : ""}
+                                    </span>
+                                )
+                            )}
+
                         </Section>
                     )}
 
                 </Main>
 
                 <Sidebar>
+
                     <Section>
                         {renderMorphology()}
                     </Section>
+
                 </Sidebar>
+
             </Content>
+
             <DictionaryPopup
                 popup={popup}
                 entry={entry}
                 onClose={closePopup}
             />
+
             {showLoginPopup && (
-                <Overlay onClick={() => setShowLoginPopup(false)}>
+
+                <Overlay
+                    onClick={() =>
+                        setShowLoginPopup(
+                            false
+                        )
+                    }
+                >
+
                     <LoginRequiredPopup
-                        open={showLoginPopup}
-                        onClose={() => setShowLoginPopup(false)}
+                        open={
+                            showLoginPopup
+                        }
+                        onClose={() =>
+                            setShowLoginPopup(
+                                false
+                            )
+                        }
                         title="Login Required"
                         message="Log in to create a word list and add this word."
                     />
+
                 </Overlay>
             )}
+
         </Wrapper>
     );
 }
