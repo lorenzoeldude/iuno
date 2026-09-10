@@ -202,6 +202,8 @@ const TopWords = styled.div`
 `;
 
 const TopWord = styled.button`
+    position: relative;
+
     display: grid;
 
     grid-template-columns: 32px auto 1fr;
@@ -224,6 +226,8 @@ const TopWord = styled.button`
 
     cursor: pointer;
 
+    overflow: hidden;
+
     &:hover {
         .top-word {
             text-decoration: underline;
@@ -244,7 +248,38 @@ const TopWord = styled.button`
     }
 `;
 
+const TopWordBar = styled.div`
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    height: 100%;
+
+    background: ${({ rank }) => {
+        switch (rank) {
+            case 1:
+                return "rgba(70, 120, 190, 0.16)";
+            case 2:
+                return "rgba(70, 120, 190, 0.13)";
+            case 3:
+                return "rgba(70, 120, 190, 0.10)";
+            case 4:
+                return "rgba(70, 120, 190, 0.07)";
+            case 5:
+                return "rgba(70, 120, 190, 0.04)";
+            default:
+                return "rgba(70, 120, 190, 0.04)";
+        }
+    }};
+
+    pointer-events: none;
+`;
+
 const Rank = styled.span`
+    position: relative;
+    z-index: 1;
+
     font-family: "Cormorant Garamond", serif;
 
     font-size: 18px;
@@ -257,6 +292,9 @@ const Rank = styled.span`
 `;
 
 const TopWordLemma = styled.span`
+    position: relative;
+    z-index: 1;
+
     font-family: "Cormorant Garamond", serif;
 
     font-size: 28px;
@@ -274,6 +312,9 @@ const TopWordLemma = styled.span`
 `;
 
 const TopWordMeaning = styled.span`
+    position: relative;
+    z-index: 1;
+
     justify-self: start;
 
     padding: 5px 9px;
@@ -481,6 +522,21 @@ function SearchPage() {
         }
     }
 
+    // =====================================================
+    // LOOKUP BAR WIDTH
+    // =====================================================
+
+    const maxLookupCount =
+        topWords[0]?.lookup_count || 1;
+
+    function lookupBarWidth(word) {
+
+        return Math.min(
+            (word.lookup_count / maxLookupCount) * 100,
+            100
+        );
+    }
+
     return (
         <Wrapper>
 
@@ -615,6 +671,13 @@ function SearchPage() {
                                                         )
                                                     }
                                                 >
+
+                                                    <TopWordBar
+                                                        rank={index + 1}
+                                                        style={{
+                                                            width: `${lookupBarWidth(word)}%`
+                                                        }}
+                                                    />
 
                                                     <Rank>
                                                         {
