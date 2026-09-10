@@ -311,39 +311,39 @@ const TopWordLemma = styled.span`
     }
 `;
 
-const TopWordMeaning = styled.span`
-    position: relative;
-    z-index: 1;
+// const TopWordMeaning = styled.span`
+//     position: relative;
+//     z-index: 1;
 
-    justify-self: start;
+//     justify-self: start;
 
-    padding: 5px 9px;
+//     padding: 5px 9px;
 
-    font-size: 13px;
-    line-height: 1.2;
+//     font-size: 13px;
+//     line-height: 1.2;
 
-    color: ${({ theme }) => theme.colors.text};
+//     color: ${({ theme }) => theme.colors.text};
 
-    background: ${({ theme }) =>
-        theme.colors.accent + "1F"};
+//     background: ${({ theme }) =>
+//         theme.colors.accent + "1F"};
 
-    border: 1px solid
-        ${({ theme }) =>
-            theme.colors.accent + "1F"};
+//     border: 1px solid
+//         ${({ theme }) =>
+//             theme.colors.accent + "1F"};
 
-    white-space: nowrap;
+//     white-space: nowrap;
 
-    overflow: hidden;
+//     overflow: hidden;
 
-    text-overflow: ellipsis;
+//     text-overflow: ellipsis;
 
-    max-width: 100%;
+//     max-width: 100%;
 
-    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-        font-size: 12px;
-        padding: 5px 8px;
-    }
-`;
+//     @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+//         font-size: 12px;
+//         padding: 5px 8px;
+//     }
+// `;
 
 /* =====================================================
    LOADING
@@ -695,7 +695,7 @@ function SearchPage() {
                                                         }
                                                     </TopWordLemma>
 
-                                                    {
+                                                    {/* {
                                                         word.meaning && (
 
                                                             <TopWordMeaning>
@@ -705,7 +705,7 @@ function SearchPage() {
                                                             </TopWordMeaning>
 
                                                         )
-                                                    }
+                                                    } */}
 
                                                 </TopWord>
 
