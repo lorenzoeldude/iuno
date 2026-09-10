@@ -449,7 +449,7 @@ function SearchPage() {
     function openTopWord(word) {
 
         navigate(
-            `/dictionary/${word.lemma.toLowerCase()}`
+            `/dictionary/${word.lemma_normalized}`
         );
     }
 
