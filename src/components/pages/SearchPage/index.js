@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 import Searchbar from "../../atoms/Searchbar";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Wrapper = styled.main`
     width: 50vw;
@@ -227,7 +228,10 @@ const Loading = styled.div`
 ===================================================== */
 
 function SearchPage() {
+    const location = useLocation();
     const navigate = useNavigate();
+
+    const autoFocus = location.state?.autoFocus === true;
 
     const [wordOfTheDay, setWordOfTheDay] = useState(null);
     const [loadingWord, setLoadingWord] = useState(true);
@@ -275,7 +279,10 @@ function SearchPage() {
             ===================================================== */}
 
             <SearchWrapper>
-                <Searchbar variant="large" />
+                <Searchbar
+                    variant="large"
+                    autoFocus={autoFocus}
+                />
             </SearchWrapper>
 
             {/* =====================================================

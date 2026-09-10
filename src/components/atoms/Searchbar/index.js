@@ -137,17 +137,24 @@ const MeaningTag = styled.span`
     padding: 2px 6px;
 `;
 
-function Searchbar({ className, variant }) {
+function Searchbar({ className, variant, autoFocus = false }) {
     const [query, setQuery] = useState("");
     const [results, setResults] = useState([]);
     const [open, setOpen] = useState(false);
 
     const latestQuery = useRef("");
+    const inputRef = useRef(null);
 
     const navigate = useNavigate();
     const theme = useTheme();
 
     const isDark = theme.mode === "dark";
+
+    useEffect(() => {
+        if (autoFocus) {
+            inputRef.current?.focus();
+        }
+    }, [autoFocus]);
 
     // =====================================================
     // SEARCH (debounced)
@@ -221,6 +228,7 @@ function Searchbar({ className, variant }) {
         <Wrapper className={className}>
             <InputWrapper>
                 <Input
+                    ref={inputRef}
                     variant={variant}
                     type="text"
                     placeholder=""

@@ -169,7 +169,13 @@ function Sidebar() {
                 </ListItem>
 
                 <ListItem>
-                    <NavButton onClick={() => navigate("/search")}>
+                    <NavButton
+                        onClick={() =>
+                            navigate("/search", {
+                                state: { autoFocus: true },
+                            })
+                        }
+                    >
                         <img
                             src={isDark ? searchDarkIcon : searchIcon}
                             alt="Search"
