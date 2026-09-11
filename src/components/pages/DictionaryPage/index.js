@@ -286,6 +286,80 @@ function DictionaryPage() {
 
     }, [token]);
 
+    useEffect(() => {
+        if (!wordData?.lemma) return;
+
+        const lemma = wordData.lemma.lemma;
+        const normalized = wordData.lemma.lemma_normalized;
+
+        const title = `${lemma} – Latin Dictionary | IUNONI`;
+
+        const meanings = wordData.meanings
+            ?.map((item) => item.meaning)
+            .join(", ");
+
+        const description = meanings
+            ? `Learn the meaning, forms, and usage of ${lemma} in Latin. Meanings include ${meanings}. Explore grammar, examples, and derivatives.`
+            : `Learn the meaning, forms, and usage of ${lemma} in Latin. Explore grammar, examples, and derivatives.`;
+
+        const canonicalUrl =
+            `https://www.iunoni.com/dictionary/${encodeURIComponent(normalized)}`;
+
+        // Page title
+        document.title = title;
+
+        // Meta description
+        let descriptionTag = document.querySelector(
+            'meta[name="description"]'
+        );
+
+        if (!descriptionTag) {
+            descriptionTag = document.createElement("meta");
+            descriptionTag.setAttribute("name", "description");
+            document.head.appendChild(descriptionTag);
+        }
+
+        descriptionTag.setAttribute("content", description);
+
+        // Helper for Open Graph tags
+        const setPropertyMeta = (property, content) => {
+            let tag = document.querySelector(
+                `meta[property="${property}"]`
+            );
+
+            if (!tag) {
+                tag = document.createElement("meta");
+                tag.setAttribute("property", property);
+                document.head.appendChild(tag);
+            }
+
+            tag.setAttribute("content", content);
+        };
+
+        setPropertyMeta("og:title", title);
+        setPropertyMeta("og:description", description);
+        setPropertyMeta("og:url", canonicalUrl);
+        setPropertyMeta("og:type", "website");
+        setPropertyMeta("og:site_name", "IUNONI");
+        setPropertyMeta(
+            "og:image",
+            "https://www.iunoni.com/logo2.png"
+        );
+
+        // Canonical URL
+        let canonicalTag = document.querySelector(
+            'link[rel="canonical"]'
+        );
+
+        if (!canonicalTag) {
+            canonicalTag = document.createElement("link");
+            canonicalTag.setAttribute("rel", "canonical");
+            document.head.appendChild(canonicalTag);
+        }
+
+        canonicalTag.setAttribute("href", canonicalUrl);
+    }, [wordData]);
+
     // =====================================================
     // RECORD WORD LOOKUP
     // =====================================================
