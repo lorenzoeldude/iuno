@@ -54,7 +54,7 @@ const StyledCard = styled.div`
         width: 100%;
         height: 3px;
 
-        background: ${({ theme }) => theme.colors.accent};
+        background: ${({ theme }) => theme.colors.brand};
 
         transform: scaleX(0);
         transform-origin: left;
@@ -65,7 +65,7 @@ const StyledCard = styled.div`
     &:hover {
         transform: translateY(-4px);
 
-        border-color: #b89b5e;
+        border-color:  ${({ theme }) => theme.colors.brand};
 
         box-shadow: 0 10px 25px ${({ theme }) => theme.colors.shadow};
 

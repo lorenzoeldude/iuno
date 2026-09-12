@@ -54,7 +54,7 @@ const Input = styled.input`
 
     &:focus {
         outline: none;
-        border: 1px solid ${({ theme }) => theme.colors.accent};
+        border: 1px solid ${({ theme }) => theme.colors.brand};
     }
 `;
 
@@ -71,7 +71,7 @@ const SearchPlaceholder = styled.div`
 
     color: ${({ theme }) => theme.colors.textSecondary};
 
-    font-family: "Cormorant Garamond", serif;
+    font-family: ${({ theme }) => theme.fonts.body};
     font-size: 16px;
 
     pointer-events: none;

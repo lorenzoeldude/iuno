@@ -11,7 +11,7 @@ const Wrapper = styled.div`
 `;
 
 const Title = styled.h1`
-    font-family: "Cormorant Garamond", serif;
+    font-family: ${({ theme }) => theme.fonts.body};
     font-weight: 800;
     font-size: 48px;
     margin-bottom: 0;
@@ -54,7 +54,7 @@ const Section = styled.div`
 `;
 
 const SectionTitle = styled.span`
-    font-family: "Cormorant Garamond", serif;
+    font-family: ${({ theme }) => theme.fonts.body};
     font-size: 30px;
     letter-spacing: 0.02em;
 `;

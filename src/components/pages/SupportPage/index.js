@@ -32,7 +32,7 @@ const Eyebrow = styled.div`
 
 const Title = styled.h1`
   margin: 0 0 18px;
-  font-family: "Cormorant Garamond", serif;
+  font-family: ${({ theme }) => theme.fonts.body};
   font-size: 64px;
   font-weight: 500;
   line-height: 1;

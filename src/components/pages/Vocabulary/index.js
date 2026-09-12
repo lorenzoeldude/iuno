@@ -30,7 +30,7 @@ const SmallLabel = styled.p`
 const BigWord = styled.h1`
     font-size: 72px;
     margin: 0;
-    font-family: "Cormorant Garamond", serif;
+    font-family: ${({ theme }) => theme.fonts.body};
 `;
 
 

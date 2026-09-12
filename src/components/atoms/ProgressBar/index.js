@@ -10,7 +10,7 @@ const Bar = styled.div`
 
 const Progress = styled.div`
     height: 100%;
-    background: #b7dfb7;
+    background: ${({ theme }) => theme.colors.accent};
 `;
 
 function ProgressBar({ progress }) {

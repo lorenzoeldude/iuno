@@ -69,7 +69,7 @@ const Meanings = styled.div`
 
 const MeaningItem = styled.span`
     background-color: ${({ theme }) => theme.colors.accent  + "1F"};
-    color: black;
+    color: ${({ theme }) => theme.colors.text};
     font-size: 0.9rem;
     padding: 3px 7px;
 `;

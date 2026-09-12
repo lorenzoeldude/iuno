@@ -26,7 +26,7 @@ const TH = styled.th`
     text-align: left;
     padding: 10px 14px;
 
-    font-family: "Cormorant Garamond", serif;
+    font-family: ${({ theme }) => theme.fonts.body};
     font-size: 18px;
     font-weight: 600;
 
@@ -41,7 +41,7 @@ const TH = styled.th`
 const TD = styled.td`
     padding: 10px 14px;
 
-    font-family: "Cormorant Garamond", serif;
+    font-family: ${({ theme }) => theme.fonts.body};
     font-size: 21px;
     line-height: 1;
 
@@ -59,7 +59,7 @@ const TD = styled.td`
 
     &.highlight {
         background-color: ${({ theme }) =>
-            `${theme.colors.accent}33`};
+            `${theme.colors.accent}256`};
     }
 `;
 

@@ -16,6 +16,8 @@ import readDarkIcon from "../../../assets/icons/read_dark.svg";
 import profileIcon from "../../../assets/icons/profile.svg";
 import profileDarkIcon from "../../../assets/icons/profile_dark.svg";
 
+import logoImage from "../../../assets/icons/black_transparent.png";
+
 const Wrapper = styled.div`
     position: fixed;
     left: 0;
@@ -50,7 +52,7 @@ const Wrapper = styled.div`
     }
 `;
 
-const Logo = styled.button`
+const LogoButton = styled.button`
     display: flex;
     align-items: center;
     justify-content: center;
@@ -62,14 +64,14 @@ const Logo = styled.button`
     border: none;
     background: none;
 
-    font-family: "Cormorant Garamond", serif;
-    font-size: 28px;
-    font-weight: 800;
-    letter-spacing: 4px;
-
-    color: inherit;
-
     cursor: pointer;
+
+    img {
+        width: 30px;
+        height: 30px;
+        display: block;
+        object-fit: contain;
+    }
 
     @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
         display: none;
@@ -142,10 +144,9 @@ function Sidebar() {
     return (
         <Wrapper>
 
-            {/* Logo */}
-            <Logo onClick={() => navigate("/")}>
-                I
-            </Logo>
+            <LogoButton onClick={() => navigate("/")}>
+                <img src={logoImage} alt="IUNONI" />
+            </LogoButton>
 
             {/* Navigation */}
             <Navigation>

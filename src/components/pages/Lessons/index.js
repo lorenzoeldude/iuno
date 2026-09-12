@@ -38,13 +38,13 @@ const LockedCardWrapper = styled.div`
 const LessonCard = styled(Card)`
     background: ${({ completed, theme }) =>
         completed
-            ? `${theme.colors.accent}0f`
+            ? `${theme.colors.brand}0f`
             : "transparent"};
 
     border: 1px solid
         ${({ completed, theme }) =>
             completed
-                ? theme.colors.accent
+                ? theme.colors.brand
                 : `${theme.colors.text}40`};
 
     box-sizing: border-box;
@@ -71,7 +71,7 @@ const ArrowWrapper = styled.div`
 `;
 
 const Title = styled.h1`
-    font-family: "Cormorant Garamond", serif;
+    font-family: ${({ theme }) => theme.fonts.body};
     font-weight: 500;
 
     margin: 0;
@@ -90,7 +90,7 @@ const Status = styled.div`
     margin-top: 0;
     padding-bottom: 20px;
 
-    font-family: "Cormorant Garamond", serif;
+    font-family: ${({ theme }) => theme.fonts.body};
     font-size: 17px;
 
     text-align: center;

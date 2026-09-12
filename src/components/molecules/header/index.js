@@ -30,7 +30,7 @@ const HeadLine = styled.h1`
     font-size: 25px;
     letter-spacing: 5px;
 
-    font-family: "Cormorant Garamond", serif;
+    font-family: ${({ theme }) => theme.fonts.body};
     font-weight: 800;
 
     cursor: pointer;

@@ -31,7 +31,7 @@ const Navigation = styled.button`
     color: ${({ active, theme }) =>
         active ? "white" : theme.colors.text};
 
-    font-family: "Cormorant Garamond", serif;
+    font-family: ${({ theme }) => theme.fonts.body};
     font-size: 20px;
     font-weight: 600;
 

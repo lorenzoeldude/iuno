@@ -42,9 +42,10 @@ const Header = styled.div`
 const Title = styled.h1`
     margin: 0;
 
+    font-family: ${({ theme }) => theme.fonts.heading};
     font-size: 48px;
     font-weight: 500;
-    letter-spacing: 1px;
+    letter-spacing: 0;
     line-height: 1.1;
 
     @media (max-width: 600px) {
@@ -60,13 +61,16 @@ const Sestertii = styled.div`
 
     margin-top: 8px;
 
-    font-size: 16px;
+    font-family: ${({ theme }) => theme.fonts.mono};
+    font-size: 13px;
+    letter-spacing: 0.2px;
 
     opacity: 0.5;
 `;
 
 const SestertiiIcon = styled.span`
-    font-size: 12px;
+    font-family: ${({ theme }) => theme.fonts.mono};
+    font-size: 10px;
 
     opacity: 0.8;
 `;
@@ -78,6 +82,7 @@ const Section = styled.section`
 const SectionHeading = styled.div`
     margin-bottom: 14px;
 
+    font-family: ${({ theme }) => theme.fonts.mono};
     font-size: 12px;
     font-weight: 600;
     letter-spacing: 1.7px;
@@ -138,8 +143,9 @@ const AppearanceButton = styled.button`
 
     color: ${({ theme }) => theme.colors.text};
 
-    font: inherit;
-    font-size: 14px;
+    font-family: ${({ theme }) => theme.fonts.mono};
+    font-size: 13px;
+    font-weight: 500;
 
     cursor: pointer;
 
@@ -179,7 +185,9 @@ const BottomArea = styled.div`
 const AdminLabel = styled.span`
     margin-left: 10px;
 
-    font-size: 14px;
+    font-family: ${({ theme }) => theme.fonts.mono};
+    font-size: 12px;
+    font-weight: 500;
     letter-spacing: 0.5px;
 
     opacity: 0.45;

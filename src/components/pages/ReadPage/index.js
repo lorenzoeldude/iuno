@@ -35,7 +35,7 @@ const Column = styled.div`
 `;
 
 const ColumnTitle = styled.h2`
-    font-family: "Cormorant Garamond", serif;
+    font-family: ${({ theme }) => theme.fonts.body};
     font-size: 25px;
     font-weight: 200;
     text-align: center;
@@ -48,31 +48,18 @@ const TextCard = styled(Card)`
 
     text-align: center;
 
-    background: ${({ difficulty }) =>
-        difficulty?.toLowerCase() === "beginner"
-            ? "rgba(76, 175, 80, 0.15)"
-            : difficulty?.toLowerCase() === "intermediate"
-            ? "rgba(255, 152, 0, 0.15)"
-            : difficulty?.toLowerCase() === "advanced"
-            ? "rgba(244, 67, 54, 0.15)"
-            : "rgba(255, 255, 255, 0.03)"};
+    background: ${({ theme }) => `${theme.colors.brand}0A`};
 
-    border: 1px solid rgba(255,255,255,0.12);
+    border: 1px solid ${({ theme }) => theme.colors.border};
 
     &:hover {
-        background: ${({ difficulty }) =>
-            difficulty?.toLowerCase() === "beginner"
-                ? "rgba(76, 175, 80, 0.2)"
-                : difficulty?.toLowerCase() === "intermediate"
-                ? "rgba(255, 152, 0, 0.2)"
-                : difficulty?.toLowerCase() === "advanced"
-                ? "rgba(244, 67, 54, 0.2)"
-                : "rgba(255,255,255,0.03)"};
+        background: ${({ theme }) => `${theme.colors.brand}14`};
+        border-color: ${({ theme }) => theme.colors.brand};
     }
 `;
 
 const Title = styled.h3`
-    font-family: "Cormorant Garamond", serif;
+    font-family: ${({ theme }) => theme.fonts.body};
     font-size: 26px;
     font-weight: 500;
     margin: 0;
@@ -84,13 +71,10 @@ const Author = styled.div`
     margin-top: 4px;
 `;
 
-
 function ReadPage() {
-
     const navigate = useNavigate();
 
     const [texts, setTexts] = useState([]);
-
 
     useEffect(() => {
         fetch(`${API_URL}/api/texts`)
@@ -109,7 +93,6 @@ function ReadPage() {
             });
     }, []);
 
-
     const beginnerTexts = texts.filter(
         text => text.difficulty?.toLowerCase() === "beginner"
     );
@@ -121,7 +104,6 @@ function ReadPage() {
     const advancedTexts = texts.filter(
         text => text.difficulty?.toLowerCase() === "advanced"
     );
-
 
     const renderTexts = items =>
         items.map(text => (
@@ -142,14 +124,11 @@ function ReadPage() {
                 <Author>
                     {text.author}
                 </Author>
-
             </TextCard>
         ));
 
-
     return (
         <Wrapper>
-
             <Columns>
 
                 <Column>
@@ -160,7 +139,6 @@ function ReadPage() {
                     {renderTexts(beginnerTexts)}
                 </Column>
 
-
                 <Column>
                     <ColumnTitle>
                         Intermediate
@@ -168,7 +146,6 @@ function ReadPage() {
 
                     {renderTexts(intermediateTexts)}
                 </Column>
-
 
                 <Column>
                     <ColumnTitle>
@@ -179,7 +156,6 @@ function ReadPage() {
                 </Column>
 
             </Columns>
-
         </Wrapper>
     );
 }

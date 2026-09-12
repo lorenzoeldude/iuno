@@ -66,7 +66,7 @@ const SectionTitle = styled.h2`
 `;
 
 const Lemma = styled(Input)`
-    font-family: "Montserrat", sans-serif;
+    font-family: ${({ theme }) => theme.fonts.mono};
     font-size: 50px;
     font-weight: 700;
     box-shadow: none;

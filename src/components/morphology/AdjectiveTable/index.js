@@ -30,7 +30,7 @@ const SwitchButton = styled.button`
     border-radius: 999px;
     cursor: pointer;
 
-    font-family: "Cormorant Garamond", serif;
+    font-family: ${({ theme }) => theme.fonts.body};
     font-size: 16px;
     font-weight: 400;
 
@@ -65,7 +65,7 @@ const TH = styled.th`
 
     padding: 8px;
 
-    font-family: "Cormorant Garamond", serif;
+    font-family: ${({ theme }) => theme.fonts.body};
     font-size: 18px;
     font-weight: 600;
 
@@ -79,7 +79,7 @@ const CaseTH = styled.th`
 
     padding: 8px 0;
 
-    font-family: "Cormorant Garamond", serif;
+    font-family: ${({ theme }) => theme.fonts.body};
     font-size: 18px;
     font-weight: 600;
 
@@ -89,7 +89,7 @@ const CaseTH = styled.th`
 const TD = styled.td`
     padding: 8px;
 
-    font-family: "Cormorant Garamond", serif;
+    font-family: ${({ theme }) => theme.fonts.body};
     font-size: 20px;
     line-height: 1;
 
@@ -110,7 +110,7 @@ const TD = styled.td`
 
     &.highlight {
         background-color: ${({ theme }) =>
-            `${theme.colors.accent}33`};
+            `${theme.colors.accent}26`};
     }
 
     @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {

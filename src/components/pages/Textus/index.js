@@ -31,6 +31,7 @@ const TextDiv = styled.div`
 `;
 
 const FirstText = styled.p`
+    font-family: ${({ theme }) => theme.fonts.read};
     font-size: clamp(30px, 3vw, 50px);
     line-height: 1.7;
     text-align: left;
@@ -38,7 +39,7 @@ const FirstText = styled.p`
     white-space: pre-line;
 
     &::first-letter {
-        color: red;
+        color: ${({ theme }) => theme.colors.danger};;
         font-size: 1.8em;
         font-weight: bold;
     }
@@ -50,6 +51,7 @@ const FirstText = styled.p`
 `;
 
 const Text = styled.div`
+    font-family: ${({ theme }) => theme.fonts.read};
     font-size: clamp(28px, 2.8vw, 44px);
     line-height: 1.7;
     text-align: left;

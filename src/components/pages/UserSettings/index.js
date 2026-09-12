@@ -31,7 +31,7 @@ const Section = styled.div`
 const SectionTitle = styled.h1`
     margin: 0 0 12px;
 
-    font-family: "Cormorant Garamond", serif;
+    font-family: ${({ theme }) => theme.fonts.body};
     font-size: 38px;
     font-weight: 600;
     line-height: 1.1;
@@ -161,7 +161,7 @@ const PasswordSection = styled.section`
 const PasswordTitle = styled.h2`
     margin: 0;
 
-    font-family: "Cormorant Garamond", serif;
+    font-family: ${({ theme }) => theme.fonts.body};
     font-size: 25px;
     font-weight: 600;
 
@@ -288,7 +288,7 @@ const Modal = styled.div`
 const ModalTitle = styled.h2`
     margin: 0 0 12px;
 
-    font-family: "Cormorant Garamond", serif;
+    font-family: ${({ theme }) => theme.fonts.body};
     font-size: 28px;
     font-weight: 600;
 `;

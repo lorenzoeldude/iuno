@@ -22,7 +22,7 @@ const SwitchButton = styled.button`
     border-radius: 999px;
     cursor: pointer;
 
-    font-family: "Cormorant Garamond", serif;
+    font-family: ${({ theme }) => theme.fonts.body};
     font-size: 16px;
     font-weight: 600;
 
@@ -56,20 +56,20 @@ const GerundRow = styled.div`
 const CaseLabel = styled.div`
     width: 100px;
 
-    font-family: "Cormorant Garamond", serif;
+    font-family: ${({ theme }) => theme.fonts.body};
     font-size: 17px;
     font-weight: 600;
 `;
 
 const CaseForm = styled.div`
-    font-family: "Cormorant Garamond", serif;
+    font-family: ${({ theme }) => theme.fonts.body};
     font-size: 21px;
     line-height: 1;
     white-space: nowrap;
 
     &.highlight {
         background-color: ${({ theme }) =>
-            `${theme.colors.accent}33`};
+            `${theme.colors.accent}26`};
         font-weight: 600;
         border-radius: 5px;
         padding: 4px 8px;
@@ -135,7 +135,7 @@ const GerundiveTH = styled.th`
     text-align: left;
     padding: 10px 14px;
 
-    font-family: "Cormorant Garamond", serif;
+    font-family: ${({ theme }) => theme.fonts.body};
     font-size: 18px;
     font-weight: 600;
 
@@ -150,7 +150,7 @@ const GerundiveTH = styled.th`
 const GerundiveTD = styled.td`
     padding: 10px 14px;
 
-    font-family: "Cormorant Garamond", serif;
+    font-family: ${({ theme }) => theme.fonts.body};
     font-size: 21px;
     line-height: 1;
 
@@ -176,7 +176,7 @@ const InfinitiveBlock = styled.div``;
 const TenseBlock = styled.div``;
 
 const SectionTitle = styled.h3`
-    font-family: "Cormorant Garamond", serif;
+    font-family: ${({ theme }) => theme.fonts.body};
     font-size: 17px;
     font-weight: 600;
 
@@ -191,7 +191,7 @@ const FormList = styled.div`
 `;
 
 const FormRow = styled.div`
-    font-family: "Cormorant Garamond", serif;
+    font-family: ${({ theme }) => theme.fonts.body};
     font-size: 21px;
     line-height: 1;
 
@@ -202,7 +202,7 @@ const FormRow = styled.div`
 
     &.highlight {
         background-color: ${({ theme }) =>
-            `${theme.colors.accent}33`};
+            `${theme.colors.accent}26`};
         font-weight: 600;
     }
 

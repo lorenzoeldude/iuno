@@ -84,6 +84,10 @@ const Headline = styled.p`
     }
 `;
 
+const CheckIcon = styled(FaCheckCircle)`
+    font-size: 26px;
+`;
+
 const Main = styled.div`
 `;
 
@@ -104,7 +108,7 @@ const WordHeader = styled.div`
 `;
 
 const BigWord = styled.span`
-    font-family: "Montserrat", sans-serif;
+    font-family: ${({ theme }) => theme.fonts.mono};
     font-size: 55px;
     font-weight: 700;
     margin: 0;
@@ -121,10 +125,11 @@ const SaveButton = styled.button`
     background: transparent;
     cursor: pointer;
     opacity: 0.8;
-    color: ${({ theme }) => theme.colors.text};
+    color: ${({ saved, theme }) => saved ? theme.colors.brand : theme.colors.text};
 
     &:hover {
         opacity: 1;
+        color: ${({ theme }) => theme.colors.brand};
     }
 
     &:disabled {
@@ -141,9 +146,10 @@ const Meaning = styled.div`
 
 const MeaningItem = styled.span`
     background: ${({ theme }) => theme.colors.accent + "1F"};
+    color: ${({ theme }) => theme.colors.text};
+
     font-size: 20px;
     padding: 4px 8px;
-    color: black;
 `;
 
 const Meta = styled.div`
@@ -824,6 +830,7 @@ function DictionaryPage() {
                     </WordHeader>
 
                     <SaveButton
+                        saved={saved}
                         disabled={saving}
                         onClick={() => {
 
@@ -842,7 +849,7 @@ function DictionaryPage() {
                         }}
                     >
                         {saved ? (
-                            <FaCheckCircle />
+                            <CheckIcon />
                         ) : (
                             "+"
                         )}

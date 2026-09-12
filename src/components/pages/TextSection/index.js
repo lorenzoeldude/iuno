@@ -16,14 +16,14 @@ const Wrapper = styled.div`
 `;
 
 const TextTitle = styled.h1`
-    font-family: "Cormorant Garamond", serif;
+    font-family: ${({ theme }) => theme.fonts.body};
     font-weight: 100;
     font-size: 25px;
     text-align: center;
 `;
 
 const SectionTitle = styled.h1`
-    font-family: "Cormorant Garamond", serif;
+    font-family: ${({ theme }) => theme.fonts.body};
     font-weight: 800;
     font-size: 45px;
     margin-bottom: 40px;
@@ -31,7 +31,7 @@ const SectionTitle = styled.h1`
 `;
 
 const Text = styled.div`
-    font-family: "Cormorant Garamond", serif;
+    font-family: ${({ theme }) => theme.fonts.read};
     font-size: 25px;
     line-height: 1.5;
     max-width: 750px;

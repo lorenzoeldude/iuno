@@ -4,6 +4,7 @@ const Button2 = styled.button`
     width: 100%;
     padding: 14px;
 
+    font-family: ${({ theme }) => theme.fonts.mono};
     font-size: ${({ theme }) => theme.fontSizes.lg};
     font-weight: ${({ theme }) => theme.fontWeights.semibold};
 
@@ -11,7 +12,7 @@ const Button2 = styled.button`
 
     cursor: pointer;
 
-    background: ${({ theme }) => theme.colors.primary};
+    background: ${({ theme }) => theme.colors.brand};
     color: white;
 
     transition: background ${({ theme }) => theme.transition.fast};

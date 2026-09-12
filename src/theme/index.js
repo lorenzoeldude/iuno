@@ -5,8 +5,17 @@ import { createGlobalStyle } from "styled-components";
 const shared = {
     fonts: {
         body: "Cormorant Garamond, serif",
+        // body: "EB Garamond, serif",
+        // body: "Source Serif 4, serif",
         heading: "Cormorant Garamond, serif",
-        mono: "Montserrat sans-serif"
+        read: "Cormorant Garamond, serif",
+        // mono: "Montserrat, sans-serif"
+        mono: "DM Sans, sans-serif"
+        // mono: "Geist, sans-serif"
+        // mono: "Proza Libre, sans-serif"
+        // mono: "Lato, sans-serif"
+        // mono: "Inter, sans-serif"
+        // mono: "Cormorant Garamond, serif"
     },
 
     fontSizes: {
@@ -54,6 +63,17 @@ const shared = {
         normal: "0.25s ease",
         slow: "0.4s ease",
     },
+
+    colors: {
+        // deep library green (#247851); terracotta (#c05536); deep purple (#613072)
+
+        brand: "#613072",
+        accent: "#613072",
+
+        success: "#4F8A5B",
+        warning: "#B8792E",
+        danger: "#B33A3A",
+    },
 };
 
 export const lightTheme = {
@@ -62,29 +82,21 @@ export const lightTheme = {
     mode: "light",
 
     colors: {
+        ...shared.colors,
+
         background: "#FFFFFF",
         surface: "#F8F9FA",
-        card: "#eeeeee",
-        accent: "#B89B5E",
+        card: "#EEEEEE",
 
         text: "#000000",
         opposite: "#F9FAFB",
-        textSecondary: "#3d3d3d98",
-
-        primary: "#4F46E5",
-        primaryHover: "#4338CA",
-
-        success: "#22C55E",
-        warning: "#F59E0B",
-        danger: "#EF4444",
-
-        highlight: "rgba(255, 255, 0, 0.7)",
+        textSecondary: "#3D3D3D98",
 
         border: "#E5E7EB",
         divider: "#F3F4F6",
 
-        overlay: "rgba(0,0,0,0.5)",
-        shadow: "rgba(0,0,0,0.08)",
+        overlay: "rgba(0, 0, 0, 0.5)",
+        shadow: "rgba(0, 0, 0, 0.08)",
     },
 };
 
@@ -94,28 +106,20 @@ export const darkTheme = {
     mode: "dark",
 
     colors: {
-        background: "#121212",
+        ...shared.colors,
+
+        background: "#0E0E0E",
         surface: "#1E1E1E",
         card: "#262626",
-        accent: "#B89B5E",
 
         text: "#F9FAFB",
         opposite: "#1F2937",
-        textSecondary: "#d8d8d88e",
-
-        primary: "#6366F1",
-        primaryHover: "#818CF8",
-
-        highlight: "rgba(255, 255, 0, 0.2)",
-
-        success: "#22C55E",
-        warning: "#F59E0B",
-        danger: "#EF4444",
+        textSecondary: "#D8D8D88E",
 
         border: "#464646",
         divider: "#2A2A2A",
 
-        overlay: "rgba(0,0,0,0.7)",
+        overlay: "rgba(0, 0, 0, 0.7)",
         shadow: "rgba(40, 40, 40, 0.4)",
     },
 };

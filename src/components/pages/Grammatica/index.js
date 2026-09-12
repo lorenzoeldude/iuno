@@ -35,7 +35,7 @@ const Content = styled.div`
 const Title = styled.h1`
 	width: 100%;
 
-	font-family: "Cormorant Garamond", serif;
+	font-family: ${({ theme }) => theme.fonts.body};
 	font-weight: 800;
 	font-size: clamp(28px, 4vw, 42px);
 
@@ -133,7 +133,7 @@ const SentenceQuestion = styled.div`
 const Sentence = styled.div`
 	width: 100%;
 
-	font-family: "Cormorant Garamond", serif;
+	font-family: ${({ theme }) => theme.fonts.body};
 	font-size: clamp(30px, 4vw, 44px);
 	font-weight: 600;
 	line-height: 1.3;

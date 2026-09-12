@@ -11,9 +11,10 @@ const Button = styled.button`
 
     border: none;
 
-    background: ${({ theme }) => theme.colors.primary};
+    background: ${({ theme }) => theme.colors.brand};
     color: white;
 
+    font-family: ${({ theme }) => theme.fonts.mono};
     font-size: 1rem;
     font-weight: 600;
 

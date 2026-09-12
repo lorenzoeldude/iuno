@@ -15,8 +15,10 @@ const Button = styled.div`
     border: 2px solid ${({ theme }) => theme.colors.text};
 
     background-color: ${(props) => {
-        if (props.state === 1) return "green";
-        if (props.state === 2) return "red";
+        if (props.state === 1) return props.theme.colors.success;
+
+        if (props.state === 2) return props.theme.colors.danger;
+
         return props.theme.colors.background;
     }};
 

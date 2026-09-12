@@ -17,12 +17,8 @@ const Card = styled.div`
     max-width: 420px;
     padding: ${({ theme }) => theme.spacing.xl};
 
-    background: ${({ theme }) => theme.colors.card};
     color: ${({ theme }) => theme.colors.text};
 
-    border: 1px solid ${({ theme }) => theme.colors.border};
-
-    box-shadow: 0 8px 24px ${({ theme }) => theme.colors.shadow};
 `;
 
 const Title = styled.h1`
@@ -49,7 +45,7 @@ const Input = styled.input`
     font-family: ${({ theme }) => theme.fonts.body};
 
     color: ${({ theme }) => theme.colors.text};
-    background: ${({ theme }) => theme.colors.surface};
+    background: ${({ theme }) => theme.colors.background};
 
     border: 1px solid
         ${({ theme, $invalid }) =>
@@ -69,7 +65,7 @@ const Input = styled.input`
         border-color: ${({ theme, $invalid }) =>
             $invalid
                 ? theme.colors.danger
-                : theme.colors.primary};
+                : theme.colors.accent};
     }
 `;
 
@@ -96,7 +92,7 @@ const BottomText = styled.p`
 `;
 
 const StyledLink = styled(Link)`
-    color: ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => theme.colors.accent};
 
     text-decoration: none;
 

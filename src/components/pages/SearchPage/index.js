@@ -99,11 +99,11 @@ const WordCard = styled.button`
         border-color ${({ theme }) => theme.transition.fast};
 
     &:hover {
-        border-color: ${({ theme }) => theme.colors.accent};
-    }
+        border-color: ${({ theme }) => theme.colors.brand};
+}
 
     &:focus-visible {
-        outline: 2px solid ${({ theme }) => theme.colors.accent};
+        outline: 2px solid ${({ theme }) => theme.colors.brand};
         outline-offset: 4px;
     }
 `;
@@ -114,7 +114,7 @@ const WordHeader = styled.div`
 `;
 
 const Word = styled.span`
-    font-family: "Cormorant Garamond", serif;
+    font-family: ${({ theme }) => theme.fonts.body};
     font-size: 46px;
     font-weight: 600;
     line-height: 1;
@@ -132,7 +132,7 @@ const Arrow = styled.span`
     font-size: 17px;
     line-height: 1;
 
-    color: ${({ theme }) => theme.colors.accent};
+    color: ${({ theme }) => theme.colors.brand};
 
     transition:
         transform ${({ theme }) => theme.transition.fast};
@@ -256,20 +256,20 @@ const TopWordBar = styled.div`
 
     height: 100%;
 
-    background: ${({ rank }) => {
+    background: ${({ theme, rank }) => {
         switch (rank) {
             case 1:
-                return "rgba(70, 120, 190, 0.16)";
+                return `${theme.colors.brand}29`;
             case 2:
-                return "rgba(70, 120, 190, 0.13)";
+                return `${theme.colors.brand}21`;
             case 3:
-                return "rgba(70, 120, 190, 0.10)";
+                return `${theme.colors.brand}19`;
             case 4:
-                return "rgba(70, 120, 190, 0.07)";
+                return `${theme.colors.brand}12`;
             case 5:
-                return "rgba(70, 120, 190, 0.04)";
+                return `${theme.colors.brand}0A`;
             default:
-                return "rgba(70, 120, 190, 0.04)";
+                return `${theme.colors.brand}0A`;
         }
     }};
 
@@ -280,7 +280,7 @@ const Rank = styled.span`
     position: relative;
     z-index: 1;
 
-    font-family: "Cormorant Garamond", serif;
+    font-family: ${({ theme }) => theme.fonts.body};
 
     font-size: 18px;
     font-weight: 600;
@@ -295,7 +295,7 @@ const TopWordLemma = styled.span`
     position: relative;
     z-index: 1;
 
-    font-family: "Cormorant Garamond", serif;
+    font-family: ${({ theme }) => theme.fonts.body};
 
     font-size: 28px;
     font-weight: 600;
