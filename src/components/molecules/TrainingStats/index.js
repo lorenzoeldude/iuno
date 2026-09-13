@@ -30,11 +30,9 @@ const TrainingStatsGrid = styled.div`
 const StatsCard = styled.div`
     min-height: 155px;
 
-    padding: 22px;
+    padding: 20px;
 
     border: 1px solid ${({ theme }) => theme.colors.border};
-
-    // background: ${({ theme }) => theme.colors.card};
 
     display: flex;
     flex-direction: column;
@@ -43,34 +41,24 @@ const StatsCard = styled.div`
 `;
 
 const StatsCardHeader = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-`;
+    font-family: ${({ theme }) => theme.fonts.mono};
 
-const StatsCardTitle = styled.div`
     font-size: 12px;
     font-weight: 600;
 
-    letter-spacing: 0.8px;
+    letter-spacing: 0.6px;
     text-transform: uppercase;
 
     opacity: 0.45;
 `;
 
-const StatsIcon = styled.div`
-    font-size: 16px;
-
-    line-height: 1;
-
-    opacity: 0.45;
-`;
-
 const StatsMain = styled.div`
-    margin-top: auto;
+    margin-top: 24px;
 `;
 
 const StatsNumber = styled.div`
+    font-family: ${({ theme }) => theme.fonts.mono};
+
     font-size: 40px;
     font-weight: 600;
 
@@ -84,18 +72,27 @@ const StatsNumber = styled.div`
 const StatsDescription = styled.div`
     margin-top: 7px;
 
-    font-size: 13px;
+    font-family: ${({ theme }) => theme.fonts.body};
 
-    opacity: 0.5;
+    font-size: 16px;
+
+    line-height: 1.2;
+
+    opacity: 0.55;
 `;
 
 const StatsSecondary = styled.div`
-    margin-top: 12px;
+    margin-top: 8px;
 
-    font-size: 12px;
+    font-family: ${({ theme }) => theme.fonts.body};
 
-    opacity: 0.45;
+    font-size: 14px;
+
+    line-height: 1.2;
+
+    opacity: 0.4;
 `;
+
 
 /* =====================================================
    COMPONENT
@@ -144,15 +141,7 @@ function TrainingStats({ stats }) {
                 <StatsCard>
 
                     <StatsCardHeader>
-
-                        <StatsCardTitle>
-                            Today
-                        </StatsCardTitle>
-
-                        <StatsIcon>
-                            ◷
-                        </StatsIcon>
-
+                        Today
                     </StatsCardHeader>
 
                     <StatsMain>
@@ -169,6 +158,7 @@ function TrainingStats({ stats }) {
 
                 </StatsCard>
 
+
                 {/* =================================================
                     TOTAL
                     ================================================= */}
@@ -176,15 +166,7 @@ function TrainingStats({ stats }) {
                 <StatsCard>
 
                     <StatsCardHeader>
-
-                        <StatsCardTitle>
-                            Total
-                        </StatsCardTitle>
-
-                        <StatsIcon>
-                            ✓
-                        </StatsIcon>
-
+                        Total
                     </StatsCardHeader>
 
                     <StatsMain>
@@ -205,6 +187,7 @@ function TrainingStats({ stats }) {
 
                 </StatsCard>
 
+
                 {/* =================================================
                     LESSONS
                     ================================================= */}
@@ -212,15 +195,7 @@ function TrainingStats({ stats }) {
                 <StatsCard>
 
                     <StatsCardHeader>
-
-                        <StatsCardTitle>
-                            Lessons
-                        </StatsCardTitle>
-
-                        <StatsIcon>
-                            ◇
-                        </StatsIcon>
-
+                        Lessons
                     </StatsCardHeader>
 
                     <StatsMain>
@@ -237,6 +212,7 @@ function TrainingStats({ stats }) {
 
                 </StatsCard>
 
+
                 {/* =================================================
                     STREAK
                     ================================================= */}
@@ -244,15 +220,7 @@ function TrainingStats({ stats }) {
                 <StatsCard>
 
                     <StatsCardHeader>
-
-                        <StatsCardTitle>
-                            Streak
-                        </StatsCardTitle>
-
-                        <StatsIcon>
-                            ✦
-                        </StatsIcon>
-
+                        Streak
                     </StatsCardHeader>
 
                     <StatsMain>
