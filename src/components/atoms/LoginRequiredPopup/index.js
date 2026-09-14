@@ -1,12 +1,11 @@
-// components/LoginRequiredPopup/index.js
-
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import Button2 from "../../atoms/Button2";
 
 const Overlay = styled.div`
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.45);
+    background: rgba(0, 0, 0, 0.45);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -16,31 +15,27 @@ const Overlay = styled.div`
 const Popup = styled.div`
     background: ${({ theme }) => theme.colors.background};
     color: ${({ theme }) => theme.colors.text};
-    padding: 32px;
+    padding: 40px;
     max-width: 420px;
     width: 90%;
     text-align: center;
 `;
 
 const PopupTitle = styled.h2`
-    margin-top: 0;
+    margin: 0 0 24px;
 `;
 
-const PopupButton = styled.button`
-    margin-top: 24px;
-    padding: 10px 24px;
-    border: none;
-    cursor: pointer;
-
-    background: ${({ theme }) => theme.colors.text};
-    color: ${({ theme }) => theme.colors.opposite};
+const PopupMessage = styled.p`
+    margin: 0 0 36px;
+    line-height: 1.6;
 `;
 
-export default function LoginRequiredPopup({ open,
+export default function LoginRequiredPopup({
+    open,
     onClose,
     title = "Log in required",
-    message = "Log in to use this feature." }) {
-
+    message = "Log in to use this feature."
+}) {
     const navigate = useNavigate();
 
     if (!open) return null;
@@ -50,16 +45,16 @@ export default function LoginRequiredPopup({ open,
             <Popup onClick={(e) => e.stopPropagation()}>
                 <PopupTitle>{title}</PopupTitle>
 
-                <p>{message}</p>
+                <PopupMessage>{message}</PopupMessage>
 
-                <PopupButton
+                <Button2
                     onClick={() => {
                         onClose();
                         navigate("/login");
                     }}
                 >
                     Log In
-                </PopupButton>
+                </Button2>
             </Popup>
         </Overlay>
     );

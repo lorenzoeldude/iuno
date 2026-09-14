@@ -7,6 +7,7 @@ import AnswerButton from "../../atoms/Answerbutton";
 import ClickableText from "../../atoms/ClickableText";
 import DictionaryPopup from "../../atoms/DictionaryPopup";
 import useDictionaryLookup from "../../../hooks/useDictionaryLookups";
+import Button2 from "../../atoms/Button2";
 
 import useSoundEffects from "../../../hooks/useSoundEffects";
 
@@ -149,21 +150,18 @@ const ArrowDiv = styled.div`
 // =====================================================
 
 const LimitWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
     width: 100%;
-    max-width: 520px;
+    max-width: 420px;
 
-    padding: 70px 30px;
+    padding: ${({ theme }) => theme.spacing.xl};
+
+    color: ${({ theme }) => theme.colors.text};
 
     text-align: center;
 `;
 
 const LimitTitle = styled.h2`
-    margin: 0 0 16px;
+    margin-top: 20px;
 
     font-size: 32px;
     font-weight: 400;
@@ -175,7 +173,7 @@ const LimitTitle = styled.h2`
 `;
 
 const LimitText = styled.p`
-    margin: 0;
+    margin: 20px 0;
 
     max-width: 430px;
 
@@ -189,38 +187,6 @@ const LimitText = styled.p`
     }
 `;
 
-const LoginButton = styled.button`
-    margin-top: 28px;
-
-    padding: 11px 30px;
-
-    border: 1px solid currentColor;
-    border-radius: 2px;
-
-    background: transparent;
-
-    color: inherit;
-
-    font-family: inherit;
-    font-size: 19px;
-
-    cursor: pointer;
-
-    transition:
-        background-color 0.2s ease,
-        color 0.2s ease,
-        opacity 0.2s ease;
-
-    &:hover {
-        background: currentColor;
-        color: ${({ theme }) =>
-            theme.colors?.background || "white"};
-    }
-
-    &:active {
-        opacity: 0.7;
-    }
-`;
 
 function Trainer({ mode = "all", listId = null }) {
 
@@ -439,11 +405,11 @@ function Trainer({ mode = "all", listId = null }) {
                     Log in to get more questions.
                 </LimitText>
 
-                <LoginButton
+                <Button2
                     onClick={() => navigate("/login")}
                 >
                     Log in
-                </LoginButton>
+                </Button2>
 
             </LimitWrapper>
 
