@@ -168,17 +168,20 @@ const ReportMistake = ({
 };
 
 const ReportButton = styled.button`
-    margin-top: 24px;
     padding: 0;
     border: none;
     background: transparent;
+
     color: ${({ theme }) => theme.colors.textSecondary};
-    font-size: 14px;
-    text-decoration: underline;
+
+    font-size: 10px;
+    line-height: 1.4;
+
     cursor: pointer;
 
     &:hover {
         color: ${({ theme }) => theme.colors.text};
+        text-decoration: underline;
     }
 `;
 
