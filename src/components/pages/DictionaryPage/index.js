@@ -109,7 +109,7 @@ const WordHeader = styled.div`
 
 const BigWord = styled.span`
     font-family: ${({ theme }) => theme.fonts.mono};
-    font-size: 55px;
+    font-size: 50px;
     font-weight: 700;
     margin: 0;
     text-decoration: underline;
@@ -145,7 +145,7 @@ const Meaning = styled.div`
 `;
 
 const MeaningItem = styled.span`
-    background: ${({ theme }) => theme.colors.accent + "1F"};
+    background: ${({ theme }) => theme.colors.accent + "4D"};
     color: ${({ theme }) => theme.colors.text};
 
     font-size: 20px;

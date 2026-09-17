@@ -5,7 +5,7 @@ import { createGlobalStyle } from "styled-components";
 const shared = {
     fonts: {
         body: "Cormorant Garamond, serif",
-        // body: "EB Garamond, serif",
+        body2: "EB Garamond, serif",
         // body: "Source Serif 4, serif",
         heading: "Cormorant Garamond, serif",
         read: "Cormorant Garamond, serif",
@@ -65,10 +65,10 @@ const shared = {
     },
 
     colors: {
-        // deep library green (#247851); terracotta (#c05536); deep purple (#613072)
+        // deep library green (#228054); terracotta (#c05536); deep purple (#613072)
 
-        brand: "#247851",
-        accent: "#247851",
+        brand: "#d33f15",
+        accent: "#d33f15",
 
         success: "#4F8A5B",
         warning: "#B8792E",
@@ -113,7 +113,7 @@ export const darkTheme = {
         card: "#262626",
 
         text: "#F9FAFB",
-        opposite: "#1F2937",
+        opposite: "#ffffff",
         textSecondary: "#D8D8D88E",
 
         border: "#464646",

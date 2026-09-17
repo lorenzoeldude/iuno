@@ -6,7 +6,7 @@ const Wrapper = styled.div`
     padding: 10px;
     box-sizing: border-box;
 
-    border: 1px solid ${({ theme }) => theme.colors.accent};
+    border: 1px solid ${({ theme }) => theme.colors.text};
 `;
 
 const SwitchRow = styled.div`

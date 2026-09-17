@@ -259,17 +259,17 @@ const TopWordBar = styled.div`
     background: ${({ theme, rank }) => {
         switch (rank) {
             case 1:
-                return `${theme.colors.brand}29`;
+                return `${theme.colors.brand}50`;
             case 2:
-                return `${theme.colors.brand}21`;
+                return `${theme.colors.brand}40`;
             case 3:
-                return `${theme.colors.brand}19`;
+                return `${theme.colors.brand}30`;
             case 4:
-                return `${theme.colors.brand}12`;
+                return `${theme.colors.brand}20`;
             case 5:
-                return `${theme.colors.brand}0A`;
+                return `${theme.colors.brand}12`;
             default:
-                return `${theme.colors.brand}0A`;
+                return `${theme.colors.brand}4`;
         }
     }};
 
@@ -311,39 +311,6 @@ const TopWordLemma = styled.span`
     }
 `;
 
-// const TopWordMeaning = styled.span`
-//     position: relative;
-//     z-index: 1;
-
-//     justify-self: start;
-
-//     padding: 5px 9px;
-
-//     font-size: 13px;
-//     line-height: 1.2;
-
-//     color: ${({ theme }) => theme.colors.text};
-
-//     background: ${({ theme }) =>
-//         theme.colors.accent + "1F"};
-
-//     border: 1px solid
-//         ${({ theme }) =>
-//             theme.colors.accent + "1F"};
-
-//     white-space: nowrap;
-
-//     overflow: hidden;
-
-//     text-overflow: ellipsis;
-
-//     max-width: 100%;
-
-//     @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-//         font-size: 12px;
-//         padding: 5px 8px;
-//     }
-// `;
 
 /* =====================================================
    LOADING
