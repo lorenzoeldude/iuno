@@ -20,6 +20,7 @@ import VerbTable from "../../morphology/VerbTable.js/index.js";
 import AdjectiveTable from "../../morphology/AdjectiveTable/index.js";
 import PronounTable from "../../morphology/PronounTable/index.js";
 import LoginRequiredPopup from "../../atoms/LoginRequiredPopup/index.js";
+import ReportMistake from "./ReportMistake/index.js";
 
 
 const Wrapper = styled.div`
@@ -270,6 +271,8 @@ function DictionaryPage() {
 
     const [showLoginPopup, setShowLoginPopup] =
         useState(false);
+
+    const [showReportLoginPopup, setShowReportLoginPopup] = useState(false);
 
     useEffect(() => {
 
@@ -1074,6 +1077,15 @@ function DictionaryPage() {
 
             </Content>
 
+            <ReportMistake
+                lemmaId={wordData.lemma.id}
+                token={token}
+                isAuthed={isAuthed}
+                onLoginRequired={() =>
+                    setShowReportLoginPopup(true)
+                }
+            />
+
             <DictionaryPopup
                 popup={popup}
                 entry={entry}
@@ -1101,6 +1113,32 @@ function DictionaryPage() {
                         }
                         title="Login Required"
                         message="Log in to create a word list and add this word."
+                    />
+
+                </Overlay>
+            )}
+
+            {showReportLoginPopup && (
+
+                <Overlay
+                    onClick={() =>
+                        setShowReportLoginPopup(
+                            false
+                        )
+                    }
+                >
+
+                    <LoginRequiredPopup
+                        open={
+                            showReportLoginPopup
+                        }
+                        onClose={() =>
+                            setShowReportLoginPopup(
+                                false
+                            )
+                        }
+                        title="Login Required"
+                        message="Log in to report a mistake."
                     />
 
                 </Overlay>
