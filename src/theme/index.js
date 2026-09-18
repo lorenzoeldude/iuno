@@ -113,7 +113,7 @@ export const darkTheme = {
         card: "#262626",
 
         text: "#F9FAFB",
-        opposite: "#ffffff",
+        opposite: "#000000",
         textSecondary: "#D8D8D88E",
 
         border: "#464646",
