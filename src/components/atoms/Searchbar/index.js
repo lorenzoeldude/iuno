@@ -161,13 +161,15 @@ function Searchbar({ className, variant, autoFocus = false }) {
     // =====================================================
 
     useEffect(() => {
+        latestQuery.current = query;
+
+        // Clear old results immediately whenever the query changes
+        setResults([]);
+        setOpen(false);
+
         if (!query.trim()) {
-            setResults([]);
-            setOpen(false);
             return;
         }
-
-        latestQuery.current = query;
 
         const controller = new AbortController();
 
@@ -199,8 +201,11 @@ function Searchbar({ className, variant, autoFocus = false }) {
                         return;
                     }
 
-                    setResults([]);
-                    setOpen(false);
+                    // Only clear results if this is still the current query
+                    if (latestQuery.current === query) {
+                        setResults([]);
+                        setOpen(false);
+                    }
                 });
         }, 200);
 
