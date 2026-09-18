@@ -29,13 +29,13 @@ function Impressum() {
             {/* ========================= */}
             <Section>
                 <Heading>
-                    Information according to § 5 TMG
+                    Information according to § 5 DDG
                 </Heading>
 
                 <p>
                     Lorenz Frank
                     <br />
-                    Rothenberg-Nord 5,
+                    Rothenberg-Nord 5
                     <br />
                     82431 Kochel am See
                     <br />
@@ -59,17 +59,14 @@ function Impressum() {
             {/* ========================= */}
             <Section>
                 <Heading>
-                    Responsible for content according to § 55 (2) RStV
+                    Accuracy of Information
                 </Heading>
 
                 <p>
-                    Lorenz Frank
-                    <br />
-                    Rothenberg-Nord 5,
-                    <br />
-                    82431 Kochel am See
-                    <br />
-                    Germany
+                    IUNONI is intended for educational purposes. We strive to
+                    provide accurate and reliable information, but errors or
+                    omissions may occur. If you notice an error, please report
+                    it to us.
                 </p>
             </Section>
 
@@ -80,14 +77,16 @@ function Impressum() {
                 </Heading>
 
                 <p>
-                    As a service provider, we are responsible for our own content on these pages in accordance with general laws
-                    pursuant to § 7 (1) TMG. However, according to §§ 8 to 10 TMG, we are not obliged to monitor transmitted or
-                    stored third-party information or to investigate circumstances that indicate illegal activity.
+                    We are responsible for our own content on this website
+                    under the applicable laws. We are not obliged to
+                    continuously monitor transmitted or stored third-party
+                    information or to investigate circumstances indicating
+                    illegal activity.
                 </p>
 
                 <p>
-                    Obligations to remove or block the use of information under general laws remain unaffected. However, liability
-                    in this regard is only possible from the time of knowledge of a specific infringement.
+                    Obligations to remove or block the use of information under
+                    applicable law remain unaffected.
                 </p>
             </Section>
 
@@ -98,12 +97,14 @@ function Impressum() {
                 </Heading>
 
                 <p>
-                    Our website contains links to external third-party websites, over whose content we have no control.
-                    Therefore, we cannot assume any liability for such external content.
+                    Our website may contain links to external third-party
+                    websites. We have no control over the content of these
+                    websites and are not responsible for their content.
                 </p>
 
                 <p>
-                    The respective provider or operator of the linked pages is always responsible for their content.
+                    The respective provider or operator is responsible for the
+                    content of linked pages.
                 </p>
             </Section>
 
@@ -114,9 +115,11 @@ function Impressum() {
                 </Heading>
 
                 <p>
-                    The content and works created by the site operator on these pages are subject to copyright law.
-                    Duplication, processing, distribution, or any form of commercialization beyond the scope of copyright law
-                    requires prior written consent of the respective author or creator.
+                    The content and works created by the site operator on these
+                    pages are protected by copyright law. Duplication,
+                    processing, distribution, or any form of commercialization
+                    beyond the scope permitted by copyright law requires the
+                    prior written consent of the respective author or creator.
                 </p>
             </Section>
 
