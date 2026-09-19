@@ -16,7 +16,9 @@ import readDarkIcon from "../../../assets/icons/read_dark.svg";
 import profileIcon from "../../../assets/icons/profile.svg";
 import profileDarkIcon from "../../../assets/icons/profile_dark.svg";
 
-import logoImage from "../../../assets/icons/black_transparent.png";
+// import logoImage from "../../../assets/icons/black_transparent.png";
+import logoLight from "../../../assets/icons/lightmode.png";
+import logoDark from "../../../assets/icons/darkmode.png";
 
 const Wrapper = styled.div`
     position: fixed;
@@ -145,7 +147,10 @@ function Sidebar() {
         <Wrapper>
 
             <LogoButton onClick={() => navigate("/")}>
-                <img src={logoImage} alt="IUNONI" />
+                <img
+                    src={isDark ? logoDark : logoLight}
+                    alt="IUNONI"
+                />
             </LogoButton>
 
             {/* Navigation */}
