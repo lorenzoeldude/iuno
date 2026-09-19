@@ -15,6 +15,7 @@ const Wrapper = styled.div`
     align-items: center;
     width: 80%;
     margin: 0 auto;
+    margin-top: 30px;
 
     @media (max-width: 900px) {
         width: 95%;
@@ -189,6 +190,8 @@ function AdminLemmaEditor() {
     // adjective-only fields
     const [feminine, setFeminine] = useState("");
     const [neuter, setNeuter] = useState("");
+    const [comparative, setComparative] = useState("");
+    const [superlative, setSuperlative] = useState("");
 
     const [comparable, setComparable] = useState(true);
 
@@ -250,6 +253,9 @@ function AdminLemmaEditor() {
 
         setFeminine(data.lemma.feminine || "");
         setNeuter(data.lemma.neuter || "");
+
+        setComparative(data.lemma.comparative || "");
+        setSuperlative(data.lemma.superlative || "");
 
         setComparable(
             data.lemma.comparable === null
@@ -336,6 +342,8 @@ function AdminLemmaEditor() {
 
                             feminine: isAdjective ? feminine : "",
                             neuter: isAdjective ? neuter : "",
+                            comparative: isAdjective ? comparative : "",
+                            superlative: isAdjective ? superlative : "",
                             comparable: isAdjective ? comparable : null,
                             pronoun_type: isPronoun ? pronounType : "",
                         },
@@ -495,15 +503,6 @@ function AdminLemmaEditor() {
                     <option value="true">proper noun</option>
                 </Select>
             )}
-            {isAdjective && (
-                <Select
-                    value={comparable ? "true" : "false"}
-                    onChange={(e) => setComparable(e.target.value === "true")}
-                >
-                    <option value="true">comparable</option>
-                    <option value="false">not comparable</option>
-                </Select>
-            )}
             {isVerb && (
                 <>
                     <Select
@@ -536,16 +535,40 @@ function AdminLemmaEditor() {
             {isAdjective && (
                 <>
                     <Input
-                            placeholder="feminine (nominative singular)"
-                            value={feminine}
-                            onChange={(e) => setFeminine(e.target.value)}
-                        />
+                        placeholder="feminine (nominative singular)"
+                        value={feminine}
+                        onChange={(e) => setFeminine(e.target.value)}
+                    />
 
                     <Input
                         placeholder="neuter (nominative singular)"
                         value={neuter}
                         onChange={(e) => setNeuter(e.target.value)}
-                        />
+                    />
+
+                    <Select
+                        value={comparable ? "true" : "false"}
+                        onChange={(e) => setComparable(e.target.value === "true")}
+                    >
+                        <option value="true">comparable</option>
+                        <option value="false">not comparable</option>
+                    </Select>
+                    
+                    {comparable && (
+                        <>
+                            <Input
+                                placeholder="comparative (e.g. fortior)"
+                                value={comparative}
+                                onChange={(e) => setComparative(e.target.value)}
+                            />
+
+                            <Input
+                                placeholder="superlative (e.g. fortissimus)"
+                                value={superlative}
+                                onChange={(e) => setSuperlative(e.target.value)}
+                            />
+                        </>
+                    )}
                 </>
             )}
             
