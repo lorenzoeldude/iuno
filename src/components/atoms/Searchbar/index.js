@@ -130,7 +130,7 @@ const Meanings = styled.div`
 
 const MeaningTag = styled.span`
     background: ${({ theme }) => theme.colors.accent  + "1F"};
-    color: black;
+    color: ${({ theme }) => theme.colors.text};;
 
     font-size: 13px;
 
