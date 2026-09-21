@@ -3,78 +3,207 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { API_URL } from "../../../config";
 
-import Card from "../../atoms/Card";
-import StripeTest from "../StripeTest";
+// =====================================================
+// LAYOUT
+// =====================================================
 
 const Wrapper = styled.div`
     width: 100%;
     display: flex;
     justify-content: center;
-    padding: 40px 0;
+
+    padding: ${({ theme }) => theme.spacing.xxl} 0;
 `;
 
 const Container = styled.div`
     width: 900px;
+    max-width: calc(100% - 40px);
+
     display: flex;
     flex-direction: column;
-    gap: 25px;
+
+    gap: ${({ theme }) => theme.spacing.xxl};
+`;
+
+// =====================================================
+// HEADER
+// =====================================================
+
+const Header = styled.div`
+    display: flex;
+    flex-direction: column;
+
+    gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 const Title = styled.h1`
-    font-size: 32px;
+    margin: 0;
+
+    font-family: ${({ theme }) => theme.fonts.heading};
+    font-size: ${({ theme }) => theme.fontSizes.xxxl};
+    font-weight: ${({ theme }) => theme.fontWeights.bold};
+
+    color: ${({ theme }) => theme.colors.text};
 `;
 
-const Grid = styled.div`
+const Subtitle = styled.div`
+    color: ${({ theme }) => theme.colors.textSecondary};
+    font-size: ${({ theme }) => theme.fontSizes.md};
+`;
+
+// =====================================================
+// STATS
+// =====================================================
+
+const Stats = styled.div`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+
+    border-top: 1px solid
+        ${({ theme }) => theme.colors.border};
+
+    border-bottom: 1px solid
+        ${({ theme }) => theme.colors.border};
+
+    @media (max-width: 650px) {
+        grid-template-columns: 1fr;
+    }
+`;
+
+const Stat = styled.div`
+    display: flex;
+    flex-direction: column;
+
+    padding: ${({ theme }) => theme.spacing.xl} 0;
+
+    &:first-child {
+        border-right: 1px solid
+            ${({ theme }) => theme.colors.border};
+
+        padding-right: ${({ theme }) => theme.spacing.xxl};
+    }
+
+    &:last-child {
+        padding-left: ${({ theme }) => theme.spacing.xxl};
+    }
+
+    @media (max-width: 650px) {
+        &:first-child {
+            border-right: none;
+
+            border-bottom: 1px solid
+                ${({ theme }) => theme.colors.border};
+
+            padding-right: 0;
+        }
+
+        &:last-child {
+            padding-left: 0;
+        }
+    }
 `;
 
 const StatNumber = styled.div`
-    font-size: 40px;
-    font-weight: bold;
+    font-family: ${({ theme }) => theme.fonts.heading};
+    font-size: 48px;
+    font-weight: ${({ theme }) => theme.fontWeights.bold};
+
+    line-height: 1;
+
+    color: ${({ theme }) => theme.colors.text};
 `;
 
 const StatLabel = styled.div`
-    margin-top: 10px;
-    opacity: 0.7;
+    margin-top: ${({ theme }) => theme.spacing.sm};
+
+    font-size: ${({ theme }) => theme.fontSizes.md};
+
+    color: ${({ theme }) => theme.colors.textSecondary};
+`;
+
+// =====================================================
+// NAVIGATION
+// =====================================================
+
+const Section = styled.div`
+    display: flex;
+    flex-direction: column;
+
+    border-top: 1px solid
+        ${({ theme }) => theme.colors.border};
 `;
 
 const AdminButton = styled(Link)`
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: space-between;
 
-    height: 60px;
+    min-height: 64px;
+
+    padding: 0
+        ${({ theme }) => theme.spacing.md};
+
+    border-bottom: 1px solid
+        ${({ theme }) => theme.colors.border};
 
     text-decoration: none;
-    color: inherit;
 
-    font-size: 18px;
-    font-weight: bold;
+    color: ${({ theme }) => theme.colors.text};
 
-    cursor: pointer;
+    font-family: ${({ theme }) => theme.fonts.body};
+    font-size: ${({ theme }) => theme.fontSizes.lg};
+    font-weight: ${({ theme }) => theme.fontWeights.semibold};
+
+    transition:
+        background 0.15s ease,
+        padding 0.15s ease;
+
+    &::after {
+        content: "→";
+
+        color: ${({ theme }) =>
+            theme.colors.textSecondary};
+
+        font-size: 20px;
+
+        transition:
+            transform 0.15s ease,
+            color 0.15s ease;
+    }
 
     &:hover {
-        opacity: 0.8;
+        background: ${({ theme }) =>
+            `${theme.colors.primary}08`};
+
+        padding-left: ${({ theme }) =>
+            theme.spacing.lg};
+    }
+
+    &:hover::after {
+        color: ${({ theme }) =>
+            theme.colors.primary};
+
+        transform: translateX(4px);
     }
 `;
 
+// =====================================================
+// COMPONENT
+// =====================================================
 
 function AdminPage() {
-
     const [users, setUsers] = useState(0);
     const [lemmas, setLemmas] = useState(0);
 
+    // =====================================================
+    // FETCH STATS
+    // =====================================================
 
     useEffect(() => {
-
         async function fetchStats() {
-
-            console.log("FETCH STATS RUNNING");
             try {
-
-                const token = localStorage.getItem("token");
+                const token =
+                    localStorage.getItem("token");
 
                 const config = {
                     headers: {
@@ -82,54 +211,69 @@ function AdminPage() {
                     },
                 };
 
+                const [
+                    userResponse,
+                    lemmaResponse,
+                ] = await Promise.all([
+                    fetch(
+                        `${API_URL}/admin/users/count`,
+                        config
+                    ),
+                    fetch(
+                        `${API_URL}/admin/lemmas/count`,
+                        config
+                    ),
+                ]);
 
-                const userResponse = await fetch(
-                    `${API_URL}/admin/users/count`,
-                    config
-                );
+                if (
+                    !userResponse.ok ||
+                    !lemmaResponse.ok
+                ) {
+                    throw new Error(
+                        "Failed to fetch admin statistics."
+                    );
+                }
 
-                console.log("userResponse", userResponse.status);
+                const userData =
+                    await userResponse.json();
 
-                const lemmaResponse = await fetch(
-                    `${API_URL}/admin/lemmas/count`,
-                    config
-                );
-
-
-                const userData = await userResponse.json();
-                const lemmaData = await lemmaResponse.json();
-
+                const lemmaData =
+                    await lemmaResponse.json();
 
                 setUsers(userData.count);
                 setLemmas(lemmaData.count);
-                console.log("token: ------------ ", localStorage.getItem("token"));
-
-
             } catch (error) {
-                console.error(error);
+                console.error(
+                    "ADMIN STATS ERROR:",
+                    error
+                );
             }
         }
 
-
         fetchStats();
-
     }, []);
 
+    // =====================================================
+    // RENDER
+    // =====================================================
 
     return (
         <Wrapper>
-
             <Container>
 
-                <Title>
-                    Admin Dashboard
-                </Title>
+                <Header>
+                    <Title>
+                        Admin Dashboard
+                    </Title>
 
+                    <Subtitle>
+                        Manage IUNONI content and users.
+                    </Subtitle>
+                </Header>
 
-                <Grid>
+                <Stats>
 
-                    <Card>
-
+                    <Stat>
                         <StatNumber>
                             {users}
                         </StatNumber>
@@ -137,12 +281,9 @@ function AdminPage() {
                         <StatLabel>
                             Users
                         </StatLabel>
+                    </Stat>
 
-                    </Card>
-
-
-                    <Card>
-
+                    <Stat>
                         <StatNumber>
                             {lemmas}
                         </StatNumber>
@@ -150,47 +291,33 @@ function AdminPage() {
                         <StatLabel>
                             Lemmas
                         </StatLabel>
+                    </Stat>
 
-                    </Card>
+                </Stats>
 
+                <Section>
 
-                </Grid>
+                    <AdminButton to="/admin/editor">
+                        Lemma Editor
+                    </AdminButton>
 
+                    <AdminButton to="/admin/bulk">
+                        Bulk Import
+                    </AdminButton>
 
-                <Grid>
-                    <Card>
+                    <AdminButton to="/admin/lessons">
+                        Lesson Editor
+                    </AdminButton>
 
-                        <AdminButton to="/admin/editor">
-                            Lemma Editor
-                        </AdminButton>
+                    <AdminButton to="/admin/reports">
+                        Reports
+                    </AdminButton>
 
-                    </Card>
+                </Section>
 
-                    <Card>
-
-                        <AdminButton to="/admin/bulk">
-                            Bulk Import
-                        </AdminButton>
-
-                    </Card>
-                </Grid>
-
-                <Grid>
-                    <Card>
-
-                        <AdminButton to="/admin/lessons">
-                            Lesson Editor
-                        </AdminButton>
-
-                    </Card>
-                </Grid>
-
-            <StripeTest />
             </Container>
-
         </Wrapper>
     );
 }
-
 
 export default AdminPage;

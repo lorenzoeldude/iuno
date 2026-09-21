@@ -36,6 +36,7 @@ import PaymentCancel from "../../pages/PaymentCancel";
 import SupportPage from "../../pages/SupportPage";
 import TermsPage from "../../pages/TermsPage";
 import SearchPage from "../../pages/SearchPage";
+import AdminReports from "../../pages/AdminReports";
 
 const Body = styled.div`
     display: flex;
@@ -126,6 +127,15 @@ function AppContent() {
                             element={
                                 <AdminRoute>
                                     <BulkImportPage />
+                                </AdminRoute>
+                            }
+                        />
+
+                        <Route
+                            path="/admin/reports"
+                            element={
+                                <AdminRoute>
+                                    <AdminReports />
                                 </AdminRoute>
                             }
                         />
