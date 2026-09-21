@@ -247,7 +247,7 @@ const CASE_LABELS = {
     vocative: "Voc.",
 };
 
-function VerbTable({ forms, highlightedForm }) {
+function VerbTable({ forms, highlightedForm, lemma }) {
     const [voice, setVoice] = useState("active");
     const [mood, setMood] = useState("indicative");
     const [participle, setParticiple] = useState("ppp");
@@ -426,6 +426,12 @@ function VerbTable({ forms, highlightedForm }) {
         );
     }, [forms, voice]);
 
+    const supines = useMemo(() => {
+        return forms.filter(
+            (form) => form.mood === "supine"
+        );
+    }, [forms]);
+
     const gerunds = useMemo(() => {
         return forms.filter(
             (form) => form.mood === "gerund"
@@ -507,6 +513,14 @@ function VerbTable({ forms, highlightedForm }) {
     const futureInfinitive =
         infinitives.find(
             (f) => f.tense === "future"
+        )?.form;
+
+    
+    const accusativeSupine = lemma?.supine;
+
+    const ablativeSupine =
+        supines.find(
+            (f) => f.grammatical_case === "ablative"
         )?.form;
 
     return (
@@ -1030,6 +1044,45 @@ function VerbTable({ forms, highlightedForm }) {
                             }
                         >
                             {futureInfinitive || "—"}
+                        </FormRow>
+                    </InfinitiveBlock>
+
+                </InfinitiveGrid>
+            )}
+
+            {/* SUPINES */}
+            {supines.length > 0 && (
+                <InfinitiveGrid>
+
+                    <InfinitiveBlock>
+                        <SectionTitle>
+                            Supine Accusative
+                        </SectionTitle>
+
+                        <FormRow
+                            className={
+                                isHighlighted(accusativeSupine)
+                                    ? "highlight"
+                                    : ""
+                            }
+                        >
+                            {accusativeSupine || "—"}
+                        </FormRow>
+                    </InfinitiveBlock>
+
+                    <InfinitiveBlock>
+                        <SectionTitle>
+                            Supine Ablative
+                        </SectionTitle>
+
+                        <FormRow
+                            className={
+                                isHighlighted(ablativeSupine)
+                                    ? "highlight"
+                                    : ""
+                            }
+                        >
+                            {ablativeSupine || "—"}
                         </FormRow>
                     </InfinitiveBlock>
 

@@ -676,6 +676,7 @@ function DictionaryPage() {
             return (
                 <VerbTable
                     forms={wordData.forms}
+                    lemma={wordInfo}
                     highlightedForm={
                         highlightedForm
                     }
