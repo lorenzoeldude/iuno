@@ -46,11 +46,6 @@ const Title = styled.h1`
     color: ${({ theme }) => theme.colors.text};
 `;
 
-const Subtitle = styled.div`
-    color: ${({ theme }) => theme.colors.textSecondary};
-    font-size: ${({ theme }) => theme.fontSizes.md};
-`;
-
 // =====================================================
 // STATS
 // =====================================================
@@ -265,10 +260,6 @@ function AdminPage() {
                     <Title>
                         Admin Dashboard
                     </Title>
-
-                    <Subtitle>
-                        Manage IUNONI content and users.
-                    </Subtitle>
                 </Header>
 
                 <Stats>
