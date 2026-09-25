@@ -199,15 +199,24 @@ function PrivacyPolicy() {
             {/* ========================= */}
             <Section>
                 <Heading>8. Cookies and Local Storage</Heading>
+
                 <p>
                     The IUNONI website may use local storage and necessary cookies or
-                    similar technologies to maintain authentication and provide
-                    essential functionality.
+                    similar technologies to maintain authentication, enforce usage limits,
+                    and provide essential functionality.
                 </p>
 
                 <p>
-                    We do not use advertising cookies or tracking cookies for
-                    cross-site or cross-app tracking.
+                    For example, anonymous users may receive a cookie that records
+                    information necessary to enforce the daily limit for trainer
+                    attempts. This cookie is used only to provide and protect the
+                    functionality of the service and is not used for advertising,
+                    profiling, or cross-site tracking.
+                </p>
+
+                <p>
+                    We do not use advertising cookies or tracking cookies for cross-site
+                    or cross-app tracking.
                 </p>
             </Section>
 
@@ -261,7 +270,14 @@ function PrivacyPolicy() {
                         made through the iOS application are processed through Apple's
                         App Store and StoreKit.
                     </li>
+                    <li>
+                        <strong>Cloudflare Web Analytics:</strong> We use Cloudflare Web Analytics
+                        to measure website traffic and page performance. Cloudflare Web Analytics
+                        does not use cookies or local storage for its analytics functionality.
+                    </li>
                 </ul>
+
+                
 
                 <p>
                     These providers may process information according to their own
