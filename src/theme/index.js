@@ -5,17 +5,10 @@ import { createGlobalStyle } from "styled-components";
 const shared = {
     fonts: {
         body: "Cormorant Garamond, serif",
-        body2: "EB Garamond, serif",
-        // body: "Source Serif 4, serif",
+        // body2: "EB Garamond, serif",
         heading: "Cormorant Garamond, serif",
         read: "Cormorant Garamond, serif",
-        // mono: "Montserrat, sans-serif"
         mono: "DM Sans, sans-serif"
-        // mono: "Geist, sans-serif"
-        // mono: "Proza Libre, sans-serif"
-        // mono: "Lato, sans-serif"
-        // mono: "Inter, sans-serif"
-        // mono: "Cormorant Garamond, serif"
     },
 
     fontSizes: {
