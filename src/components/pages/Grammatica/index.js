@@ -179,6 +179,32 @@ const ArrowDiv = styled.div`
 	gap: 20px;
 `;
 
+const GrammarTableWrapper = styled.div`
+	width: 100%;
+
+	overflow-x: auto;
+
+	margin: 20px 0;
+`;
+
+const GrammarTable = styled.table`
+	width: 100%;
+
+	border-collapse: collapse;
+
+	font-size: 22px;
+	line-height: 1.4;
+`;
+
+const GrammarTableCell = styled.td`
+	padding: 12px 16px;
+
+	border: 1px solid
+		${({ theme }) => theme.colors.border};
+
+	text-align: left;
+`;
+
 function Grammatica() {
 	const { id } = useParams();
 	const navigate = useNavigate();
@@ -731,8 +757,64 @@ function Grammatica() {
 			);
 		}
 
+		// =================================================
+		// TABLE
+		// =================================================
+
+		if (block.type === "table") {
+			return (
+				<Block key={index}>
+					<GrammarTableWrapper>
+						<GrammarTable>
+							<tbody>
+								{(
+									block.rows ||
+									[]
+								).map(
+									(
+										row,
+										rowIndex
+									) => (
+										<tr
+											key={
+												rowIndex
+											}
+										>
+											{(
+												block.columns ||
+												[]
+											).map(
+												(
+													_,
+													columnIndex
+												) => (
+													<GrammarTableCell
+														key={
+															columnIndex
+														}
+													>
+														{renderMarkdownText(
+															row[
+																columnIndex
+															] ||
+																""
+														)}
+													</GrammarTableCell>
+												)
+											)}
+										</tr>
+									)
+								)}
+							</tbody>
+						</GrammarTable>
+					</GrammarTableWrapper>
+				</Block>
+			);
+		}
+
 		return null;
 	}
+	
 
 	// =====================================================
 	// LOADING

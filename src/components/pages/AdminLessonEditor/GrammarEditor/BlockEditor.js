@@ -6,6 +6,7 @@ import SentenceBlockEditor from "./SentenceBlockEditor";
 import QuestionBlockEditor from "./QuestionBlockEditor";
 import SentenceQuestionBlockEditor from "./SentenceQuestionBlockEditor";
 import QuizBlockEditor from "./QuizBlockEditor";
+import TableBlockEditor from "./TableBlockEditor";
 
 const Page = styled.div`
 	margin-bottom: ${({ theme }) => theme.spacing.xxl};
@@ -173,6 +174,10 @@ const blockTypes = [
 		value: "quizWord",
 		label: "Word Quiz",
 	},
+	{
+		value: "table",
+		label: "Table",
+	},
 ];
 
 const createBlock = (type) => {
@@ -235,6 +240,13 @@ const createBlock = (type) => {
 				correct: "",
 				options: ["", "", "", ""],
 				ending: "",
+			};
+		
+		case "table":
+			return {
+				type: "table",
+				columns: ["", ""],
+				rows: [["", ""]],
 			};
 
 		default:
@@ -394,6 +406,14 @@ function BlockEditor({
 			case "quizWord":
 				return (
 					<QuizBlockEditor
+						block={block}
+						onChange={onChange}
+					/>
+				);
+			
+			case "table":
+				return (
+					<TableBlockEditor
 						block={block}
 						onChange={onChange}
 					/>
