@@ -58,7 +58,7 @@ const shared = {
     },
 
     colors: {
-        // deep library green (#228054); terracotta (#c05536); deep purple (#613072)
+        // deep library green (#228054); terracotta (#d33f15); deep purple (#613072)
 
         brand: "#d33f15",
         accent: "#d33f15",
