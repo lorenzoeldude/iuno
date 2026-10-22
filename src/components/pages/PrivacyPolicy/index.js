@@ -21,12 +21,8 @@ const Heading = styled.h2`
 function PrivacyPolicy() {
     return (
         <Wrapper>
+            <Title>Privacy Policy</Title>
 
-            <Title>
-                Privacy Policy
-            </Title>
-
-            {/* ========================= */}
             <Section>
                 <Heading>1. Data Controller</Heading>
                 <p>
@@ -46,7 +42,6 @@ function PrivacyPolicy() {
                 </p>
             </Section>
 
-            {/* ========================= */}
             <Section>
                 <Heading>2. Data We Collect</Heading>
 
@@ -85,7 +80,6 @@ function PrivacyPolicy() {
                     about your purchase and subscription status in order to provide Premium
                     features and determine whether your account has access to paid content.
                 </p>
-
                 <p>
                     Payments made through the IUNONI iOS application are processed by
                     Apple through the App Store and StoreKit. IUNONI does not receive or
@@ -99,14 +93,30 @@ function PrivacyPolicy() {
                     information, for purposes including security, fraud prevention,
                     abuse prevention, and maintaining the reliability of the service.
                 </p>
+
+                <p><strong>Push Notification Data:</strong></p>
+                <p>
+                    If you enable daily word notifications, we process your device's
+                    Apple Push Notification service (APNs) device token, notification
+                    preferences, and timezone information to register your device and
+                    schedule notifications. This information is sent to our API and may
+                    be associated with your IUNONI account when authentication information
+                    is provided. We use this information to deliver daily Latin word
+                    notifications and manage your notification preferences.
+                </p>
+
+                <p><strong>Widget Data:</strong></p>
+                <p>
+                    The IUNONI iOS widget requests Word of the Day information from our
+                    API. The widget may store the retrieved word and its meanings locally
+                    so that it can display previously retrieved content when a new
+                    request is unavailable.
+                </p>
             </Section>
 
-            {/* ========================= */}
             <Section>
                 <Heading>3. How We Use Your Data</Heading>
-                <p>
-                    We use your data to:
-                </p>
+                <p>We use your data to:</p>
 
                 <ul>
                     <li>create and maintain your IUNONI account;</li>
@@ -115,6 +125,9 @@ function PrivacyPolicy() {
                     <li>save and display lesson progress and learning activity;</li>
                     <li>provide vocabulary, training, reading, and other learning features;</li>
                     <li>provide and manage Premium features and subscriptions;</li>
+                    <li>register devices for daily Latin word notifications and manage notification preferences;</li>
+                    <li>schedule notifications using device timezone information;</li>
+                    <li>provide the Word of the Day widget and display cached word information when necessary;</li>
                     <li>secure the service and prevent fraud or abuse;</li>
                     <li>maintain and improve the reliability and performance of the service;</li>
                     <li>comply with applicable legal obligations.</li>
@@ -126,7 +139,6 @@ function PrivacyPolicy() {
                 </p>
             </Section>
 
-            {/* ========================= */}
             <Section>
                 <Heading>4. Legal Basis (GDPR)</Heading>
                 <p>
@@ -151,21 +163,25 @@ function PrivacyPolicy() {
                 </ul>
             </Section>
 
-            {/* ========================= */}
             <Section>
                 <Heading>5. Data Storage</Heading>
                 <p>
                     Account and learning data is stored in a PostgreSQL database operated
                     for the IUNONI service.
                 </p>
-
                 <p>
                     Passwords are stored using bcrypt hashing. Email verification tokens
                     are stored in hashed form. Authentication uses JSON Web Tokens (JWT).
                 </p>
+                <p>
+                    Notification registration information, including APNs device tokens,
+                    notification preferences, and timezone information, may be stored in
+                    our backend database to manage notification delivery. The widget may
+                    store Word of the Day information locally on the device for display
+                    and offline fallback functionality.
+                </p>
             </Section>
 
-            {/* ========================= */}
             <Section>
                 <Heading>6. Email Verification</Heading>
                 <p>
@@ -173,14 +189,12 @@ function PrivacyPolicy() {
                     The verification token is stored in hashed form and expires after a
                     limited period or after successful verification.
                 </p>
-
                 <p>
                     Email verification is used to confirm ownership of the email address
                     associated with your account and to help maintain account security.
                 </p>
             </Section>
 
-            {/* ========================= */}
             <Section>
                 <Heading>7. Authentication</Heading>
                 <p>
@@ -188,7 +202,6 @@ function PrivacyPolicy() {
                     allow the application or website to authenticate requests to
                     protected parts of the service.
                 </p>
-
                 <p>
                     On the website, authentication information may be stored using
                     browser local storage. The iOS application uses its own secure
@@ -196,16 +209,13 @@ function PrivacyPolicy() {
                 </p>
             </Section>
 
-            {/* ========================= */}
             <Section>
                 <Heading>8. Cookies and Local Storage</Heading>
-
                 <p>
                     The IUNONI website may use local storage and necessary cookies or
                     similar technologies to maintain authentication, enforce usage limits,
                     and provide essential functionality.
                 </p>
-
                 <p>
                     For example, anonymous users may receive a cookie that records
                     information necessary to enforce the daily limit for trainer
@@ -213,14 +223,18 @@ function PrivacyPolicy() {
                     functionality of the service and is not used for advertising,
                     profiling, or cross-site tracking.
                 </p>
-
+                <p>
+                    The iOS application may store authentication information and
+                    notification preferences locally. The widget may cache Word of the
+                    Day content locally to support display when a fresh API response
+                    is unavailable.
+                </p>
                 <p>
                     We do not use advertising cookies or tracking cookies for cross-site
                     or cross-app tracking.
                 </p>
             </Section>
 
-            {/* ========================= */}
             <Section>
                 <Heading>9. Search and Learning Activity</Heading>
                 <p>
@@ -228,12 +242,10 @@ function PrivacyPolicy() {
                     may be processed by our servers to provide search results and related
                     functionality.
                 </p>
-
                 <p>
                     We do not use dictionary or search activity to track users across
                     other apps, websites, or services.
                 </p>
-
                 <p>
                     Learning activity such as lesson progress, vocabulary activity,
                     training attempts, scores, and learning statistics may be stored
@@ -242,7 +254,6 @@ function PrivacyPolicy() {
                 </p>
             </Section>
 
-            {/* ========================= */}
             <Section>
                 <Heading>10. Third-Party Services</Heading>
                 <p>
@@ -250,10 +261,7 @@ function PrivacyPolicy() {
                     IUNONI. These providers may process personal data on our behalf
                     and only for purposes necessary to provide their services.
                 </p>
-
-                <p>
-                    These services may include:
-                </p>
+                <p>These services may include:</p>
 
                 <ul>
                     <li>
@@ -271,13 +279,20 @@ function PrivacyPolicy() {
                         App Store and StoreKit.
                     </li>
                     <li>
-                        <strong>Cloudflare Web Analytics:</strong> We use Cloudflare Web Analytics
-                        to measure website traffic and page performance. Cloudflare Web Analytics
-                        does not use cookies or local storage for its analytics functionality.
+                        <strong>Apple Push Notification service (APNs):</strong> We use
+                        Apple's push notification service to deliver daily Latin word
+                        notifications to devices where notifications have been enabled.
+                        Apple processes the information necessary to route and deliver
+                        these notifications in accordance with its applicable terms and
+                        privacy policy.
+                    </li>
+                    <li>
+                        <strong>Cloudflare Web Analytics:</strong> We use Cloudflare Web
+                        Analytics to measure website traffic and page performance.
+                        Cloudflare Web Analytics does not use cookies or local storage
+                        for its analytics functionality.
                     </li>
                 </ul>
-
-                
 
                 <p>
                     These providers may process information according to their own
@@ -285,26 +300,22 @@ function PrivacyPolicy() {
                 </p>
             </Section>
 
-            {/* ========================= */}
             <Section>
                 <Heading>11. Advertising and Tracking</Heading>
                 <p>
                     IUNONI does not currently display third-party advertising and does
                     not use personal data for targeted advertising.
                 </p>
-
                 <p>
                     We do not use email addresses, user IDs, purchase history, or
                     learning activity for cross-app or cross-website tracking.
                 </p>
-
                 <p>
                     We do not sell personal data or share personal data with data
                     brokers for tracking or advertising purposes.
                 </p>
             </Section>
 
-            {/* ========================= */}
             <Section>
                 <Heading>12. Data Retention</Heading>
                 <p>
@@ -313,20 +324,29 @@ function PrivacyPolicy() {
                     contractual or legal obligations, resolve disputes, and protect
                     the security of the service.
                 </p>
-
                 <p>
                     Verification tokens are deleted after successful verification
                     or when they expire.
                 </p>
+                <p>
+                    Notification registration information is retained for as long as
+                    reasonably necessary to operate the notification feature, maintain
+                    notification preferences, and support reliable notification delivery.
+                    When notifications are disabled, the backend notification preference
+                    is updated accordingly. Disabling notifications does not necessarily
+                    immediately delete the associated registration information.
+                </p>
+                <p>
+                    Local widget cache data may remain on the device until it is replaced
+                    or removed by the operating system or the application.
+                </p>
             </Section>
 
-            {/* ========================= */}
             <Section>
                 <Heading>13. Your Rights (GDPR)</Heading>
                 <p>
                     Where applicable under the GDPR, you have the right to:
                 </p>
-
                 <ul>
                     <li>request access to your personal data;</li>
                     <li>request correction of inaccurate personal data;</li>
@@ -335,21 +355,18 @@ function PrivacyPolicy() {
                     <li>object to certain processing;</li>
                     <li>request data portability where applicable.</li>
                 </ul>
-
                 <p>
                     You may exercise these rights by contacting us using the email
                     address provided below.
                 </p>
             </Section>
 
-            {/* ========================= */}
             <Section>
                 <Heading>14. Account and Data Deletion</Heading>
                 <p>
                     If you would like to delete your IUNONI account and associated
                     personal data, you may contact us at the email address below.
                 </p>
-
                 <p>
                     We will process deletion requests in accordance with applicable
                     legal requirements. Some information may need to be retained where
@@ -358,7 +375,6 @@ function PrivacyPolicy() {
                 </p>
             </Section>
 
-            {/* ========================= */}
             <Section>
                 <Heading>15. Security</Heading>
                 <p>
@@ -366,7 +382,6 @@ function PrivacyPolicy() {
                     to protect personal data against unauthorized access, alteration,
                     disclosure, or destruction.
                 </p>
-
                 <p>
                     Security measures include password hashing using bcrypt, hashing
                     of email verification tokens, authenticated access using JWT,
@@ -374,7 +389,6 @@ function PrivacyPolicy() {
                 </p>
             </Section>
 
-            {/* ========================= */}
             <Section>
                 <Heading>16. International Data Transfers</Heading>
                 <p>
@@ -385,7 +399,6 @@ function PrivacyPolicy() {
                 </p>
             </Section>
 
-            {/* ========================= */}
             <Section>
                 <Heading>17. Children's Privacy</Heading>
                 <p>
@@ -396,7 +409,6 @@ function PrivacyPolicy() {
                 </p>
             </Section>
 
-            {/* ========================= */}
             <Section>
                 <Heading>18. Changes to This Privacy Policy</Heading>
                 <p>
@@ -404,28 +416,24 @@ function PrivacyPolicy() {
                     changes to IUNONI, our data practices, or applicable legal
                     requirements.
                 </p>
-
                 <p>
                     The latest version of this Privacy Policy will always be available
                     on this page.
                 </p>
             </Section>
 
-            {/* ========================= */}
             <Section>
                 <Heading>19. Contact</Heading>
                 <p>
                     If you have questions about this Privacy Policy or wish to exercise
                     your data protection rights, please contact:
                 </p>
-
                 <p>
                     Lorenz Frank
                     <br />
                     Email: lorenz@lorenzfrank.com
                 </p>
             </Section>
-
         </Wrapper>
     );
 }
