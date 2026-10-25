@@ -197,7 +197,7 @@ const Button = styled.button`
 
     border-radius: ${({ theme }) => theme.borderRadius.medium};
 
-    background: ${({ theme }) => theme.colors.primary};
+    background: ${({ theme }) => theme.colors.brand};
 
     color: white;
 
