@@ -146,12 +146,31 @@ const Meaning = styled.div`
 `;
 
 const MeaningItem = styled.span`
-    background: ${({ theme }) => theme.colors.accent + "4D"};
-    color: ${({ theme }) => theme.colors.text};
+    color: ${({ theme }) => theme.colors.meaningText};
+    background: ${({ theme }) => theme.colors.meaningBackground};
+    border: 1px solid ${({ theme }) => theme.colors.meaningBorder};
 
     font-size: 20px;
     padding: 4px 8px;
 `;
+
+// const MeaningItem = styled.span`
+//     flex-shrink: 0;
+
+//     padding: 6px 10px;
+
+//     font-size: 13px;
+//     line-height: 1.2;
+
+//     color: ${({ theme }) => theme.colors.text};
+
+//     background: ${({ theme }) =>
+//         theme.colors.accent + "1F"};
+
+//     border: 1px solid
+//         ${({ theme }) =>
+//             theme.colors.accent + "1F"};
+// `;
 
 const Meta = styled.div`
     display: flex;

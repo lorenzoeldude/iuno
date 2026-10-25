@@ -66,6 +66,10 @@ const shared = {
         success: "#4F8A5B",
         warning: "#B8792E",
         danger: "#B33A3A",
+
+        meaningBackground: "#d33f15",
+        meaningText: "#F9FAFB",
+        meaningBorder: "#d33f15",
     },
 };
 

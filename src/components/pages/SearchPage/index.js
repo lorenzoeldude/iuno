@@ -165,14 +165,9 @@ const Meaning = styled.span`
     font-size: 13px;
     line-height: 1.2;
 
-    color: ${({ theme }) => theme.colors.text};
-
-    background: ${({ theme }) =>
-        theme.colors.accent + "1F"};
-
-    border: 1px solid
-        ${({ theme }) =>
-            theme.colors.accent + "1F"};
+    color: ${({ theme }) => theme.colors.meaningText};
+    background: ${({ theme }) => theme.colors.meaningBackground};
+    border: 1px solid ${({ theme }) => theme.colors.meaningBorder};
 `;
 
 /* =====================================================

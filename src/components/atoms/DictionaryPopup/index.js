@@ -68,8 +68,9 @@ const Meanings = styled.div`
 `;
 
 const MeaningItem = styled.span`
-    background-color: ${({ theme }) => theme.colors.accent  + "4D"};
-    color: ${({ theme }) => theme.colors.text};
+    background-color: ${({ theme }) => theme.colors.meaningBackground};
+    color: ${({ theme }) => theme.colors.meaningText};
+    border: 1px solid ${({ theme }) => theme.colors.meaningBorder};
     font-size: 0.9rem;
     padding: 3px 7px;
 `;
