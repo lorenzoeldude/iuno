@@ -32,6 +32,7 @@ const Wrapper = styled.div`
 
 const Hero = styled.section`
     max-width: 1100px;
+    // width: 100%;
 
     margin: 40px auto;
 
@@ -170,7 +171,7 @@ const HeroButton = styled.button`
 
     border: none;
 
-    background: ${({ theme }) => theme.colors.opposite};
+    background: #fff;
 
     color: ${({ theme }) => theme.colors.brand};
 
@@ -463,17 +464,17 @@ const JourneyContent = styled.div`
 `;
 
 const JourneyLabel = styled(SectionLabel)`
-    color: ${({ theme }) => theme.colors.opposite};
+    color: #fff;
 
     opacity: 0.7;
 `;
 
 const JourneyTitle = styled(SectionTitle)`
-    color: ${({ theme }) => theme.colors.opposite};
+    color: #fff;
 `;
 
 const JourneyText = styled(SectionText)`
-    color: ${({ theme }) => theme.colors.opposite};
+    color: #fff;
 
     opacity: 0.78;
 `;
@@ -616,7 +617,7 @@ const ReadingButton = styled.button`
 
     background: ${({ theme }) => theme.colors.brand};
 
-    color: ${({ theme }) => theme.colors.opposite};
+    color: #fff;
 
     font-family: ${({ theme }) => theme.fonts.mono};
 
@@ -662,11 +663,11 @@ const CTA = styled.section`
 `;
 
 const CTATitle = styled(SectionTitle)`
-    color: ${({ theme }) => theme.colors.opposite};
+    color: #fff;
 `;
 
 const CTAText = styled(SectionText)`
-    color: ${({ theme }) => theme.colors.opposite};
+    color: #fff;
 
     opacity: 0.8;
 `;
@@ -678,7 +679,7 @@ const CTAButton = styled.button`
 
     border: none;
 
-    background: ${({ theme }) => theme.colors.opposite};
+    background: #fff;
 
     color: ${({ theme }) => theme.colors.brand};
 
