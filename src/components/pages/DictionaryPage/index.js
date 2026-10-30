@@ -154,24 +154,6 @@ const MeaningItem = styled.span`
     padding: 4px 8px;
 `;
 
-// const MeaningItem = styled.span`
-//     flex-shrink: 0;
-
-//     padding: 6px 10px;
-
-//     font-size: 13px;
-//     line-height: 1.2;
-
-//     color: ${({ theme }) => theme.colors.text};
-
-//     background: ${({ theme }) =>
-//         theme.colors.accent + "1F"};
-
-//     border: 1px solid
-//         ${({ theme }) =>
-//             theme.colors.accent + "1F"};
-// `;
-
 const Meta = styled.div`
     display: flex;
     gap: 10px;
@@ -388,6 +370,20 @@ function DictionaryPage() {
         canonicalTag.setAttribute("href", canonicalUrl);
     }, [wordData]);
 
+    useEffect(() => {
+        const prerenderedPage = document.getElementById("seo-prerender");
+
+        if (prerenderedPage && prerenderedPage.dataset.word !== word) {
+            prerenderedPage.remove();
+        }
+    }, [word]);
+
+    useEffect(() => {
+        if (!wordData?.lemma) return;
+
+        document.getElementById("seo-prerender")?.remove();
+    }, [wordData]);
+
     // =====================================================
     // RECORD WORD LOOKUP
     // =====================================================
@@ -480,6 +476,7 @@ function DictionaryPage() {
 
     useEffect(() => {
 
+        setWordData(null);
         setLoading(true);
         setError(null);
 
